@@ -8,7 +8,7 @@ using SSRSMigrate.SSRS;
 
 namespace SSRSMigrate.Utilities
 {
-    public static class SSRSUtils
+    public static class SSRSUtil
     {
         public static byte[] UpdateReportDefinition(byte[] reportDefinition, string reportServerAddress)
         {
