@@ -39,13 +39,18 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DependencyModule.cs" />
+    <Compile Include="DependencySingleton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SSRS\ReportServerReaderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

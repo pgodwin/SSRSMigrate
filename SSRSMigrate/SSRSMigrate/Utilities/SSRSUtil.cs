@@ -12,27 +12,27 @@ namespace SSRSMigrate.Utilities
     {
         public static byte[] UpdateReportDefinition(byte[] reportDefinition, string reportServerAddress)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public static string GetFullDestinationPath(string itemPath, string sourcePath, string destinationPath)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public static SSRSVersion GetSqlServerVersion(ReportingService2005 reportServerConnection)
         {
-            return SSRSVersion.Unknown;
+            throw new NotImplementedException();
         }
 
         public static SSRSVersion GetSqlServerVersion(string versionText)
         {
-            return SSRSVersion.Unknown;
+            throw new NotImplementedException();
         }
 
         public static ReportItem CatalogItemToReportItem(CatalogItem item)
         {
-            return null;
+            throw new NotImplementedException();
         }
     }
 }
