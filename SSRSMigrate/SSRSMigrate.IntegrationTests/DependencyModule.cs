@@ -29,7 +29,7 @@ namespace SSRSMigrate.IntegrationTests
             service.PreAuthenticate = true;
             service.UseDefaultCredentials = true;
 
-            return new ReportServerRepository(service);
+            return new ReportServerRepository("/SSRSMigrate_Tests", service);
         }
     }
 }

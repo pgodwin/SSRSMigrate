@@ -25,12 +25,15 @@ namespace SSRSMigrate.IntegrationTests.SSRS
 
         #region Data Source Tests
         [Test]
-        public void GetDataSourceDefinition()
+        public void GetDataSourceItem()
         {
-            string dsPath = "/Test/Test Data Source";
+            string dsPath = "/SSRSMigrate_Tests/Test Data Source";
 
-            throw new NotImplementedException();
+            DataSourceItem actual = reader.GetDataSource(dsPath);
 
+            Assert.AreEqual(actual.Name, "Test Data Source");
+            Assert.AreEqual(actual.Path, "/SSRSMigrate_Tests/Test Data Source");
+            Assert.AreEqual(actual.ConnectString, "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest");
         }
         #endregion
     }

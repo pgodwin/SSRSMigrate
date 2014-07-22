@@ -34,7 +34,12 @@ namespace SSRSMigrate.SSRS
 
         public DataSourceItem GetDataSource(string dataSourcePath)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(dataSourcePath))
+                throw new ArgumentNullException("dataSourcePath");
+
+            DataSourceItem dataSource = this.mReportRepository.GetDataSource(dataSourcePath);
+
+            return dataSource;
         }
 
         public void GetDataSources(string path, Action<DataSourceItem, int> progressReporter)
