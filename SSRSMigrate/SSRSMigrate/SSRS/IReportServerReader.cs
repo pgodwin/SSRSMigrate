@@ -9,15 +9,18 @@ namespace SSRSMigrate.SSRS
     public interface IReportServerReader
     {
         // Folders
-        void GetFolders(string path, Action<FolderItem, int> progressReporter);
+        List<FolderItem> GetFolders(string path);
+        void GetFolders(string path, Action<FolderItem> progressReporter);
 
         // Reports
         ReportItem GetReport(string reportPath);
-        void GetReports(string path, Action<ReportItem, int> progressReporter);
+        List<ReportItem> GetReports(string path);
+        void GetReports(string path, Action<ReportItem> progressReporter);
 
         // Data Sources
         DataSourceItem GetDataSource(string dataSourcePath);
-        void GetDataSources(string path, Action<DataSourceItem, int> progressReporter);
+        List<DataSourceItem> GetDataSources(string path);
+        void GetDataSources(string path, Action<DataSourceItem> progressReporter);
 
     }
 }

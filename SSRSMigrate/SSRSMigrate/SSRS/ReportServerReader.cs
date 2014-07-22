@@ -17,7 +17,12 @@ namespace SSRSMigrate.SSRS
             this.mReportRepository = repository;
         }
 
-        public void GetFolders(string path, Action<FolderItem, int> progressReporter)
+        public List<FolderItem> GetFolders(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetFolders(string path, Action<FolderItem> progressReporter)
         {
             throw new NotImplementedException();
         }
@@ -27,7 +32,12 @@ namespace SSRSMigrate.SSRS
             throw new NotImplementedException();
         }
 
-        public void GetReports(string path, Action<ReportItem, int> progressReporter)
+        public List<ReportItem> GetReports(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetReports(string path, Action<ReportItem> progressReporter)
         {
             throw new NotImplementedException();
         }
@@ -42,9 +52,26 @@ namespace SSRSMigrate.SSRS
             return dataSource;
         }
 
-        public void GetDataSources(string path, Action<DataSourceItem, int> progressReporter)
+        public List<DataSourceItem> GetDataSources(string path)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
+
+            return this.mReportRepository.GetDataSources(path);
+        }
+
+        public void GetDataSources(string path, Action<DataSourceItem> progressReporter)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
+
+            if (progressReporter == null)
+                throw new ArgumentNullException("progressReporter");
+
+            List<DataSourceItem> dataSources = this.mReportRepository.GetDataSources(path);
+
+            foreach (DataSourceItem dataSource in dataSources)
+                progressReporter(dataSource);
         }
     }
 }
