@@ -35,7 +35,12 @@ namespace SSRSMigrate.SSRS
 
         public byte[] GetReportDefinition(string reportPath)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(reportPath))
+                throw new ArgumentException("reportPath");
+
+            byte[] def = this.mReportingService.GetReportDefinition(reportPath);
+
+            return def;
         }
 
         public ReportItem GetReport(string reportPath)
@@ -56,7 +61,7 @@ namespace SSRSMigrate.SSRS
         public DataSourceItem GetDataSource(string dataSourcePath)
         {
             if (string.IsNullOrEmpty(dataSourcePath))
-                throw new ArgumentNullException("dataSourcePath");
+                throw new ArgumentException("dataSourcePath");
 
             string dsName = dataSourcePath.Substring(dataSourcePath.LastIndexOf('/') + 1);
 
@@ -192,7 +197,7 @@ namespace SSRSMigrate.SSRS
         public List<CatalogItem> GetItems(string path, ItemTypeEnum itemType)
         {
             if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
+                throw new ArgumentException("path");
 
             CatalogItem[] items = this.mReportingService.ListChildren(path, true);
 

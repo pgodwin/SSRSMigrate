@@ -17,6 +17,7 @@ namespace SSRSMigrate.SSRS
             this.mReportRepository = repository;
         }
 
+        #region Folder Methods
         public List<FolderItem> GetFolders(string path)
         {
             throw new NotImplementedException();
@@ -26,7 +27,9 @@ namespace SSRSMigrate.SSRS
         {
             throw new NotImplementedException();
         }
+        #endregion
 
+        #region Report Methods
         public ReportItem GetReport(string reportPath)
         {
             throw new NotImplementedException();
@@ -41,11 +44,13 @@ namespace SSRSMigrate.SSRS
         {
             throw new NotImplementedException();
         }
+        #endregion
 
+        #region Data Source Methods
         public DataSourceItem GetDataSource(string dataSourcePath)
         {
             if (string.IsNullOrEmpty(dataSourcePath))
-                throw new ArgumentNullException("dataSourcePath");
+                throw new ArgumentException("dataSourcePath");
 
             DataSourceItem dataSource = this.mReportRepository.GetDataSource(dataSourcePath);
 
@@ -55,7 +60,7 @@ namespace SSRSMigrate.SSRS
         public List<DataSourceItem> GetDataSources(string path)
         {
             if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
+                throw new ArgumentException("path");
 
             return this.mReportRepository.GetDataSources(path);
         }
@@ -63,7 +68,7 @@ namespace SSRSMigrate.SSRS
         public void GetDataSources(string path, Action<DataSourceItem> progressReporter)
         {
             if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
+                throw new ArgumentException("path");
 
             if (progressReporter == null)
                 throw new ArgumentNullException("progressReporter");
@@ -73,5 +78,6 @@ namespace SSRSMigrate.SSRS
             foreach (DataSourceItem dataSource in dataSources)
                 progressReporter(dataSource);
         }
+        #endregion
     }
 }
