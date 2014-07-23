@@ -6,6 +6,7 @@ using SSRSMigrate.Enums;
 using SSRSMigrate.ReportServer2005;
 using SSRSMigrate.SSRS;
 using System.Xml;
+using System.Text.RegularExpressions;
 
 namespace SSRSMigrate.Utilities
 {
@@ -127,12 +128,48 @@ namespace SSRSMigrate.Utilities
 
         public static SSRSVersion GetSqlServerVersion(ReportingService2005 reportServerConnection)
         {
-            throw new NotImplementedException();
+            if (reportServerConnection == null)
+                throw new ArgumentNullException("reportServerConnection");
+
+            reportServerConnection.ListSecureMethods();
+
+            return GetSqlServerVersion(reportServerConnection.ServerInfoHeaderValue.ReportServerVersion);
         }
 
         public static SSRSVersion GetSqlServerVersion(string versionText)
         {
-            throw new NotImplementedException();
+            Regex oVersionRE = new Regex(@"Microsoft SQL Server Reporting Services Version (?<version>[0-9]+\.[0-9]+)\.(?<subver>[0-9]+\.[0-9]+)");
+            Match oMatch = oVersionRE.Match(versionText);
+
+            if (oMatch.Success)
+            {
+                string sVersion = oMatch.Groups["version"].ToString();
+                string sSubVersion = oMatch.Groups["subver"].ToString();
+
+                Console.WriteLine(sVersion);
+
+                switch (sVersion)
+                {
+                    case "7.00":
+                        return SSRSVersion.SqlServer7;
+                    case "8.00":
+                        return SSRSVersion.SqlServer2000;
+                    case "9.00":
+                        return SSRSVersion.SqlServer2005;
+                    case "10.0":
+                        return SSRSVersion.SqlServer2008;
+                    case "10.50":
+                        return SSRSVersion.SqlServer2008R2;
+                    case "11.00":
+                        return SSRSVersion.SqlServer2012;
+                    default:
+                        return SSRSVersion.Unknown;
+                }
+            }
+            else
+            {
+                return SSRSVersion.Unknown;
+            }
         }
 
         public static ReportItem CatalogItemToReportItem(CatalogItem item)
