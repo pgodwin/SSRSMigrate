@@ -11,8 +11,11 @@ namespace SSRSMigrate.Utilities
 {
     public static class SSRSUtil
     {
-        public static byte[] UpdateReportDefinition(string sourcePath, string destinationPath, byte[] reportDefinition)
+        public static byte[] UpdateReportDefinition(string destinationReportServerUrl, string sourcePath, string destinationPath, byte[] reportDefinition)
         {
+            if (string.IsNullOrEmpty(destinationReportServerUrl))
+                throw new ArgumentException("destinationReportServerUrl");
+
             if (string.IsNullOrEmpty(sourcePath))
                 throw new ArgumentException("sourcePath");
 
@@ -44,7 +47,7 @@ namespace SSRSMigrate.Utilities
             XmlNodeList reportServerUrlNodes = doc.GetElementsByTagName("ReportServerUrl", "*");
             if (reportServerUrlNodes.Count > 0)
                 for (int i = 0; i < reportServerUrlNodes.Count; i++)
-                    reportServerUrlNodes[i].InnerText = destinationPath;
+                    reportServerUrlNodes[i].InnerText = destinationReportServerUrl;
 
             // Update SubReports to new path
             XmlNodeList subReportsNode = doc.GetElementsByTagName("Subreport");
