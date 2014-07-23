@@ -11,6 +11,22 @@ namespace SSRSMigrate.Utilities
 {
     public static class SSRSUtil
     {
+        /// <summary>
+        /// Updates the report definition by setting the new report server url, poiting Data Sources and Sub Reports to the new destination path.
+        /// </summary>
+        /// <param name="destinationReportServerUrl">The destination report server URL.</param>
+        /// <param name="sourcePath">The source path.</param>
+        /// <param name="destinationPath">The destination path.</param>
+        /// <param name="reportDefinition">The report definition.</param>
+        /// <returns>Returns the report report definition after it is updated using the new report server url and paths.</returns>
+        /// <exception cref="System.ArgumentException">
+        /// destinationReportServerUrl
+        /// or
+        /// sourcePath
+        /// or
+        /// destinationPath
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">reportDefinition</exception>
         public static byte[] UpdateReportDefinition(string destinationReportServerUrl, string sourcePath, string destinationPath, byte[] reportDefinition)
         {
             if (string.IsNullOrEmpty(destinationReportServerUrl))
@@ -77,6 +93,13 @@ namespace SSRSMigrate.Utilities
         /// <param name="destinationPath">The path on the destination server, including server url.</param>
         /// <param name="itemPath">The complete item path on the source server.</param>
         /// <returns>Returns the path to the item as it would be on the destination server, using the same folder structure.</returns>
+        /// <exception cref="System.ArgumentException">
+        /// sourcePath
+        /// or
+        /// destinationPath
+        /// or
+        /// itemPath
+        /// </exception>
         public static string GetFullDestinationPathForItem(string sourcePath, string destinationPath, string itemPath)
         {
             if (string.IsNullOrEmpty(sourcePath))
@@ -117,18 +140,33 @@ namespace SSRSMigrate.Utilities
             throw new NotImplementedException();
         }
 
-        public static byte[] TextToByteArray(string text)
+        /// <summary>
+        /// Converts a string to a byte array.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns></returns>
+        public static byte[] StringToByteArray(string text)
         {
-            char[] CharArray = text.ToCharArray();
+            char[] charArray = text.ToCharArray();
 
-            byte[] ByteArray = new byte[CharArray.Length];
+            byte[] byteArray = new byte[charArray.Length];
 
-            for (int i = 0; i < CharArray.Length; i++)
+            for (int i = 0; i < charArray.Length; i++)
             {
-                ByteArray[i] = Convert.ToByte(CharArray[i]);
+                byteArray[i] = Convert.ToByte(charArray[i]);
             }
 
-            return ByteArray;
+            return byteArray;
+        }
+
+        /// <summary>
+        /// Converts a byte array to a string.
+        /// </summary>
+        /// <param name="byteArray">The byte array.</param>
+        /// <returns></returns>
+        public static string ByteArrayToString(byte[] byteArray)
+        {
+            return Encoding.UTF8.GetString(byteArray);
         }
     }
 }
