@@ -13,8 +13,12 @@ namespace SSRSMigrate.Tests.SSRS
     {
         ReportServerReader reader = null;
 
-        #region Expected FolderItems
+        #region GetFolders - Expected FolderItems
         List<FolderItem> expectedFolderItems = null;
+        #endregion
+
+        #region GetFolders - Actual FolderItems
+        List<FolderItem> actualFolderItems = null;
         #endregion
 
         [SetUp]
@@ -40,6 +44,8 @@ namespace SSRSMigrate.Tests.SSRS
                 }
             };
 
+            actualFolderItems = new List<FolderItem>();
+
             // Setup IReportServerRepository mock
             var reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
@@ -55,6 +61,9 @@ namespace SSRSMigrate.Tests.SSRS
             reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_Tests"))
                 .Returns(() => expectedFolderItems);
 
+            reportServerRepositoryMock.Setup(r => r.GetFolderList("/SSRSMigrate_Tests"))
+                .Returns(() => expectedFolderItems);
+
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
         }
 
@@ -63,7 +72,7 @@ namespace SSRSMigrate.Tests.SSRS
         {
         }
 
-        #region Folder Tests
+        #region GetFolders Tests
         [Test]
         public void GetFolders()
         {
@@ -75,13 +84,77 @@ namespace SSRSMigrate.Tests.SSRS
         [Test]
         public void GetFolders_NullPath()
         {
-            List<FolderItem> actual = reader.GetFolders(null);
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetFolders(null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
         }
 
         [Test]
         public void GetFolders_EmptyPath()
         {
-            List<FolderItem> actual = reader.GetFolders("");
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetFolders(null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+        #endregion
+
+        #region GetFolders Using Action<FolderItem> Tests
+        [Test]
+        public void GetFolders_UsingDelegate()
+        {
+            reader.GetFolders("/SSRSMigrate_Tests", GetFolders_Reporter);
+
+            Assert.AreEqual(expectedFolderItems.Count(), actualFolderItems.Count());
+        }
+
+        [Test]
+        public void GetFolders_UsingDelegate_NullPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetFolders(null, GetFolders_Reporter);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetFolders_UsingDelegate_EmptyPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetFolders("", GetFolders_Reporter);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+
+        [Test]
+        public void GetFolders_UsingDelegate_NullDelegate()
+        {
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    reader.GetFolders("/SSRSMigrate_Tests", null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
+        }
+
+        private void GetFolders_Reporter(FolderItem folderItem)
+        {
+            actualFolderItems.Add(folderItem);
         }
         #endregion
 

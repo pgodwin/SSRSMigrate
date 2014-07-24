@@ -30,7 +30,16 @@ namespace SSRSMigrate.SSRS
 
         public void GetFolders(string path, Action<FolderItem> progressReporter)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            if (progressReporter == null)
+                throw new ArgumentNullException("progressReporter");
+
+            var folders = this.mReportRepository.GetFolderList(path);
+
+            foreach (FolderItem folder in folders)
+                progressReporter(folder);
         }
         #endregion
 
@@ -78,7 +87,7 @@ namespace SSRSMigrate.SSRS
             if (progressReporter == null)
                 throw new ArgumentNullException("progressReporter");
 
-            List<DataSourceItem> dataSources = this.mReportRepository.GetDataSources(path);
+            var dataSources = this.mReportRepository.GetDataSourcesList(path);
 
             foreach (DataSourceItem dataSource in dataSources)
                 progressReporter(dataSource);
