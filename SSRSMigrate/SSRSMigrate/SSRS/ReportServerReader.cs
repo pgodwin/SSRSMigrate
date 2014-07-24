@@ -20,7 +20,12 @@ namespace SSRSMigrate.SSRS
         #region Folder Methods
         public List<FolderItem> GetFolders(string path)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            List<FolderItem> folders = this.mReportRepository.GetFolders(path);
+
+            return folders;
         }
 
         public void GetFolders(string path, Action<FolderItem> progressReporter)

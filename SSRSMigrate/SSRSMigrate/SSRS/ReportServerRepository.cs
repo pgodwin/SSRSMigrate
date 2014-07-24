@@ -14,7 +14,7 @@ namespace SSRSMigrate.SSRS
         public ReportServerRepository(string rootPath, ReportingService2005 reportingService)
         {
             if (string.IsNullOrEmpty(rootPath))
-                throw new ArgumentNullException("rootPath");
+                throw new ArgumentException("rootPath");
 
             if (reportingService == null)
                 throw new ArgumentNullException("reportingService");
@@ -25,11 +25,41 @@ namespace SSRSMigrate.SSRS
 
         public List<FolderItem> GetFolders(string path)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            List<FolderItem> folderItems = new List<FolderItem>();
+            List<CatalogItem> items = this.GetItems(path, ItemTypeEnum.Folder);
+
+            if (items.Any())
+            {
+                foreach (CatalogItem item in items)
+                {
+                    FolderItem folder = new FolderItem();
+
+                    folder.CreatedBy = item.CreatedBy;
+                    folder.CreationDate = item.CreationDate;
+                    folder.Description = item.Description;
+                    folder.ID = item.ID;
+                    folder.ModifiedBy = item.ModifiedBy;
+                    folder.ModifiedDate = item.ModifiedDate;
+                    folder.Name = item.Name;
+                    folder.Path = item.Path;
+                    folder.Size = item.Size;
+                    folder.VirtualPath = item.VirtualPath;
+
+                    folderItems.Add(folder);
+                }
+
+                return folderItems;
+            }
+
+            return null;
         }
 
         public void CreateFolder(string folderPath)
         {
+
             throw new NotImplementedException();
         }
 
@@ -206,7 +236,5 @@ namespace SSRSMigrate.SSRS
             else
                 return null;
         }
-
-        
     }
 }
