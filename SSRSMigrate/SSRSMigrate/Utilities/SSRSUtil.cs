@@ -136,6 +136,11 @@ namespace SSRSMigrate.Utilities
             return GetSqlServerVersion(reportServerConnection.ServerInfoHeaderValue.ReportServerVersion);
         }
 
+        /// <summary>
+        /// Gets the SQL server version from the Reporting Services version string.
+        /// </summary>
+        /// <param name="versionText">The Reporting Services version string.</param>
+        /// <returns></returns>
         public static SSRSVersion GetSqlServerVersion(string versionText)
         {
             Regex oVersionRE = new Regex(@"Microsoft SQL Server Reporting Services Version (?<version>[0-9]+\.[0-9]+)\.(?<subver>[0-9]*\.*[0-9]*)");

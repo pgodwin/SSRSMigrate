@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.Utilities;
 using SSRSMigrate.Enums;
+using SSRSMigrate.SSRS;
 
 namespace SSRSMigrate.Tests.Utilities
 {
