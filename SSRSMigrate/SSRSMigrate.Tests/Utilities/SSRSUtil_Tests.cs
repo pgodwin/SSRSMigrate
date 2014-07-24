@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.Utilities;
+using SSRSMigrate.Enums;
 
 namespace SSRSMigrate.Tests.Utilities
 {
@@ -211,7 +212,6 @@ namespace SSRSMigrate.Tests.Utilities
             Assert.AreEqual(expected, actual);
         }
 
-
         [Test]
         public void GetFullDestinationPathForItem_FolderChange()
         {
@@ -326,6 +326,78 @@ namespace SSRSMigrate.Tests.Utilities
                 });
 
             Assert.That(ex.Message, Is.EqualTo("itemPath"));
+        }
+        #endregion
+
+        #region SSRSUtil.GetSqlServerVersion Tests
+        [Test]
+        public void GetSqlServerVersion_Unknown()
+        {
+            SSRSVersion expected = SSRSVersion.Unknown;
+
+            SSRSVersion actual = SSRSUtil.GetSqlServerVersion("Microsoft SQL Server Reporting Services Version 12.00.200.8");
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetSqlServerVersion_SQL2012()
+        {
+            SSRSVersion expected = SSRSVersion.SqlServer2012;
+
+            SSRSVersion actual = SSRSUtil.GetSqlServerVersion("Microsoft SQL Server Reporting Services Version 11.00.2100.60");
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetSqlServerVersion_SQL2008R2()
+        {
+            SSRSVersion expected = SSRSVersion.SqlServer2008R2;
+
+            SSRSVersion actual = SSRSUtil.GetSqlServerVersion("Microsoft SQL Server Reporting Services Version 10.50.1600.1");
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetSqlServerVersion_SQL2008()
+        {
+            SSRSVersion expected = SSRSVersion.SqlServer2008;
+
+            SSRSVersion actual = SSRSUtil.GetSqlServerVersion("Microsoft SQL Server Reporting Services Version 10.00.1600.22");
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetSqlServerVersion_SQL2005()
+        {
+            SSRSVersion expected = SSRSVersion.SqlServer2005;
+
+            SSRSVersion actual = SSRSUtil.GetSqlServerVersion("Microsoft SQL Server Reporting Services Version 9.00.1399.06");
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetSqlServerVersion_SQL2000()
+        {
+            SSRSVersion expected = SSRSVersion.SqlServer2000;
+
+            SSRSVersion actual = SSRSUtil.GetSqlServerVersion("Microsoft SQL Server Reporting Services Version 8.00.194");
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetSqlServerVersion_SQL7()
+        {
+            SSRSVersion expected = SSRSVersion.SqlServer7;
+
+            SSRSVersion actual = SSRSUtil.GetSqlServerVersion("Microsoft SQL Server Reporting Services Version 7.00.623");
+
+            Assert.AreEqual(expected, actual);
         }
         #endregion
     }
