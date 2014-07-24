@@ -138,7 +138,7 @@ namespace SSRSMigrate.Utilities
 
         public static SSRSVersion GetSqlServerVersion(string versionText)
         {
-            Regex oVersionRE = new Regex(@"Microsoft SQL Server Reporting Services Version (?<version>[0-9]+\.[0-9]+)\.(?<subver>[0-9]+\.[0-9]+)");
+            Regex oVersionRE = new Regex(@"Microsoft SQL Server Reporting Services Version (?<version>[0-9]+\.[0-9]+)\.(?<subver>[0-9]*\.*[0-9]*)");
             Match oMatch = oVersionRE.Match(versionText);
 
             if (oMatch.Success)
@@ -156,7 +156,7 @@ namespace SSRSMigrate.Utilities
                         return SSRSVersion.SqlServer2000;
                     case "9.00":
                         return SSRSVersion.SqlServer2005;
-                    case "10.0":
+                    case "10.00":
                         return SSRSVersion.SqlServer2008;
                     case "10.50":
                         return SSRSVersion.SqlServer2008R2;
