@@ -51,6 +51,7 @@
     <Compile Include="DependencySingleton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SSRS\ReportServerReader_DataSourceTests.cs" />
+    <Compile Include="SSRS\ReportServerReader_FolderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
