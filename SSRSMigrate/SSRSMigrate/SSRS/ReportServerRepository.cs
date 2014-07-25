@@ -23,6 +23,28 @@ namespace SSRSMigrate.SSRS
             this.mReportingService = reportingService;
         }
 
+        ~ReportServerRepository()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (this.mReportingService != null)
+                {
+                    this.mReportingService.Dispose();
+                    this.mReportingService = null;
+                }
+            }
+        }
+
         public List<FolderItem> GetFolders(string path)
         {
             if (string.IsNullOrEmpty(path))

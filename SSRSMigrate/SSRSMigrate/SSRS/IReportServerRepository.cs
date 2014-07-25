@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SSRSMigrate.SSRS
 {
-    public interface IReportServerRepository
+    public interface IReportServerRepository : IDisposable
     {
         // Folders
         List<FolderItem> GetFolders(string path);
