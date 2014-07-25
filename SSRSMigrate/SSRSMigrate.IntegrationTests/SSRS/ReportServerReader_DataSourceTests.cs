@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.SSRS;
+using System.Web.Services.Protocols;
 
 namespace SSRSMigrate.IntegrationTests.SSRS
 {
@@ -29,7 +30,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS
 
         #region Data Source Tests
         [Test]
-        public void GetTestDataSourceItem()
+        public void GetDataSourceItem()
         {
             string dsPath = "/SSRSMigrate_Tests/Test Data Source";
 
@@ -41,17 +42,17 @@ namespace SSRSMigrate.IntegrationTests.SSRS
         }
 
         [Test]
-        public void GetTestDataSourceItemThatDoesntExist()
+        public void GetDataSourceItem_ThatDoesntExist()
         {
             string dsPath = "/SSRSMigrate_Tests/Test Data Source Doesnt Exist";
 
             DataSourceItem actual = reader.GetDataSource(dsPath);
 
-            Assert.Null(actual);
+            Assert.IsNull(actual);
         }
 
         [Test]
-        public void GetTestDataSources()
+        public void GetDataSources()
         {
             string path = "/SSRSMigrate_Tests";
 
@@ -61,18 +62,18 @@ namespace SSRSMigrate.IntegrationTests.SSRS
         }
 
         [Test]
-        public void GetTestDataSourcesUsingReporter()
+        public void GetDataSources_UsingDelegate()
         {
             string path = "/SSRSMigrate_Tests";
 
-            reader.GetDataSources(path, GetTestDataSourcesReportHandler);
+            reader.GetDataSources(path, GetDataSources_Reporter);
 
             Assert.AreEqual(actualDataSources.Count(), 2);
         }
 
         [Test]
         [ExpectedException(typeof(System.Web.Services.Protocols.SoapException))]
-        public void GetTestDataSourceThatDontExist()
+        public void GetDataSource_ThatDontExist()
         {
             string path = "/SSRSMigrate_Tests Doesnt Exist";
 
@@ -83,16 +84,16 @@ namespace SSRSMigrate.IntegrationTests.SSRS
 
         [Test]
         [ExpectedException(typeof(System.Web.Services.Protocols.SoapException))]
-        public void GetTestDataSourcesUsingReporterThatDontExist()
+        public void GetDataSources_UsingDelegate_ThatDontExist()
         {
             string path = "/SSRSMigrate_Tests Doesnt Exist";
 
-            reader.GetDataSources(path, GetTestDataSourcesReportHandler);
+            reader.GetDataSources(path, GetDataSources_Reporter);
 
             Assert.IsFalse(actualDataSources.Any());
         }
 
-        public void GetTestDataSourcesReportHandler(DataSourceItem dataSource)
+        public void GetDataSources_Reporter(DataSourceItem dataSource)
         {
             if (dataSource != null)
                 actualDataSources.Add(dataSource);

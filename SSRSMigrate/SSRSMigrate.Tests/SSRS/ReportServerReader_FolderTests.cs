@@ -49,9 +49,7 @@ namespace SSRSMigrate.Tests.SSRS
             // Setup IReportServerRepository mock
             var reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
-            // Setup method mocks
-
-            // IReportServerRepository.GetFolders
+            // IReportServerRepository.GetFolders Mocks
             reportServerRepositoryMock.Setup(r => r.GetFolders(null))
                 .Throws(new ArgumentException("path"));
 
@@ -60,6 +58,12 @@ namespace SSRSMigrate.Tests.SSRS
 
             reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_Tests"))
                 .Returns(() => expectedFolderItems);
+
+            reportServerRepositoryMock.Setup(r => r.GetFolderList(null))
+                .Throws(new ArgumentException("path"));
+
+            reportServerRepositoryMock.Setup(r => r.GetFolderList(""))
+                .Throws(new ArgumentException("path"));
 
             reportServerRepositoryMock.Setup(r => r.GetFolderList("/SSRSMigrate_Tests"))
                 .Returns(() => expectedFolderItems);
@@ -139,7 +143,6 @@ namespace SSRSMigrate.Tests.SSRS
             Assert.That(ex.Message, Is.EqualTo("path"));
         }
 
-
         [Test]
         public void GetFolders_UsingDelegate_NullDelegate()
         {
@@ -156,12 +159,6 @@ namespace SSRSMigrate.Tests.SSRS
         {
             actualFolderItems.Add(folderItem);
         }
-        #endregion
-
-        #region Report Tests
-        #endregion
-
-        #region Data Source Tests
         #endregion
     }
 }
