@@ -28,7 +28,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS
             actualDataSources = null;
         }
 
-        #region Data Source Tests
+        #region GetDataSource Tests
         [Test]
         public void GetDataSourceItem()
         {
@@ -41,8 +41,12 @@ namespace SSRSMigrate.IntegrationTests.SSRS
             Assert.AreEqual(actual.ConnectString, "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest");
         }
 
+        //TODO GetDataSourceItem_NullPath
+
+        //TODO GetDataSourceItem_EmptyPath
+
         [Test]
-        public void GetDataSourceItem_ThatDoesntExist()
+        public void GetDataSourceItem_PathThatDoesntExist()
         {
             string dsPath = "/SSRSMigrate_Tests/Test Data Source Doesnt Exist";
 
@@ -50,7 +54,9 @@ namespace SSRSMigrate.IntegrationTests.SSRS
 
             Assert.IsNull(actual);
         }
+        #endregion
 
+        #region GetDataSources Tests
         [Test]
         public void GetDataSources()
         {
@@ -61,6 +67,25 @@ namespace SSRSMigrate.IntegrationTests.SSRS
             Assert.AreEqual(actual.Count(), 2);
         }
 
+        //TODO GetDataSources_NullPath
+
+        //TODO GetDataSources_EmptyPath
+
+        [Test]
+        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
+            ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found",
+            MatchType = MessageMatch.Contains)]
+        public void GetDataSources_PathDoesntExist()
+        {
+            string path = "/SSRSMigrate_Tests Doesnt Exist";
+
+            List<DataSourceItem> actual = reader.GetDataSources(path);
+
+            Assert.IsNull(actual);
+        }
+        #endregion
+
+        #region GetDataSources Using Action<DataSourceItem> Tests
         [Test]
         public void GetDataSources_UsingDelegate()
         {
@@ -70,21 +95,16 @@ namespace SSRSMigrate.IntegrationTests.SSRS
 
             Assert.AreEqual(actualDataSources.Count(), 2);
         }
+        
+        //TODO GetDataSources_UsingDelegate_NullPath
+
+        //TODO GetDataSources_UsingDelegate_EmptyPath
 
         [Test]
-        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException))]
-        public void GetDataSource_ThatDontExist()
-        {
-            string path = "/SSRSMigrate_Tests Doesnt Exist";
-
-            List<DataSourceItem> actual = reader.GetDataSources(path);
-
-            Assert.IsNull(actual);
-        }
-
-        [Test]
-        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException))]
-        public void GetDataSources_UsingDelegate_ThatDontExist()
+        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
+            ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found",
+            MatchType = MessageMatch.Contains)]
+        public void GetDataSources_UsingDelegate_PathDontExist()
         {
             string path = "/SSRSMigrate_Tests Doesnt Exist";
 
