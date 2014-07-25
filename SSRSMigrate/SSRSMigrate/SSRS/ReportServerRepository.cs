@@ -34,22 +34,7 @@ namespace SSRSMigrate.SSRS
             if (items.Any())
             {
                 foreach (CatalogItem item in items)
-                {
-                    FolderItem folder = new FolderItem();
-
-                    folder.CreatedBy = item.CreatedBy;
-                    folder.CreationDate = item.CreationDate;
-                    folder.Description = item.Description;
-                    folder.ID = item.ID;
-                    folder.ModifiedBy = item.ModifiedBy;
-                    folder.ModifiedDate = item.ModifiedDate;
-                    folder.Name = item.Name;
-                    folder.Path = item.Path;
-                    folder.Size = item.Size;
-                    folder.VirtualPath = item.VirtualPath;
-
-                    folderItems.Add(folder);
-                }
+                    folderItems.Add(CatalogItemToFolderItem(item));
 
                 return folderItems;
             }
@@ -131,38 +116,7 @@ namespace SSRSMigrate.SSRS
             CatalogItem item = this.GetItem(dsName, dataSourcePath, ItemTypeEnum.DataSource);
 
             if (item != null)
-            {
-                DataSourceItem ds = new DataSourceItem();
-                DataSourceDefinition dsDef = this.mReportingService.GetDataSourceContents(item.Path);
-
-                ds.Name = item.Name;
-                ds.Path = item.Path;
-                ds.CreatedBy = item.CreatedBy;
-                ds.CreationDate = item.CreationDate;
-                ds.Description = item.Description;
-                ds.ID = item.ID;
-                ds.ModifiedBy = item.ModifiedBy;
-                ds.ModifiedDate = item.ModifiedDate;
-                ds.Size = item.Size;
-                ds.VirtualPath = item.VirtualPath;
-
-                            
-                ds.ConnectString = dsDef.ConnectString;
-                ds.CredentialsRetrieval = dsDef.CredentialRetrieval;
-                ds.Enabled = dsDef.Enabled;
-                ds.EnabledSpecified = dsDef.EnabledSpecified;
-                ds.Extension = dsDef.Extension;
-                ds.ImpersonateUser = dsDef.ImpersonateUser;
-                ds.ImpersonateUserSpecified = dsDef.ImpersonateUserSpecified;
-                ds.OriginalConnectStringExpressionBased = ds.OriginalConnectStringExpressionBased;
-                ds.Password = dsDef.Password;
-                ds.Prompt = dsDef.Prompt;
-                ds.UseOriginalConnectString = dsDef.UseOriginalConnectString;
-                ds.UserName = dsDef.UserName;
-                ds.WindowsCredentials = dsDef.WindowsCredentials;
-
-                return ds;
-            }
+                return CatalogItemToDataSourceItem(item);
 
             return null;
         }
@@ -178,38 +132,7 @@ namespace SSRSMigrate.SSRS
             if (items.Any())
             {
                 foreach (CatalogItem item in items)
-                {
-                    DataSourceItem ds = new DataSourceItem();
-                    DataSourceDefinition dsDef = this.mReportingService.GetDataSourceContents(item.Path);
-
-                    ds.Name = item.Name;
-                    ds.Path = item.Path;
-                    ds.CreatedBy = item.CreatedBy;
-                    ds.CreationDate = item.CreationDate;
-                    ds.Description = item.Description;
-                    ds.ID = item.ID;
-                    ds.ModifiedBy = item.ModifiedBy;
-                    ds.ModifiedDate = item.ModifiedDate;
-                    ds.Size = item.Size;
-                    ds.VirtualPath = item.VirtualPath;
-
-
-                    ds.ConnectString = dsDef.ConnectString;
-                    ds.CredentialsRetrieval = dsDef.CredentialRetrieval;
-                    ds.Enabled = dsDef.Enabled;
-                    ds.EnabledSpecified = dsDef.EnabledSpecified;
-                    ds.Extension = dsDef.Extension;
-                    ds.ImpersonateUser = dsDef.ImpersonateUser;
-                    ds.ImpersonateUserSpecified = dsDef.ImpersonateUserSpecified;
-                    ds.OriginalConnectStringExpressionBased = ds.OriginalConnectStringExpressionBased;
-                    ds.Password = dsDef.Password;
-                    ds.Prompt = dsDef.Prompt;
-                    ds.UseOriginalConnectString = dsDef.UseOriginalConnectString;
-                    ds.UserName = dsDef.UserName;
-                    ds.WindowsCredentials = dsDef.WindowsCredentials;
-
-                    dataSourceItems.Add(ds);
-                }
+                    dataSourceItems.Add(CatalogItemToDataSourceItem(item));
 
                 return dataSourceItems;
             }
