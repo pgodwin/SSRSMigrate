@@ -41,9 +41,29 @@ namespace SSRSMigrate.IntegrationTests.SSRS
             Assert.AreEqual(actual.ConnectString, "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest");
         }
 
-        //TODO GetDataSourceItem_NullPath
+        [Test]
+        public void GetDataSourceItem_NullPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetDataSource(null);
+                });
 
-        //TODO GetDataSourceItem_EmptyPath
+            Assert.That(ex.Message, Is.EqualTo("dataSourcePath"));
+        }
+
+        [Test]
+        public void GetDataSourceItem_EmptyPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetDataSource("");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("dataSourcePath"));
+        }
 
         [Test]
         public void GetDataSourceItem_PathThatDoesntExist()
@@ -67,9 +87,29 @@ namespace SSRSMigrate.IntegrationTests.SSRS
             Assert.AreEqual(actual.Count(), 2);
         }
 
-        //TODO GetDataSources_NullPath
+        [Test]
+        public void GetDataSources_NullPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetDataSources(null);
+                });
 
-        //TODO GetDataSources_EmptyPath
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+        
+        [Test]
+        public void GetDataSources_EmptyPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetDataSources("");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
 
         [Test]
         [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
@@ -96,9 +136,41 @@ namespace SSRSMigrate.IntegrationTests.SSRS
             Assert.AreEqual(actualDataSources.Count(), 2);
         }
         
-        //TODO GetDataSources_UsingDelegate_NullPath
+        [Test]
+        public void GetDataSources_UsingDelegate_NullPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetDataSources(null, GetDataSources_Reporter);
+                });
 
-        //TODO GetDataSources_UsingDelegate_EmptyPath
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetDataSources_UsingDelegate_EmptyPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetDataSources("", GetDataSources_Reporter);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetDataSources_UsingDelegate_NullDelegate()
+        {
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    reader.GetDataSources("SSRSMigrate_Tests", null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
+        }
 
         [Test]
         [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
