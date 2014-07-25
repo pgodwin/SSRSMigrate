@@ -9,7 +9,7 @@ using Moq;
 namespace SSRSMigrate.Tests.SSRS
 {
     [TestFixture]
-    class ReportServerReader_Tests
+    class ReportServerReader_FolderTests
     {
         ReportServerReader reader = null;
 
