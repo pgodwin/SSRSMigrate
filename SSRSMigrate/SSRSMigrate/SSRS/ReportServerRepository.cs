@@ -62,34 +62,33 @@ namespace SSRSMigrate.SSRS
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
 
-            var items = this.GetItemsList(path, ItemTypeEnum.Folder);
-
+            var items = this.GetItemsList<FolderItem>(path, ItemTypeEnum.Folder, folder => CatalogItemToFolderItem(folder));
             if (items.Any())
-            {
-                foreach (CatalogItem item in items)
-                {
-                    FolderItem folder = new FolderItem();
-
-                    folder.CreatedBy = item.CreatedBy;
-                    folder.CreationDate = item.CreationDate;
-                    folder.Description = item.Description;
-                    folder.ID = item.ID;
-                    folder.ModifiedBy = item.ModifiedBy;
-                    folder.ModifiedDate = item.ModifiedDate;
-                    folder.Name = item.Name;
-                    folder.Path = item.Path;
-                    folder.Size = item.Size;
-                    folder.VirtualPath = item.VirtualPath;
-
+                foreach (FolderItem folder in items)
                     yield return folder;
-                }
-            }
         }
 
         public void CreateFolder(string folderPath)
         {
-
             throw new NotImplementedException();
+        }
+
+        private FolderItem CatalogItemToFolderItem(CatalogItem item)
+        {
+            FolderItem folder = new FolderItem();
+
+            folder.CreatedBy = item.CreatedBy;
+            folder.CreationDate = item.CreationDate;
+            folder.Description = item.Description;
+            folder.ID = item.ID;
+            folder.ModifiedBy = item.ModifiedBy;
+            folder.ModifiedDate = item.ModifiedDate;
+            folder.Name = item.Name;
+            folder.Path = item.Path;
+            folder.Size = item.Size;
+            folder.VirtualPath = item.VirtualPath;
+
+            return folder;
         }
 
         public byte[] GetReportDefinition(string reportPath)
@@ -223,48 +222,49 @@ namespace SSRSMigrate.SSRS
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            var items = this.GetItemsList(path, ItemTypeEnum.DataSource);
+            var items = this.GetItemsList<DataSourceItem>(path, ItemTypeEnum.DataSource, ds => CatalogItemToDataSourceItem(ds));
 
             if (items != null)
-            {
-                foreach (CatalogItem item in items)
-                {
-                    DataSourceItem ds = new DataSourceItem();
-                    DataSourceDefinition dsDef = this.mReportingService.GetDataSourceContents(item.Path);
-
-                    ds.Name = item.Name;
-                    ds.Path = item.Path;
-                    ds.CreatedBy = item.CreatedBy;
-                    ds.CreationDate = item.CreationDate;
-                    ds.Description = item.Description;
-                    ds.ID = item.ID;
-                    ds.ModifiedBy = item.ModifiedBy;
-                    ds.ModifiedDate = item.ModifiedDate;
-                    ds.Size = item.Size;
-                    ds.VirtualPath = item.VirtualPath;
-
-                    ds.ConnectString = dsDef.ConnectString;
-                    ds.CredentialsRetrieval = dsDef.CredentialRetrieval;
-                    ds.Enabled = dsDef.Enabled;
-                    ds.EnabledSpecified = dsDef.EnabledSpecified;
-                    ds.Extension = dsDef.Extension;
-                    ds.ImpersonateUser = dsDef.ImpersonateUser;
-                    ds.ImpersonateUserSpecified = dsDef.ImpersonateUserSpecified;
-                    ds.OriginalConnectStringExpressionBased = ds.OriginalConnectStringExpressionBased;
-                    ds.Password = dsDef.Password;
-                    ds.Prompt = dsDef.Prompt;
-                    ds.UseOriginalConnectString = dsDef.UseOriginalConnectString;
-                    ds.UserName = dsDef.UserName;
-                    ds.WindowsCredentials = dsDef.WindowsCredentials;
-
+                foreach (DataSourceItem ds in items)
                     yield return ds;
-                }
-            }
         }
 
         public string[] WriteDataSource(string dataSourcePath, DataSourceItem dataSource)
         {
             throw new NotImplementedException();
+        }
+
+        private DataSourceItem CatalogItemToDataSourceItem(CatalogItem item)
+        {
+            DataSourceItem ds = new DataSourceItem();
+            DataSourceDefinition dsDef = this.mReportingService.GetDataSourceContents(item.Path);
+
+            ds.Name = item.Name;
+            ds.Path = item.Path;
+            ds.CreatedBy = item.CreatedBy;
+            ds.CreationDate = item.CreationDate;
+            ds.Description = item.Description;
+            ds.ID = item.ID;
+            ds.ModifiedBy = item.ModifiedBy;
+            ds.ModifiedDate = item.ModifiedDate;
+            ds.Size = item.Size;
+            ds.VirtualPath = item.VirtualPath;
+
+            ds.ConnectString = dsDef.ConnectString;
+            ds.CredentialsRetrieval = dsDef.CredentialRetrieval;
+            ds.Enabled = dsDef.Enabled;
+            ds.EnabledSpecified = dsDef.EnabledSpecified;
+            ds.Extension = dsDef.Extension;
+            ds.ImpersonateUser = dsDef.ImpersonateUser;
+            ds.ImpersonateUserSpecified = dsDef.ImpersonateUserSpecified;
+            ds.OriginalConnectStringExpressionBased = ds.OriginalConnectStringExpressionBased;
+            ds.Password = dsDef.Password;
+            ds.Prompt = dsDef.Prompt;
+            ds.UseOriginalConnectString = dsDef.UseOriginalConnectString;
+            ds.UserName = dsDef.UserName;
+            ds.WindowsCredentials = dsDef.WindowsCredentials;
+
+            return ds;
         }
 
         public bool ItemExists(string itemPath, string itemType)
@@ -324,6 +324,19 @@ namespace SSRSMigrate.SSRS
 
             if (items.Any())
                 return items.Where(item => item.Type == itemType).Select(item => item);
+            else
+                return null;
+        }
+
+        public IEnumerable<T> GetItemsList<T>(string path, ItemTypeEnum itemType, Func<CatalogItem, T> itemConverter)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            CatalogItem[] items = this.mReportingService.ListChildren(path, true);
+
+            if (items.Any())
+                return items.Where(item => item.Type == itemType).Select(item => itemConverter(item));
             else
                 return null;
         }
