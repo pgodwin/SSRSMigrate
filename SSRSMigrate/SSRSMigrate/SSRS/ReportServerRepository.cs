@@ -45,6 +45,7 @@ namespace SSRSMigrate.SSRS
             }
         }
 
+        #region Folder Methods
         public List<FolderItem> GetFolders(string path)
         {
             if (string.IsNullOrEmpty(path))
@@ -97,7 +98,9 @@ namespace SSRSMigrate.SSRS
 
             return folder;
         }
+        #endregion
 
+        #region Report Methods
         public byte[] GetReportDefinition(string reportPath)
         {
             if (string.IsNullOrEmpty(reportPath))
@@ -127,7 +130,9 @@ namespace SSRSMigrate.SSRS
         {
             throw new NotImplementedException();
         }
+        #endregion
 
+        #region Data Source Methods
         public DataSourceItem GetDataSource(string dataSourcePath)
         {
             if (string.IsNullOrEmpty(dataSourcePath))
@@ -211,7 +216,9 @@ namespace SSRSMigrate.SSRS
 
             return ds;
         }
+        #endregion
 
+        #region Item Methods
         public bool ItemExists(string itemPath, string itemType)
         {
             throw new NotImplementedException();
@@ -285,5 +292,6 @@ namespace SSRSMigrate.SSRS
             else
                 return null;
         }
+        #endregion
     }
 }
