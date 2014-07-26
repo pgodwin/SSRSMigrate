@@ -62,6 +62,7 @@ namespace SSRSMigrate.Tests.SSRS
             reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_Tests Doesnt Exist"))
                 .Returns(() => new List<FolderItem>());
 
+            // IReportServerRepository.GetFolderList Mocks
             reportServerRepositoryMock.Setup(r => r.GetFolderList(null))
                 .Throws(new ArgumentException("path"));
 
