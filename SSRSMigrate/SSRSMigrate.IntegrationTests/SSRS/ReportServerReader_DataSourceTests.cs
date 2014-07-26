@@ -66,7 +66,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS
         }
 
         [Test]
-        public void GetDataSourceItem_PathThatDoesntExist()
+        public void GetDataSourceItem_PathDoesntExist()
         {
             string dsPath = "/SSRSMigrate_Tests/Test Data Source Doesnt Exist";
 
@@ -176,7 +176,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS
         [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
             ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found",
             MatchType = MessageMatch.Contains)]
-        public void GetDataSources_UsingDelegate_PathDontExist()
+        public void GetDataSources_UsingDelegate_PathDoesntExist()
         {
             string path = "/SSRSMigrate_Tests Doesnt Exist";
 

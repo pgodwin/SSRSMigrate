@@ -87,7 +87,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS
         [ExpectedException(typeof(System.Web.Services.Protocols.SoapException), 
             ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found", 
             MatchType = MessageMatch.Contains)]
-        public void GetFolders_PathThatDoesntExist()
+        public void GetFolders_PathDoesntExist()
         {
             List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_Tests Doesnt Exist");
         }
