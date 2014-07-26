@@ -100,6 +100,9 @@ namespace SSRSMigrate.Tests.SSRS
             reportServerRepositoryMock.Setup(r => r.GetDataSource("/SSRSMigrate_Tests/Test 2 Data Source"))
                 .Returns(() => expectedDataSourceItems[1]);
 
+            reportServerRepositoryMock.Setup(r => r.GetDataSource("/SSRSMigrate_Tests/Test Data Source Doesnt Exist"))
+                .Returns(() => null);
+
             // IReportServerRepository.GetDataSources Mocks
             reportServerRepositoryMock.Setup(r => r.GetDataSources(null))
                 .Throws(new ArgumentException("path"));
@@ -110,6 +113,9 @@ namespace SSRSMigrate.Tests.SSRS
             reportServerRepositoryMock.Setup(r => r.GetDataSources("/SSRSMigrate_Tests"))
                 .Returns(() => expectedDataSourceItems);
 
+            reportServerRepositoryMock.Setup(r => r.GetDataSources("/SSRSMigrate_Tests Doesnt Exist"))
+                .Returns(() => new List<DataSourceItem>());
+
             reportServerRepositoryMock.Setup(r => r.GetDataSourcesList(null))
                 .Throws(new ArgumentException("path"));
 
@@ -118,6 +124,9 @@ namespace SSRSMigrate.Tests.SSRS
 
             reportServerRepositoryMock.Setup(r => r.GetDataSourcesList("/SSRSMigrate_Tests"))
                 .Returns(() => expectedDataSourceItems);
+
+            reportServerRepositoryMock.Setup(r => r.GetDataSourcesList("/SSRSMigrate_Tests Doesnt Exist"))
+                .Returns(() => new List<DataSourceItem>());
 
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
         }
@@ -135,6 +144,14 @@ namespace SSRSMigrate.Tests.SSRS
             DataSourceItem actualDataSource = reader.GetDataSource("/SSRSMigrate_Tests/Test Data Source");
 
             Assert.AreEqual(expectedDataSourceItems[0], actualDataSource);
+        }
+
+        [Test]
+        public void GetDataSource_PathDoesntExist()
+        {
+            DataSourceItem actualDataSource = reader.GetDataSource("/SSRSMigrate_Tests/Test Data Source Doesnt Exist");
+
+            Assert.Null(actualDataSource);
         }
 
         [Test]
@@ -174,6 +191,14 @@ namespace SSRSMigrate.Tests.SSRS
         }
 
         [Test]
+        public void GetDataSources_PathDoesntExist()
+        {
+            List<DataSourceItem> dataSourceItems = reader.GetDataSources("/SSRSMigrate_Tests Doesnt Exist");
+
+            Assert.AreEqual(0, dataSourceItems.Count());
+        }
+
+        [Test]
         public void GetDataSources_NullPath()
         {
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -207,6 +232,14 @@ namespace SSRSMigrate.Tests.SSRS
             Assert.AreEqual(expectedDataSourceItems.Count(), actualDataSourceItems.Count());
             Assert.AreEqual(expectedDataSourceItems[0], actualDataSourceItems[0]);
             Assert.AreEqual(expectedDataSourceItems[1], actualDataSourceItems[1]);
+        }
+
+        [Test]
+        public void GetDataSources_UsingDelegate_PathDoesntExist()
+        {
+            reader.GetDataSources("/SSRSMigrate_Tests Doesnt Exist", GetDataSources_Reporter);
+
+            Assert.AreEqual(0, actualDataSourceItems.Count());
         }
 
         [Test]
@@ -250,7 +283,5 @@ namespace SSRSMigrate.Tests.SSRS
             actualDataSourceItems.Add(dataSourceItem);
         }
         #endregion
-
-
     }
 }

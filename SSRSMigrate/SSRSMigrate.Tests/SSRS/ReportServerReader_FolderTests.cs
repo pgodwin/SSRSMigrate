@@ -59,6 +59,9 @@ namespace SSRSMigrate.Tests.SSRS
             reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_Tests"))
                 .Returns(() => expectedFolderItems);
 
+            reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_Tests Doesnt Exist"))
+                .Returns(() => new List<FolderItem>());
+
             reportServerRepositoryMock.Setup(r => r.GetFolderList(null))
                 .Throws(new ArgumentException("path"));
 
@@ -67,6 +70,9 @@ namespace SSRSMigrate.Tests.SSRS
 
             reportServerRepositoryMock.Setup(r => r.GetFolderList("/SSRSMigrate_Tests"))
                 .Returns(() => expectedFolderItems);
+
+            reportServerRepositoryMock.Setup(r => r.GetFolderList("/SSRSMigrate_Tests Doesnt Exist"))
+                .Returns(() => new List<FolderItem>());
 
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
         }
@@ -83,6 +89,14 @@ namespace SSRSMigrate.Tests.SSRS
             List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_Tests");
 
             Assert.AreEqual(expectedFolderItems.Count(), actual.Count());
+        }
+
+        [Test]
+        public void GetFolders_PathDoesntExist()
+        {
+            List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_Tests Doesnt Exist");
+
+            Assert.AreEqual(0, actual.Count());
         }
 
         [Test]
@@ -117,6 +131,14 @@ namespace SSRSMigrate.Tests.SSRS
             reader.GetFolders("/SSRSMigrate_Tests", GetFolders_Reporter);
 
             Assert.AreEqual(expectedFolderItems.Count(), actualFolderItems.Count());
+        }
+
+        [Test]
+        public void GetFolders_UsingDelegate_PathDoesntExist()
+        {
+            reader.GetFolders("/SSRSMigrate_Tests Doesnt Exist", GetFolders_Reporter);
+
+            Assert.AreEqual(0, actualFolderItems.Count());
         }
 
         [Test]
