@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSRSMigrate.Tests", "SSRSMi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSRSMigrate.IntegrationTests", "SSRSMigrate.IntegrationTests\SSRSMigrate.IntegrationTests.csproj", "{E2C847EB-D1E7-4987-8D8E-221BE0F8E699}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSRSMigrate.TestHelper", "SSRSMigrate.TestHelper\SSRSMigrate.TestHelper.csproj", "{2D4048B0-2696-4384-A843-04A67300DEFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{E2C847EB-D1E7-4987-8D8E-221BE0F8E699}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E2C847EB-D1E7-4987-8D8E-221BE0F8E699}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E2C847EB-D1E7-4987-8D8E-221BE0F8E699}.Release|x86.ActiveCfg = Release|Any CPU
+		{2D4048B0-2696-4384-A843-04A67300DEFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D4048B0-2696-4384-A843-04A67300DEFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D4048B0-2696-4384-A843-04A67300DEFD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2D4048B0-2696-4384-A843-04A67300DEFD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2D4048B0-2696-4384-A843-04A67300DEFD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2D4048B0-2696-4384-A843-04A67300DEFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D4048B0-2696-4384-A843-04A67300DEFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D4048B0-2696-4384-A843-04A67300DEFD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2D4048B0-2696-4384-A843-04A67300DEFD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2D4048B0-2696-4384-A843-04A67300DEFD}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

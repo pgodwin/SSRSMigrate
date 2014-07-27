@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B903485C-F040-4319-A264-AEBF9A7179FA}</ProjectGuid>
+    <ProjectGuid>{2D4048B0-2696-4384-A843-04A67300DEFD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SSRSMigrate.Tests</RootNamespace>
-    <AssemblyName>SSRSMigrate.Tests</AssemblyName>
+    <RootNamespace>SSRSMigrate.TestHelper</RootNamespace>
+    <AssemblyName>SSRSMigrate.TestHelper</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,18 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.2.1402.2112\lib\net35\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject.3.2.2.0\lib\net35\Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -50,39 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SSRS\ReportServerReader_DataSourceTests.cs" />
-    <Compile Include="SSRS\ReportServerReader_FolderTests.cs" />
-    <Compile Include="SSRS\ReportServerReader_ReportTests.cs" />
-    <Compile Include="Utilities\SSRSUtil_Tests.cs" />
+    <Compile Include="TestUtils.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Test Reports\Inquiry.rdl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test Reports\SUB-Addresses.rdl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test Reports\SUB-Categories.rdl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test Reports\SUB-Phone Numbers.rdl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test Reports\SUB-Related Contacts.rdl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test Reports\SUB-Related Matters.rdl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SSRSMigrate\SSRSMigrate.csproj">
-      <Project>{FE393906-2F99-492D-919E-16FC0E63DEED}</Project>
-      <Name>SSRSMigrate</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
