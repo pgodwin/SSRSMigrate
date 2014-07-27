@@ -76,7 +76,7 @@ namespace SSRSMigrate.SSRS
                     yield return folder;
         }
 
-        public void CreateFolder(string folderPath)
+        public string CreateFolder(string folderPath)
         {
             throw new NotImplementedException();
         }

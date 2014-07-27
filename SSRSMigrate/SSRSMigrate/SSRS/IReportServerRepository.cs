@@ -10,7 +10,7 @@ namespace SSRSMigrate.SSRS
         // Folders
         List<FolderItem> GetFolders(string path);
         IEnumerable<FolderItem> GetFolderList(string path);
-        void CreateFolder(string folderPath);
+        string CreateFolder(string folderPath);
 
         // Reports
         byte[] GetReportDefinition(string reportPath);
