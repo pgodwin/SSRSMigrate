@@ -342,5 +342,64 @@ namespace SSRSMigrate.Tests.SSRS
             Assert.AreEqual(0, actual.Count());
         }
         #endregion
+
+        #region GetReportsList Tests
+        [Test]
+        public void GetReports_UsingDelegate()
+        {
+            reader.GetReports("/SSRSMigrate_Tests", GetReports_Reporter);
+
+            Assert.AreEqual(expectedReportItems.Count(), actualReportItems.Count());
+        }
+
+        [Test]
+        public void GetReports_UsingDelegate_NullPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetReports(null, GetReports_Reporter);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetReports_UsingDelegate_EmptyPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetReports("", GetReports_Reporter);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetReports_UsingDelegate_NullDelegate()
+        {
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    reader.GetReports("/SSRSMigrate_Tests", null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
+        }
+
+        [Test]
+        public void GetReports_UsingDelegate_PathDoesntExist()
+        {
+            reader.GetReports("/SSRSMigrate_Tests Doesnt Exist", GetReports_Reporter);
+
+            Assert.AreEqual(0, actualReportItems.Count());
+        }
+
+        private void GetReports_Reporter(ReportItem reportItem)
+        {
+            actualReportItems.Add(reportItem);
+        }
+        #endregion
     }
 }

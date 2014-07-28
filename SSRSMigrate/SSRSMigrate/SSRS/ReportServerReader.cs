@@ -64,7 +64,16 @@ namespace SSRSMigrate.SSRS
 
         public void GetReports(string path, Action<ReportItem> progressReporter)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            if (progressReporter == null)
+                throw new ArgumentNullException("progressReporter");
+
+            var reports = this.mReportRepository.GetReportsList(path);
+
+            foreach (ReportItem report in reports)
+                progressReporter(report);
         }
         #endregion
 
