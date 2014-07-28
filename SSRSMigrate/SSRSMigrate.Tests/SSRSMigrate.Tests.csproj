@@ -57,24 +57,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Test Reports\Inquiry.rdl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test Reports\SUB-Addresses.rdl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test Reports\SUB-Categories.rdl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test Reports\SUB-Phone Numbers.rdl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test Reports\SUB-Related Contacts.rdl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test Reports\SUB-Related Matters.rdl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="Test Reports\2008\Inquiry.rdl" />
+    <None Include="Test Reports\2008\Listing.rdl" />
+    <None Include="Test Reports\2008\SUB-Addresses.rdl" />
+    <None Include="Test Reports\2008\SUB-Categories.rdl" />
+    <None Include="Test Reports\2008\SUB-Phone Numbers.rdl" />
+    <None Include="Test Reports\2008\SUB-Related Contacts.rdl" />
+    <None Include="Test Reports\2008\SUB-Related Matters.rdl" />
+    <None Include="Test Reports\2010\Inquiry.rdl" />
+    <None Include="Test Reports\2010\Listing.rdl" />
+    <None Include="Test Reports\2010\SUB-Addresses.rdl" />
+    <None Include="Test Reports\2010\SUB-Categories.rdl" />
+    <None Include="Test Reports\2010\SUB-Phone Numbers.rdl" />
+    <None Include="Test Reports\2010\SUB-Related Contacts.rdl" />
+    <None Include="Test Reports\2010\SUB-Related Matters.rdl" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SSRSMigrate\SSRSMigrate.csproj">
