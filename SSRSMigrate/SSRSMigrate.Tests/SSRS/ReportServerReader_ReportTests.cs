@@ -145,6 +145,79 @@ namespace SSRSMigrate.Tests.SSRS
             // Setup IReportServerRepository mock
             var reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
+            // Setup IReportServerRepository.GetReportDefinition Mocks
+            reportServerRepositoryMock.Setup(r => r.GetReportDefinition(null))
+                .Throws(new ArgumentException("reportPath"));
+
+            reportServerRepositoryMock.Setup(r => r.GetReportDefinition(""))
+               .Throws(new ArgumentException("reportPath"));
+
+            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/Inquiry"))
+                .Returns(() => expectedReportItem.Definition);
+
+            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/Listing"))
+                .Returns(() => expectedReportItems[1].Definition);
+
+            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/SUB-Address"))
+                .Returns(() => expectedReportItems[1].SubReports[0].Definition);
+
+            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/SUB-Categories"))
+                .Returns(() => expectedReportItems[1].SubReports[1].Definition);
+
+            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/SUB-Phone Number"))
+                .Returns(() => expectedReportItems[1].SubReports[2].Definition);
+
+            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/SUB-Related Contacts"))
+                .Returns(() => expectedReportItems[1].SubReports[3].Definition);
+
+            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/SUB-Related Matters"))
+                .Returns(() => expectedReportItems[1].SubReports[4].Definition);
+
+            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/SUB-Related Matters"))
+                .Returns(() => expectedReportItems[1].SubReports[4].Definition);
+
+            // Setup IReportServerRepository.GetReport Mocks
+            reportServerRepositoryMock.Setup(r => r.GetReport(null))
+                .Throws(new ArgumentException("reportPath"));
+
+            reportServerRepositoryMock.Setup(r => r.GetReport(""))
+                .Throws(new ArgumentException("reportPath"));
+
+            reportServerRepositoryMock.Setup(r => r.GetReport("/SSRSMigrate_Tests/Reports/Inquiry"))
+                .Returns(() => expectedReportItem);
+
+            reportServerRepositoryMock.Setup(r => r.GetReport("/SSRSMigrate_Tests/Reports/Listing"))
+                .Returns(() => expectedReportItems[1]);
+
+            reportServerRepositoryMock.Setup(r => r.GetReport("/SSRSMigrate_Tests/Reports/Report Doesnt Exist"))
+                .Returns(() => null);
+
+            // Setup IReportServerRepository.GetReports Mocks
+            reportServerRepositoryMock.Setup(r => r.GetReports(null))
+               .Throws(new ArgumentException("path"));
+
+            reportServerRepositoryMock.Setup(r => r.GetReports(""))
+                .Throws(new ArgumentException("path"));
+
+            reportServerRepositoryMock.Setup(r => r.GetReports("/SSRSMigrate_Tests"))
+               .Returns(() => expectedReportItems);
+
+            reportServerRepositoryMock.Setup(r => r.GetReports("/SSRSMigrate_Tests Doesnt Exist"))
+                .Returns(() => new List<ReportItem>());
+
+            // Setup IReportServerRepository.GetReportsList Mocks
+            reportServerRepositoryMock.Setup(r => r.GetReportsList(null))
+               .Throws(new ArgumentException("path"));
+
+            reportServerRepositoryMock.Setup(r => r.GetReportsList(""))
+                .Throws(new ArgumentException("path"));
+
+            reportServerRepositoryMock.Setup(r => r.GetReportsList("/SSRSMigrate_Tests"))
+               .Returns(() => expectedReportItems);
+
+            reportServerRepositoryMock.Setup(r => r.GetReportsList("/SSRSMigrate_Tests Doesnt Exist"))
+                .Returns(() => new List<ReportItem>());
+
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
         }
 
@@ -163,6 +236,111 @@ namespace SSRSMigrate.Tests.SSRS
         [TearDown]
         public void TearDown()
         {
+            actualReportItems = null;
         }
+
+        #region GetReport Tests
+        [Test]
+        public void GetReport()
+        {
+            ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_Tests/Reports/Inquiry");
+
+            Assert.NotNull(actualReportItem);
+            Assert.AreEqual(expectedReportItem.Name, actualReportItem.Name);
+            Assert.AreEqual(expectedReportItem.Path, actualReportItem.Path);
+            Assert.AreEqual(expectedReportItem.ID, actualReportItem.ID);
+            Assert.AreEqual(expectedReportItem.SubReports.Count(), actualReportItem.SubReports.Count());
+            Assert.True(expectedReportItem.Definition.SequenceEqual(actualReportItem.Definition));
+        }
+
+        [Test]
+        public void GetReport_NullPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetReport(null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("reportPath"));
+        }
+
+        [Test]
+        public void GetReport_EmptyPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetReport("");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("reportPath"));
+        }
+
+        [Test]
+        public void GetReport_PathDoesntExist()
+        {
+            ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_Tests/Reports/Report Doesnt Exist");
+
+            Assert.Null(actualReportItem);
+        }
+
+        [Test]
+        public void GetReport_WithSubReports()
+        {
+            ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_Tests/Reports/Listing");
+
+            Assert.NotNull(actualReportItem);
+            Assert.AreEqual(expectedReportItems[1].Name, actualReportItem.Name);
+            Assert.AreEqual(expectedReportItems[1].Path, actualReportItem.Path);
+            Assert.AreEqual(expectedReportItems[1].ID, actualReportItem.ID);
+            Assert.True(expectedReportItems[1].Definition.SequenceEqual(actualReportItem.Definition));
+            Assert.AreEqual(expectedReportItems[1].SubReports.Count(), actualReportItem.SubReports.Count());
+        }
+        #endregion
+
+        #region GetReports Tests
+        [Test]
+        public void GetReports()
+        {
+            List<ReportItem> actual = reader.GetReports("/SSRSMigrate_Tests");
+
+            Assert.NotNull(actual);
+            Assert.AreEqual(expectedReportItems.Count(), actual.Count());
+        }
+
+        [Test]
+        public void GetReports_NullPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetReports(null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetReports_EmptyPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetReports("");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetReports_PathDoesntExist()
+        {
+            List<ReportItem> actual = reader.GetReports("/SSRSMigrate_Tests Doesnt Exist");
+
+            Assert.NotNull(actual);
+            Assert.AreEqual(0, actual.Count());
+        }
+        #endregion
     }
 }

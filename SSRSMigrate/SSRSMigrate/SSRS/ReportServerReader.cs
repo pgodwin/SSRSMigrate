@@ -46,12 +46,20 @@ namespace SSRSMigrate.SSRS
         #region Report Methods
         public ReportItem GetReport(string reportPath)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(reportPath))
+                throw new ArgumentException("reportPath");
+
+            ReportItem report = this.mReportRepository.GetReport(reportPath);
+
+            return report;
         }
 
         public List<ReportItem> GetReports(string path)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            return this.mReportRepository.GetReports(path);
         }
 
         public void GetReports(string path, Action<ReportItem> progressReporter)
