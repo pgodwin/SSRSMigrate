@@ -57,22 +57,54 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Test Reports\2008\Inquiry.rdl" />
-    <None Include="Test Reports\2008\Listing.rdl" />
-    <None Include="Test Reports\2008\SUB-Addresses.rdl" />
-    <None Include="Test Reports\2008\SUB-Categories.rdl" />
-    <None Include="Test Reports\2008\SUB-Phone Numbers.rdl" />
-    <None Include="Test Reports\2008\SUB-Related Contacts.rdl" />
-    <None Include="Test Reports\2008\SUB-Related Matters.rdl" />
-    <None Include="Test Reports\2010\Inquiry.rdl" />
-    <None Include="Test Reports\2010\Listing.rdl" />
-    <None Include="Test Reports\2010\SUB-Addresses.rdl" />
-    <None Include="Test Reports\2010\SUB-Categories.rdl" />
-    <None Include="Test Reports\2010\SUB-Phone Numbers.rdl" />
-    <None Include="Test Reports\2010\SUB-Related Contacts.rdl" />
-    <None Include="Test Reports\2010\SUB-Related Matters.rdl" />
+    <None Include="Test Reports\2008\Inquiry.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Reports\2008\Listing.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Reports\2008\SUB-Addresses.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Reports\2008\SUB-Categories.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Reports\2008\SUB-Phone Numbers.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Reports\2008\SUB-Related Contacts.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Reports\2008\SUB-Related Matters.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Reports\2010\Inquiry.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Reports\2010\Listing.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Reports\2010\SUB-Addresses.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Reports\2010\SUB-Categories.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Reports\2010\SUB-Phone Numbers.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Reports\2010\SUB-Related Contacts.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Reports\2010\SUB-Related Matters.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SSRSMigrate.TestHelper\SSRSMigrate.TestHelper.csproj">
+      <Project>{2D4048B0-2696-4384-A843-04A67300DEFD}</Project>
+      <Name>SSRSMigrate.TestHelper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SSRSMigrate\SSRSMigrate.csproj">
       <Project>{FE393906-2F99-492D-919E-16FC0E63DEED}</Project>
       <Name>SSRSMigrate</Name>
