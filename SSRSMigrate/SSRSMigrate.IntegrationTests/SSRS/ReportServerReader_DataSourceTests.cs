@@ -14,11 +14,21 @@ namespace SSRSMigrate.IntegrationTests.SSRS
         ReportServerReader reader = null;
         List<DataSourceItem> actualDataSources = null;
 
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            reader = DependencySingleton.Instance.Get<ReportServerReader>();
+        }
+
+        [TestFixtureTearDown]
+        public void TestFixtureTearDown()
+        {
+            reader = null;
+        }
+        
         [SetUp]
         public void SetUp()
         {
-            reader = DependencySingleton.Instance.Get<ReportServerReader>();
-
             actualDataSources = new List<DataSourceItem>();
         }
 

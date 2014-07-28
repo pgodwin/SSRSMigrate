@@ -28,8 +28,8 @@ namespace SSRSMigrate.Tests.SSRS
         List<ReportItem> actualReportItems = null; 
         #endregion
 
-        [SetUp]
-        public void SetUp()
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
         {
             // Setup GetReport - Expected ReportItem
             expectedReportItem = new ReportItem()
@@ -43,12 +43,22 @@ namespace SSRSMigrate.Tests.SSRS
 
             };
 
-            actualReportItems = new List<ReportItem>();
-
             // Setup IReportServerRepository mock
             var reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
+        }
+
+        [TestFixtureTearDown]
+        public void TestFixtureTearDown()
+        {
+            reader = null;
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            actualReportItems = new List<ReportItem>();
         }
 
         [TearDown]

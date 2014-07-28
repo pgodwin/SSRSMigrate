@@ -21,8 +21,8 @@ namespace SSRSMigrate.Tests.SSRS
         List<FolderItem> actualFolderItems = null;
         #endregion
 
-        [SetUp]
-        public void SetUp()
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
         {
             // Setup expected FolderItems
             expectedFolderItems = new List<FolderItem>()
@@ -43,8 +43,6 @@ namespace SSRSMigrate.Tests.SSRS
                     Path = "/SSRSMigrate_Tests/Test Folder",
                 }
             };
-
-            actualFolderItems = new List<FolderItem>();
 
             // Setup IReportServerRepository mock
             var reportServerRepositoryMock = new Mock<IReportServerRepository>();
@@ -76,6 +74,18 @@ namespace SSRSMigrate.Tests.SSRS
                 .Returns(() => new List<FolderItem>());
 
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
+        }
+
+        [TestFixtureTearDown]
+        public void TestFixtureTearDown()
+        {
+            reader = null;
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            actualFolderItems = new List<FolderItem>();
         }
 
         [TearDown]

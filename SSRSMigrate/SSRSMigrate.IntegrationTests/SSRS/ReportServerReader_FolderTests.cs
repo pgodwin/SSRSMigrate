@@ -15,11 +15,9 @@ namespace SSRSMigrate.IntegrationTests.SSRS
         List<FolderItem> actualFolderItems = null;
         List<FolderItem> expectedFolderItems = null;
 
-        [SetUp]
-        public void SetUp()
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
         {
-            actualFolderItems = new List<FolderItem>();
-
             // Setup expected Folder Items
             expectedFolderItems = new List<FolderItem>()
             {
@@ -43,11 +41,22 @@ namespace SSRSMigrate.IntegrationTests.SSRS
             reader = DependencySingleton.Instance.Get<ReportServerReader>();
         }
 
+        [TestFixtureTearDown]
+        public void TestFixtureTearDown()
+        {
+            reader = null;
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            actualFolderItems = new List<FolderItem>();
+        }
+
         [TearDown]
         public void TearDown()
         {
             actualFolderItems = null;
-            expectedFolderItems = null;
         }
 
         #region GetFolders Tests

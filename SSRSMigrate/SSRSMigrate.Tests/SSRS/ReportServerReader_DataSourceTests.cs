@@ -22,8 +22,8 @@ namespace SSRSMigrate.Tests.SSRS
         List<DataSourceItem> actualDataSourceItems = null;
         #endregion
 
-        [SetUp]
-        public void SetUp()
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
         {
             // Setup expected DataSourceItems
             expectedDataSourceItems = new List<DataSourceItem>()
@@ -82,8 +82,6 @@ namespace SSRSMigrate.Tests.SSRS
                 },
             };
 
-            actualDataSourceItems = new List<DataSourceItem>();
-
             // Setup IReportServerRepository mock
             var reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
@@ -129,6 +127,18 @@ namespace SSRSMigrate.Tests.SSRS
                 .Returns(() => new List<DataSourceItem>());
 
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
+        }
+
+        [TestFixtureTearDown]
+        public void TestFixtureTearDown()
+        {
+            reader = null;
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            actualDataSourceItems = new List<DataSourceItem>();
         }
 
         [TearDown]
