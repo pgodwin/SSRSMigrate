@@ -55,7 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\SSRSEnumerations.cs" />
+    <Compile Include="Enum\SSRSEnumerations.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,15 +64,15 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SSRS\DataSourceItem.cs" />
-    <Compile Include="SSRS\FolderItem.cs" />
-    <Compile Include="SSRS\IReportServerReader.cs" />
-    <Compile Include="SSRS\ReportItem.cs" />
-    <Compile Include="SSRS\IReportServerRepository.cs" />
-    <Compile Include="SSRS\ReportServerItem.cs" />
-    <Compile Include="SSRS\ReportServerReader.cs" />
-    <Compile Include="SSRS\ReportServer2008Repository.cs" />
-    <Compile Include="Utilities\SSRSUtil.cs" />
+    <Compile Include="SSRS\Item\DataSourceItem.cs" />
+    <Compile Include="SSRS\Item\FolderItem.cs" />
+    <Compile Include="SSRS\Reader\IReportServerReader.cs" />
+    <Compile Include="SSRS\Item\ReportItem.cs" />
+    <Compile Include="SSRS\Repository\IReportServerRepository.cs" />
+    <Compile Include="SSRS\Item\ReportServerItem.cs" />
+    <Compile Include="SSRS\Reader\ReportServerReader.cs" />
+    <Compile Include="SSRS\Repository\ReportServer2008Repository.cs" />
+    <Compile Include="Utility\SSRSUtil.cs" />
     <Compile Include="Web References\ReportServer2005\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

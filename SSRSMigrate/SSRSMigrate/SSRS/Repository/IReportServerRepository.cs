@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SSRSMigrate.SSRS.Item;
 
-namespace SSRSMigrate.SSRS
+namespace SSRSMigrate.SSRS.Repository
 {
     public interface IReportServerRepository : IDisposable
     {

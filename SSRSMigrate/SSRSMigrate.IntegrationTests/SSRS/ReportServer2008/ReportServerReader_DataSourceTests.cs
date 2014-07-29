@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using SSRSMigrate.SSRS;
 using System.Web.Services.Protocols;
 using SSRSMigrate.ReportServer2005;
+using SSRSMigrate.SSRS.Reader;
+using SSRSMigrate.SSRS.Item;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
 {

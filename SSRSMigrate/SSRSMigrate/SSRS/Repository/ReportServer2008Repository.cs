@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SSRSMigrate.ReportServer2005;
-using SSRSMigrate.Utilities;
+using SSRSMigrate.Utility;
 using System.Xml;
+using SSRSMigrate.SSRS.Item;
 
-namespace SSRSMigrate.SSRS
+namespace SSRSMigrate.SSRS.Repository
 {
     public class ReportServer2008Repository : IReportServerRepository
     {

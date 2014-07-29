@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SSRSMigrate.SSRS
+namespace SSRSMigrate.SSRS.Item
 {
     public class ReportServerItem
     {

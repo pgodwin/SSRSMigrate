@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using SSRSMigrate.SSRS;
 using SSRSMigrate.TestHelper;
+using SSRSMigrate.SSRS.Reader;
+using SSRSMigrate.SSRS.Item;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
 {
@@ -37,7 +38,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TestUtils.StringToByteArray(TestUtils.LoadRDLFile("Test Reports\\2008\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\Inquiry.rdl"))
             };
 
             // Setup GetReports - Expected ReportItems
@@ -51,7 +52,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
                     Description = null,
                     ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                     VirtualPath = null,
-                    Definition = TestUtils.StringToByteArray(TestUtils.LoadRDLFile("Test Reports\\2008\\Listing.rdl")),
+                    Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\Listing.rdl")),
                     SubReports = new List<ReportItem>()
                     {
                         new ReportItem()
@@ -61,7 +62,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
                             Description = null,
                             ID = "77b2135b-c52f-4a52-9406-7bd523ad9623",
                             VirtualPath = null,
-                            Definition = TestUtils.StringToByteArray(TestUtils.LoadRDLFile("Test Reports\\2008\\SUB-Addresses.rdl")),
+                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Addresses.rdl")),
                         },
                         new ReportItem()
                         {
@@ -70,7 +71,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
                             Description = null,
                             ID = "ab67975e-8535-4cca-88d8-79a1827a099e",
                             VirtualPath = null,
-                            Definition = TestUtils.StringToByteArray(TestUtils.LoadRDLFile("Test Reports\\2008\\SUB-Categories.rdl")),
+                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Categories.rdl")),
                         },
                         new ReportItem()
                         {
@@ -79,7 +80,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
                             Description = null,
                             ID = "7b64b5e4-4ca2-466c-94ce-19d32d8222f5",
                             VirtualPath = null,
-                            Definition = TestUtils.StringToByteArray(TestUtils.LoadRDLFile("Test Reports\\2008\\SUB-Phone Numbers.rdl")),
+                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Phone Numbers.rdl")),
                         },
                         new ReportItem()
                         {
@@ -88,7 +89,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
                             Description = null,
                             ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
                            VirtualPath = null,
-                            Definition = TestUtils.StringToByteArray(TestUtils.LoadRDLFile("Test Reports\\2008\\SUB-Related Contacts.rdl")),
+                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Related Contacts.rdl")),
                         },
                         new ReportItem()
                         {
@@ -97,7 +98,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
                             Description = null,
                             ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
                             VirtualPath = null,
-                            Definition = TestUtils.StringToByteArray(TestUtils.LoadRDLFile("Test Reports\\2008\\SUB-Related Matters.rdl")),
+                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Related Matters.rdl")),
                         },
                     }
                 }

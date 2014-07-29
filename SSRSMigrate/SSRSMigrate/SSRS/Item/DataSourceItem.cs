@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using SSRSMigrate.ReportServer2005;
 
-namespace SSRSMigrate.SSRS
+namespace SSRSMigrate.SSRS.Item
 {
     public class DataSourceItem : ReportServerItem
     {

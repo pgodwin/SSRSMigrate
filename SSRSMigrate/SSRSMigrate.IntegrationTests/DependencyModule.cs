@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Ninject.Modules;
 using Ninject.Activation;
-using SSRSMigrate.SSRS;
 using SSRSMigrate.ReportServer2005;
 using System.Net;
+using SSRSMigrate.SSRS.Repository;
 
 namespace SSRSMigrate.IntegrationTests
 {

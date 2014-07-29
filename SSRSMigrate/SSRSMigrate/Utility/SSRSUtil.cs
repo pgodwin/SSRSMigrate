@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SSRSMigrate.Enums;
+using SSRSMigrate.Enum;
 using SSRSMigrate.ReportServer2005;
-using SSRSMigrate.SSRS;
 using System.Xml;
 using System.Text.RegularExpressions;
+using SSRSMigrate.SSRS.Item;
 
-namespace SSRSMigrate.Utilities
+namespace SSRSMigrate.Utility
 {
     public static class SSRSUtil
     {

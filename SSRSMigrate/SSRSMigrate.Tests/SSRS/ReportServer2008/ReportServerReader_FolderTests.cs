@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using SSRSMigrate.SSRS;
 using Moq;
+using SSRSMigrate.SSRS.Reader;
+using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.SSRS.Repository;
 
 namespace SSRSMigrate.Tests.SSRS.ReportServer2008
 {

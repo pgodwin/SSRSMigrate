@@ -10,7 +10,7 @@ public class CoverageExcludeAttribute : System.Attribute { }
 namespace SSRSMigrate.TestHelper
 {
     [CoverageExcludeAttribute]
-    public static class TestUtils
+    public static class TesterUtility
     {
         public static string LoadRDLFile(string file)
         {

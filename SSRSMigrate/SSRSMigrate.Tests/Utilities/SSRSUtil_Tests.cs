@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using SSRSMigrate.Utilities;
-using SSRSMigrate.Enums;
-using SSRSMigrate.SSRS;
+using SSRSMigrate.Utility;
+using SSRSMigrate.Enum;
 
 public class CoverageExcludeAttribute : System.Attribute { }
 

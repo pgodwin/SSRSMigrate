@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.SSRS.Repository;
 
-namespace SSRSMigrate.SSRS
+namespace SSRSMigrate.SSRS.Reader
 {
     public class ReportServerReader : IReportServerReader
     {
