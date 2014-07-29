@@ -134,7 +134,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS
             Assert.AreEqual(expectedReportItem.Name, actualReportItem.Name);
             Assert.AreEqual(expectedReportItem.Path, actualReportItem.Path);
             Assert.AreEqual(expectedReportItem.SubReports.Count(), actualReportItem.SubReports.Count());
-            Assert.True(expectedReportItem.Definition.SequenceEqual(actualReportItem.Definition), "Report Definition");
+            Assert.AreEqual(expectedReportItem.Definition, actualReportItem.Definition, "Report Definition");
+            //Assert.True(expectedReportItem.Definition.SequenceEqual(actualReportItem.Definition), "Report Definition");
         }
 
         [Test]

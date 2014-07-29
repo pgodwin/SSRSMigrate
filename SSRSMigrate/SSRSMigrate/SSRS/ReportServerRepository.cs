@@ -110,6 +110,12 @@ namespace SSRSMigrate.SSRS
 
             byte[] def = this.mReportingService.GetReportDefinition(reportPath);
 
+            string reportDefinition = SSRSUtil.ByteArrayToString(def);
+            if (reportDefinition.Substring(0, 1) != "<")
+                reportDefinition = reportDefinition.Substring(1, reportDefinition.Length - 1);
+
+            def = SSRSUtil.StringToByteArray(reportDefinition);
+
             return def;
         }
 
@@ -149,6 +155,7 @@ namespace SSRSMigrate.SSRS
             List<ReportItem> subReports = new List<ReportItem>();
 
             XmlDocument doc = new XmlDocument();
+            doc.PreserveWhitespace = true;
 
             if (reportDefinition.Substring(0, 1) != "<")
                 reportDefinition = reportDefinition.Substring(1, reportDefinition.Length - 1);

@@ -21,7 +21,14 @@ namespace SSRSMigrate.TestHelper
                 throw new FileNotFoundException("RDL not found", file);
 
             XmlDocument doc = new XmlDocument();
-            doc.Load(file);
+            doc.PreserveWhitespace = true;
+
+            string content = File.ReadAllText(file);
+
+            if (content.Substring(0, 1) != "<")
+                content = content.Substring(1, content.Length - 1);
+
+            doc.LoadXml(content.Trim());
 
             return doc.InnerXml;
         }
