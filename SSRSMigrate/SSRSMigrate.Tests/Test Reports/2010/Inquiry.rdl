@@ -2,16 +2,16 @@
 <Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="DataSource">
+    <DataSource Name="Test_Data_Source">
       <DataSourceReference>/SSRSMigrate_Tests/Test Data Source</DataSourceReference>
       <rd:SecurityType>None</rd:SecurityType>
-      <rd:DataSourceID>80077972-a6f8-4d4c-bf1b-01247ab74ef2</rd:DataSourceID>
+      <rd:DataSourceID>f01e1a1c-9248-4864-9a19-5125559ca90e</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
     <DataSet Name="Contacts_GroupBy_Fields">
       <Query>
-        <DataSourceName>DataSource</DataSourceName>
+        <DataSourceName>Test_Data_Source</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@ReportArea">
             <Value>Contacts</Value>
@@ -34,7 +34,7 @@
     </DataSet>
     <DataSet Name="Contacts">
       <Query>
-        <DataSourceName>DataSource</DataSourceName>
+        <DataSourceName>Test_Data_Source</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@Report_Id">
             <Value>=Parameters!Report_Id.Value</Value>
@@ -922,9 +922,11 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=iif(Parameters!GroupBy1.Value is Nothing,"",
-Parameters!GroupBy1.Label + ": " + Fields(iif(Parameters!GroupBy1.Value is Nothing,
- "Contacts_PK", Parameters!GroupBy1.Value )).Value)</Value>
+                                  <Value>
+                                    =iif(Parameters!GroupBy1.Value is Nothing,"",
+                                    Parameters!GroupBy1.Label + ": " + Fields(iif(Parameters!GroupBy1.Value is Nothing,
+                                    "Contacts_PK", Parameters!GroupBy1.Value )).Value)
+                                  </Value>
                                   <Style>
                                     <FontFamily>Times New Roman</FontFamily>
                                     <FontSize>11pt</FontSize>
@@ -971,9 +973,11 @@ Parameters!GroupBy1.Label + ": " + Fields(iif(Parameters!GroupBy1.Value is Nothi
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=iif(Parameters!GroupBy2.Value is Nothing,"",
-Parameters!GroupBy2.Label + ": " + Fields(iif(Parameters!GroupBy2.Value is Nothing,
- "Contacts_PK", Parameters!GroupBy2.Value )).Value)</Value>
+                                  <Value>
+                                    =iif(Parameters!GroupBy2.Value is Nothing,"",
+                                    Parameters!GroupBy2.Label + ": " + Fields(iif(Parameters!GroupBy2.Value is Nothing,
+                                    "Contacts_PK", Parameters!GroupBy2.Value )).Value)
+                                  </Value>
                                   <Style>
                                     <FontFamily>Times New Roman</FontFamily>
                                     <FontSize>11pt</FontSize>
@@ -1021,9 +1025,11 @@ Parameters!GroupBy2.Label + ": " + Fields(iif(Parameters!GroupBy2.Value is Nothi
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=iif(Parameters!GroupBy3.Value is Nothing,"",
-Parameters!GroupBy3.Label + ": " + Fields(iif(Parameters!GroupBy3.Value is Nothing,
- "Contacts_PK", Parameters!GroupBy3.Value )).Value)</Value>
+                                  <Value>
+                                    =iif(Parameters!GroupBy3.Value is Nothing,"",
+                                    Parameters!GroupBy3.Label + ": " + Fields(iif(Parameters!GroupBy3.Value is Nothing,
+                                    "Contacts_PK", Parameters!GroupBy3.Value )).Value)
+                                  </Value>
                                   <Style>
                                     <FontFamily>Times New Roman</FontFamily>
                                     <FontSize>11pt</FontSize>
@@ -1071,9 +1077,11 @@ Parameters!GroupBy3.Label + ": " + Fields(iif(Parameters!GroupBy3.Value is Nothi
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=iif(Parameters!GroupBy4.Value is Nothing,"",
-Parameters!GroupBy4.Label + ": " + Fields(iif(Parameters!GroupBy4.Value is Nothing,
- "Contacts_PK", Parameters!GroupBy4.Value )).Value)</Value>
+                                  <Value>
+                                    =iif(Parameters!GroupBy4.Value is Nothing,"",
+                                    Parameters!GroupBy4.Label + ": " + Fields(iif(Parameters!GroupBy4.Value is Nothing,
+                                    "Contacts_PK", Parameters!GroupBy4.Value )).Value)
+                                  </Value>
                                   <Style>
                                     <FontFamily>Times New Roman</FontFamily>
                                     <FontSize>11pt</FontSize>
@@ -1656,23 +1664,31 @@ Parameters!GroupBy4.Label + ": " + Fields(iif(Parameters!GroupBy4.Value is Nothi
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Subreport Name="Contacts_Trust_Detail">
-                          <ReportName>/ProLaw/Reports/Contacts/SUB-Trust Detail</ReportName>
-                          <Parameters>
-                            <Parameter Name="Contacts">
-                              <Value>=Fields!Contacts_PK.Value</Value>
-                            </Parameter>
-                            <Parameter Name="CurrentProfessional">
-                              <Value>=Parameters!Current_Professional.Value</Value>
-                            </Parameter>
-                          </Parameters>
-                          <OmitBorderOnPageBreak>true</OmitBorderOnPageBreak>
+                        <Textbox Name="Textbox2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox2</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
                           </Style>
-                        </Subreport>
+                        </Textbox>
                         <ColSpan>9</ColSpan>
                       </CellContents>
                     </TablixCell>
@@ -2029,27 +2045,33 @@ Parameters!GroupBy4.Label + ": " + Fields(iif(Parameters!GroupBy4.Value is Nothi
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Subreport Name="Contacts_Related_Matters">
-                          <ReportName>/ProLaw/Reports/Contacts/SUB-Related Matters</ReportName>
-                          <Parameters>
-                            <Parameter Name="Contacts">
-                              <Value>=Fields!Contacts_PK.Value</Value>
-                            </Parameter>
-                            <Parameter Name="CurrentProfessional">
-                              <Value>=Parameters!Current_Professional.Value</Value>
-                            </Parameter>
-                          </Parameters>
-                          <OmitBorderOnPageBreak>true</OmitBorderOnPageBreak>
-                          <Visibility>
-                            <Hidden>=IIF(Parameters!Show_Detail.Value = True, True, False)</Hidden>
-                          </Visibility>
+                        <Textbox Name="Textbox12">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox12</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
                           </Style>
-                        </Subreport>
+                        </Textbox>
                         <ColSpan>9</ColSpan>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell />
@@ -4365,14 +4387,18 @@ Parameters!GroupBy4.Label + ": " + Fields(iif(Parameters!GroupBy4.Value is Nothi
                   <Group Name="Group1">
                     <DocumentMapLabel>=IIF(Parameters!GroupBy1.Value is Nothing,Nothing,IIF(Fields(Parameters!GroupBy1.Value).Value is Nothing, "(None)",(Fields(iif(Parameters!GroupBy1.Value is Nothing,  "Contacts_PK",Parameters!GroupBy1.Value)).Value)))</DocumentMapLabel>
                     <GroupExpressions>
-                      <GroupExpression>=iif(Parameters!GroupBy1.Value is Nothing,1,Fields(
-iif(Parameters!GroupBy1.Value is Nothing, "Contacts_PK",Parameters!GroupBy1.Value)).Value)</GroupExpression>
+                      <GroupExpression>
+                        =iif(Parameters!GroupBy1.Value is Nothing,1,Fields(
+                        iif(Parameters!GroupBy1.Value is Nothing, "Contacts_PK",Parameters!GroupBy1.Value)).Value)
+                      </GroupExpression>
                     </GroupExpressions>
                   </Group>
                   <SortExpressions>
                     <SortExpression>
-                      <Value>=iif(Parameters!GroupBy1.Value is Nothing,1,Fields(
-iif(Parameters!GroupBy1.Value is Nothing, "Contacts_PK",Parameters!GroupBy1.Value)).Value)</Value>
+                      <Value>
+                        =iif(Parameters!GroupBy1.Value is Nothing,1,Fields(
+                        iif(Parameters!GroupBy1.Value is Nothing, "Contacts_PK",Parameters!GroupBy1.Value)).Value)
+                      </Value>
                     </SortExpression>
                   </SortExpressions>
                   <TablixMembers>
@@ -4385,14 +4411,18 @@ iif(Parameters!GroupBy1.Value is Nothing, "Contacts_PK",Parameters!GroupBy1.Valu
                       <Group Name="Group2">
                         <DocumentMapLabel>=IIF(Parameters!GroupBy2.Value is Nothing,Nothing,IIF(Fields(Parameters!GroupBy2.Value).Value is Nothing, "(None)",(Fields(iif(Parameters!GroupBy2.Value is Nothing,  "Contacts_PK",Parameters!GroupBy2.Value)).Value)))</DocumentMapLabel>
                         <GroupExpressions>
-                          <GroupExpression>=iif(Parameters!GroupBy2.Value is Nothing,1,Fields(
-iif(Parameters!GroupBy2.Value is Nothing, "Contacts_PK",Parameters!GroupBy2.Value)).Value)</GroupExpression>
+                          <GroupExpression>
+                            =iif(Parameters!GroupBy2.Value is Nothing,1,Fields(
+                            iif(Parameters!GroupBy2.Value is Nothing, "Contacts_PK",Parameters!GroupBy2.Value)).Value)
+                          </GroupExpression>
                         </GroupExpressions>
                       </Group>
                       <SortExpressions>
                         <SortExpression>
-                          <Value>=iif(Parameters!GroupBy2.Value is Nothing,1,Fields(
-iif(Parameters!GroupBy2.Value is Nothing, "Contacts_PK",Parameters!GroupBy2.Value)).Value)</Value>
+                          <Value>
+                            =iif(Parameters!GroupBy2.Value is Nothing,1,Fields(
+                            iif(Parameters!GroupBy2.Value is Nothing, "Contacts_PK",Parameters!GroupBy2.Value)).Value)
+                          </Value>
                         </SortExpression>
                       </SortExpressions>
                       <TablixMembers>
@@ -4405,14 +4435,18 @@ iif(Parameters!GroupBy2.Value is Nothing, "Contacts_PK",Parameters!GroupBy2.Valu
                           <Group Name="Group3">
                             <DocumentMapLabel>=IIF(Parameters!GroupBy3.Value is Nothing,Nothing,IIF(Fields(Parameters!GroupBy3.Value).Value is Nothing, "(None)",(Fields(iif(Parameters!GroupBy3.Value is Nothing,  "Contacts_PK",Parameters!GroupBy3.Value)).Value)))</DocumentMapLabel>
                             <GroupExpressions>
-                              <GroupExpression>=iif(Parameters!GroupBy3.Value is Nothing,1,Fields(
-iif(Parameters!GroupBy3.Value is Nothing, "Contacts_PK",Parameters!GroupBy3.Value)).Value)</GroupExpression>
+                              <GroupExpression>
+                                =iif(Parameters!GroupBy3.Value is Nothing,1,Fields(
+                                iif(Parameters!GroupBy3.Value is Nothing, "Contacts_PK",Parameters!GroupBy3.Value)).Value)
+                              </GroupExpression>
                             </GroupExpressions>
                           </Group>
                           <SortExpressions>
                             <SortExpression>
-                              <Value>=iif(Parameters!GroupBy3.Value is Nothing,1,Fields(
-iif(Parameters!GroupBy3.Value is Nothing, "Contacts_PK",Parameters!GroupBy3.Value)).Value)</Value>
+                              <Value>
+                                =iif(Parameters!GroupBy3.Value is Nothing,1,Fields(
+                                iif(Parameters!GroupBy3.Value is Nothing, "Contacts_PK",Parameters!GroupBy3.Value)).Value)
+                              </Value>
                             </SortExpression>
                           </SortExpressions>
                           <TablixMembers>
@@ -4425,14 +4459,18 @@ iif(Parameters!GroupBy3.Value is Nothing, "Contacts_PK",Parameters!GroupBy3.Valu
                               <Group Name="Group4">
                                 <DocumentMapLabel>=IIF(Parameters!GroupBy4.Value is Nothing,Nothing,IIF(Fields(Parameters!GroupBy4.Value).Value is Nothing, "(None)",(Fields(iif(Parameters!GroupBy4.Value is Nothing,  "Contacts_PK",Parameters!GroupBy4.Value)).Value)))</DocumentMapLabel>
                                 <GroupExpressions>
-                                  <GroupExpression>=iif(Parameters!GroupBy4.Value is Nothing,1,Fields(
-iif(Parameters!GroupBy4.Value is Nothing, "Contacts_PK",Parameters!GroupBy4.Value)).Value)</GroupExpression>
+                                  <GroupExpression>
+                                    =iif(Parameters!GroupBy4.Value is Nothing,1,Fields(
+                                    iif(Parameters!GroupBy4.Value is Nothing, "Contacts_PK",Parameters!GroupBy4.Value)).Value)
+                                  </GroupExpression>
                                 </GroupExpressions>
                               </Group>
                               <SortExpressions>
                                 <SortExpression>
-                                  <Value>=iif(Parameters!GroupBy4.Value is Nothing,1,Fields(
-iif(Parameters!GroupBy4.Value is Nothing, "Contacts_PK",Parameters!GroupBy4.Value)).Value)</Value>
+                                  <Value>
+                                    =iif(Parameters!GroupBy4.Value is Nothing,1,Fields(
+                                    iif(Parameters!GroupBy4.Value is Nothing, "Contacts_PK",Parameters!GroupBy4.Value)).Value)
+                                  </Value>
                                 </SortExpression>
                               </SortExpressions>
                               <TablixMembers>
@@ -4646,6 +4684,6 @@ iif(Parameters!GroupBy4.Value is Nothing, "Contacts_PK",Parameters!GroupBy4.Valu
     </ReportParameter>
   </ReportParameters>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
-  <rd:ReportServerUrl>http://localhost/ReportServer</rd:ReportServerUrl>
+  <rd:ReportServerUrl>http://u0076180-epl-a/ReportServer</rd:ReportServerUrl>
   <rd:ReportID>5921480a-1b24-4a6e-abbc-f8db116cd24e</rd:ReportID>
 </Report>

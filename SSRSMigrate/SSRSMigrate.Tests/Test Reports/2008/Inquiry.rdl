@@ -1653,23 +1653,6 @@ Parameters!GroupBy4.Label + ": " + Fields(iif(Parameters!GroupBy4.Value is Nothi
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Subreport Name="Contacts_Trust_Detail">
-                      <ReportName>SUB-Trust Detail</ReportName>
-                      <Parameters>
-                        <Parameter Name="Contacts">
-                          <Value>=Fields!Contacts_PK.Value</Value>
-                        </Parameter>
-                        <Parameter Name="CurrentProfessional">
-                          <Value>=Parameters!Current_Professional.Value</Value>
-                        </Parameter>
-                      </Parameters>
-                      <OmitBorderOnPageBreak>true</OmitBorderOnPageBreak>
-                      <Style>
-                        <Border>
-                          <Style>None</Style>
-                        </Border>
-                      </Style>
-                    </Subreport>
                     <ColSpan>9</ColSpan>
                   </CellContents>
                 </TablixCell>
