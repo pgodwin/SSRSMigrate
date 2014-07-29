@@ -255,36 +255,6 @@ namespace SSRSMigrate.Tests.Utilities
         }
 
         [Test]
-        public void GetFullDestinationPathForItem_NullDestinationPath()
-        {
-            ArgumentException ex = Assert.Throws<ArgumentException>(
-                delegate
-                {
-                    SSRSUtil.GetFullDestinationPathForItem(
-                        "http://localhost/ReportServer/SSRSMigrate_Tests",
-                        null,
-                        "http://localhost/ReportServer/SSRSMigrate_Tests/Reports/Test Report");
-                });
-
-            Assert.That(ex.Message, Is.EqualTo("destinationPath"));
-        }
-
-        [Test]
-        public void GetFullDestinationPathForItem_NullItemPath()
-        {
-            ArgumentException ex = Assert.Throws<ArgumentException>(
-                delegate
-                {
-                    SSRSUtil.GetFullDestinationPathForItem(
-                        "http://localhost/ReportServer/SSRSMigrate_Tests",
-                        "http://localhost/ReportServer/SSRSMigrate_NewFolder",
-                        null);
-                });
-
-            Assert.That(ex.Message, Is.EqualTo("itemPath"));
-        }
-
-        [Test]
         public void GetFullDestinationPathForItem_EmptySoucePath()
         {
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -300,6 +270,34 @@ namespace SSRSMigrate.Tests.Utilities
         }
 
         [Test]
+        public void GetFullDestinationPathForItem_SourcePathEndsWithSlash()
+        {
+            string expected = "http://localhost/ReportServer/SSRSMigrate_NewFolder/Reports/Test Report";
+
+            string actual = SSRSUtil.GetFullDestinationPathForItem(
+                "http://localhost/ReportServer/SSRSMigrate_Tests/",
+                "http://localhost/ReportServer/SSRSMigrate_NewFolder",
+                "http://localhost/ReportServer/SSRSMigrate_Tests/Reports/Test Report");
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetFullDestinationPathForItem_NullDestinationPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    SSRSUtil.GetFullDestinationPathForItem(
+                        "http://localhost/ReportServer/SSRSMigrate_Tests",
+                        null,
+                        "http://localhost/ReportServer/SSRSMigrate_Tests/Reports/Test Report");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("destinationPath"));
+        }
+
+        [Test]
         public void GetFullDestinationPathForItem_EmptyDestinationPath()
         {
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -312,6 +310,34 @@ namespace SSRSMigrate.Tests.Utilities
                 });
 
             Assert.That(ex.Message, Is.EqualTo("destinationPath"));
+        }
+
+        [Test]
+        public void GetFullDestinationPathForItem_DestinationPathEndsWithSlash()
+        {
+            string expected = "http://localhost/ReportServer/SSRSMigrate_NewFolder/Reports/Test Report";
+
+            string actual = SSRSUtil.GetFullDestinationPathForItem(
+                "http://localhost/ReportServer/SSRSMigrate_Tests",
+                "http://localhost/ReportServer/SSRSMigrate_NewFolder/",
+                "http://localhost/ReportServer/SSRSMigrate_Tests/Reports/Test Report");
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetFullDestinationPathForItem_NullItemPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    SSRSUtil.GetFullDestinationPathForItem(
+                        "http://localhost/ReportServer/SSRSMigrate_Tests",
+                        "http://localhost/ReportServer/SSRSMigrate_NewFolder",
+                        null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemPath"));
         }
 
         [Test]
@@ -337,6 +363,16 @@ namespace SSRSMigrate.Tests.Utilities
             SSRSVersion expected = SSRSVersion.Unknown;
 
             SSRSVersion actual = SSRSUtil.GetSqlServerVersion("Microsoft SQL Server Reporting Services Version 12.00.200.8");
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetSqlServerVersion_Unknown_BadVersionText()
+        {
+            SSRSVersion expected = SSRSVersion.Unknown;
+
+            SSRSVersion actual = SSRSUtil.GetSqlServerVersion("Microsoft SQL Serverr Reporting Services Version 12.00.200.8");
 
             Assert.AreEqual(expected, actual);
         }
