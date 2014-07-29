@@ -9,6 +9,7 @@ using System.Web.Services.Protocols;
 namespace SSRSMigrate.IntegrationTests.SSRS
 {
     [TestFixture]
+    [CoverageExcludeAttribute]
     class ReportServerReader_DataSourceTests
     {
         ReportServerReader reader = null;

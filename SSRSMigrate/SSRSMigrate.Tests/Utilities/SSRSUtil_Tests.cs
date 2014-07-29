@@ -7,9 +7,12 @@ using SSRSMigrate.Utilities;
 using SSRSMigrate.Enums;
 using SSRSMigrate.SSRS;
 
+public class CoverageExcludeAttribute : System.Attribute { }
+
 namespace SSRSMigrate.Tests.Utilities
 {
     [TestFixture]
+    [CoverageExcludeAttribute]
     class SSRSUtil_Tests
     {
         #region Report Definitions

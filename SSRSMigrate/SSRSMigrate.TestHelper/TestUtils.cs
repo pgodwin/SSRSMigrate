@@ -5,8 +5,11 @@ using System.Text;
 using System.IO;
 using System.Xml;
 
+public class CoverageExcludeAttribute : System.Attribute { }
+
 namespace SSRSMigrate.TestHelper
 {
+    [CoverageExcludeAttribute]
     public static class TestUtils
     {
         public static string LoadRDLFile(string file)

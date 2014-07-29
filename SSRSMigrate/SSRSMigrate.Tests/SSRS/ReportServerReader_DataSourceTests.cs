@@ -10,6 +10,7 @@ using Moq;
 namespace SSRSMigrate.Tests.SSRS
 {
     [TestFixture]
+    [CoverageExcludeAttribute]
     class ReportServerReader_DataSourceTests
     {
         ReportServerReader reader = null;

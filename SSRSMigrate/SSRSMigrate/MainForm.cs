@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 namespace SSRSMigrate
 {
+    [CoverageExcludeAttribute]
     public partial class MainForm : Form
     {
         public MainForm()

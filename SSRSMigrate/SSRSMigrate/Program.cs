@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
+public class CoverageExcludeAttribute : System.Attribute { }
+
 namespace SSRSMigrate
 {
+    [CoverageExcludeAttribute]
     static class Program
     {
         /// <summary>

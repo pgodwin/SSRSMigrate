@@ -10,6 +10,7 @@ using SSRSMigrate.TestHelper;
 namespace SSRSMigrate.Tests.SSRS
 {
     [TestFixture]
+    [CoverageExcludeAttribute]
     class ReportServerReader_ReportTests
     {
         ReportServerReader reader = null;

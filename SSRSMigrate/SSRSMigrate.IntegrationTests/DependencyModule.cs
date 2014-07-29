@@ -10,6 +10,7 @@ using System.Net;
 
 namespace SSRSMigrate.IntegrationTests
 {
+    [CoverageExcludeAttribute]
     public class DependencyModule : NinjectModule
     {
         public override void Load()
@@ -18,6 +19,7 @@ namespace SSRSMigrate.IntegrationTests
         }
     }
 
+    [CoverageExcludeAttribute]
     public class ReportServerRepositoryProvider : Provider<IReportServerRepository>
     {
         protected override IReportServerRepository CreateInstance(IContext context)

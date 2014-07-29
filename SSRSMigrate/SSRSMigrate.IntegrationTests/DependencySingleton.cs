@@ -6,6 +6,7 @@ using Ninject;
 
 namespace SSRSMigrate.IntegrationTests
 {
+    [CoverageExcludeAttribute]
     public sealed class DependencySingleton
     {
         private static volatile DependencySingleton mInstance;

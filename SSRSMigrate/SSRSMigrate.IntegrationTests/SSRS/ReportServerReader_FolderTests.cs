@@ -8,6 +8,7 @@ using SSRSMigrate.SSRS;
 namespace SSRSMigrate.IntegrationTests.SSRS
 {
     [TestFixture]
+    [CoverageExcludeAttribute]
     class ReportServerReader_FolderTests
     {
         ReportServerReader reader = null;
