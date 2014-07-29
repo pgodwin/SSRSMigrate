@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SSRSMigrate.ReportServer2005;
+using SSRSMigrate.Utilities;
+using System.Xml;
 
 namespace SSRSMigrate.SSRS
 {
@@ -113,7 +115,20 @@ namespace SSRSMigrate.SSRS
 
         public ReportItem GetReport(string reportPath)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(reportPath))
+                throw new ArgumentException("reportPath");
+
+            string reportName = reportPath.Substring(reportPath.LastIndexOf('/') + 1);
+
+            CatalogItem item = this.GetItem(
+                reportName,
+                reportPath,
+                ItemTypeEnum.Report);
+
+            if (item != null)
+                return CatalogItemToReportItem(item);
+                
+            return null;
         }
 
         public List<ReportItem> GetReports(string path)
@@ -126,9 +141,85 @@ namespace SSRSMigrate.SSRS
             throw new NotImplementedException();
         }
 
+        public List<ReportItem> GetSubReports(string reportDefinition)
+        {
+            if (string.IsNullOrEmpty(reportDefinition))
+                throw new ArgumentException("reportDefinition");
+
+            List<ReportItem> subReports = new List<ReportItem>();
+
+            XmlDocument doc = new XmlDocument();
+
+            if (reportDefinition.Substring(0, 1) != "<")
+                reportDefinition = reportDefinition.Substring(1, reportDefinition.Length - 1);
+
+            doc.LoadXml(reportDefinition);
+
+            XmlNodeList subReportNodes = doc.GetElementsByTagName("Subreport");
+
+            foreach (XmlNode node in subReportNodes)
+            {
+                foreach (XmlNode nameNode in node.ChildNodes)
+                {
+                    if (nameNode.Name == "ReportName")
+                    {
+                        string subReportPath = nameNode.InnerText;
+                        int subReportNameIndex = subReportPath.LastIndexOf('/') + 1;
+
+                        CatalogItem subReportItem = this.GetItem(
+                            subReportPath.Substring(subReportNameIndex, subReportPath.Length - subReportNameIndex),
+                            subReportPath,
+                            ItemTypeEnum.Report);
+
+                        if (subReportItem != null)
+                        {
+                            ReportItem subReport = CatalogItemToReportItem(subReportItem);
+
+                            string subReportDefinition = SSRSUtil.ByteArrayToString(subReport.Definition);
+
+                            List<ReportItem> subReportsInner = this.GetSubReports(subReportDefinition);
+
+                            foreach (ReportItem subReportInner in subReportsInner)
+                                if (!subReports.Contains(subReportInner))
+                                    subReports.Add(subReportInner);
+
+                            if (!subReports.Contains(subReport))
+                            {
+                                subReports.Add(subReport);
+                                continue;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return subReports;
+        }
+
         public string[] WriteReport(string reportPath, ReportItem reportItem)
         {
             throw new NotImplementedException();
+        }
+
+        private ReportItem CatalogItemToReportItem(CatalogItem item)
+        {
+            ReportItem report = new ReportItem();
+
+            report.Name = item.Name;
+            report.Path = item.Path;
+            report.CreatedBy = item.CreatedBy;
+            report.CreationDate = item.CreationDate;
+            report.Description = item.Description;
+            report.ID = item.ID;
+            report.ModifiedBy = item.ModifiedBy;
+            report.ModifiedDate = item.ModifiedDate;
+            report.Size = item.Size;
+            report.VirtualPath = item.VirtualPath;
+
+            report.Definition = GetReportDefinition(item.Path);
+            report.SubReports.AddRange(GetSubReports(SSRSUtil.ByteArrayToString(report.Definition)));
+
+            return report;
         }
         #endregion
 

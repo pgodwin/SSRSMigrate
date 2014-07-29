@@ -17,6 +17,7 @@ namespace SSRSMigrate.SSRS
         ReportItem GetReport(string reportPath);
         List<ReportItem> GetReports(string path);
         IEnumerable<ReportItem> GetReportsList(string path);
+        List<ReportItem> GetSubReports(string reportDefinition);
         string[] WriteReport(string reportPath, ReportItem reportItem);
 
         // Data Source
