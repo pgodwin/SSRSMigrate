@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.SSRS;
+using Moq;
 
-public class CoverageExcludeAttribute : System.Attribute { }
-
-namespace SSRSMigrate.IntegrationTests.SSRS
+namespace SSRSMigrate.Tests.SSRS.ReportServer2008
 {
     [TestFixture]
     [CoverageExcludeAttribute]
@@ -46,7 +45,36 @@ namespace SSRSMigrate.IntegrationTests.SSRS
                 }
             };
 
-            reader = DependencySingleton.Instance.Get<ReportServerReader>();
+            // Setup IReportServerRepository mock
+            var reportServerRepositoryMock = new Mock<IReportServerRepository>();
+
+            // IReportServerRepository.GetFolders Mocks
+            reportServerRepositoryMock.Setup(r => r.GetFolders(null))
+                .Throws(new ArgumentException("path"));
+
+            reportServerRepositoryMock.Setup(r => r.GetFolders(""))
+                .Throws(new ArgumentException("path"));
+
+            reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_Tests"))
+                .Returns(() => expectedFolderItems);
+
+            reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_Tests Doesnt Exist"))
+                .Returns(() => new List<FolderItem>());
+
+            // IReportServerRepository.GetFolderList Mocks
+            reportServerRepositoryMock.Setup(r => r.GetFolderList(null))
+                .Throws(new ArgumentException("path"));
+
+            reportServerRepositoryMock.Setup(r => r.GetFolderList(""))
+                .Throws(new ArgumentException("path"));
+
+            reportServerRepositoryMock.Setup(r => r.GetFolderList("/SSRSMigrate_Tests"))
+                .Returns(() => expectedFolderItems);
+
+            reportServerRepositoryMock.Setup(r => r.GetFolderList("/SSRSMigrate_Tests Doesnt Exist"))
+                .Returns(() => new List<FolderItem>());
+
+            reader = new ReportServerReader(reportServerRepositoryMock.Object);
         }
 
         [TestFixtureTearDown]
@@ -64,7 +92,6 @@ namespace SSRSMigrate.IntegrationTests.SSRS
         [TearDown]
         public void TearDown()
         {
-            actualFolderItems = null;
         }
 
         #region GetFolders Tests
@@ -74,6 +101,14 @@ namespace SSRSMigrate.IntegrationTests.SSRS
             List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_Tests");
 
             Assert.AreEqual(expectedFolderItems.Count(), actual.Count());
+        }
+
+        [Test]
+        public void GetFolders_PathDoesntExist()
+        {
+            List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_Tests Doesnt Exist");
+
+            Assert.AreEqual(0, actual.Count());
         }
 
         [Test]
@@ -92,21 +127,12 @@ namespace SSRSMigrate.IntegrationTests.SSRS
         public void GetFolders_EmptyPath()
         {
             ArgumentException ex = Assert.Throws<ArgumentException>(
-               delegate
-               {
-                   reader.GetFolders("");
-               });
+                delegate
+                {
+                    reader.GetFolders(null);
+                });
 
             Assert.That(ex.Message, Is.EqualTo("path"));
-        }
-
-        [Test]
-        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException), 
-            ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found", 
-            MatchType = MessageMatch.Contains)]
-        public void GetFolders_PathDoesntExist()
-        {
-            List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_Tests Doesnt Exist");
         }
         #endregion
 
@@ -117,6 +143,14 @@ namespace SSRSMigrate.IntegrationTests.SSRS
             reader.GetFolders("/SSRSMigrate_Tests", GetFolders_Reporter);
 
             Assert.AreEqual(expectedFolderItems.Count(), actualFolderItems.Count());
+        }
+
+        [Test]
+        public void GetFolders_UsingDelegate_PathDoesntExist()
+        {
+            reader.GetFolders("/SSRSMigrate_Tests Doesnt Exist", GetFolders_Reporter);
+
+            Assert.AreEqual(0, actualFolderItems.Count());
         }
 
         [Test]
@@ -141,7 +175,6 @@ namespace SSRSMigrate.IntegrationTests.SSRS
                 });
 
             Assert.That(ex.Message, Is.EqualTo("path"));
-
         }
 
         [Test]
@@ -154,18 +187,6 @@ namespace SSRSMigrate.IntegrationTests.SSRS
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
-        
-        }
-
-        [Test]
-        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
-            ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found",
-            MatchType = MessageMatch.Contains)]
-        public void GetFolders_UsingDelegate_PathDoesntExist()
-        {
-            reader.GetFolders("/SSRSMigrate_Tests Doesnt Exist", GetFolders_Reporter);
-
-            Assert.AreEqual(expectedFolderItems.Count(), actualFolderItems.Count());
         }
 
         private void GetFolders_Reporter(FolderItem folderItem)

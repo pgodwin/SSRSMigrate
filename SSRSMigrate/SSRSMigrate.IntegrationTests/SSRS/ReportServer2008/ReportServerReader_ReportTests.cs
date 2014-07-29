@@ -6,7 +6,7 @@ using NUnit.Framework;
 using SSRSMigrate.SSRS;
 using SSRSMigrate.TestHelper;
 
-namespace SSRSMigrate.IntegrationTests.SSRS
+namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
 {
     [TestFixture]
     [CoverageExcludeAttribute]

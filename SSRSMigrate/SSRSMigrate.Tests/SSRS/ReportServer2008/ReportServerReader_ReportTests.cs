@@ -7,7 +7,7 @@ using SSRSMigrate.SSRS;
 using Moq;
 using SSRSMigrate.TestHelper;
 
-namespace SSRSMigrate.Tests.SSRS
+namespace SSRSMigrate.Tests.SSRS.ReportServer2008
 {
     [TestFixture]
     [CoverageExcludeAttribute]

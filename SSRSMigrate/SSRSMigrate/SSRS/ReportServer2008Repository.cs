@@ -8,12 +8,12 @@ using System.Xml;
 
 namespace SSRSMigrate.SSRS
 {
-    public class ReportServerRepository : IReportServerRepository
+    public class ReportServer2008Repository : IReportServerRepository
     {
         private ReportingService2005 mReportingService;
         private string mRootPath = null;
 
-        public ReportServerRepository(string rootPath, ReportingService2005 reportingService)
+        public ReportServer2008Repository(string rootPath, ReportingService2005 reportingService)
         {
             if (string.IsNullOrEmpty(rootPath))
                 throw new ArgumentException("rootPath");
@@ -25,7 +25,7 @@ namespace SSRSMigrate.SSRS
             this.mReportingService = reportingService;
         }
 
-        ~ReportServerRepository()
+        ~ReportServer2008Repository()
         {
             Dispose(false);
         }

@@ -50,9 +50,9 @@
     <Compile Include="DependencyModule.cs" />
     <Compile Include="DependencySingleton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SSRS\ReportServerReader_DataSourceTests.cs" />
-    <Compile Include="SSRS\ReportServerReader_FolderTests.cs" />
-    <Compile Include="SSRS\ReportServerReader_ReportTests.cs" />
+    <Compile Include="SSRS\ReportServer2008\ReportServerReader_DataSourceTests.cs" />
+    <Compile Include="SSRS\ReportServer2008\ReportServerReader_FolderTests.cs" />
+    <Compile Include="SSRS\ReportServer2008\ReportServerReader_ReportTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -66,6 +66,9 @@
       <Project>{FE393906-2F99-492D-919E-16FC0E63DEED}</Project>
       <Name>SSRSMigrate</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SSRS\ReportServer2008_R2\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

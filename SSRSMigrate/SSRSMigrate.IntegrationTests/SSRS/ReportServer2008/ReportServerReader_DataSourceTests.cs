@@ -7,7 +7,7 @@ using SSRSMigrate.SSRS;
 using System.Web.Services.Protocols;
 using SSRSMigrate.ReportServer2005;
 
-namespace SSRSMigrate.IntegrationTests.SSRS
+namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
 {
     [TestFixture]
     [CoverageExcludeAttribute]

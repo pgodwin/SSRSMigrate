@@ -15,23 +15,23 @@ namespace SSRSMigrate.IntegrationTests
     {
         public override void Load()
         {
-            this.Bind<IReportServerRepository>().ToProvider(new ReportServerRepositoryProvider());
+            this.Bind<IReportServerRepository>().ToProvider(new ReportServer2008RepositoryProvider());
         }
     }
 
     [CoverageExcludeAttribute]
-    public class ReportServerRepositoryProvider : Provider<IReportServerRepository>
+    public class ReportServer2008RepositoryProvider : Provider<IReportServerRepository>
     {
         protected override IReportServerRepository CreateInstance(IContext context)
         {
             ReportingService2005 service = new ReportingService2005();
-            service.Url = "http://localhost/ReportServer/reportservice2005.asmx";
+            service.Url = "http://localhost/ReportServer_SQL2008/reportservice2005.asmx";
 
             service.Credentials = CredentialCache.DefaultNetworkCredentials;
             service.PreAuthenticate = true;
             service.UseDefaultCredentials = true;
 
-            return new ReportServerRepository("/SSRSMigrate_Tests", service);
+            return new ReportServer2008Repository("/SSRSMigrate_Tests", service);
         }
     }
 }
