@@ -5,6 +5,8 @@ using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.SSRS;
 
+public class CoverageExcludeAttribute : System.Attribute { }
+
 namespace SSRSMigrate.IntegrationTests.SSRS
 {
     [TestFixture]
@@ -13,13 +15,18 @@ namespace SSRSMigrate.IntegrationTests.SSRS
     {
         ReportServerReader reader = null;
 
-        List<FolderItem> actualFolderItems = null;
+        #region GetFolders - Expected FolderItems
         List<FolderItem> expectedFolderItems = null;
+        #endregion
+
+        #region GetFolders - Actual FolderItems
+        List<FolderItem> actualFolderItems = null;
+        #endregion
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            // Setup expected Folder Items
+            // Setup expected FolderItems
             expectedFolderItems = new List<FolderItem>()
             {
                 new FolderItem()

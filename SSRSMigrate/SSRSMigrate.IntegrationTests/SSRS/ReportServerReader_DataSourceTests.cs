@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.SSRS;
 using System.Web.Services.Protocols;
+using SSRSMigrate.ReportServer2005;
 
 namespace SSRSMigrate.IntegrationTests.SSRS
 {
@@ -13,11 +14,61 @@ namespace SSRSMigrate.IntegrationTests.SSRS
     class ReportServerReader_DataSourceTests
     {
         ReportServerReader reader = null;
-        List<DataSourceItem> actualDataSources = null;
+
+        #region GetDataSources - Expected DataSourceItems
+        List<DataSourceItem> expectedDataSourceItems = null;
+        #endregion
+
+        #region GetDataSources - Actual DataSourceItems
+        List<DataSourceItem> actualDataSourceItems = null;
+        #endregion
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
+            // Setup expected DataSourceItems
+            expectedDataSourceItems = new List<DataSourceItem>()
+            {
+                new DataSourceItem()
+                {
+                    Description = null,
+                    Name = "Test Data Source",
+                    Path = "/SSRSMigrate_Tests/Test Data Source",
+                    ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                    CredentialsRetrieval = CredentialRetrievalEnum.Integrated,
+                    Enabled = true,
+                    EnabledSpecified = true,
+                    Extension = "SQL",
+                    ImpersonateUser = false,
+                    ImpersonateUserSpecified = true,
+                    OriginalConnectStringExpressionBased = false,
+                    Password = null,
+                    Prompt = "Enter a user name and password to access the data source:",
+                    UseOriginalConnectString = false,
+                    UserName = null,
+                    WindowsCredentials = false
+                },
+               new DataSourceItem()
+                {
+                    Description = null,
+                    Name = "Test 2 Data Source",
+                    Path = "/SSRSMigrate_Tests/Test 2 Data Source",
+                    ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                    CredentialsRetrieval = CredentialRetrievalEnum.Integrated,
+                    Enabled = true,
+                    EnabledSpecified = true,
+                    Extension = "SQL",
+                    ImpersonateUser = false,
+                    ImpersonateUserSpecified = true,
+                    OriginalConnectStringExpressionBased = false,
+                    Password = null,
+                    Prompt = "Enter a user name and password to access the data source:",
+                    UseOriginalConnectString = false,
+                    UserName = null,
+                    WindowsCredentials = false
+                },
+            };
+
             reader = DependencySingleton.Instance.Get<ReportServerReader>();
         }
 
@@ -30,13 +81,13 @@ namespace SSRSMigrate.IntegrationTests.SSRS
         [SetUp]
         public void SetUp()
         {
-            actualDataSources = new List<DataSourceItem>();
+            actualDataSourceItems = new List<DataSourceItem>();
         }
 
         [TearDown]
         public void TearDown()
         {
-            actualDataSources = null;
+            actualDataSourceItems = null;
         }
 
         #region GetDataSource Tests
@@ -47,9 +98,22 @@ namespace SSRSMigrate.IntegrationTests.SSRS
 
             DataSourceItem actual = reader.GetDataSource(dsPath);
 
-            Assert.AreEqual(actual.Name, "Test Data Source");
-            Assert.AreEqual(actual.Path, "/SSRSMigrate_Tests/Test Data Source");
-            Assert.AreEqual(actual.ConnectString, "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest");
+            Assert.AreEqual(expectedDataSourceItems[0].Name, actual.Name);
+            Assert.AreEqual(expectedDataSourceItems[0].Path, actual.Path);
+            Assert.AreEqual(expectedDataSourceItems[0].ConnectString, actual.ConnectString);
+            Assert.AreEqual(expectedDataSourceItems[0].Description, actual.Description);
+            Assert.AreEqual(expectedDataSourceItems[0].CredentialsRetrieval, actual.CredentialsRetrieval);
+            Assert.AreEqual(expectedDataSourceItems[0].Enabled, actual.Enabled);
+            Assert.AreEqual(expectedDataSourceItems[0].EnabledSpecified, actual.EnabledSpecified);
+            Assert.AreEqual(expectedDataSourceItems[0].Extension, actual.Extension);
+            Assert.AreEqual(expectedDataSourceItems[0].ImpersonateUser, actual.ImpersonateUser);
+            Assert.AreEqual(expectedDataSourceItems[0].ImpersonateUserSpecified, actual.ImpersonateUserSpecified);
+            Assert.AreEqual(expectedDataSourceItems[0].OriginalConnectStringExpressionBased, actual.OriginalConnectStringExpressionBased);
+            Assert.AreEqual(expectedDataSourceItems[0].Password, actual.Password);
+            Assert.AreEqual(expectedDataSourceItems[0].Prompt, actual.Prompt);
+            Assert.AreEqual(expectedDataSourceItems[0].UseOriginalConnectString, actual.UseOriginalConnectString);
+            Assert.AreEqual(expectedDataSourceItems[0].UserName, actual.UserName);
+            Assert.AreEqual(expectedDataSourceItems[0].WindowsCredentials, actual.WindowsCredentials);
         }
 
         [Test]
@@ -95,7 +159,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS
 
             List<DataSourceItem> actual = reader.GetDataSources(path);
 
-            Assert.AreEqual(actual.Count(), 2);
+            Assert.AreEqual(expectedDataSourceItems.Count(), actual.Count());
         }
 
         [Test]
@@ -144,7 +208,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS
 
             reader.GetDataSources(path, GetDataSources_Reporter);
 
-            Assert.AreEqual(actualDataSources.Count(), 2);
+            Assert.AreEqual(actualDataSourceItems.Count(), 2);
         }
         
         [Test]
@@ -193,13 +257,13 @@ namespace SSRSMigrate.IntegrationTests.SSRS
 
             reader.GetDataSources(path, GetDataSources_Reporter);
 
-            Assert.IsFalse(actualDataSources.Any());
+            Assert.IsFalse(actualDataSourceItems.Any());
         }
 
         public void GetDataSources_Reporter(DataSourceItem dataSource)
         {
             if (dataSource != null)
-                actualDataSources.Add(dataSource);
+                actualDataSourceItems.Add(dataSource);
         }
         #endregion
     }

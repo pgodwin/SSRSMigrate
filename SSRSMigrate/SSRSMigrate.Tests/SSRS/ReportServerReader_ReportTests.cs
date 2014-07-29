@@ -33,7 +33,6 @@ namespace SSRSMigrate.Tests.SSRS
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-
             // Setup GetReport - Expected ReportItem
             expectedReportItem = new ReportItem()
             {
@@ -402,5 +401,31 @@ namespace SSRSMigrate.Tests.SSRS
             actualReportItems.Add(reportItem);
         }
         #endregion
+
+        //#region GetSubReports Tests
+        //[Test]
+        //public void GetSubReports()
+        //{
+
+        //}
+
+        //[Test]
+        //public void GetSubReports_NoSubReports()
+        //{
+
+        //}
+
+        //[Test]
+        //public void GetSubReports_NullDefinition()
+        //{
+
+        //}
+
+        //[Test]
+        //public void GetSubReports_EmptyDefinition()
+        //{
+
+        //}
+        //#endregion
     }
 }
