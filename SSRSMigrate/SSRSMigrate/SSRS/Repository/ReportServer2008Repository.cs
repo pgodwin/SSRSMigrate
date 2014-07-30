@@ -140,7 +140,21 @@ namespace SSRSMigrate.SSRS.Repository
 
         public List<ReportItem> GetReports(string path)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            List<ReportItem> reportItems = new List<ReportItem>();
+            List<CatalogItem> items = this.GetItems(path, ItemTypeEnum.Report);
+
+            if (items.Any())
+            {
+                foreach (CatalogItem item in items)
+                    reportItems.Add(CatalogItemToReportItem(item));
+
+                return reportItems;
+            }
+
+            return null;
         }
 
         public IEnumerable<ReportItem> GetReportsList(string path)

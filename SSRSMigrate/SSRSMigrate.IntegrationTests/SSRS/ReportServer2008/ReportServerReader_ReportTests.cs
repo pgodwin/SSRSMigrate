@@ -15,23 +15,25 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
     {
         ReportServerReader reader = null;
 
-        #region GetReport - Expected ReportItem
-        ReportItem expectedReportItem;
-        #endregion
-
-        #region GetReports - Expected ReportItems
+        #region GetReport - Expected ReportItems
         List<ReportItem> expectedReportItems = null;
+        ReportItem expectedReportItem_Inquiry;
+        ReportItem expectedReportItem_Listing;
+        ReportItem expectedReportItem_SUBAddress;
+        ReportItem expectedReportItem_SUBCategories;
+        ReportItem expectedReportItem_SUBPhoneNumbers;
+        ReportItem expectedReportItem_SUBRelatedContacts;
+        ReportItem expectedReportItem_SUBRelatedMatters;
         #endregion
 
         #region GetReports - Actual ReportItems
         List<ReportItem> actualReportItems = null;
         #endregion
 
-        [TestFixtureSetUp]
-        public void TestFixtureSetUp()
+        private void SetupExpectedResults()
         {
             // Setup expected ReportItems
-            expectedReportItem = new ReportItem()
+            expectedReportItem_Inquiry = new ReportItem()
             {
                 Name = "Inquiry",
                 Path = "/SSRSMigrate_Tests/Reports/Inquiry",
@@ -41,68 +43,91 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
                 Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\Inquiry.rdl"))
             };
 
+            expectedReportItem_SUBAddress = new ReportItem()
+            {
+                Name = "SUB-Address",
+                Path = "/SSRSMigrate_Tests/Reports/SUB-Address",
+                Description = null,
+                ID = "77b2135b-c52f-4a52-9406-7bd523ad9623",
+                VirtualPath = null,
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Addresses.rdl")),
+            };
+
+            expectedReportItem_SUBCategories = new ReportItem()
+            {
+                Name = "SUB-Categories",
+                Path = "/SSRSMigrate_Tests/Reports/SUB-Categories",
+                Description = null,
+                ID = "ab67975e-8535-4cca-88d8-79a1827a099e",
+                VirtualPath = null,
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Categories.rdl")),
+            };
+
+            expectedReportItem_SUBPhoneNumbers = new ReportItem()
+            {
+                Name = "SUB-Phone Numbers",
+                Path = "/SSRSMigrate_Tests/Reports/SUB-Phone Numbers",
+                Description = null,
+                ID = "7b64b5e4-4ca2-466c-94ce-19d32d8222f5",
+                VirtualPath = null,
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Phone Numbers.rdl")),
+            };
+
+            expectedReportItem_SUBRelatedContacts = new ReportItem()
+            {
+                Name = "SUB-Related Contacts",
+                Path = "/SSRSMigrate_Tests/Reports/SUB-Related Contacts",
+                Description = null,
+                ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
+                VirtualPath = null,
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Related Contacts.rdl")),
+            };
+
+            expectedReportItem_SUBRelatedMatters = new ReportItem()
+            {
+                Name = "SUB-Related Matters",
+                Path = "/SSRSMigrate_Tests/Reports/SUB-Related Matters",
+                Description = null,
+                ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
+                VirtualPath = null,
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Related Matters.rdl")),
+            };
+
+            expectedReportItem_Listing = new ReportItem()
+            {
+                Name = "Listing",
+                Path = "/SSRSMigrate_Tests/Reports/Listing",
+                Description = null,
+                ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
+                VirtualPath = null,
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\Listing.rdl")),
+                SubReports = new List<ReportItem>()
+                {
+                    expectedReportItem_SUBAddress,
+                    expectedReportItem_SUBCategories,
+                    expectedReportItem_SUBPhoneNumbers,
+                    expectedReportItem_SUBRelatedContacts,
+                    expectedReportItem_SUBRelatedMatters
+                }
+            };
+
             // Setup GetReports - Expected ReportItems
             expectedReportItems = new List<ReportItem>()
             {
-                expectedReportItem,
-                new ReportItem()
-                {
-                    Name = "Listing",
-                    Path = "/SSRSMigrate_Tests/Reports/Listing",
-                    Description = null,
-                    ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
-                    VirtualPath = null,
-                    Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\Listing.rdl")),
-                    SubReports = new List<ReportItem>()
-                    {
-                        new ReportItem()
-                        {
-                            Name = "SUB-Address",
-                            Path = "/SSRSMigrate_Tests/Reports/SUB-Address",
-                            Description = null,
-                            ID = "77b2135b-c52f-4a52-9406-7bd523ad9623",
-                            VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Addresses.rdl")),
-                        },
-                        new ReportItem()
-                        {
-                            Name = "SUB-Categories",
-                            Path = "/SSRSMigrate_Tests/Reports/SUB-Categories",
-                            Description = null,
-                            ID = "ab67975e-8535-4cca-88d8-79a1827a099e",
-                            VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Categories.rdl")),
-                        },
-                        new ReportItem()
-                        {
-                            Name = "SUB-Phone Numbers",
-                            Path = "/SSRSMigrate_Tests/Reports/SUB-Phone Numbers",
-                            Description = null,
-                            ID = "7b64b5e4-4ca2-466c-94ce-19d32d8222f5",
-                            VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Phone Numbers.rdl")),
-                        },
-                        new ReportItem()
-                        {
-                            Name = "SUB-Related Contacts",
-                            Path = "/SSRSMigrate_Tests/Reports/SUB-Related Contacts",
-                            Description = null,
-                            ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
-                           VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Related Contacts.rdl")),
-                        },
-                        new ReportItem()
-                        {
-                            Name = "SUB-Related Matters",
-                            Path = "/SSRSMigrate_Tests/Reports/SUB-Related Matters",
-                            Description = null,
-                            ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
-                            VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Related Matters.rdl")),
-                        },
-                    }
-                }
+                expectedReportItem_Inquiry,
+                expectedReportItem_Listing,
+                expectedReportItem_SUBAddress,
+                expectedReportItem_SUBCategories,
+                expectedReportItem_SUBPhoneNumbers,
+                expectedReportItem_SUBRelatedContacts,
+                expectedReportItem_SUBRelatedMatters
             };
+        }
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            SetupExpectedResults();
 
             reader = DependencySingleton.Instance.Get<ReportServerReader>();
         }
@@ -132,11 +157,10 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
             ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_Tests/Reports/Inquiry");
 
             Assert.NotNull(actualReportItem);
-            Assert.AreEqual(expectedReportItem.Name, actualReportItem.Name);
-            Assert.AreEqual(expectedReportItem.Path, actualReportItem.Path);
-            Assert.AreEqual(expectedReportItem.SubReports.Count(), actualReportItem.SubReports.Count());
-            Assert.AreEqual(expectedReportItem.Definition, actualReportItem.Definition, "Report Definition");
-            //Assert.True(expectedReportItem.Definition.SequenceEqual(actualReportItem.Definition), "Report Definition");
+            Assert.AreEqual(expectedReportItem_Inquiry.Name, actualReportItem.Name);
+            Assert.AreEqual(expectedReportItem_Inquiry.Path, actualReportItem.Path);
+            Assert.AreEqual(expectedReportItem_Inquiry.SubReports.Count(), actualReportItem.SubReports.Count());
+            Assert.AreEqual(expectedReportItem_Inquiry.Definition, actualReportItem.Definition, "Report Definition");
         }
 
         [Test]
@@ -178,6 +202,53 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
         #endregion
 
         #region GetReports Tests
+        [Test]
+        public void GetReports()
+        {
+            string path = "/SSRSMigrate_Tests";
+
+            List<ReportItem> actual = reader.GetReports(path);
+
+            Assert.AreEqual(expectedReportItems.Count(), actual.Count());
+        }
+
+        [Test]
+        public void GetReports_NullPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetReports(null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetReports_EmptyPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetReports("");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
+            ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found",
+            MatchType = MessageMatch.Contains)]
+        
+        public void GetReports_PathDoesntExist()
+        {
+            string path = "/SSRSMigrate_Tests Doesnt Exist";
+
+            List<ReportItem> actual = reader.GetReports(path);
+
+            Assert.IsNull(actual);
+        }
         #endregion
 
         #region GetReportsList Tests
