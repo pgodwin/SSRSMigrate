@@ -75,8 +75,8 @@ namespace SSRSMigrate.SSRS.Repository
 
             var items = this.GetItemsList<FolderItem>(path, ItemTypeEnum.Folder, folder => CatalogItemToFolderItem(folder));
             if (items.Any())
-                foreach (FolderItem folder in items)
-                    yield return folder;
+                foreach (FolderItem item in items)
+                    yield return item;
         }
 
         public string CreateFolder(string folderPath)
@@ -159,7 +159,14 @@ namespace SSRSMigrate.SSRS.Repository
 
         public IEnumerable<ReportItem> GetReportsList(string path)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            var items = this.GetItemsList<ReportItem>(path, ItemTypeEnum.Report, r => CatalogItemToReportItem(r));
+
+            if (items != null)
+                foreach (ReportItem item in items)
+                    yield return item;
         }
 
         public List<ReportItem> GetSubReports(string reportDefinition)
@@ -288,8 +295,8 @@ namespace SSRSMigrate.SSRS.Repository
             var items = this.GetItemsList<DataSourceItem>(path, ItemTypeEnum.DataSource, ds => CatalogItemToDataSourceItem(ds));
 
             if (items != null)
-                foreach (DataSourceItem ds in items)
-                    yield return ds;
+                foreach (DataSourceItem item in items)
+                    yield return item;
         }
 
         public string[] WriteDataSource(string dataSourcePath, DataSourceItem dataSource)

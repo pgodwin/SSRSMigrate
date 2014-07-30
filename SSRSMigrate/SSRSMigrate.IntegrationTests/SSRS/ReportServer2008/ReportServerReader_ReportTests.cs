@@ -251,7 +251,72 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
         }
         #endregion
 
-        #region GetReportsList Tests
+        #region GetReports Using Action<ReportItem> Delegate Tests
+        [Test]
+        public void GetReports_UsingDelegate()
+        {
+            string path = "/SSRSMigrate_Tests";
+
+            reader.GetReports(path, GetReports_Reporter);
+
+            Assert.AreEqual(expectedReportItems.Count(), actualReportItems.Count());
+        }
+
+        [Test]
+        public void GetReports_UsingDelegate_NullPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetReports(null, GetReports_Reporter);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetReports_UsingDelegate_EmptyPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetReports("", GetReports_Reporter);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetReports_UsingDelegate_NullDelegate()
+        {
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    reader.GetReports("SSRSMigrate_Tests", null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
+        
+        }
+
+        [Test]
+        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
+            ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found",
+            MatchType = MessageMatch.Contains)]
+        public void GetReports_UsingDelegate_PathDoesntExist()
+        {
+            string path = "/SSRSMigrate_Tests Doesnt Exist";
+
+            reader.GetReports(path, GetReports_Reporter);
+
+            Assert.IsFalse(actualReportItems.Any());
+        }
+
+        public void GetReports_Reporter(ReportItem report)
+        {
+            if (report != null)
+                actualReportItems.Add(report);
+        }
         #endregion
     }
 }
