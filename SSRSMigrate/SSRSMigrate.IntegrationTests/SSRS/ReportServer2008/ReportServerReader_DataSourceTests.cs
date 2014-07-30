@@ -209,7 +209,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
 
             reader.GetDataSources(path, GetDataSources_Reporter);
 
-            Assert.AreEqual(actualDataSourceItems.Count(), 2);
+            Assert.AreEqual(expectedDataSourceItems.Count(), actualDataSourceItems.Count());
         }
         
         [Test]
