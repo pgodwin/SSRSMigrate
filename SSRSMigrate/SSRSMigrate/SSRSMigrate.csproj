@@ -78,6 +78,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enum\SSRSEnumerations.cs" />
+    <Compile Include="Exporter\ExportStatus.cs" />
+    <Compile Include="Exporter\IItemExporter.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
