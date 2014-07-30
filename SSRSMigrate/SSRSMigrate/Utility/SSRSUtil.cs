@@ -177,11 +177,6 @@ namespace SSRSMigrate.Utility
             }
         }
 
-        public static ReportItem CatalogItemToReportItem(CatalogItem item)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Converts a string to a byte array.
         /// </summary>
