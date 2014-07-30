@@ -24,14 +24,17 @@ namespace SSRSMigrate.IntegrationTests
     {
         protected override IReportServerRepository CreateInstance(IContext context)
         {
+            string url = Properties.Settings.Default.ReportServer2008WebServiceUrl;
+            string path = Properties.Settings.Default.SourcePath;
+
             ReportingService2005 service = new ReportingService2005();
-            service.Url = "http://localhost/ReportServer_SQL2008/reportservice2005.asmx";
+            service.Url = url;
 
             service.Credentials = CredentialCache.DefaultNetworkCredentials;
             service.PreAuthenticate = true;
             service.UseDefaultCredentials = true;
 
-            return new ReportServer2008Repository("/SSRSMigrate_Tests", service);
+            return new ReportServer2008Repository(path, service);
         }
     }
 }

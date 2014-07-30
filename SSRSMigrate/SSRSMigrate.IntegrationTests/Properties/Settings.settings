@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SSRSMigrate.IntegrationTests.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ReportServer2008WebServiceUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://localhost/reportserver_sql2008/reportservice2005.asmx</Value>
+    </Setting>
+    <Setting Name="ReportServer2008R2WebServiceUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://localhost/reportserver/reportservice2010.asmx</Value>
+    </Setting>
+    <Setting Name="SourcePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/SSRSMigrate_Tests</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
