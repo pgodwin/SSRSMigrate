@@ -59,5 +59,19 @@ namespace SSRSMigrate.Exporter
             get { return this.mSuccess; }
             protected set { this.mSuccess = value; }
         }
+
+        public ExportStatus(string pathTo, string pathFrom, string[] errors, bool success)
+        {
+            if (string.IsNullOrEmpty(pathTo))
+                throw new ArgumentException("pathTo");
+
+            if (string.IsNullOrEmpty(pathFrom))
+                throw new ArgumentException("pathFrom");
+
+            this.mToPath = pathTo;
+            this.mFromPath = pathFrom;
+            this.mErrors = errors;
+            this.mSuccess = success;
+        }
     }
 }
