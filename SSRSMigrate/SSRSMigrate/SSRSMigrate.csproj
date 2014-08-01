@@ -84,6 +84,7 @@
     <Compile Include="Exporter\DataSourceItemExporter.cs" />
     <Compile Include="Exporter\ExportStatus.cs" />
     <Compile Include="Exporter\IItemExporter.cs" />
+    <Compile Include="Exporter\ReportItemExporter.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
