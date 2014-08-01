@@ -321,7 +321,19 @@ namespace SSRSMigrate.SSRS.Repository
             ds.VirtualPath = item.VirtualPath;
 
             ds.ConnectString = dsDef.ConnectString;
-            ds.CredentialsRetrieval = dsDef.CredentialRetrieval;
+
+            switch (dsDef.CredentialRetrieval)
+            {
+                case CredentialRetrievalEnum.Integrated:
+                    ds.CredentialsRetrieval = "Integrated"; break;
+                case CredentialRetrievalEnum.None:
+                    ds.CredentialsRetrieval = "None"; break;
+                case CredentialRetrievalEnum.Prompt:
+                    ds.CredentialsRetrieval = "Prompt"; break;
+                case CredentialRetrievalEnum.Store:
+                    ds.CredentialsRetrieval = "Store"; break;
+            }
+
             ds.Enabled = dsDef.Enabled;
             ds.EnabledSpecified = dsDef.EnabledSpecified;
             ds.Extension = dsDef.Extension;

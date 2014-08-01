@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SSRSMigrate.ReportServer2005;
 
 namespace SSRSMigrate.SSRS.Item
 {
     public class DataSourceItem : ReportServerItem
     {
         public string ConnectString { get; set; }
-        public CredentialRetrievalEnum CredentialsRetrieval { get; set; }
+        public string CredentialsRetrieval { get; set; }
         public bool Enabled { get; set; }
         public bool EnabledSpecified { get; set; }
         public string Extension { get; set; }
