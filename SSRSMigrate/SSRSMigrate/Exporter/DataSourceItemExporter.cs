@@ -25,9 +25,13 @@ namespace SSRSMigrate.Exporter
 
             try
             {
-                if (File.Exists(fileName))
+                if (File.Exists(fileName) && !overwrite)
                     throw new IOException(string.Format("File '{0}' already exists.", fileName));
 
+                if (!Directory.Exists(Path.GetDirectoryName(fileName)))
+                    Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+
+                // Serialize DataSourceItem to JSON
                 string json = JsonConvert.SerializeObject(item, Formatting.Indented);
 
                 using (StreamWriter sw = new StreamWriter(fileName))
