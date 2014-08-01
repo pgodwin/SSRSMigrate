@@ -19,6 +19,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
 
         DataSourceItem dataSourceItem = null;
 
+        #region Expected DataSourceItem serialzed as JSON
         string expectedDataSourceJson = @"{
   ""ConnectString"": ""Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest"",
   ""CredentialsRetrieval"": ""Integrated"",
@@ -44,6 +45,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
   ""Size"": 0,
   ""VirtualPath"": null
 }";
+        #endregion
 
         string outputPath = null;
 

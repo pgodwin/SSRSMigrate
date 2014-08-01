@@ -39,13 +39,13 @@ namespace SSRSMigrate.Exporter
                     doc.Load(oStream);
                     doc.Save(fileName);
                 }
+
+                return new ExportStatus(fileName, item.Path, null, true);
             }
             catch (Exception er)
             {
                 return new ExportStatus(fileName, item.Path, new string[] { er.Message }, false);
             }
-
-            throw new NotImplementedException();
         }
     }
 }
