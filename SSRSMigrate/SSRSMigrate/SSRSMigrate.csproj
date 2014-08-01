@@ -83,6 +83,7 @@
     <Compile Include="Enum\SSRSEnumerations.cs" />
     <Compile Include="Exporter\DataSourceItemExporter.cs" />
     <Compile Include="Exporter\ExportStatus.cs" />
+    <Compile Include="Exporter\FolderItemExporter.cs" />
     <Compile Include="Exporter\IItemExporter.cs" />
     <Compile Include="Exporter\ReportItemExporter.cs" />
     <Compile Include="MainForm.cs">

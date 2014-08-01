@@ -115,7 +115,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         #endregion
 
         [Test]
-        public void ExportDataSource()
+        public void ExportDataSourceItem()
         {
             string filePath = outputPath + SSRSUtil.GetServerPathToPhysicalPath(dataSourceItem.Path, "json");
  
