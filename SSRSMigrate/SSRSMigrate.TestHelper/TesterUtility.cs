@@ -51,5 +51,42 @@ namespace SSRSMigrate.TestHelper
         {
             return Encoding.UTF8.GetString(byteArray);
         }
+
+        /// <summary>
+        /// Compares the text file file1 with the text file file2.
+        /// </summary>
+        /// <param name="file1">The file1.</param>
+        /// <param name="file2">The file2.</param>
+        /// <returns>Returns true if both files match.</returns>
+        /// <exception cref="System.ArgumentException">
+        /// file1
+        /// or
+        /// file2
+        /// </exception>
+        /// <exception cref="System.IO.FileNotFoundException">
+        /// </exception>
+        public static bool CompareTextFiles(string file1, string file2)
+        {
+            if (string.IsNullOrEmpty(file1))
+                throw new ArgumentException("file1");
+
+            if (string.IsNullOrEmpty(file2))
+                throw new ArgumentException("file2");
+
+            if (!File.Exists(file1))
+                throw new FileNotFoundException(file1);
+
+            if (!File.Exists(file2))
+                throw new FileNotFoundException(file2);
+
+            bool result = false;
+
+            string[] file1_lines = File.ReadAllLines(file1);
+            string[] file2_lines = File.ReadAllLines(file2);
+
+            IEnumerable<string> file2_only = file2_lines.Except(file1_lines);
+
+            return !file2_only.Any();
+        }
     }
 }
