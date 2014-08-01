@@ -7,6 +7,7 @@ using System.Reflection;
 using System.IO;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.Utility;
 
 namespace SSRSMigrate.IntegrationTests.Exporter
 {
@@ -18,7 +19,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
 
         DataSourceItem dataSourceItem = null;
 
-        string expected = @"{
+        string expectedDataSourceJson = @"{
   ""ConnectString"": ""Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest"",
   ""CredentialsRetrieval"": ""Integrated"",
   ""Enabled"": true,
@@ -43,6 +44,8 @@ namespace SSRSMigrate.IntegrationTests.Exporter
   ""Size"": 0,
   ""VirtualPath"": null
 }";
+
+        string outputPath = null;
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
@@ -70,6 +73,8 @@ namespace SSRSMigrate.IntegrationTests.Exporter
                 UserName = null,
                 WindowsCredentials = false
             };
+
+            outputPath = GetOutPutPath();
         }
 
         [TestFixtureTearDown]
@@ -87,7 +92,8 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         [TearDown]
         public void TearDown()
         {
-
+            foreach (DirectoryInfo dir in new DirectoryInfo(outputPath).GetDirectories())
+                dir.Delete(true);
         }
 
         #region Environment Setup/TearDown
@@ -111,13 +117,71 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         [Test]
         public void ExportDataSource()
         {
-            string filePath = Path.Combine(GetOutPutPath(), "SSRSMigrate_Tests")  + "\\Test Data Souce.json";
+            string filePath = outputPath + SSRSUtil.GetServerPathToPhysicalPath(dataSourceItem.Path, "json");
  
             ExportStatus actualStatus = exporter.SaveItem(dataSourceItem, filePath);
 
             Assert.True(actualStatus.Success);
             Assert.AreEqual(filePath, actualStatus.ToPath);
             Assert.Null(actualStatus.Errors);
+            Assert.True(File.Exists(filePath));
+            Assert.AreEqual(expectedDataSourceJson, File.ReadAllText(filePath));
+        }
+
+        [Test]
+        public void ExportDataSourceItem_NullItem()
+        {
+            string filePath = outputPath + SSRSUtil.GetServerPathToPhysicalPath(dataSourceItem.Path, "json");
+
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    exporter.SaveItem(null, filePath);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: item"));
+        }
+        
+        [Test]
+        public void ExportDataSourceItem_NullPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    exporter.SaveItem(dataSourceItem, null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("fileName"));
+        }
+
+        [Test]
+        public void ExportDataSourceItem_EmptyPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    exporter.SaveItem(dataSourceItem, "");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("fileName"));
+        }
+
+        [Test]
+        public void ExportDatasourceItem_FileDontOverwrite()
+        {
+            string filePath = outputPath + SSRSUtil.GetServerPathToPhysicalPath(dataSourceItem.Path, "json");
+            
+            // Create dummy file, so the output file already exists, causing the SaveItem to fail
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+            File.WriteAllText(filePath, "DUMMY FILE");
+
+            ExportStatus actualStatus = exporter.SaveItem(dataSourceItem, filePath, false);
+
+            Assert.False(actualStatus.Success);
+            Assert.AreEqual(filePath, actualStatus.ToPath);
+            Assert.NotNull(actualStatus.Errors);
+            Assert.True(actualStatus.Errors.Any(e => e.Contains(string.Format("File '{0}' already exists.", filePath))));
         }
     }
+
 }
