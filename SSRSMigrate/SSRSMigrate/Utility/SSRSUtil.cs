@@ -205,5 +205,22 @@ namespace SSRSMigrate.Utility
         {
             return Encoding.UTF8.GetString(byteArray);
         }
+
+        public static string GetServerPathToPhysicalPath(string serverPath, string fileExtension = null)
+        {
+            if (string.IsNullOrEmpty(serverPath))
+                throw new ArgumentException("serverPath");
+
+            string physicalPath = serverPath.Replace('/', '\\');
+
+            if (physicalPath.EndsWith("\\"))
+                physicalPath = physicalPath.Substring(0, physicalPath.LastIndexOf('\\'));
+
+            if (fileExtension != null)
+                
+                physicalPath += string.Format(".{0}", fileExtension);
+
+            return physicalPath;
+        }
     }
 }

@@ -439,5 +439,87 @@ namespace SSRSMigrate.Tests.Utilities
             Assert.AreEqual(expected, actual);
         }
         #endregion
+
+        #region SSRSUtil.GetServerPathToPhysicalPath Tests
+        [Test]
+        public void GetServerPathToPhysicalPath_NullPath()
+        {
+            string extension = "rdl";
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    string actual = SSRSUtil.GetServerPathToPhysicalPath(null, extension);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("serverPath"));
+        }
+
+        [Test]
+        public void GetServerPathToPhysicalPath_EmptyPath()
+        {
+            string extension = "rdl";
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    string actual = SSRSUtil.GetServerPathToPhysicalPath("", extension);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("serverPath"));
+        }
+
+        [Test]
+        public void GetServerPathToPhysicalPath_Folder_NullExtension()
+        {
+            string ssrsPath = "/SSRSMigrate/Reports/Sub Folder";
+
+            string expected = "\\SSRSMigrate\\Reports\\Sub Folder";
+
+            string actual = SSRSUtil.GetServerPathToPhysicalPath(ssrsPath, null);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetServerPathToPhysicalPath_Folder_PathEndsWithSlash()
+        {
+            string ssrsPath = "/SSRSMigrate/Reports/Sub Folder/";
+
+            string expected = "\\SSRSMigrate\\Reports\\Sub Folder";
+
+            string actual = SSRSUtil.GetServerPathToPhysicalPath(ssrsPath);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetServerPathToPhysicalPath_Report()
+        {
+            string ssrsPath = "/SSRSMigrate/Reports/Inquiry";
+            string extension = "rdl";
+
+            string expected = "\\SSRSMigrate\\Reports\\Inquiry.rdl";
+
+            string actual = SSRSUtil.GetServerPathToPhysicalPath(ssrsPath, extension);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetServerPathToPhysicalPath_Report_PathEndsWithSlash()
+        {
+            string ssrsPath = "/SSRSMigrate/Reports/Inquiry/";
+            string extension = "rdl";
+
+            string expected = "\\SSRSMigrate\\Reports\\Inquiry.rdl";
+
+            string actual = SSRSUtil.GetServerPathToPhysicalPath(ssrsPath, extension);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        
+        #endregion
     }
 }
