@@ -5,13 +5,17 @@ using System.Text;
 using SSRSMigrate.SSRS.Item;
 using System.IO;
 using System.Xml;
+using SSRSMigrate.Exporter.Writer;
 
 namespace SSRSMigrate.Exporter
 {
     public class ReportItemExporter : IItemExporter<ReportItem>
     {
-        public ReportItemExporter()
+        private IExportWriter mExportWriter = null;
+
+        public ReportItemExporter(IExportWriter exportWriter)
         {
+            this.mExportWriter = exportWriter;
         }
 
         public ExportStatus SaveItem(ReportItem item, string fileName, bool overwrite = true)
@@ -26,19 +30,16 @@ namespace SSRSMigrate.Exporter
             {
                 if (File.Exists(fileName) && !overwrite)
                     throw new IOException(string.Format("File '{0}' already exists.", fileName));
-                else if (File.Exists(fileName) && overwrite)
-                    File.Delete(fileName);
 
-                if (!Directory.Exists(Path.GetDirectoryName(fileName)))
-                    Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+                this.mExportWriter.Save(fileName, item.Definition, overwrite);
 
-                XmlDocument doc = new XmlDocument();
+                //XmlDocument doc = new XmlDocument();
 
-                using (MemoryStream oStream = new MemoryStream(item.Definition))
-                {
-                    doc.Load(oStream);
-                    doc.Save(fileName);
-                }
+                //using (MemoryStream oStream = new MemoryStream(item.Definition))
+                //{
+                //    doc.Load(oStream);
+                //    doc.Save(fileName);
+                //}
 
                 return new ExportStatus(fileName, item.Path, null, true);
             }

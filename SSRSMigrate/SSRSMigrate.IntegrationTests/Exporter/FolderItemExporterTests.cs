@@ -8,6 +8,7 @@ using SSRSMigrate.SSRS.Item;
 using System.Reflection;
 using System.IO;
 using SSRSMigrate.Utility;
+using SSRSMigrate.Exporter.Writer;
 
 namespace SSRSMigrate.IntegrationTests.Exporter
 {
@@ -16,6 +17,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
     class FolderItemExporterTests
     {
         FolderItemExporter exporter = null;
+        FolderExportWriter writer = null;
 
         List<FolderItem> folderItems = null;
 
@@ -26,7 +28,8 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         {
             EnvironmentSetup();
 
-            exporter = new FolderItemExporter();
+            writer = new FolderExportWriter();
+            exporter = new FolderItemExporter(writer);
 
             folderItems = new List<FolderItem>()
             {

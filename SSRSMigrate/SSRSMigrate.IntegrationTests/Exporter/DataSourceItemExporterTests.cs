@@ -8,6 +8,7 @@ using System.IO;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.Utility;
+using SSRSMigrate.Exporter.Writer;
 
 namespace SSRSMigrate.IntegrationTests.Exporter
 {
@@ -18,6 +19,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         DataSourceItemExporter exporter = null;
 
         DataSourceItem dataSourceItem = null;
+        FileExportWriter writer = null;
 
         #region Expected DataSourceItem serialzed as JSON
         string expectedDataSourceJson = @"{
@@ -54,7 +56,8 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         {
             EnvironmentSetup();
 
-            exporter = new DataSourceItemExporter();
+            writer = new FileExportWriter();
+            exporter = new DataSourceItemExporter(writer);
 
             dataSourceItem = new DataSourceItem()
             {

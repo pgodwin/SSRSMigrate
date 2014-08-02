@@ -9,6 +9,7 @@ using SSRSMigrate.Exporter;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.TestHelper;
 using SSRSMigrate.Utility;
+using SSRSMigrate.Exporter.Writer;
 
 namespace SSRSMigrate.IntegrationTests.Exporter
 {
@@ -17,6 +18,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
     class ReportItem2008ExporterTests
     {
         ReportItemExporter exporter = null;
+        FileExportWriter writer = null;
 
         List<ReportItem> reportItems = null;
         ReportItem reportItem_Inquiry;
@@ -45,7 +47,8 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         {
             EnvironmentSetup();
 
-            exporter = new ReportItemExporter();
+            writer = new FileExportWriter();
+            exporter = new ReportItemExporter(writer);
 
             reportItem_Inquiry = new ReportItem()
             {

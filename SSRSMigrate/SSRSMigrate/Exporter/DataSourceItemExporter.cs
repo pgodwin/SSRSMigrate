@@ -5,14 +5,17 @@ using System.Text;
 using SSRSMigrate.SSRS.Item;
 using Newtonsoft.Json;
 using System.IO;
+using SSRSMigrate.Exporter.Writer;
 
 namespace SSRSMigrate.Exporter
 {
     public class DataSourceItemExporter : IItemExporter<DataSourceItem>
     {
-        public DataSourceItemExporter()
-        {
+        private IExportWriter mExportWriter = null;
 
+        public DataSourceItemExporter(IExportWriter exportWriter)
+        {
+            this.mExportWriter = exportWriter;
         }
 
         public ExportStatus SaveItem(DataSourceItem item, string fileName, bool overwrite = true)
@@ -28,14 +31,13 @@ namespace SSRSMigrate.Exporter
                 if (File.Exists(fileName) && !overwrite)
                     throw new IOException(string.Format("File '{0}' already exists.", fileName));
 
-                if (!Directory.Exists(Path.GetDirectoryName(fileName)))
-                    Directory.CreateDirectory(Path.GetDirectoryName(fileName));
-
                 // Serialize DataSourceItem to JSON
                 string json = JsonConvert.SerializeObject(item, Formatting.Indented);
 
-                using (StreamWriter sw = new StreamWriter(fileName))
-                    sw.Write(json);
+                this.mExportWriter.Save(fileName, json, overwrite);
+
+                //using (StreamWriter sw = new StreamWriter(fileName))
+                //    sw.Write(json);
 
                 return new ExportStatus(fileName, item.Path, null, true);
             }
