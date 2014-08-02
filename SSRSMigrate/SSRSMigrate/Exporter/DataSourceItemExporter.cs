@@ -28,9 +28,6 @@ namespace SSRSMigrate.Exporter
 
             try
             {
-                if (File.Exists(fileName) && !overwrite)
-                    throw new IOException(string.Format("File '{0}' already exists.", fileName));
-
                 // Serialize DataSourceItem to JSON
                 string json = JsonConvert.SerializeObject(item, Formatting.Indented);
 

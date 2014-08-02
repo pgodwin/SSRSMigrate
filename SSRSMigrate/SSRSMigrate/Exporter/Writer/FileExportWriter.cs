@@ -14,6 +14,15 @@ namespace SSRSMigrate.Exporter.Writer
 
         public void Save(string fileName, bool overwrite = true)
         {
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentException("fileName");
+
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentException("fileName");
+
+            if (File.Exists(fileName) && !overwrite)
+                throw new IOException(string.Format("File '{0}' already exists.", fileName));
+
             if (File.Exists(fileName) && overwrite)
                 File.Delete(fileName);
 
@@ -26,6 +35,15 @@ namespace SSRSMigrate.Exporter.Writer
 
         public void Save(string fileName, string data, bool overwrite = true)
         {
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentException("fileName");
+
+            if (string.IsNullOrEmpty(data))
+                throw new ArgumentException("data");
+
+            if (File.Exists(fileName) && !overwrite)
+                throw new IOException(string.Format("File '{0}' already exists.", fileName));
+
             if (File.Exists(fileName) && overwrite)
                 File.Delete(fileName);
 
@@ -38,6 +56,15 @@ namespace SSRSMigrate.Exporter.Writer
 
         public void Save(string fileName, byte[] data, bool overwrite = true)
         {
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentException("fileName");
+
+            if (data == null)
+                throw new ArgumentNullException("data");
+
+            if (File.Exists(fileName) && !overwrite)
+                throw new IOException(string.Format("File '{0}' already exists.", fileName));
+
             if (File.Exists(fileName) && overwrite)
                 File.Delete(fileName);
 

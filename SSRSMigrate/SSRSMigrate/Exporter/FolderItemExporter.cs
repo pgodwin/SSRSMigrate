@@ -27,9 +27,6 @@ namespace SSRSMigrate.Exporter
 
             try
             {
-                if (Directory.Exists(fileName) && !overwrite)
-                    throw new IOException(string.Format("Directory '{0}' already exists.", fileName));
-
                 this.mExportWriter.Save(fileName, overwrite);
 
                 return new ExportStatus(fileName, item.Path, null, true);

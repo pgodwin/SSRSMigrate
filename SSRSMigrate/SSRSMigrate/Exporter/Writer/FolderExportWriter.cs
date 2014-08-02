@@ -15,6 +15,10 @@ namespace SSRSMigrate.Exporter.Writer
         //TODO This doesn't feel right
         public void Save(string fileName, bool overwrite = true)
         {
+            if (Directory.Exists(fileName) && !overwrite)
+                throw new IOException(string.Format("Directory '{0}' already exists.", fileName));
+
+
             if (Directory.Exists(fileName))
                 Directory.Delete(fileName, true);
 

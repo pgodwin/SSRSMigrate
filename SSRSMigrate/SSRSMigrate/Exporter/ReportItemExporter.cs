@@ -28,9 +28,6 @@ namespace SSRSMigrate.Exporter
 
             try
             {
-                if (File.Exists(fileName) && !overwrite)
-                    throw new IOException(string.Format("File '{0}' already exists.", fileName));
-
                 this.mExportWriter.Save(fileName, item.Definition, overwrite);
 
                 //XmlDocument doc = new XmlDocument();
