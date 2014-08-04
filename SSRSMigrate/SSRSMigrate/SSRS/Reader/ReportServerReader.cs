@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Repository;
+using SSRSMigrate.SSRS.Errors;
 
 namespace SSRSMigrate.SSRS.Reader
 {
@@ -25,6 +26,9 @@ namespace SSRSMigrate.SSRS.Reader
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
 
+            if (!this.mReportRepository.ValidatePath(path))
+                throw new InvalidPathCharsException(path);
+
             List<FolderItem> folders = this.mReportRepository.GetFolders(path);
 
             return folders;
@@ -37,6 +41,9 @@ namespace SSRSMigrate.SSRS.Reader
 
             if (progressReporter == null)
                 throw new ArgumentNullException("progressReporter");
+
+            if (!this.mReportRepository.ValidatePath(path))
+                throw new InvalidPathCharsException(path);
 
             var folders = this.mReportRepository.GetFolderList(path);
 
@@ -51,6 +58,9 @@ namespace SSRSMigrate.SSRS.Reader
             if (string.IsNullOrEmpty(reportPath))
                 throw new ArgumentException("reportPath");
 
+            if (!this.mReportRepository.ValidatePath(reportPath))
+                throw new InvalidPathCharsException(reportPath);
+
             ReportItem report = this.mReportRepository.GetReport(reportPath);
 
             return report;
@@ -60,6 +70,9 @@ namespace SSRSMigrate.SSRS.Reader
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
+
+            if (!this.mReportRepository.ValidatePath(path))
+                throw new InvalidPathCharsException(path);
 
             return this.mReportRepository.GetReports(path);
         }
@@ -71,6 +84,9 @@ namespace SSRSMigrate.SSRS.Reader
 
             if (progressReporter == null)
                 throw new ArgumentNullException("progressReporter");
+
+            if (!this.mReportRepository.ValidatePath(path))
+                throw new InvalidPathCharsException(path);
 
             var reports = this.mReportRepository.GetReportsList(path);
 
@@ -85,6 +101,9 @@ namespace SSRSMigrate.SSRS.Reader
             if (string.IsNullOrEmpty(dataSourcePath))
                 throw new ArgumentException("dataSourcePath");
 
+            if (!this.mReportRepository.ValidatePath(dataSourcePath))
+                throw new InvalidPathCharsException(dataSourcePath);
+
             DataSourceItem dataSource = this.mReportRepository.GetDataSource(dataSourcePath);
 
             return dataSource;
@@ -94,6 +113,9 @@ namespace SSRSMigrate.SSRS.Reader
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
+
+            if (!this.mReportRepository.ValidatePath(path))
+                throw new InvalidPathCharsException(path);
 
             return this.mReportRepository.GetDataSources(path);
         }
@@ -105,6 +127,9 @@ namespace SSRSMigrate.SSRS.Reader
 
             if (progressReporter == null)
                 throw new ArgumentNullException("progressReporter");
+
+            if (!this.mReportRepository.ValidatePath(path))
+                throw new InvalidPathCharsException(path);
 
             var dataSources = this.mReportRepository.GetDataSourcesList(path);
 

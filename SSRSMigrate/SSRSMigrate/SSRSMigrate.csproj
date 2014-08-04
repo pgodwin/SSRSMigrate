@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SSRS\Errors\Exceptions.cs" />
     <Compile Include="SSRS\Item\DataSourceItem.cs" />
     <Compile Include="SSRS\Item\FolderItem.cs" />
     <Compile Include="SSRS\Reader\IReportServerReader.cs" />

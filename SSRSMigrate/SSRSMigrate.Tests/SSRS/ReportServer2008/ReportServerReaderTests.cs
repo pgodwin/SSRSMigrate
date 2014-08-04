@@ -20,7 +20,6 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: repository"));
-        
         }
     }
 }

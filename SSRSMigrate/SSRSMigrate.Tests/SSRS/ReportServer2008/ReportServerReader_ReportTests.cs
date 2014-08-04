@@ -220,6 +220,9 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
             reportServerRepositoryMock.Setup(r => r.GetReportsList("/SSRSMigrate_Tests Doesnt Exist"))
                 .Returns(() => new List<ReportItem>());
 
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.IsAny<string>()))
+                .Returns(() => true);
+
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
         }
 

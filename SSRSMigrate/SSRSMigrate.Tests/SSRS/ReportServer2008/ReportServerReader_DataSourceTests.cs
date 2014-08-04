@@ -8,6 +8,7 @@ using Moq;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Repository;
+using SSRSMigrate.SSRS.Errors;
 
 namespace SSRSMigrate.Tests.SSRS.ReportServer2008
 {
@@ -130,6 +131,10 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
             reportServerRepositoryMock.Setup(r => r.GetDataSourcesList("/SSRSMigrate_Tests Doesnt Exist"))
                 .Returns(() => new List<DataSourceItem>());
 
+            //TODO Need to actually mock ValidatePath
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.IsAny<string>()))
+                .Returns(() => true);
+
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
         }
 
@@ -191,6 +196,18 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
 
             Assert.That(ex.Message, Is.EqualTo("dataSourcePath"));
         }
+
+        [Test]
+        public void GetDataSource_InvalidPath()
+        {
+            InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
+                delegate
+                {
+                    reader.GetDataSource("/SSRSMigrate_Tests/Test.Data Source");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("dataSourcePath"));
+        }
         #endregion
 
         #region GetDataSources Tests
@@ -231,6 +248,18 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
                 delegate
                 {
                     reader.GetDataSources("");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetDataSources_InvalidPath()
+        {
+            InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
+                delegate
+                {
+                    reader.GetDataSources("/SSRSMigrate.Tests");
                 });
 
             Assert.That(ex.Message, Is.EqualTo("path"));
@@ -290,6 +319,18 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
+        }
+
+        [Test]
+        public void GetDataSources_UsingDelegate_InvalidPath()
+        {
+            InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
+                delegate
+                {
+                    reader.GetDataSources("/SSRSMigrate.Tests/", GetDataSources_Reporter);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
         }
 
         private void GetDataSources_Reporter(DataSourceItem dataSourceItem)
