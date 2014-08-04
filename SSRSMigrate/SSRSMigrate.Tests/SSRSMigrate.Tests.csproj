@@ -75,7 +75,7 @@
   <ItemGroup>
     <Compile Include="Exporter\DataSourceItemExporterTests.cs" />
     <Compile Include="Exporter\FolderItemExporterTests.cs" />
-    <Compile Include="Exporter\ReportItem2008Tests.cs" />
+    <Compile Include="Exporter\ReportItem2008ExporterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SSRS\ReportServer2008\ReportServerReaderTests.cs" />
     <Compile Include="SSRS\ReportServer2008\ReportServerReader_DataSourceTests.cs" />

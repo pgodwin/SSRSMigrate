@@ -118,7 +118,6 @@ namespace SSRSMigrate.Tests.Exporter
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: item"));
-        
         }
 
         [Test]
