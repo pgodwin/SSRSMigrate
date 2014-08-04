@@ -7,6 +7,8 @@ using Moq;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Repository;
+using SSRSMigrate.SSRS.Errors;
+using System.Text.RegularExpressions;
 
 namespace SSRSMigrate.Tests.SSRS.ReportServer2008
 {
@@ -76,8 +78,12 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
             reportServerRepositoryMock.Setup(r => r.GetFolderList("/SSRSMigrate_Tests Doesnt Exist"))
                 .Returns(() => new List<FolderItem>());
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.IsAny<string>()))
-                .Returns(() => true);
+            // Setup IReportServerRepository.ValidatePath Mocks
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == true)))
+               .Returns(() => false);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == false)))
+               .Returns(() => true);
 
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
         }
@@ -139,6 +145,20 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
 
             Assert.That(ex.Message, Is.EqualTo("path"));
         }
+
+        [Test]
+        public void GetFolders_InvalidPath()
+        {
+            string invalidPath = "/SSRSMigrate.Tests";
+
+            InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
+                delegate
+                {
+                    reader.GetFolders(invalidPath);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(invalidPath));
+        }
         #endregion
 
         #region GetFolders Using Action<FolderItem> Tests
@@ -192,6 +212,20 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
+        }
+
+        [Test]
+        public void GetFolders_UsingDelegate_InvalidPath()
+        {
+            string invalidPath = "/SSRSMigrate.Tests";
+
+            InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
+                delegate
+                {
+                    reader.GetFolders(invalidPath, GetFolders_Reporter);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(invalidPath));
         }
 
         private void GetFolders_Reporter(FolderItem folderItem)

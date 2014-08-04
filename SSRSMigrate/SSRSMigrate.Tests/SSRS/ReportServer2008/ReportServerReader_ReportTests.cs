@@ -8,6 +8,8 @@ using SSRSMigrate.TestHelper;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Repository;
+using System.Text.RegularExpressions;
+using SSRSMigrate.SSRS.Errors;
 
 namespace SSRSMigrate.Tests.SSRS.ReportServer2008
 {
@@ -220,8 +222,12 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
             reportServerRepositoryMock.Setup(r => r.GetReportsList("/SSRSMigrate_Tests Doesnt Exist"))
                 .Returns(() => new List<ReportItem>());
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.IsAny<string>()))
-                .Returns(() => true);
+            // Setup IReportServerRepository.ValidatePath Mocks
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == true)))
+               .Returns(() => false);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == false)))
+               .Returns(() => true);
 
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
         }
@@ -291,6 +297,20 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
         }
 
         [Test]
+        public void GetReport_InvalidPath()
+        {
+            string invalidPath = "/SSRSMigrate_Tests/Reports/Invalid.Report";
+
+            InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
+                delegate
+                {
+                    reader.GetReport(invalidPath);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(invalidPath));
+        }
+
+        [Test]
         public void GetReport_WithSubReports()
         {
             ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_Tests/Reports/Listing");
@@ -346,6 +366,20 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
             Assert.NotNull(actual);
             Assert.AreEqual(0, actual.Count());
         }
+
+        [Test]
+        public void GetReports_InvalidPath()
+        {
+            string invalidPath = "/SSRSMigrate.Tests";
+
+            InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
+                delegate
+                {
+                    reader.GetReports(invalidPath);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(invalidPath));
+        }
         #endregion
 
         #region GetReportsList Tests
@@ -399,6 +433,20 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
             reader.GetReports("/SSRSMigrate_Tests Doesnt Exist", GetReports_Reporter);
 
             Assert.AreEqual(0, actualReportItems.Count());
+        }
+
+        [Test]
+        public void GetReports_UsingDelegate_InvalidPath()
+        {
+            string invalidPath = "/SSRSMigrate.Tests";
+
+            InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
+                delegate
+                {
+                    reader.GetReports(invalidPath, GetReports_Reporter);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(invalidPath));
         }
 
         private void GetReports_Reporter(ReportItem reportItem)
