@@ -62,7 +62,8 @@ namespace SSRSMigrate.Tests.Exporter
             exportWriterMock = new Mock<IExportWriter>();
 
             exportWriterMock.Setup(e => e.Save(It.IsAny<string>(), It.IsAny<string>(), true));
-
+            
+            // Mock IExporter.Save where the filename exists but overwrite = false
             exportWriterMock.Setup(e => e.Save(expectedDataSourceItemFileName, It.IsAny<string>(), false))
                 .Throws(new IOException(string.Format("File '{0}' already exists.", expectedDataSourceItemFileName)));
 
@@ -77,7 +78,6 @@ namespace SSRSMigrate.Tests.Exporter
         [SetUp]
         public void SetUp()
         {
-
         }
 
         [TearDown]
@@ -106,8 +106,44 @@ namespace SSRSMigrate.Tests.Exporter
             Assert.False(actualStatus.Success);
             Assert.NotNull(actualStatus.Errors);
             Assert.AreEqual(actualStatus.Errors[0], string.Format("File '{0}' already exists.", expectedDataSourceItemFileName));
+        }
 
-         }
+        [Test]
+        public void SaveItem_NullItem()
+        {
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    exporter.SaveItem(null, expectedDataSourceItemFileName);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: item"));
+        
+        }
+
+        [Test]
+        public void SaveItem_NullFileName()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    exporter.SaveItem(expectedDataSourceItem, null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("fileName"));
+        }
+
+        [Test]
+        public void SaveItem_EmptyFileName()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    exporter.SaveItem(expectedDataSourceItem, "");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("fileName"));
+        }
         #endregion
     }
 }
