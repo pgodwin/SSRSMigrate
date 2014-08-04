@@ -8,6 +8,9 @@ namespace SSRSMigrate.SSRS.Repository
 {
     public interface IReportServerRepository : IDisposable
     {
+        // Properties
+        string InvalidPathChars { get; }
+
         // Folders
         List<FolderItem> GetFolders(string path);
         IEnumerable<FolderItem> GetFolderList(string path);
@@ -26,6 +29,9 @@ namespace SSRSMigrate.SSRS.Repository
         List<DataSourceItem> GetDataSources(string path);
         IEnumerable<DataSourceItem> GetDataSourcesList(string path);
         string[] WriteDataSource(string dataSourcePath, DataSourceItem dataSource);
+
+        // Misc.
+        bool ValidatePath(string path);
 
         // Items
         bool ItemExists(string itemPath, string itemType);

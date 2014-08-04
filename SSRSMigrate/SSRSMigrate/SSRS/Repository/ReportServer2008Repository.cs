@@ -13,6 +13,7 @@ namespace SSRSMigrate.SSRS.Repository
     {
         private ReportingService2005 mReportingService;
         private string mRootPath = null;
+        private string mInvalidPathChars = ":?;@&=+$,\\*><|.\"";
 
         public ReportServer2008Repository(string rootPath, ReportingService2005 reportingService)
         {
@@ -47,6 +48,13 @@ namespace SSRSMigrate.SSRS.Repository
                 }
             }
         }
+
+        #region Properties
+        public string InvalidPathChars
+        {
+            get { return this.mInvalidPathChars; }
+        }
+        #endregion
 
         #region Folder Methods
         public List<FolderItem> GetFolders(string path)
@@ -347,6 +355,16 @@ namespace SSRSMigrate.SSRS.Repository
             ds.WindowsCredentials = dsDef.WindowsCredentials;
 
             return ds;
+        }
+        #endregion
+
+        #region Misc.
+        public bool ValidatePath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            return path.IndexOfAny(this.mInvalidPathChars.ToCharArray()) < 0;
         }
         #endregion
 
