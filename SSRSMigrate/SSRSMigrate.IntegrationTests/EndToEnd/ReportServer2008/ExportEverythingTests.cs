@@ -105,8 +105,8 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd.ReportServer2008
         [TearDown]
         public void TearDown()
         {
-            //foreach (DirectoryInfo dir in new DirectoryInfo(outputPath).GetDirectories())
-            //    dir.Delete(true);
+            foreach (DirectoryInfo dir in new DirectoryInfo(outputPath).GetDirectories())
+                dir.Delete(true);
 
             actualReportItems = null;
             actualDataSourceItems = null;
@@ -288,11 +288,11 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd.ReportServer2008
 
         public void EnvironmentTearDown()
         {
-            //Directory.Delete(GetOutPutPath(), true);
+            Directory.Delete(GetOutPutPath(), true);
         }
         #endregion
 
-        #region ExportFolders Tests
+        #region Export Folders Tests
         [Test]
         public void ExportFolders()
         {
@@ -307,14 +307,18 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd.ReportServer2008
                     saveFilePath,
                     true);
 
+                // Export was successful
                 Assert.True(actualStatus.Success, string.Format("Success; {0}", actualFolderItem.Path));
-                Assert.AreEqual(saveFilePath, actualStatus.ToPath, string.Format("ToPath; {0}", actualFolderItem.Path));
-                Assert.AreEqual(actualFolderItem.Path, actualStatus.FromPath, string.Format("ToPath; {0}", actualFolderItem.Path));
-            }
 
-            Assert.True(Directory.Exists(outputPath + "\\SSRSMigrate_Tests\\Reports"));
-            Assert.True(Directory.Exists(outputPath + "\\SSRSMigrate_Tests\\Test Folder"));
-            Assert.True(Directory.Exists(outputPath + "\\SSRSMigrate_Tests\\Reports\\Sub Folder"));
+                // Exported to the expected location
+                Assert.AreEqual(saveFilePath, actualStatus.ToPath, string.Format("ToPath; {0}", actualFolderItem.Path));
+
+                // Was exported from the expected location
+                Assert.AreEqual(actualFolderItem.Path, actualStatus.FromPath, string.Format("ToPath; {0}", actualFolderItem.Path));
+
+                // The exported FolderItem exists on disk
+                Assert.True(Directory.Exists(actualStatus.ToPath));
+            }
         }
 
         private void GetFolders_Reporter(FolderItem folderItem)
@@ -323,7 +327,7 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd.ReportServer2008
         }
         #endregion
 
-        #region ExportReports Tests
+        #region Export Reports Tests
         [Test]
         public void ExportReports()
         {
@@ -338,36 +342,67 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd.ReportServer2008
                     saveFilePath,
                     true);
 
+                // Export was successful
                 Assert.True(actualStatus.Success, string.Format("Success; {0}", actualReportItem.Path));
+                
+                // Exported to the expected location
                 Assert.AreEqual(saveFilePath, actualStatus.ToPath, string.Format("ToPath; {0}", actualReportItem.Path));
+                
+                // Was exported from the expected location
                 Assert.AreEqual(actualReportItem.Path, actualStatus.FromPath, string.Format("ToPath; {0}", actualReportItem.Path));
+
+                // The exported ReportItem exists on disk
+                Assert.True(File.Exists(actualStatus.ToPath));
             }
 
-            Assert.True(File.Exists(outputPath + "\\SSRSMigrate_Tests\\Reports\\Inquiry.rdl"));
+            // The exported reports file matches the expected file
             Assert.True(TesterUtility.CompareTextFiles(testReportFiles[0], outputPath + "\\SSRSMigrate_Tests\\Reports\\Inquiry.rdl"));
-
-            Assert.True(File.Exists(outputPath + "\\SSRSMigrate_Tests\\Reports\\Listing.rdl"));
             Assert.True(TesterUtility.CompareTextFiles(testReportFiles[1], outputPath + "\\SSRSMigrate_Tests\\Reports\\Listing.rdl"));
-
-            Assert.True(File.Exists(outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Addresses.rdl"));
             Assert.True(TesterUtility.CompareTextFiles(testReportFiles[2], outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Addresses.rdl"));
-
-            Assert.True(File.Exists(outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Categories.rdl"));
             Assert.True(TesterUtility.CompareTextFiles(testReportFiles[3], outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Categories.rdl"));
-
-            Assert.True(File.Exists(outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Phone Numbers.rdl"));
             Assert.True(TesterUtility.CompareTextFiles(testReportFiles[4], outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Phone Numbers.rdl"));
-
-            Assert.True(File.Exists(outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Related Contacts.rdl"));
             Assert.True(TesterUtility.CompareTextFiles(testReportFiles[5], outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Related Contacts.rdl"));
-
-            Assert.True(File.Exists(outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Related Matters.rdl"));
             Assert.True(TesterUtility.CompareTextFiles(testReportFiles[6], outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Related Matters.rdl"));
         }
 
         private void GetReports_Reporter(ReportItem reportItem)
         {
             actualReportItems.Add(reportItem);
+        }
+        #endregion
+
+        #region Export DataSources Tests
+        [Test]
+        public void ExportDataSources()
+        {
+            reader.GetDataSources("/SSRSMigrate_Tests", GetDataSources_Reporter);
+
+            foreach (DataSourceItem actualDataSourceItem in actualDataSourceItems)
+            {
+                string saveFilePath = outputPath + SSRSUtil.GetServerPathToPhysicalPath(actualDataSourceItem.Path, "json");
+
+                ExportStatus actualStatus = dataSourceExporter.SaveItem(
+                    actualDataSourceItem,
+                    saveFilePath,
+                    true);
+
+                // Export was successful
+                Assert.True(actualStatus.Success, string.Format("Success; {0}", actualDataSourceItem.Path));
+                
+                // Was exported to the expected location
+                Assert.AreEqual(saveFilePath, actualStatus.ToPath, string.Format("ToPath; {0}", actualDataSourceItem.Path));
+                
+                // Was exported from the expected location
+                Assert.AreEqual(actualDataSourceItem.Path, actualStatus.FromPath, string.Format("ToPath; {0}", actualDataSourceItem.Path));
+                
+                // The exported DataSourceItem exists on disk
+                Assert.True(File.Exists(actualStatus.ToPath));
+            }
+        }
+
+        private void GetDataSources_Reporter(DataSourceItem dataSourceItem)
+        {
+            actualDataSourceItems.Add(dataSourceItem);
         }
         #endregion
     }
