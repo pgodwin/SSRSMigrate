@@ -300,12 +300,16 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd.ReportServer2008
 
             foreach (FolderItem actualFolderItem in actualFolderItems)
             {
-                string saveFilePath =  outputPath + SSRSUtil.GetServerPathToPhysicalPath(actualFolderItem.Path);
+                string saveFilePath = outputPath + SSRSUtil.GetServerPathToPhysicalPath(actualFolderItem.Path);
 
                 ExportStatus actualStatus = folderExporter.SaveItem(
-                    actualFolderItem, 
-                    saveFilePath, 
+                    actualFolderItem,
+                    saveFilePath,
                     true);
+
+                Assert.True(actualStatus.Success, string.Format("Success; {0}", actualFolderItem.Path));
+                Assert.AreEqual(saveFilePath, actualStatus.ToPath, string.Format("ToPath; {0}", actualFolderItem.Path));
+                Assert.AreEqual(actualFolderItem.Path, actualStatus.FromPath, string.Format("ToPath; {0}", actualFolderItem.Path));
             }
 
             Assert.True(Directory.Exists(outputPath + "\\SSRSMigrate_Tests\\Reports"));
@@ -333,6 +337,10 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd.ReportServer2008
                     actualReportItem,
                     saveFilePath,
                     true);
+
+                Assert.True(actualStatus.Success, string.Format("Success; {0}", actualReportItem.Path));
+                Assert.AreEqual(saveFilePath, actualStatus.ToPath, string.Format("ToPath; {0}", actualReportItem.Path));
+                Assert.AreEqual(actualReportItem.Path, actualStatus.FromPath, string.Format("ToPath; {0}", actualReportItem.Path));
             }
 
             Assert.True(File.Exists(outputPath + "\\SSRSMigrate_Tests\\Reports\\Inquiry.rdl"));
