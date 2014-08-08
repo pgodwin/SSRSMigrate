@@ -76,35 +76,38 @@
     <Compile Include="Exporter\DataSourceItemExporterTests.cs" />
     <Compile Include="Exporter\ExportStatusTests.cs" />
     <Compile Include="Exporter\FolderItemExporterTests.cs" />
-    <Compile Include="Exporter\ReportItem2008ExporterTests.cs" />
+    <Compile Include="Exporter\ReportItem2005ExporterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SSRS\ReportServer2008\ReportServerReaderTests.cs" />
-    <Compile Include="SSRS\ReportServer2008\ReportServerReader_DataSourceTests.cs" />
-    <Compile Include="SSRS\ReportServer2008\ReportServerReader_FolderTests.cs" />
-    <Compile Include="SSRS\ReportServer2008\ReportServerReader_ReportTests.cs" />
+    <Compile Include="SSRS\ReportServer2010\ReportServerReader_DatasourceTests.cs" />
+    <Compile Include="SSRS\ReportServer2010\ReportServerReader_FolderTests.cs" />
+    <Compile Include="SSRS\ReportServer2010\ReportServerReader_ReportTests.cs" />
+    <Compile Include="SSRS\ReportServerReaderTests.cs" />
+    <Compile Include="SSRS\ReportServer2005\ReportServerReader_DataSourceTests.cs" />
+    <Compile Include="SSRS\ReportServer2005\ReportServerReader_FolderTests.cs" />
+    <Compile Include="SSRS\ReportServer2005\ReportServerReader_ReportTests.cs" />
     <Compile Include="Utilities\SSRSUtil_Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Test Reports\2008\Inquiry.rdl">
+    <None Include="Test Reports\2005\Inquiry.rdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Test Reports\2008\Listing.rdl">
+    <None Include="Test Reports\2005\Listing.rdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Test Reports\2008\SUB-Addresses.rdl">
+    <None Include="Test Reports\2005\SUB-Addresses.rdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Test Reports\2008\SUB-Categories.rdl">
+    <None Include="Test Reports\2005\SUB-Categories.rdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Test Reports\2008\SUB-Phone Numbers.rdl">
+    <None Include="Test Reports\2005\SUB-Phone Numbers.rdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Test Reports\2008\SUB-Related Contacts.rdl">
+    <None Include="Test Reports\2005\SUB-Related Contacts.rdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Test Reports\2008\SUB-Related Matters.rdl">
+    <None Include="Test Reports\2005\SUB-Related Matters.rdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Test Reports\2010\Inquiry.rdl">
@@ -139,9 +142,7 @@
       <Name>SSRSMigrate</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SSRS\ReportServer2008_R2\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -15,7 +15,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
 {
     [TestFixture]
     [CoverageExcludeAttribute]
-    class ReportItem2008ExporterTests
+    class ReportItem2005ExporterTests
     {
         ReportItemExporter exporter = null;
         FileExportWriter writer = null;
@@ -31,13 +31,13 @@ namespace SSRSMigrate.IntegrationTests.Exporter
 
         string[] testReportFiles = new string[]
         {
-            "Test Reports\\2008\\Inquiry.rdl",
-            "Test Reports\\2008\\Listing.rdl",
-            "Test Reports\\2008\\SUB-Addresses.rdl",
-            "Test Reports\\2008\\SUB-Categories.rdl",
-            "Test Reports\\2008\\SUB-Phone Numbers.rdl",
-            "Test Reports\\2008\\SUB-Related Contacts.rdl",
-            "Test Reports\\2008\\SUB-Related Matters.rdl"
+            "Test Reports\\2005\\Inquiry.rdl",
+            "Test Reports\\2005\\Listing.rdl",
+            "Test Reports\\2005\\SUB-Addresses.rdl",
+            "Test Reports\\2005\\SUB-Categories.rdl",
+            "Test Reports\\2005\\SUB-Phone Numbers.rdl",
+            "Test Reports\\2005\\SUB-Related Contacts.rdl",
+            "Test Reports\\2005\\SUB-Related Matters.rdl"
         };
 
         string outputPath = null;

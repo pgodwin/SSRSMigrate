@@ -9,13 +9,13 @@ using SSRSMigrate.SSRS.Item;
 
 namespace SSRSMigrate.SSRS.Repository
 {
-    public class ReportServer2008Repository : IReportServerRepository
+    public class ReportServer2005Repository : IReportServerRepository
     {
         private ReportingService2005 mReportingService;
         private string mRootPath = null;
         private string mInvalidPathChars = ":?;@&=+$,\\*><|.\"";
 
-        public ReportServer2008Repository(string rootPath, ReportingService2005 reportingService)
+        public ReportServer2005Repository(string rootPath, ReportingService2005 reportingService)
         {
             if (string.IsNullOrEmpty(rootPath))
                 throw new ArgumentException("rootPath");
@@ -27,7 +27,7 @@ namespace SSRSMigrate.SSRS.Repository
             this.mReportingService = reportingService;
         }
 
-        ~ReportServer2008Repository()
+        ~ReportServer2005Repository()
         {
             Dispose(false);
         }

@@ -14,12 +14,12 @@ namespace SSRSMigrate.Tests.Exporter
 {
     [TestFixture]
     [CoverageExcludeAttribute]
-    class ReportItem2008ExporterTests
+    class ReportItem2005ExporterTests
     {
         ReportItemExporter exporter = null;
         Mock<IExportWriter> exportWriterMock = null;
         ReportItem reportItem;
-        string testReportPath = "Test Reports\\2008\\Inquiry.rdl";
+        string testReportPath = "Test Reports\\2005\\Inquiry.rdl";
 
         #region Expected Values
         string expectedReportItemFileName = "C:\\temp\\SSRSMigrate_Tests\\Reports\\Inquiry.rdl";

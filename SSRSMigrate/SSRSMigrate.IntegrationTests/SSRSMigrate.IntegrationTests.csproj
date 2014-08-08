@@ -73,19 +73,19 @@
   <ItemGroup>
     <Compile Include="DependencyModule.cs" />
     <Compile Include="DependencySingleton.cs" />
-    <Compile Include="EndToEnd\ReportServer2008\ExportEverythingTests.cs" />
+    <Compile Include="EndToEnd_Export\ReportServer2005\ExportEverythingTests.cs" />
     <Compile Include="Exporter\DataSourceItemExporterTests.cs" />
     <Compile Include="Exporter\FolderItemExporterTests.cs" />
-    <Compile Include="Exporter\ReportItem2008ExporterTests.cs" />
+    <Compile Include="Exporter\ReportItem2005ExporterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SSRS\ReportServer2008\ReportServerReader_DataSourceTests.cs" />
-    <Compile Include="SSRS\ReportServer2008\ReportServerReader_FolderTests.cs" />
-    <Compile Include="SSRS\ReportServer2008\ReportServerReader_ReportTests.cs" />
+    <Compile Include="SSRS\ReportServer2005\ReportServerReader_DataSourceTests.cs" />
+    <Compile Include="SSRS\ReportServer2005\ReportServerReader_FolderTests.cs" />
+    <Compile Include="SSRS\ReportServer2005\ReportServerReader_ReportTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -110,7 +110,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SSRS\ReportServer2008_R2\" />
+    <Folder Include="SSRS\ReportServer2010\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

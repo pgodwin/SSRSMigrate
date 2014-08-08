@@ -11,7 +11,7 @@ using SSRSMigrate.SSRS.Repository;
 using System.Text.RegularExpressions;
 using SSRSMigrate.SSRS.Errors;
 
-namespace SSRSMigrate.Tests.SSRS.ReportServer2008
+namespace SSRSMigrate.Tests.SSRS.ReportServer2005
 {
     [TestFixture]
     [CoverageExcludeAttribute]
@@ -50,7 +50,7 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
                 ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
                 Size = 10,
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\Inquiry.rdl"))
             };
 
             // Setup GetReports - Expected ReportItems
@@ -69,7 +69,7 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
                     ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
                     Size = 10,
                     VirtualPath = null,
-                    Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\Listing.rdl")),
+                    Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\Listing.rdl")),
                     SubReports = new List<ReportItem>()
                     {
                         new ReportItem()
@@ -84,7 +84,7 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
                             ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
                             Size = 10,
                             VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Addresses.rdl")),
+                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\SUB-Addresses.rdl")),
                         },
                         new ReportItem()
                         {
@@ -98,7 +98,7 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
                             ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
                             Size = 10,
                             VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Categories.rdl")),
+                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\SUB-Categories.rdl")),
                         },
                         new ReportItem()
                         {
@@ -112,7 +112,7 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
                             ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
                             Size = 10,
                             VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Phone Numbers.rdl")),
+                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\SUB-Phone Numbers.rdl")),
                         },
                         new ReportItem()
                         {
@@ -126,7 +126,7 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
                             ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
                             Size = 10,
                             VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Related Contacts.rdl")),
+                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\SUB-Related Contacts.rdl")),
                         },
                         new ReportItem()
                         {
@@ -140,7 +140,7 @@ namespace SSRSMigrate.Tests.SSRS.ReportServer2008
                             ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
                             Size = 10,
                             VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2008\\SUB-Related Matters.rdl")),
+                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\SUB-Related Matters.rdl")),
                         },
                     }
                 }

@@ -8,7 +8,7 @@ using SSRSMigrate.SSRS.Item;
 
 public class CoverageExcludeAttribute : System.Attribute { }
 
-namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2008
+namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
 {
     [TestFixture]
     [CoverageExcludeAttribute]

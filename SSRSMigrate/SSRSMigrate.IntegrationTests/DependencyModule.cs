@@ -15,12 +15,12 @@ namespace SSRSMigrate.IntegrationTests
     {
         public override void Load()
         {
-            this.Bind<IReportServerRepository>().ToProvider(new ReportServer2008RepositoryProvider());
+            this.Bind<IReportServerRepository>().ToProvider(new ReportServer2005RepositoryProvider());
         }
     }
 
     [CoverageExcludeAttribute]
-    public class ReportServer2008RepositoryProvider : Provider<IReportServerRepository>
+    public class ReportServer2005RepositoryProvider : Provider<IReportServerRepository>
     {
         protected override IReportServerRepository CreateInstance(IContext context)
         {
@@ -34,7 +34,7 @@ namespace SSRSMigrate.IntegrationTests
             service.PreAuthenticate = true;
             service.UseDefaultCredentials = true;
 
-            return new ReportServer2008Repository(path, service);
+            return new ReportServer2005Repository(path, service);
         }
     }
 }
