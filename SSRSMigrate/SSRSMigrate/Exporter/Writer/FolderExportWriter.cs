@@ -12,7 +12,6 @@ namespace SSRSMigrate.Exporter.Writer
         {
         }
 
-        //TODO This doesn't feel right
         public void Save(string fileName, bool overwrite = true)
         {
             if (Directory.Exists(fileName) && !overwrite)
@@ -27,12 +26,12 @@ namespace SSRSMigrate.Exporter.Writer
 
         public void Save(string fileName, string data, bool overwrite = true)
         {
-            throw new NotImplementedException();
+            this.Save(fileName, overwrite);
         }
 
         public void Save(string fileName, byte[] data, bool overwrite = true)
         {
-            throw new NotImplementedException();
+            this.Save(fileName, overwrite);
         }
     }
 }
