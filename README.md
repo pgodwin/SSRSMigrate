@@ -15,29 +15,25 @@ Planned Features
 Prerequisites
 -----
 
-You can get the third party libraries using NuGet.
+These prerequisites are installed automatically by NuGet.
 
-Moq:
-```
-Install-Package Moq 
-```
+#### SSRSMigrate
 
-Ninject:
-```
-Install-Package Ninject 
-```
+* Ninject
+* DotNetZip
+* log4net
+* Newtonsoft.Json
 
-DotNetZip:
-```
-Install-Package DotNetZip 
-```
+#### SSRSmigrate.IntegrationTests
 
-log4net:
-```
- Install-Package log4net 
-```
+* NUnit
+* Ninject
+* Newtonsoft.Json
 
-Usage
------
+#### SSRSMigrate.Tests
 
-NIL
+* NUnit
+* Moq
+* Ninject
+* Newtonsoft.Json
+
