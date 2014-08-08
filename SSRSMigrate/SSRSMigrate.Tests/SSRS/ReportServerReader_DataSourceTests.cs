@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using SSRSMigrate.ReportServer2005;
 using Moq;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
@@ -11,7 +10,7 @@ using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.SSRS.Errors;
 using System.Text.RegularExpressions;
 
-namespace SSRSMigrate.Tests.SSRS.ReportServer2005
+namespace SSRSMigrate.Tests.SSRS
 {
     [TestFixture]
     [CoverageExcludeAttribute]

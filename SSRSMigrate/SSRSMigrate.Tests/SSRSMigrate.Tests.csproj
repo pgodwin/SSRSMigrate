@@ -78,12 +78,10 @@
     <Compile Include="Exporter\FolderItemExporterTests.cs" />
     <Compile Include="Exporter\ReportItem2005ExporterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SSRS\ReportServer2010\ReportServerReader_DatasourceTests.cs" />
-    <Compile Include="SSRS\ReportServer2010\ReportServerReader_FolderTests.cs" />
     <Compile Include="SSRS\ReportServer2010\ReportServerReader_ReportTests.cs" />
     <Compile Include="SSRS\ReportServerReaderTests.cs" />
-    <Compile Include="SSRS\ReportServer2005\ReportServerReader_DataSourceTests.cs" />
-    <Compile Include="SSRS\ReportServer2005\ReportServerReader_FolderTests.cs" />
+    <Compile Include="SSRS\ReportServerReader_DataSourceTests.cs" />
+    <Compile Include="SSRS\ReportServerReader_FolderTests.cs" />
     <Compile Include="SSRS\ReportServer2005\ReportServerReader_ReportTests.cs" />
     <Compile Include="Utilities\SSRSUtil_Tests.cs" />
   </ItemGroup>
