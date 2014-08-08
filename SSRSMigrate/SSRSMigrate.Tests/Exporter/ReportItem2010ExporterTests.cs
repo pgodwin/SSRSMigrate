@@ -7,19 +7,19 @@ using SSRSMigrate.Exporter;
 using SSRSMigrate.Exporter.Writer;
 using Moq;
 using SSRSMigrate.SSRS.Item;
-using System.IO;
 using SSRSMigrate.TestHelper;
+using System.IO;
 
 namespace SSRSMigrate.Tests.Exporter
 {
     [TestFixture]
     [CoverageExcludeAttribute]
-    class ReportItem2005ExporterTests
+    class ReportItem2010ExporterTests
     {
         ReportItemExporter exporter = null;
         Mock<IExportWriter> exportWriterMock = null;
         ReportItem reportItem;
-        string testReportPath = "Test Reports\\2005\\Inquiry.rdl";
+        string testReportPath = "Test Reports\\2010\\Inquiry.rdl";
 
         #region Expected Values
         string expectedReportItemFileName = "C:\\temp\\SSRSMigrate_Tests\\Reports\\Inquiry.rdl";
