@@ -14,6 +14,9 @@ namespace SSRSMigrate.Exporter
 
         public FolderItemExporter(IExportWriter exportWriter)
         {
+            if (exportWriter == null)
+                throw new ArgumentNullException("exportWriter");
+
             this.mExportWriter = exportWriter;
         }
 
