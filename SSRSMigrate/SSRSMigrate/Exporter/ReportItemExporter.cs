@@ -15,6 +15,9 @@ namespace SSRSMigrate.Exporter
 
         public ReportItemExporter(IExportWriter exportWriter)
         {
+            if (exportWriter == null)
+                throw new ArgumentNullException("exportWriter");
+
             this.mExportWriter = exportWriter;
         }
 

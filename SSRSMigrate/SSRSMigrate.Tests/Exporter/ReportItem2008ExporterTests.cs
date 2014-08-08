@@ -64,6 +64,29 @@ namespace SSRSMigrate.Tests.Exporter
         {
         }
 
+        #region Constructor Tests
+        [Test]
+        public void Constructor_Succeed()
+        {
+            ReportItemExporter reportItemExporter = new ReportItemExporter(exportWriterMock.Object);
+
+            Assert.NotNull(reportItemExporter);
+        }
+
+        [Test]
+        public void Constructor_NullIExportWriter()
+        {
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    ReportItemExporter reportItemExporter = new ReportItemExporter(null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: exportWriter"));
+
+        }
+        #endregion
+
         #region SaveItem Tests
         [Test]
         public void SaveItem()
