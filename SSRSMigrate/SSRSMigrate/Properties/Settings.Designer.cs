@@ -44,5 +44,15 @@ namespace SSRSMigrate.Properties {
                 this["Debug"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:80/ReportServer/ReportService2010.asmx")]
+        public string SSRSMigrate_ReportServer2010_ReportingService2010 {
+            get {
+                return ((string)(this["SSRSMigrate_ReportServer2010_ReportingService2010"]));
+            }
+        }
     }
 }
