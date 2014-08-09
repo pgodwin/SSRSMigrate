@@ -17,6 +17,8 @@ namespace SSRSMigrate.IntegrationTests
         public override void Load()
         {
             this.Bind<IReportServerRepository>().ToProvider(new ReportServer2005RepositoryProvider());
+
+            //TODO Need to fix this
             //this.Bind<IReportServerRepository>().ToProvider(new ReportServer2010RepositoryProvider());
         }
     }

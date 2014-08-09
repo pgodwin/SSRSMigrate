@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.SSRS.Reader;
+using SSRSMigrate.ReportServer2010;
+using System.Net;
+using SSRSMigrate.SSRS.Repository;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2010
 {
@@ -16,7 +19,18 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2010
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            reader = DependencySingleton.Instance.Get<ReportServerReader>();
+            //TODO Need to fix this with a proper IoC container :\
+            string url = Properties.Settings.Default.ReportServer2008R2WebServiceUrl;
+            string path = Properties.Settings.Default.SourcePath;
+
+            ReportingService2010 service = new ReportingService2010();
+            service.Url = url;
+
+            service.Credentials = CredentialCache.DefaultNetworkCredentials;
+            service.PreAuthenticate = true;
+            service.UseDefaultCredentials = true;
+
+            reader = new ReportServerReader(new ReportServer2010Repository(path, service));
         }
     }
 }
