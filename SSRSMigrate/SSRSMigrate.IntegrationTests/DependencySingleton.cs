@@ -16,7 +16,7 @@ namespace SSRSMigrate.IntegrationTests
 
         private DependencySingleton()
         {
-            mKernel = new StandardKernel(new DependencyModule());
+            mKernel = new StandardKernel(new DependencyModule(true));
         }
 
         public static DependencySingleton Instance

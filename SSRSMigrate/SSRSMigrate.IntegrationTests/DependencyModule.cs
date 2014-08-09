@@ -14,12 +14,19 @@ namespace SSRSMigrate.IntegrationTests
     [CoverageExcludeAttribute]
     public class DependencyModule : NinjectModule
     {
+        private readonly bool mReportServer2005 = true;
+
+        public DependencyModule(bool reportServer2005)
+        {
+            this.mReportServer2005 = reportServer2005;
+        }
+
         public override void Load()
         {
-            this.Bind<IReportServerRepository>().ToProvider(new ReportServer2005RepositoryProvider());
-
-            //TODO Need to fix this
-            //this.Bind<IReportServerRepository>().ToProvider(new ReportServer2010RepositoryProvider());
+            if (this.mReportServer2005 == true)
+                this.Bind<IReportServerRepository>().ToProvider(new ReportServer2005RepositoryProvider());
+            else
+                this.Bind<IReportServerRepository>().ToProvider(new ReportServer2010RepositoryProvider());
         }
     }
 
