@@ -145,22 +145,98 @@ namespace SSRSMigrate.SSRS.Repository
         #region DataSource Methods
         public DataSourceItem GetDataSource(string dataSourcePath)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(dataSourcePath))
+                throw new ArgumentException("dataSourcePath");
+
+            string dsName = dataSourcePath.Substring(dataSourcePath.LastIndexOf('/') + 1);
+
+            CatalogItem item = this.GetItem(dsName, dataSourcePath, "DataSource");
+
+            if (item != null)
+                return CatalogItemToDataSourceItem(item);
+
+            return null;
         }
 
         public List<DataSourceItem> GetDataSources(string path)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
+
+            List<DataSourceItem> dataSourceItems = new List<DataSourceItem>();
+            List<CatalogItem> items = this.GetItems(path, "DataSource");
+
+            if (items.Any())
+            {
+                foreach (CatalogItem item in items)
+                    dataSourceItems.Add(CatalogItemToDataSourceItem(item));
+
+                return dataSourceItems;
+            }
+
+            return null;
         }
 
         public IEnumerable<DataSourceItem> GetDataSourcesList(string path)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
+
+            var items = this.GetItemsList<DataSourceItem>(path,"DataSource", ds => CatalogItemToDataSourceItem(ds));
+
+            if (items != null)
+                foreach (DataSourceItem item in items)
+                    yield return item;
         }
 
         public string[] WriteDataSource(string dataSourcePath, DataSourceItem dataSource)
         {
             throw new NotImplementedException();
+        }
+
+        private DataSourceItem CatalogItemToDataSourceItem(CatalogItem item)
+        {
+            DataSourceItem ds = new DataSourceItem();
+            DataSourceDefinition dsDef = this.mReportingService.GetDataSourceContents(item.Path);
+
+            ds.Name = item.Name;
+            ds.Path = item.Path;
+            ds.CreatedBy = item.CreatedBy;
+            ds.CreationDate = item.CreationDate;
+            ds.Description = item.Description;
+            ds.ID = item.ID;
+            ds.ModifiedBy = item.ModifiedBy;
+            ds.ModifiedDate = item.ModifiedDate;
+            ds.Size = item.Size;
+            ds.VirtualPath = item.VirtualPath;
+
+            ds.ConnectString = dsDef.ConnectString;
+
+            switch (dsDef.CredentialRetrieval)
+            {
+                case CredentialRetrievalEnum.Integrated:
+                    ds.CredentialsRetrieval = "Integrated"; break;
+                case CredentialRetrievalEnum.None:
+                    ds.CredentialsRetrieval = "None"; break;
+                case CredentialRetrievalEnum.Prompt:
+                    ds.CredentialsRetrieval = "Prompt"; break;
+                case CredentialRetrievalEnum.Store:
+                    ds.CredentialsRetrieval = "Store"; break;
+            }
+
+            ds.Enabled = dsDef.Enabled;
+            ds.EnabledSpecified = dsDef.EnabledSpecified;
+            ds.Extension = dsDef.Extension;
+            ds.ImpersonateUser = dsDef.ImpersonateUser;
+            ds.ImpersonateUserSpecified = dsDef.ImpersonateUserSpecified;
+            ds.OriginalConnectStringExpressionBased = ds.OriginalConnectStringExpressionBased;
+            ds.Password = dsDef.Password;
+            ds.Prompt = dsDef.Prompt;
+            ds.UseOriginalConnectString = dsDef.UseOriginalConnectString;
+            ds.UserName = dsDef.UserName;
+            ds.WindowsCredentials = dsDef.WindowsCredentials;
+
+            return ds;
         }
         #endregion
 
@@ -225,7 +301,7 @@ namespace SSRSMigrate.SSRS.Repository
             typeCondition.Condition = ConditionEnum.Equals;
             typeCondition.ConditionSpecified = true;
             typeCondition.Name = "Type";
-            typeCondition.Values = new string[] { "Folder" };
+            typeCondition.Values = new string[] { itemType };
 
             SearchCondition[] conditions = new SearchCondition[1];
             conditions[0] = typeCondition;
@@ -250,7 +326,7 @@ namespace SSRSMigrate.SSRS.Repository
             typeCondition.Condition = ConditionEnum.Equals;
             typeCondition.ConditionSpecified = true;
             typeCondition.Name = "Type";
-            typeCondition.Values = new string[] { "Folder" };
+            typeCondition.Values = new string[] { itemType };
 
             SearchCondition[] conditions = new SearchCondition[1];
             conditions[0] = typeCondition;
@@ -275,7 +351,7 @@ namespace SSRSMigrate.SSRS.Repository
             typeCondition.Condition = ConditionEnum.Equals;
             typeCondition.ConditionSpecified = true;
             typeCondition.Name = "Type";
-            typeCondition.Values = new string[] { "Folder" };
+            typeCondition.Values = new string[] { itemType };
 
             SearchCondition[] conditions = new SearchCondition[1];
             conditions[0] = typeCondition;
