@@ -49,7 +49,6 @@ namespace SSRSMigrate.IntegrationTests
         }
     }
 
-    //TODO This doesn't work.
     [CoverageExcludeAttribute]
     public class ReportServer2010RepositoryProvider : Provider<IReportServerRepository>
     {
