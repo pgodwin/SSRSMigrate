@@ -184,14 +184,16 @@ namespace SSRSMigrate.Utility
         /// <returns></returns>
         public static byte[] StringToByteArray(string text)
         {
-            char[] charArray = text.ToCharArray();
+            //char[] charArray = text.ToCharArray();
 
-            byte[] byteArray = new byte[charArray.Length];
+            //byte[] byteArray = new byte[charArray.Length];
 
-            for (int i = 0; i < charArray.Length; i++)
-            {
-                byteArray[i] = Convert.ToByte(charArray[i]);
-            }
+            //for (int i = 0; i < charArray.Length; i++)
+            //{
+            //    byteArray[i] = Convert.ToByte(charArray[i]);
+            //}
+
+            byte[] byteArray = Encoding.UTF8.GetBytes(text);
 
             return byteArray;
         }
