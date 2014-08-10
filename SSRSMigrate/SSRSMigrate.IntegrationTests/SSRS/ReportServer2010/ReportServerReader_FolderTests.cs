@@ -8,6 +8,7 @@ using SSRSMigrate.ReportServer2010;
 using System.Net;
 using SSRSMigrate.SSRS.Repository;
 using Ninject;
+using SSRSMigrate.SSRS.Item;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2010
 {
@@ -17,24 +18,162 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2010
     {
         ReportServerReader reader = null;
 
+        #region GetFolders - Expected FolderItems
+        List<FolderItem> expectedFolderItems = null;
+        #endregion
+
+        #region GetFolders - Actual FolderItems
+        List<FolderItem> actualFolderItems = null;
+        #endregion
+
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            //TODO Need to fix this with a proper IoC container :\
-            //string url = Properties.Settings.Default.ReportServer2008R2WebServiceUrl;
-            //string path = Properties.Settings.Default.SourcePath;
-
-            //ReportingService2010 service = new ReportingService2010();
-            //service.Url = url;
-
-            //service.Credentials = CredentialCache.DefaultNetworkCredentials;
-            //service.PreAuthenticate = true;
-            //service.UseDefaultCredentials = true;
-
-            //reader = new ReportServerReader(new ReportServer2010Repository(path, service));
+            // Setup expected FolderItems
+            expectedFolderItems = new List<FolderItem>()
+            {
+                new FolderItem()
+                {
+                    Name = "Reports",
+                    Path = "/SSRSMigrate_Tests/Reports",
+                },
+                new FolderItem()
+                {
+                    Name = "Sub Folder",
+                    Path = "/SSRSMigrate_Tests/Reports/Sub Folder",
+                },
+                new FolderItem()
+                {
+                    Name = "Test Folder",
+                    Path = "/SSRSMigrate_Tests/Test Folder",
+                }
+            };
 
             StandardKernel kernel = new StandardKernel(new DependencyModule(false));
             reader = kernel.Get<ReportServerReader>();
         }
+
+        [TestFixtureTearDown]
+        public void TestFixtureTearDown()
+        {
+            reader = null;
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            actualFolderItems = new List<FolderItem>();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            actualFolderItems = null;
+        }
+
+        #region GetFolders Tests
+        [Test]
+        public void GetFolders()
+        {
+            List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_Tests");
+
+            Assert.AreEqual(expectedFolderItems.Count(), actual.Count());
+        }
+
+        [Test]
+        public void GetFolders_NullPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetFolders(null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetFolders_EmptyPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetFolders("");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
+            ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found",
+            MatchType = MessageMatch.Contains)]
+        public void GetFolders_PathDoesntExist()
+        {
+            List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_Tests Doesnt Exist");
+        }
+        #endregion
+
+        #region GetFolders Using Action<FolderItem> Tests
+        [Test]
+        public void GetFolders_UsingDelegate()
+        {
+            reader.GetFolders("/SSRSMigrate_Tests", GetFolders_Reporter);
+
+            Assert.AreEqual(expectedFolderItems.Count(), actualFolderItems.Count());
+        }
+
+        [Test]
+        public void GetFolders_UsingDelegate_NullPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetFolders(null, GetFolders_Reporter);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetFolders_UsingDelegate_EmptyPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetFolders("", GetFolders_Reporter);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetFolders_UsingDelegate_NullDelegate()
+        {
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    reader.GetFolders("/SSRSMigrate_Tests", null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
+        }
+
+        [Test]
+        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
+            ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found",
+            MatchType = MessageMatch.Contains)]
+        public void GetFolders_UsingDelegate_PathDoesntExist()
+        {
+            reader.GetFolders("/SSRSMigrate_Tests Doesnt Exist", GetFolders_Reporter);
+
+            Assert.AreEqual(expectedFolderItems.Count(), actualFolderItems.Count());
+        }
+
+        private void GetFolders_Reporter(FolderItem folderItem)
+        {
+            actualFolderItems.Add(folderItem);
+        }
+        #endregion
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SSRSMigrate.ReportServer2010;
+using SSRSMigrate.SSRS.Item;
 
 namespace SSRSMigrate.SSRS.Repository
 {
@@ -11,7 +12,7 @@ namespace SSRSMigrate.SSRS.Repository
         private ReportingService2010 mReportingService;
 
         private string mRootPath = null;
-        private string mInvalidChars = "";
+        private string mInvalidPathChars = ":?;@&=+$,\\*><|.\"";
 
         public ReportServer2010Repository(string rootPath, ReportingService2010 reportingService)
         {
@@ -50,24 +51,62 @@ namespace SSRSMigrate.SSRS.Repository
         #region Properties
         public string InvalidPathChars
         {
-            get { return this.mInvalidChars; }
+            get { return this.mInvalidPathChars; }
         }
         #endregion
 
         #region Folder Methods
-        public List<Item.FolderItem> GetFolders(string path)
+        public List<FolderItem> GetFolders(string path)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            List<FolderItem> folderItems = new List<FolderItem>();
+            List<CatalogItem> items = this.GetItems(path, "Folder");
+
+            if (items.Any())
+            {
+                foreach (CatalogItem item in items)
+                    folderItems.Add(CatalogItemToFolderItem(item));
+
+                return folderItems;
+            }
+
+            return null;
         }
 
-        public IEnumerable<Item.FolderItem> GetFolderList(string path)
+        public IEnumerable<FolderItem> GetFolderList(string path)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            var items = this.GetItemsList<FolderItem>(path, "Folder", folder => CatalogItemToFolderItem(folder));
+            if (items.Any())
+                foreach (FolderItem item in items)
+                    yield return item;
         }
 
         public string CreateFolder(string folderPath)
         {
             throw new NotImplementedException();
+        }
+
+        private FolderItem CatalogItemToFolderItem(CatalogItem item)
+        {
+            FolderItem folder = new FolderItem();
+
+            folder.CreatedBy = item.CreatedBy;
+            folder.CreationDate = item.CreationDate;
+            folder.Description = item.Description;
+            folder.ID = item.ID;
+            folder.ModifiedBy = item.ModifiedBy;
+            folder.ModifiedDate = item.ModifiedDate;
+            folder.Name = item.Name;
+            folder.Path = item.Path;
+            folder.Size = item.Size;
+            folder.VirtualPath = item.VirtualPath;
+
+            return folder;
         }
         #endregion
 
@@ -77,49 +116,49 @@ namespace SSRSMigrate.SSRS.Repository
             throw new NotImplementedException();
         }
 
-        public Item.ReportItem GetReport(string reportPath)
+        public ReportItem GetReport(string reportPath)
         {
             throw new NotImplementedException();
         }
 
-        public List<Item.ReportItem> GetReports(string path)
+        public List<ReportItem> GetReports(string path)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Item.ReportItem> GetReportsList(string path)
+        public IEnumerable<ReportItem> GetReportsList(string path)
         {
             throw new NotImplementedException();
         }
 
-        public List<Item.ReportItem> GetSubReports(string reportDefinition)
+        public List<ReportItem> GetSubReports(string reportDefinition)
         {
             throw new NotImplementedException();
         }
 
-        public string[] WriteReport(string reportPath, Item.ReportItem reportItem)
+        public string[] WriteReport(string reportPath, ReportItem reportItem)
         {
             throw new NotImplementedException();
         }
         #endregion
 
         #region DataSource Methods
-        public Item.DataSourceItem GetDataSource(string dataSourcePath)
+        public DataSourceItem GetDataSource(string dataSourcePath)
         {
             throw new NotImplementedException();
         }
 
-        public List<Item.DataSourceItem> GetDataSources(string path)
+        public List<DataSourceItem> GetDataSources(string path)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Item.DataSourceItem> GetDataSourcesList(string path)
+        public IEnumerable<DataSourceItem> GetDataSourcesList(string path)
         {
             throw new NotImplementedException();
         }
 
-        public string[] WriteDataSource(string dataSourcePath, Item.DataSourceItem dataSource)
+        public string[] WriteDataSource(string dataSourcePath, DataSourceItem dataSource)
         {
             throw new NotImplementedException();
         }
@@ -128,7 +167,10 @@ namespace SSRSMigrate.SSRS.Repository
         #region Misc.
         public bool ValidatePath(string path)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            return path.IndexOfAny(this.mInvalidPathChars.ToCharArray()) < 0;
         }
         #endregion
 
@@ -140,22 +182,110 @@ namespace SSRSMigrate.SSRS.Repository
 
         public CatalogItem GetItem(string itemName, string itemPath, string itemType)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(itemName))
+                throw new ArgumentNullException("itemName");
+
+            if (string.IsNullOrEmpty(itemPath))
+                throw new ArgumentNullException("itemPath");
+
+            if (string.IsNullOrEmpty(itemType))
+                throw new ArgumentNullException("itemType");
+
+            SearchCondition nameCondition = new SearchCondition();
+            nameCondition.Condition = ConditionEnum.Equals;
+            nameCondition.ConditionSpecified = true;
+            nameCondition.Name = "Name";
+            nameCondition.Values = new string[] { itemName };
+
+            SearchCondition[] conditions = new SearchCondition[1];
+            conditions[0] = nameCondition;
+
+            CatalogItem[] items = this.mReportingService.FindItems(this.mRootPath, BooleanOperatorEnum.And, null, conditions);
+
+            if (items.Any())
+            {
+                foreach (CatalogItem item in items)
+                    if (item.TypeName == itemType)
+                        if (item.Path == itemPath)
+                            return item;
+            }
+
+            return null;
         }
 
         public List<CatalogItem> GetItems(string path, string itemType)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            if (string.IsNullOrEmpty(itemType))
+                throw new ArgumentNullException("itemType");
+
+            SearchCondition typeCondition = new SearchCondition();
+            typeCondition.Condition = ConditionEnum.Equals;
+            typeCondition.ConditionSpecified = true;
+            typeCondition.Name = "Type";
+            typeCondition.Values = new string[] { "Folder" };
+
+            SearchCondition[] conditions = new SearchCondition[1];
+            conditions[0] = typeCondition;
+
+            CatalogItem[] items = this.mReportingService.FindItems(path, BooleanOperatorEnum.Or, null, conditions);
+
+            if (items.Any())
+                return items.Where(item => item.TypeName == itemType).Select(item => item).ToList<CatalogItem>();
+            else
+                return null;
         }
 
         public IEnumerable<CatalogItem> GetItemsList(string path, string itemType)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            if (string.IsNullOrEmpty(itemType))
+                throw new ArgumentNullException("itemType");
+
+            SearchCondition typeCondition = new SearchCondition();
+            typeCondition.Condition = ConditionEnum.Equals;
+            typeCondition.ConditionSpecified = true;
+            typeCondition.Name = "Type";
+            typeCondition.Values = new string[] { "Folder" };
+
+            SearchCondition[] conditions = new SearchCondition[1];
+            conditions[0] = typeCondition;
+
+            CatalogItem[] items = this.mReportingService.FindItems(path, BooleanOperatorEnum.Or, null, conditions);
+
+            if (items.Any())
+                return items.Where(item => item.TypeName == itemType).Select(item => item);
+            else
+                return null;
         }
 
         public IEnumerable<T> GetItemsList<T>(string path, string itemType, Func<CatalogItem, T> itemConverter)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            if (string.IsNullOrEmpty(itemType))
+                throw new ArgumentNullException("itemType");
+
+            SearchCondition typeCondition = new SearchCondition();
+            typeCondition.Condition = ConditionEnum.Equals;
+            typeCondition.ConditionSpecified = true;
+            typeCondition.Name = "Type";
+            typeCondition.Values = new string[] { "Folder" };
+
+            SearchCondition[] conditions = new SearchCondition[1];
+            conditions[0] = typeCondition;
+
+            CatalogItem[] items = this.mReportingService.FindItems(path, BooleanOperatorEnum.Or, null, conditions);
+
+            if (items.Any())
+                return items.Where(item => item.TypeName == itemType).Select(item => itemConverter(item));
+            else
+                return null;
         }
         #endregion
     }

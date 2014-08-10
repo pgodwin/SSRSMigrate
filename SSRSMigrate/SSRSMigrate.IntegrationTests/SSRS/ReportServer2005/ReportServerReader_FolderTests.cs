@@ -142,7 +142,6 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
                 });
 
             Assert.That(ex.Message, Is.EqualTo("path"));
-
         }
 
         [Test]
@@ -155,7 +154,6 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
-        
         }
 
         [Test]
