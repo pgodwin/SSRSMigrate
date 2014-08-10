@@ -88,6 +88,7 @@
     <Compile Include="SSRS\ReportServer2005\ReportServerReader_ReportTests.cs" />
     <Compile Include="SSRS\ReportServer2010\ReportServerReader_DataSourceTests.cs" />
     <Compile Include="SSRS\ReportServer2010\ReportServerReader_FolderTests.cs" />
+    <Compile Include="SSRS\ReportServer2010\ReportServerReader_ReportTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
