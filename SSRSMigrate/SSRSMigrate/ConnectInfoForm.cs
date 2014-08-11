@@ -20,6 +20,7 @@ namespace SSRSMigrate
             InitializeComponent();
         }
 
+        #region Migrate Method Radio Events
         private void rdoMethodDirect_MouseHover(object sender, EventArgs e)
         {
             this.lblMethodInfo.Text = "Perform a direct migration of items on one SSRS server to another SSRS server.";
@@ -29,6 +30,56 @@ namespace SSRSMigrate
         {
             this.lblMethodInfo.Text = "";
         }
+
+        private void rdoMethodExportZip_MouseHover(object sender, EventArgs e)
+        {
+            this.lblMethodInfo.Text = "Perform a migration by exporting of items to a single ZIP archive that can be imported at a destination server at a later date.";
+        }
+
+        private void rdoMethodExportZip_MouseLeave(object sender, EventArgs e)
+        {
+            this.lblMethodInfo.Text = "";
+        }
+
+        private void rdoMethodImportZip_MouseHover(object sender, EventArgs e)
+        {
+            this.lblMethodInfo.Text = "Import previously exported items from a specified ZIP archive.";
+        }
+
+        private void rdoMethodImportZip_MouseLeave(object sender, EventArgs e)
+        {
+            this.lblMethodInfo.Text = "";
+        }
+
+        private void rdoMethodDirect_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdoMethodDirect.Checked)
+            {
+                grpDestServer.Visible = true;
+            }
+            else
+            {
+                grpDestServer.Visible = false;
+            }
+        }
+
+        private void rdoMethodExportZip_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdoMethodExportZip.Checked)
+            {
+                grpExportZip.Visible = true;
+            }
+            else
+            {
+                grpExportZip.Visible = false;
+            }
+        }
+
+        private void rdoMethodImportZip_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
 
         private void cboSrcDefaultCred_SelectedIndexChanged(object sender, EventArgs e)
         {

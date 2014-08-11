@@ -65,9 +65,13 @@
             this.lblDestVersion = new System.Windows.Forms.Label();
             this.lblDestUrl = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
+            this.grpExportZip = new System.Windows.Forms.GroupBox();
+            this.lblExportZipFilename = new System.Windows.Forms.Label();
+            this.txtExportZipFilename = new System.Windows.Forms.TextBox();
             this.grpMigrateMethod.SuspendLayout();
             this.grpSrcServer.SuspendLayout();
             this.grpDestServer.SuspendLayout();
+            this.grpExportZip.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpMigrateMethod
@@ -100,17 +104,22 @@
             this.rdoMethodImportZip.TabIndex = 2;
             this.rdoMethodImportZip.Text = "Import from ZIP archive";
             this.rdoMethodImportZip.UseVisualStyleBackColor = true;
+            this.rdoMethodImportZip.CheckedChanged += new System.EventHandler(this.rdoMethodImportZip_CheckedChanged);
+            this.rdoMethodImportZip.MouseLeave += new System.EventHandler(this.rdoMethodImportZip_MouseLeave);
+            this.rdoMethodImportZip.MouseHover += new System.EventHandler(this.rdoMethodImportZip_MouseHover);
             // 
             // rdoMethodExportZip
             // 
             this.rdoMethodExportZip.AutoSize = true;
-            this.rdoMethodExportZip.Enabled = false;
             this.rdoMethodExportZip.Location = new System.Drawing.Point(19, 45);
             this.rdoMethodExportZip.Name = "rdoMethodExportZip";
             this.rdoMethodExportZip.Size = new System.Drawing.Size(125, 17);
             this.rdoMethodExportZip.TabIndex = 1;
             this.rdoMethodExportZip.Text = "Export to ZIP archive";
             this.rdoMethodExportZip.UseVisualStyleBackColor = true;
+            this.rdoMethodExportZip.CheckedChanged += new System.EventHandler(this.rdoMethodExportZip_CheckedChanged);
+            this.rdoMethodExportZip.MouseLeave += new System.EventHandler(this.rdoMethodExportZip_MouseLeave);
+            this.rdoMethodExportZip.MouseHover += new System.EventHandler(this.rdoMethodExportZip_MouseHover);
             // 
             // rdoMethodDirect
             // 
@@ -123,6 +132,7 @@
             this.rdoMethodDirect.TabStop = true;
             this.rdoMethodDirect.Text = "Server-to-Server Migration";
             this.rdoMethodDirect.UseVisualStyleBackColor = true;
+            this.rdoMethodDirect.CheckedChanged += new System.EventHandler(this.rdoMethodDirect_CheckedChanged);
             this.rdoMethodDirect.MouseLeave += new System.EventHandler(this.rdoMethodDirect_MouseLeave);
             this.rdoMethodDirect.MouseHover += new System.EventHandler(this.rdoMethodDirect_MouseHover);
             // 
@@ -291,7 +301,7 @@
             this.grpDestServer.Controls.Add(this.lblDestDefaultCred);
             this.grpDestServer.Controls.Add(this.lblDestVersion);
             this.grpDestServer.Controls.Add(this.lblDestUrl);
-            this.grpDestServer.Location = new System.Drawing.Point(563, 13);
+            this.grpDestServer.Location = new System.Drawing.Point(567, 18);
             this.grpDestServer.Name = "grpDestServer";
             this.grpDestServer.Size = new System.Drawing.Size(350, 226);
             this.grpDestServer.TabIndex = 2;
@@ -443,11 +453,40 @@
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
+            // grpExportZip
+            // 
+            this.grpExportZip.Controls.Add(this.txtExportZipFilename);
+            this.grpExportZip.Controls.Add(this.lblExportZipFilename);
+            this.grpExportZip.Location = new System.Drawing.Point(566, 14);
+            this.grpExportZip.Name = "grpExportZip";
+            this.grpExportZip.Size = new System.Drawing.Size(350, 225);
+            this.grpExportZip.TabIndex = 29;
+            this.grpExportZip.TabStop = false;
+            this.grpExportZip.Text = "Export to ZIP Archive";
+            this.grpExportZip.Visible = false;
+            // 
+            // lblExportZipFilename
+            // 
+            this.lblExportZipFilename.AutoSize = true;
+            this.lblExportZipFilename.Location = new System.Drawing.Point(19, 29);
+            this.lblExportZipFilename.Name = "lblExportZipFilename";
+            this.lblExportZipFilename.Size = new System.Drawing.Size(52, 13);
+            this.lblExportZipFilename.TabIndex = 0;
+            this.lblExportZipFilename.Text = "Filename:";
+            // 
+            // txtExportZipFilename
+            // 
+            this.txtExportZipFilename.Location = new System.Drawing.Point(76, 26);
+            this.txtExportZipFilename.Name = "txtExportZipFilename";
+            this.txtExportZipFilename.Size = new System.Drawing.Size(221, 20);
+            this.txtExportZipFilename.TabIndex = 1;
+            // 
             // ConnectInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(928, 288);
+            this.Controls.Add(this.grpExportZip);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.grpDestServer);
             this.Controls.Add(this.grpSrcServer);
@@ -465,6 +504,8 @@
             this.grpSrcServer.PerformLayout();
             this.grpDestServer.ResumeLayout(false);
             this.grpDestServer.PerformLayout();
+            this.grpExportZip.ResumeLayout(false);
+            this.grpExportZip.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -508,5 +549,8 @@
         private System.Windows.Forms.Label lblDestVersion;
         private System.Windows.Forms.Label lblDestUrl;
         private System.Windows.Forms.Button btnConnect;
+        private System.Windows.Forms.GroupBox grpExportZip;
+        private System.Windows.Forms.TextBox txtExportZipFilename;
+        private System.Windows.Forms.Label lblExportZipFilename;
     }
 }
