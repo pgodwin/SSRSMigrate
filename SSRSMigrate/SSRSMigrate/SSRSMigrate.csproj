@@ -54,6 +54,9 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SSRSMigrate.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ionic.Zip">
       <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
@@ -80,6 +83,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConnectInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectInfoForm.Designer.cs">
+      <DependentUpon>ConnectInfoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DependencyModule.cs" />
     <Compile Include="Enum\SSRSEnumerations.cs" />
     <Compile Include="Exporter\DataSourceItemExporter.cs" />
@@ -90,11 +99,11 @@
     <Compile Include="Exporter\Writer\IExportWriter.cs" />
     <Compile Include="Exporter\IItemExporter.cs" />
     <Compile Include="Exporter\ReportItemExporter.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="MigrateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="MigrateForm.Designer.cs">
+      <DependentUpon>MigrateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -119,8 +128,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <EmbeddedResource Include="ConnectInfoForm.resx">
+      <DependentUpon>ConnectInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MigrateForm.resx">
+      <DependentUpon>MigrateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

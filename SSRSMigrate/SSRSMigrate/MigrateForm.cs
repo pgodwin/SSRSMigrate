@@ -9,24 +9,27 @@ using System.Windows.Forms;
 using log4net;
 using log4net.Config;
 using SSRSMigrate.SSRS.Reader;
-using Ninject;
 using SSRSMigrate.SSRS.Item;
 
 namespace SSRSMigrate
 {
     [CoverageExcludeAttribute]
-    public partial class MainForm : Form
+    public partial class MigrateForm : Form
     {
         private static ILog Log = null;
-
-        private ReportServerReader mReportServerReader = null;
-
-        // Source server 
+        private readonly ReportServerReader mReportServerReader = null;
+        //private readonly ReportServerWriter mReportServerWriter = null;
+        private readonly string mSourceRootPath = null;
+        private readonly string mDestinationRootPath = null;
         private BackgroundWorker mSourceRefreshWorker = null;
 
-        public MainForm()
+        public MigrateForm(string sourceRootPath, string destinationRootPath, ReportServerReader reader)
         {
             InitializeComponent();
+
+            this.mSourceRootPath = sourceRootPath;
+            this.mDestinationRootPath = destinationRootPath;
+            this.mReportServerReader = reader;
 
             XmlConfigurator.Configure();
             Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType); 
@@ -35,87 +38,25 @@ namespace SSRSMigrate
         #region UI Events
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // Setup form default values
-            this.cboSrcDefaultCred.SelectedIndex = 0;
-            this.cboSrcVersion.SelectedIndex = 0;
-
             this.mSourceRefreshWorker = new BackgroundWorker();
             this.mSourceRefreshWorker.WorkerReportsProgress = true;
             this.mSourceRefreshWorker.WorkerSupportsCancellation = true;
             this.mSourceRefreshWorker.DoWork += new DoWorkEventHandler(this.SourceRefreshReportsWorker);
             this.mSourceRefreshWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.bw_SourceRefreshReportsCompleted);
             this.mSourceRefreshWorker.ProgressChanged += new ProgressChangedEventHandler(this.bw_SourceRefreshReportsProgressChanged);
-
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-
-        }
-
-        private void cboSrcDefaultCred_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.cboSrcDefaultCred.SelectedIndex == 0)
-            {
-                this.txtSrcDomain.Enabled = false;
-                this.txtSrcUsername.Enabled = false;
-                this.txtSrcPassword.Enabled = false;
-            }
-            else
-            {
-                this.txtSrcDomain.Enabled = true;
-                this.txtSrcUsername.Enabled = true;
-                this.txtSrcPassword.Enabled = true;
-            }
+            // If a report refresh is in progress, don't allow the form to close
+            if (this.mSourceRefreshWorker != null)
+                if (this.mSourceRefreshWorker.IsBusy)
+                    e.Cancel = true;
         }
 
         private void btnSrcRefreshReports_Click(object sender, EventArgs e)
         {
-            try
-            {
-                this.SourceCheckUI();
-            }
-            catch (Exception er)
-            {
-                MessageBox.Show(string.Format("Missing source server information: {0}", er.Message),
-                    "Missing Information",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-
-                return;
-            }
-
             this.SourceRefreshReports();
-        }
-        #endregion
-
-        #region Settings Methods
-        private void LoadSettings()
-        {
-
-        }
-        #endregion
-
-        #region Source UI Check Methods
-        private void SourceCheckUI()
-        {
-            if (string.IsNullOrEmpty(txtSrcUrl.Text))
-                throw new Exception("url");
-
-            if (this.cboSrcDefaultCred.SelectedIndex == 1)
-            {
-                if (string.IsNullOrEmpty(txtSrcUsername.Text))
-                    throw new Exception("username");
-
-                if (string.IsNullOrEmpty(txtSrcPassword.Text))
-                    throw new Exception("password");
-
-                if (string.IsNullOrEmpty(txtSrcDomain.Text))
-                    throw new Exception("domain");
-            }
-
-            if (string.IsNullOrEmpty(txtSrcPath.Text))
-                txtSrcPath.Text = "/";
         }
         #endregion
 
@@ -126,17 +67,8 @@ namespace SSRSMigrate
 
             try
             {
-                bool defaultCred = true;
-
-                if (cboSrcDefaultCred.SelectedIndex == 0)
-                    defaultCred = true;
-                else
-                    defaultCred = false;
-
-                StandardKernel kernel = new StandardKernel(new DependencyModule(false, txtSrcPath.Text, txtSrcUrl.Text, defaultCred, txtSrcUsername.Text, txtSrcPassword.Text, txtSrcDomain.Text));
-                this.mReportServerReader = kernel.Get<ReportServerReader>();
-
-                this.mSourceRefreshWorker.RunWorkerAsync();
+                this.btnSrcRefreshReports.Enabled = false;
+                this.mSourceRefreshWorker.RunWorkerAsync(this.mSourceRootPath);
             }
             catch (Exception er)
             {
@@ -158,16 +90,18 @@ namespace SSRSMigrate
         public void SourceRefreshReportsWorker(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
+            string path = (string)e.Argument;
 
-            this.mReportServerReader.GetReports(txtSrcPath.Text, ReportsReaderReporter);
+            this.mReportServerReader.GetReports(path, ReportsReaderReporter);
         }
 
         private void bw_SourceRefreshReportsCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            string msg = null;
+
             if ((e.Cancelled == true))
             {
-                string sMsg = string.Format("Cancelled. {0}", e.Result);
-
+                msg = string.Format("Cancelled. {0}", e.Result);
             }
             else if ((e.Error != null))
             {
@@ -175,8 +109,10 @@ namespace SSRSMigrate
             }
             else
             {
-                string sMsg = string.Format("Completed. {0}", e.Result);
+                msg = string.Format("Completed. {0}", e.Result);
             }
+
+            this.btnSrcRefreshReports.Enabled = true;
         }
 
         private void bw_SourceRefreshReportsProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -194,7 +130,6 @@ namespace SSRSMigrate
             progressBar.Maximum = 100;
             progressBar.ToolTipText = report.Name;
         }
-
         #endregion
     }
 }
