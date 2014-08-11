@@ -144,17 +144,22 @@ namespace SSRSMigrate
             }
         }
 
+        private void ReportsReaderReporter(ReportItem item)
+        {
+            ListViewItem oItem = new ListViewItem(item.Name);
+            oItem.Checked = true;
+            oItem.Tag = item;
+            oItem.SubItems.Add(item.Path);
+
+            this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
+            this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
+        }
+
         public void SourceRefreshReportsWorker(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
 
-            List<ReportItem> reports = this.mReportServerReader.GetReports("/");
-            int itemCount = reports.Count();
-
-            foreach (ReportItem report in reports)
-            {
-                worker.ReportProgress(0, report);
-            }
+            this.mReportServerReader.GetReports(txtSrcPath.Text, ReportsReaderReporter);
         }
 
         private void bw_SourceRefreshReportsCompleted(object sender, RunWorkerCompletedEventArgs e)

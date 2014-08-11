@@ -32,25 +32,25 @@
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.grpSource = new System.Windows.Forms.GroupBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lblSrcUrl = new System.Windows.Forms.Label();
-            this.lblSrcVersion = new System.Windows.Forms.Label();
-            this.lblSrcDefaultCred = new System.Windows.Forms.Label();
-            this.lblSrcUsername = new System.Windows.Forms.Label();
-            this.lblSrcPassword = new System.Windows.Forms.Label();
-            this.lblSrcDomain = new System.Windows.Forms.Label();
-            this.lblSrcPath = new System.Windows.Forms.Label();
-            this.txtSrcUrl = new System.Windows.Forms.TextBox();
-            this.cboSrcDefaultCred = new System.Windows.Forms.ComboBox();
-            this.txtSrcUsername = new System.Windows.Forms.TextBox();
-            this.txtSrcPassword = new System.Windows.Forms.TextBox();
-            this.txtSrcDomain = new System.Windows.Forms.TextBox();
-            this.txtSrcPath = new System.Windows.Forms.TextBox();
-            this.cboSrcVersion = new System.Windows.Forms.ComboBox();
+            this.btnSrcRefreshReports = new System.Windows.Forms.Button();
             this.lstSrcReports = new System.Windows.Forms.ListView();
             this.colSrcName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colSrcPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnSrcRefreshReports = new System.Windows.Forms.Button();
+            this.cboSrcVersion = new System.Windows.Forms.ComboBox();
+            this.txtSrcPath = new System.Windows.Forms.TextBox();
+            this.txtSrcDomain = new System.Windows.Forms.TextBox();
+            this.txtSrcPassword = new System.Windows.Forms.TextBox();
+            this.txtSrcUsername = new System.Windows.Forms.TextBox();
+            this.cboSrcDefaultCred = new System.Windows.Forms.ComboBox();
+            this.txtSrcUrl = new System.Windows.Forms.TextBox();
+            this.lblSrcPath = new System.Windows.Forms.Label();
+            this.lblSrcDomain = new System.Windows.Forms.Label();
+            this.lblSrcPassword = new System.Windows.Forms.Label();
+            this.lblSrcUsername = new System.Windows.Forms.Label();
+            this.lblSrcDefaultCred = new System.Windows.Forms.Label();
+            this.lblSrcVersion = new System.Windows.Forms.Label();
+            this.lblSrcUrl = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.statusStrip.SuspendLayout();
             this.grpSource.SuspendLayout();
             this.SuspendLayout();
@@ -103,139 +103,15 @@
             this.grpSource.TabStop = false;
             this.grpSource.Text = "Source Server";
             // 
-            // groupBox1
+            // btnSrcRefreshReports
             // 
-            this.groupBox1.Location = new System.Drawing.Point(459, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(441, 397);
-            this.groupBox1.TabIndex = 2;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Destination Server";
-            // 
-            // lblSrcUrl
-            // 
-            this.lblSrcUrl.AutoSize = true;
-            this.lblSrcUrl.Location = new System.Drawing.Point(29, 28);
-            this.lblSrcUrl.Name = "lblSrcUrl";
-            this.lblSrcUrl.Size = new System.Drawing.Size(88, 13);
-            this.lblSrcUrl.TabIndex = 0;
-            this.lblSrcUrl.Text = "Web Service Url:";
-            // 
-            // lblSrcVersion
-            // 
-            this.lblSrcVersion.AutoSize = true;
-            this.lblSrcVersion.Location = new System.Drawing.Point(259, 54);
-            this.lblSrcVersion.Name = "lblSrcVersion";
-            this.lblSrcVersion.Size = new System.Drawing.Size(45, 13);
-            this.lblSrcVersion.TabIndex = 1;
-            this.lblSrcVersion.Text = "Version:";
-            // 
-            // lblSrcDefaultCred
-            // 
-            this.lblSrcDefaultCred.AutoSize = true;
-            this.lblSrcDefaultCred.Location = new System.Drawing.Point(18, 54);
-            this.lblSrcDefaultCred.Name = "lblSrcDefaultCred";
-            this.lblSrcDefaultCred.Size = new System.Drawing.Size(99, 13);
-            this.lblSrcDefaultCred.TabIndex = 2;
-            this.lblSrcDefaultCred.Text = "Default Credentials:";
-            // 
-            // lblSrcUsername
-            // 
-            this.lblSrcUsername.AutoSize = true;
-            this.lblSrcUsername.Location = new System.Drawing.Point(59, 81);
-            this.lblSrcUsername.Name = "lblSrcUsername";
-            this.lblSrcUsername.Size = new System.Drawing.Size(58, 13);
-            this.lblSrcUsername.TabIndex = 3;
-            this.lblSrcUsername.Text = "Username:";
-            // 
-            // lblSrcPassword
-            // 
-            this.lblSrcPassword.AutoSize = true;
-            this.lblSrcPassword.Location = new System.Drawing.Point(59, 105);
-            this.lblSrcPassword.Name = "lblSrcPassword";
-            this.lblSrcPassword.Size = new System.Drawing.Size(56, 13);
-            this.lblSrcPassword.TabIndex = 4;
-            this.lblSrcPassword.Text = "Password:";
-            // 
-            // lblSrcDomain
-            // 
-            this.lblSrcDomain.AutoSize = true;
-            this.lblSrcDomain.Location = new System.Drawing.Point(69, 134);
-            this.lblSrcDomain.Name = "lblSrcDomain";
-            this.lblSrcDomain.Size = new System.Drawing.Size(46, 13);
-            this.lblSrcDomain.TabIndex = 5;
-            this.lblSrcDomain.Text = "Domain:";
-            // 
-            // lblSrcPath
-            // 
-            this.lblSrcPath.AutoSize = true;
-            this.lblSrcPath.Location = new System.Drawing.Point(83, 160);
-            this.lblSrcPath.Name = "lblSrcPath";
-            this.lblSrcPath.Size = new System.Drawing.Size(32, 13);
-            this.lblSrcPath.TabIndex = 6;
-            this.lblSrcPath.Text = "Path:";
-            // 
-            // txtSrcUrl
-            // 
-            this.txtSrcUrl.Location = new System.Drawing.Point(123, 25);
-            this.txtSrcUrl.Name = "txtSrcUrl";
-            this.txtSrcUrl.Size = new System.Drawing.Size(299, 20);
-            this.txtSrcUrl.TabIndex = 7;
-            this.txtSrcUrl.Text = "http://sourceserver/ReportServer";
-            // 
-            // cboSrcDefaultCred
-            // 
-            this.cboSrcDefaultCred.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboSrcDefaultCred.FormattingEnabled = true;
-            this.cboSrcDefaultCred.Items.AddRange(new object[] {
-            "True",
-            "False"});
-            this.cboSrcDefaultCred.Location = new System.Drawing.Point(123, 51);
-            this.cboSrcDefaultCred.Name = "cboSrcDefaultCred";
-            this.cboSrcDefaultCred.Size = new System.Drawing.Size(121, 21);
-            this.cboSrcDefaultCred.TabIndex = 8;
-            this.cboSrcDefaultCred.SelectedIndexChanged += new System.EventHandler(this.cboSrcDefaultCred_SelectedIndexChanged);
-            // 
-            // txtSrcUsername
-            // 
-            this.txtSrcUsername.Location = new System.Drawing.Point(123, 78);
-            this.txtSrcUsername.Name = "txtSrcUsername";
-            this.txtSrcUsername.Size = new System.Drawing.Size(121, 20);
-            this.txtSrcUsername.TabIndex = 9;
-            // 
-            // txtSrcPassword
-            // 
-            this.txtSrcPassword.Location = new System.Drawing.Point(123, 105);
-            this.txtSrcPassword.Name = "txtSrcPassword";
-            this.txtSrcPassword.Size = new System.Drawing.Size(121, 20);
-            this.txtSrcPassword.TabIndex = 10;
-            // 
-            // txtSrcDomain
-            // 
-            this.txtSrcDomain.Location = new System.Drawing.Point(123, 131);
-            this.txtSrcDomain.Name = "txtSrcDomain";
-            this.txtSrcDomain.Size = new System.Drawing.Size(121, 20);
-            this.txtSrcDomain.TabIndex = 11;
-            // 
-            // txtSrcPath
-            // 
-            this.txtSrcPath.Location = new System.Drawing.Point(123, 157);
-            this.txtSrcPath.Name = "txtSrcPath";
-            this.txtSrcPath.Size = new System.Drawing.Size(121, 20);
-            this.txtSrcPath.TabIndex = 12;
-            this.txtSrcPath.Text = "/";
-            // 
-            // cboSrcVersion
-            // 
-            this.cboSrcVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboSrcVersion.FormattingEnabled = true;
-            this.cboSrcVersion.Items.AddRange(new object[] {
-            "SQL Server 2008",
-            "SQL Server 2008 R2"});
-            this.cboSrcVersion.Location = new System.Drawing.Point(310, 51);
-            this.cboSrcVersion.Name = "cboSrcVersion";
-            this.cboSrcVersion.Size = new System.Drawing.Size(112, 21);
-            this.cboSrcVersion.TabIndex = 13;
+            this.btnSrcRefreshReports.Location = new System.Drawing.Point(284, 478);
+            this.btnSrcRefreshReports.Name = "btnSrcRefreshReports";
+            this.btnSrcRefreshReports.Size = new System.Drawing.Size(138, 23);
+            this.btnSrcRefreshReports.TabIndex = 15;
+            this.btnSrcRefreshReports.Text = "Refresh Reports List";
+            this.btnSrcRefreshReports.UseVisualStyleBackColor = true;
+            this.btnSrcRefreshReports.Click += new System.EventHandler(this.btnSrcRefreshReports_Click);
             // 
             // lstSrcReports
             // 
@@ -262,15 +138,139 @@
             this.colSrcPath.Text = "Path";
             this.colSrcPath.Width = 234;
             // 
-            // btnSrcRefreshReports
+            // cboSrcVersion
             // 
-            this.btnSrcRefreshReports.Location = new System.Drawing.Point(284, 478);
-            this.btnSrcRefreshReports.Name = "btnSrcRefreshReports";
-            this.btnSrcRefreshReports.Size = new System.Drawing.Size(138, 23);
-            this.btnSrcRefreshReports.TabIndex = 15;
-            this.btnSrcRefreshReports.Text = "Refresh Reports List";
-            this.btnSrcRefreshReports.UseVisualStyleBackColor = true;
-            this.btnSrcRefreshReports.Click += new System.EventHandler(this.btnSrcRefreshReports_Click);
+            this.cboSrcVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSrcVersion.FormattingEnabled = true;
+            this.cboSrcVersion.Items.AddRange(new object[] {
+            "SQL Server 2008",
+            "SQL Server 2008 R2"});
+            this.cboSrcVersion.Location = new System.Drawing.Point(310, 51);
+            this.cboSrcVersion.Name = "cboSrcVersion";
+            this.cboSrcVersion.Size = new System.Drawing.Size(112, 21);
+            this.cboSrcVersion.TabIndex = 13;
+            // 
+            // txtSrcPath
+            // 
+            this.txtSrcPath.Location = new System.Drawing.Point(123, 157);
+            this.txtSrcPath.Name = "txtSrcPath";
+            this.txtSrcPath.Size = new System.Drawing.Size(121, 20);
+            this.txtSrcPath.TabIndex = 12;
+            this.txtSrcPath.Text = "/";
+            // 
+            // txtSrcDomain
+            // 
+            this.txtSrcDomain.Location = new System.Drawing.Point(123, 131);
+            this.txtSrcDomain.Name = "txtSrcDomain";
+            this.txtSrcDomain.Size = new System.Drawing.Size(121, 20);
+            this.txtSrcDomain.TabIndex = 11;
+            // 
+            // txtSrcPassword
+            // 
+            this.txtSrcPassword.Location = new System.Drawing.Point(123, 105);
+            this.txtSrcPassword.Name = "txtSrcPassword";
+            this.txtSrcPassword.Size = new System.Drawing.Size(121, 20);
+            this.txtSrcPassword.TabIndex = 10;
+            // 
+            // txtSrcUsername
+            // 
+            this.txtSrcUsername.Location = new System.Drawing.Point(123, 78);
+            this.txtSrcUsername.Name = "txtSrcUsername";
+            this.txtSrcUsername.Size = new System.Drawing.Size(121, 20);
+            this.txtSrcUsername.TabIndex = 9;
+            // 
+            // cboSrcDefaultCred
+            // 
+            this.cboSrcDefaultCred.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSrcDefaultCred.FormattingEnabled = true;
+            this.cboSrcDefaultCred.Items.AddRange(new object[] {
+            "True",
+            "False"});
+            this.cboSrcDefaultCred.Location = new System.Drawing.Point(123, 51);
+            this.cboSrcDefaultCred.Name = "cboSrcDefaultCred";
+            this.cboSrcDefaultCred.Size = new System.Drawing.Size(121, 21);
+            this.cboSrcDefaultCred.TabIndex = 8;
+            this.cboSrcDefaultCred.SelectedIndexChanged += new System.EventHandler(this.cboSrcDefaultCred_SelectedIndexChanged);
+            // 
+            // txtSrcUrl
+            // 
+            this.txtSrcUrl.Location = new System.Drawing.Point(123, 25);
+            this.txtSrcUrl.Name = "txtSrcUrl";
+            this.txtSrcUrl.Size = new System.Drawing.Size(299, 20);
+            this.txtSrcUrl.TabIndex = 7;
+            this.txtSrcUrl.Text = "http://localhost/ReportServer";
+            // 
+            // lblSrcPath
+            // 
+            this.lblSrcPath.AutoSize = true;
+            this.lblSrcPath.Location = new System.Drawing.Point(83, 160);
+            this.lblSrcPath.Name = "lblSrcPath";
+            this.lblSrcPath.Size = new System.Drawing.Size(32, 13);
+            this.lblSrcPath.TabIndex = 6;
+            this.lblSrcPath.Text = "Path:";
+            // 
+            // lblSrcDomain
+            // 
+            this.lblSrcDomain.AutoSize = true;
+            this.lblSrcDomain.Location = new System.Drawing.Point(69, 134);
+            this.lblSrcDomain.Name = "lblSrcDomain";
+            this.lblSrcDomain.Size = new System.Drawing.Size(46, 13);
+            this.lblSrcDomain.TabIndex = 5;
+            this.lblSrcDomain.Text = "Domain:";
+            // 
+            // lblSrcPassword
+            // 
+            this.lblSrcPassword.AutoSize = true;
+            this.lblSrcPassword.Location = new System.Drawing.Point(59, 105);
+            this.lblSrcPassword.Name = "lblSrcPassword";
+            this.lblSrcPassword.Size = new System.Drawing.Size(56, 13);
+            this.lblSrcPassword.TabIndex = 4;
+            this.lblSrcPassword.Text = "Password:";
+            // 
+            // lblSrcUsername
+            // 
+            this.lblSrcUsername.AutoSize = true;
+            this.lblSrcUsername.Location = new System.Drawing.Point(59, 81);
+            this.lblSrcUsername.Name = "lblSrcUsername";
+            this.lblSrcUsername.Size = new System.Drawing.Size(58, 13);
+            this.lblSrcUsername.TabIndex = 3;
+            this.lblSrcUsername.Text = "Username:";
+            // 
+            // lblSrcDefaultCred
+            // 
+            this.lblSrcDefaultCred.AutoSize = true;
+            this.lblSrcDefaultCred.Location = new System.Drawing.Point(18, 54);
+            this.lblSrcDefaultCred.Name = "lblSrcDefaultCred";
+            this.lblSrcDefaultCred.Size = new System.Drawing.Size(99, 13);
+            this.lblSrcDefaultCred.TabIndex = 2;
+            this.lblSrcDefaultCred.Text = "Default Credentials:";
+            // 
+            // lblSrcVersion
+            // 
+            this.lblSrcVersion.AutoSize = true;
+            this.lblSrcVersion.Location = new System.Drawing.Point(259, 54);
+            this.lblSrcVersion.Name = "lblSrcVersion";
+            this.lblSrcVersion.Size = new System.Drawing.Size(45, 13);
+            this.lblSrcVersion.TabIndex = 1;
+            this.lblSrcVersion.Text = "Version:";
+            // 
+            // lblSrcUrl
+            // 
+            this.lblSrcUrl.AutoSize = true;
+            this.lblSrcUrl.Location = new System.Drawing.Point(29, 28);
+            this.lblSrcUrl.Name = "lblSrcUrl";
+            this.lblSrcUrl.Size = new System.Drawing.Size(88, 13);
+            this.lblSrcUrl.TabIndex = 0;
+            this.lblSrcUrl.Text = "Web Service Url:";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Location = new System.Drawing.Point(459, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(441, 397);
+            this.groupBox1.TabIndex = 2;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Destination Server";
             // 
             // MainForm
             // 
