@@ -392,15 +392,21 @@ namespace SSRSMigrate.SSRS.Repository
             nameCondition.Name = "Name";
             nameCondition.Values = new string[] { itemName };
 
-            SearchCondition[] conditions = new SearchCondition[1];
+            SearchCondition typeCondition = new SearchCondition();
+            typeCondition.Condition = ConditionEnum.Equals;
+            typeCondition.ConditionSpecified = true;
+            typeCondition.Name = "Type";
+            typeCondition.Values = new string[] { itemType };
+
+            SearchCondition[] conditions = new SearchCondition[2];
             conditions[0] = nameCondition;
+            conditions[1] = typeCondition;
 
             CatalogItem[] items = this.mReportingService.FindItems(this.mRootPath, BooleanOperatorEnum.And, null, conditions);
 
             if (items.Any())
             {
                 foreach (CatalogItem item in items)
-                    if (item.TypeName == itemType)
                         if (item.Path == itemPath)
                             return item;
             }
@@ -428,7 +434,7 @@ namespace SSRSMigrate.SSRS.Repository
             CatalogItem[] items = this.mReportingService.FindItems(path, BooleanOperatorEnum.Or, null, conditions);
 
             if (items.Any())
-                return items.Where(item => item.TypeName == itemType).Select(item => item).ToList<CatalogItem>();
+                return items.Select(item => item).ToList<CatalogItem>();
             else
                 return null;
         }
@@ -453,7 +459,7 @@ namespace SSRSMigrate.SSRS.Repository
             CatalogItem[] items = this.mReportingService.FindItems(path, BooleanOperatorEnum.Or, null, conditions);
 
             if (items.Any())
-                return items.Where(item => item.TypeName == itemType).Select(item => item);
+                return items.Select(item => item);
             else
                 return null;
         }
@@ -478,7 +484,7 @@ namespace SSRSMigrate.SSRS.Repository
             CatalogItem[] items = this.mReportingService.FindItems(path, BooleanOperatorEnum.Or, null, conditions);
 
             if (items.Any())
-                return items.Where(item => item.TypeName == itemType).Select(item => itemConverter(item));
+                return items.Select(item => itemConverter(item));
             else
                 return null;
         }
