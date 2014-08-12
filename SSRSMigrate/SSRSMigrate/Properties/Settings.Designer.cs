@@ -54,5 +54,185 @@ namespace SSRSMigrate.Properties {
                 return ((string)(this["SSRSMigrate_ReportServer2010_ReportingService2010"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost/ReportServer")]
+        public string SrcWebServiceUrl {
+            get {
+                return ((string)(this["SrcWebServiceUrl"]));
+            }
+            set {
+                this["SrcWebServiceUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SrcVersion {
+            get {
+                return ((string)(this["SrcVersion"]));
+            }
+            set {
+                this["SrcVersion"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SrcDefaultCred {
+            get {
+                return ((bool)(this["SrcDefaultCred"]));
+            }
+            set {
+                this["SrcDefaultCred"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SrcUsername {
+            get {
+                return ((string)(this["SrcUsername"]));
+            }
+            set {
+                this["SrcUsername"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SrcPassword {
+            get {
+                return ((string)(this["SrcPassword"]));
+            }
+            set {
+                this["SrcPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SrcDomain {
+            get {
+                return ((string)(this["SrcDomain"]));
+            }
+            set {
+                this["SrcDomain"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/SSRSMigrate_Tests")]
+        public string SrcPath {
+            get {
+                return ((string)(this["SrcPath"]));
+            }
+            set {
+                this["SrcPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost/ReportServer")]
+        public string DestWebServiceUrl {
+            get {
+                return ((string)(this["DestWebServiceUrl"]));
+            }
+            set {
+                this["DestWebServiceUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DestVersion {
+            get {
+                return ((string)(this["DestVersion"]));
+            }
+            set {
+                this["DestVersion"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DestDefaultCred {
+            get {
+                return ((bool)(this["DestDefaultCred"]));
+            }
+            set {
+                this["DestDefaultCred"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DestUsername {
+            get {
+                return ((string)(this["DestUsername"]));
+            }
+            set {
+                this["DestUsername"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DestPassword {
+            get {
+                return ((string)(this["DestPassword"]));
+            }
+            set {
+                this["DestPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DestDomain {
+            get {
+                return ((string)(this["DestDomain"]));
+            }
+            set {
+                this["DestDomain"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/SSRSMigrate_Dest")]
+        public string DestPath {
+            get {
+                return ((string)(this["DestPath"]));
+            }
+            set {
+                this["DestPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MigrationMethod {
+            get {
+                return ((int)(this["MigrationMethod"]));
+            }
+            set {
+                this["MigrationMethod"] = value;
+            }
+        }
     }
 }

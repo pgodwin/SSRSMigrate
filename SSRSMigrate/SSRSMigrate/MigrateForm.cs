@@ -6,21 +6,20 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using log4net;
-using log4net.Config;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
+using log4net.Core;
 
 namespace SSRSMigrate
 {
     [CoverageExcludeAttribute]
     public partial class MigrateForm : Form
     {
-        private static ILog Log = null;
         private readonly ReportServerReader mReportServerReader = null;
         //private readonly ReportServerWriter mReportServerWriter = null;
         private readonly string mSourceRootPath = null;
         private readonly string mDestinationRootPath = null;
+
         private BackgroundWorker mSourceRefreshWorker = null;
 
         public MigrateForm(string sourceRootPath, string destinationRootPath, ReportServerReader reader)
@@ -30,9 +29,6 @@ namespace SSRSMigrate
             this.mSourceRootPath = sourceRootPath;
             this.mDestinationRootPath = destinationRootPath;
             this.mReportServerReader = reader;
-
-            XmlConfigurator.Configure();
-            Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType); 
         }
 
         #region UI Events
@@ -105,7 +101,7 @@ namespace SSRSMigrate
             }
             else if ((e.Error != null))
             {
-                Log.Error("Reporting listing error.", e.Error);
+                msg = string.Format("Reporting listing error.", e.Error);
             }
             else
             {

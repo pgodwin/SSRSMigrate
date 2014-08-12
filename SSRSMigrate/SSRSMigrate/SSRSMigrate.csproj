@@ -99,6 +99,8 @@
     <Compile Include="Exporter\Writer\IExportWriter.cs" />
     <Compile Include="Exporter\IItemExporter.cs" />
     <Compile Include="Exporter\ReportItemExporter.cs" />
+    <Compile Include="Factory\IReportServerRepositoryFactory.cs" />
+    <Compile Include="Factory\ReportServerRepositoryFactory.cs" />
     <Compile Include="MigrateForm.cs">
       <SubType>Form</SubType>
     </Compile>

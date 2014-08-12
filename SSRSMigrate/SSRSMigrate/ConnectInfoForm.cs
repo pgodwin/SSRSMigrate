@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using SSRSMigrate.SSRS.Reader;
 using Ninject;
+using SSRSMigrate.Factory;
+using SSRSMigrate.SSRS.Repository;
 
 namespace SSRSMigrate
 {
@@ -17,6 +19,8 @@ namespace SSRSMigrate
 
         public ConnectInfoForm()
         {
+            this.mKernel = new StandardKernel(new ReportServerRepositoryModule());
+
             InitializeComponent();
         }
 
@@ -127,34 +131,17 @@ namespace SSRSMigrate
             try
             {
                 this.UICheck();
+                this.SaveUIToConfig();
 
-                bool srcDefaultCred = true;
-                bool srcReportingService2005 = false;
+                ReportServerReader reader = null;
+                string version = "2005-SRC";
 
-                if (cboSrcDefaultCred.SelectedIndex == 0)
-                    srcDefaultCred = true;
+                if (cboSrcVersion.SelectedIndex == 0) 
+                    version = "2005-SRC";
                 else
-                    srcDefaultCred = false;
+                    version = "2010-SRC";
 
-                if (cboSrcVersion.SelectedIndex == 0)
-                {
-                    srcReportingService2005 = true;
-                }
-                else
-                {
-                    srcReportingService2005 = false;
-                }
-
-                this.mKernel = new StandardKernel(new DependencyModule(
-                   srcReportingService2005,
-                   txtSrcPath.Text,
-                   txtSrcUrl.Text,
-                   srcDefaultCred,
-                   txtSrcUsername.Text,
-                   txtSrcPassword.Text,
-                   txtSrcDomain.Text));
-
-                ReportServerReader reader = this.mKernel.Get<ReportServerReader>();
+                reader = new ReportServerReader(this.mKernel.Get<IReportServerRepositoryFactory>().GetRepository(version));
 
                 this.PerformDirectMigrate(txtSrcPath.Text, txtDestPath.Text, reader);
             }
@@ -218,6 +205,45 @@ namespace SSRSMigrate
 
             if (string.IsNullOrEmpty(this.txtDestPath.Text))
                 this.txtDestPath.Text = "/";
+        }
+
+        private void SaveUIToConfig()
+        {
+            if (cboSrcDefaultCred.SelectedIndex == 0)
+                Properties.Settings.Default.SrcDefaultCred = true;
+            else
+                Properties.Settings.Default.SrcDefaultCred = false;
+
+            Properties.Settings.Default.SrcDomain = txtSrcDomain.Text;
+            Properties.Settings.Default.SrcPassword = txtSrcPassword.Text;
+            Properties.Settings.Default.SrcPath = txtSrcPath.Text;
+            Properties.Settings.Default.SrcUsername = txtSrcUsername.Text;
+
+            if (cboSrcVersion.SelectedIndex == 0)
+                Properties.Settings.Default.SrcVersion = "2005";
+            else
+                Properties.Settings.Default.SrcVersion = "2010";
+
+            Properties.Settings.Default.SrcWebServiceUrl = txtSrcUrl.Text;
+
+            if (cboDestDefaultCred.SelectedIndex == 0)
+                Properties.Settings.Default.DestDefaultCred = true;
+            else
+                Properties.Settings.Default.DestDefaultCred = false;
+
+            Properties.Settings.Default.DestDomain = txtDestDomain.Text;
+            Properties.Settings.Default.DestPassword = txtDestPassword.Text;
+            Properties.Settings.Default.DestPath = txtDestPath.Text;
+            Properties.Settings.Default.DestUsername = txtDestUsername.Text;
+
+            if (cboDestVersion.SelectedIndex == 0)
+                Properties.Settings.Default.DestVersion = "2005";
+            else
+                Properties.Settings.Default.DestVersion = "2010";
+
+            Properties.Settings.Default.DestWebServiceUrl = txtDestUrl.Text;
+
+            Properties.Settings.Default.Save();
         }
 
         private void PerformDirectMigrate(string sourceRootPath, string destinationRootPath, ReportServerReader reader)
