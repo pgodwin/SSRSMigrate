@@ -5,6 +5,7 @@ using System.Text;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.SSRS.Errors;
 using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.Utility;
 
 namespace SSRSMigrate.SSRS.Writer
 {
@@ -26,10 +27,16 @@ namespace SSRSMigrate.SSRS.Writer
             if (folderItem == null)
                 throw new ArgumentNullException("folderItem");
 
+            if (string.IsNullOrEmpty(folderItem.Path))
+                throw new ArgumentException("path");
+
             if (!this.mReportRepository.ValidatePath(folderItem.Path))
                 throw new InvalidPathCharsException(folderItem.Path);
 
-            return this.mReportRepository.CreateFolder(folderItem.Path);
+            string name = folderItem.Name;
+            string parentPath = SSRSUtil.GetParentPath(folderItem);
+
+            return this.mReportRepository.CreateFolder(name, parentPath);
         }
 
         public string WriteFolders(FolderItem[] folderItems)

@@ -9,6 +9,7 @@ using Moq;
 using SSRSMigrate.SSRS.Repository;
 using System.Text.RegularExpressions;
 using SSRSMigrate.SSRS.Errors;
+using SSRSMigrate.TestHelper;
 
 namespace SSRSMigrate.Tests.SSRS.Writer
 {
@@ -79,32 +80,44 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             var reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
             // IReportServerRepository.CreateFolder Mocks
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(null))
-                .Throws(new ArgumentException("folderPath"));
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(null, It.IsAny<string>()))
+                .Throws(new ArgumentException("name"));
 
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(""))
-                .Throws(new ArgumentException("folderPath"));
+            reportServerRepositoryMock.Setup(r => r.CreateFolder("", It.IsAny<string>()))
+                .Throws(new ArgumentException("name"));
 
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootFolderItem.Path))
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(It.IsAny<string>(), null))
+                .Throws(new ArgumentException("parentPath"));
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(It.IsAny<string>(), ""))
+               .Throws(new ArgumentException("parentPath"));
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootFolderItem.Name, TesterUtility.GetParentPath(rootFolderItem)))
                 .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsFolderItem.Path))
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsFolderItem.Name, TesterUtility.GetParentPath(reportsFolderItem)))
                 .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsSubFolderItem.Path))
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsSubFolderItem.Name, TesterUtility.GetParentPath(reportsSubFolderItem)))
                 .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootSubFolderItem.Path))
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootSubFolderItem.Name, TesterUtility.GetParentPath(rootSubFolderItem)))
                .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(alreadyExistsFolderItem.Path))
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(alreadyExistsFolderItem.Name, TesterUtility.GetParentPath(alreadyExistsFolderItem)))
                 .Throws(new FolderAlreadyExistsException(string.Format("The folder '{0}' already exists.", alreadyExistsFolderItem.Path)));
 
             // IReportServerRepository.ValidatePath Mocks
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
+               .Throws(new ArgumentException("path"));
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(""))
+               .Throws(new ArgumentException("path"));
+
             reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == true)))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == false)))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == false && !string.IsNullOrEmpty(s))))
                .Returns(() => true);
 
             writer = new ReportServerWriter(reportServerRepositoryMock.Object);
@@ -149,7 +162,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         }
 
         [Test]
-        public void CreateFolder_NullFolderPath()
+        public void CreateFolder_NullFolderItem()
         {
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
@@ -170,6 +183,78 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 });
 
             Assert.That(ex.Message, Is.EqualTo(invalidPathFolderItem.Path));
+        }
+
+        [Test]
+        public void CreateFolder_FolderItemNullName()
+        {
+            FolderItem folderItem = new FolderItem()
+            {
+                Name = null,
+                Path = "/SSRSMigrate_Tests",
+            };
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    writer.WriteFolder(folderItem);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("item.Name"));
+        }
+
+        [Test]
+        public void CreateFolder_FolderItemEmptyName()
+        {
+            FolderItem folderItem = new FolderItem()
+            {
+                Name = "",
+                Path = "/SSRSMigrate_Tests",
+            };
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    writer.WriteFolder(folderItem);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("item.Name"));
+        }
+
+        [Test]
+        public void CreateFolder_FolderItemNullPath()
+        {
+            FolderItem folderItem = new FolderItem()
+            {
+                Name = "SSRSMigrate_Tests",
+                Path = null,
+            };
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    writer.WriteFolder(folderItem);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void CreateFolder_FolderItemEmptyPath()
+        {
+            FolderItem folderItem = new FolderItem()
+            {
+                Name = "SSRSMigrate_Tests",
+                Path = "",
+            };
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    writer.WriteFolder(folderItem);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
         }
         #endregion
 
