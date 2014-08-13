@@ -5,19 +5,19 @@ using System.Text;
 
 namespace SSRSMigrate.SSRS.Errors
 {
-    public class InvalidPathCharsException : Exception
+    public class InvalidPathException : Exception
     {
-        public InvalidPathCharsException()
-            : base("InvalidPathCharsException exception")
+        public InvalidPathException()
+            : base("InvalidPathException exception")
         {
         }
 
-        public InvalidPathCharsException(string Message)
+        public InvalidPathException(string Message)
             : base(Message)
         {
         }
 
-        public InvalidPathCharsException(string Message, Exception inner)
+        public InvalidPathException(string Message, Exception inner)
             : base(Message, inner)
         {
         }

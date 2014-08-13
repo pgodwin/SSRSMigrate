@@ -205,7 +205,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         {
             string invalidPath = "/SSRSMigrate_Tests/Test.Data Source";
 
-            InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
                     reader.GetDataSource(invalidPath);
@@ -263,7 +263,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         {
             string invalidPath = "/SSRSMigrate.Tests";
 
-            InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
                     reader.GetDataSources(invalidPath);
@@ -333,7 +333,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         {
             string invalidPath = "/SSRSMigrate.Tests";
 
-            InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
                     reader.GetDataSources(invalidPath, GetDataSources_Reporter);

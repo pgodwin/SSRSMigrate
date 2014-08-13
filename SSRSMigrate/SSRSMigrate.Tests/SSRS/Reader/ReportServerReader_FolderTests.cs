@@ -151,7 +151,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         {
             string invalidPath = "/SSRSMigrate.Tests";
 
-            InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
                     reader.GetFolders(invalidPath);
@@ -219,7 +219,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         {
             string invalidPath = "/SSRSMigrate.Tests";
 
-            InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
                     reader.GetFolders(invalidPath, GetFolders_Reporter);
