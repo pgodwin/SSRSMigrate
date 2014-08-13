@@ -10,7 +10,7 @@ namespace SSRSMigrate.SSRS.Writer
     {
         // Folders
         string WriteFolder(FolderItem folderItemn);
-        string WriteFolders(FolderItem[] folderItems);
+        string[] WriteFolders(FolderItem[] folderItems);
 
         // Reports
         string[] WriteReport(string reportPath, ReportItem reportItem);

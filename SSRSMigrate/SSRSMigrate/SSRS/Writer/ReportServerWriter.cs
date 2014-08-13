@@ -39,8 +39,11 @@ namespace SSRSMigrate.SSRS.Writer
             return this.mReportRepository.CreateFolder(name, parentPath);
         }
 
-        public string WriteFolders(FolderItem[] folderItems)
+        public string[] WriteFolders(FolderItem[] folderItems)
         {
+            if (folderItems == null)
+                throw new ArgumentNullException("folderItems");
+
             throw new NotImplementedException();
         }
         #endregion
