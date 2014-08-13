@@ -119,6 +119,8 @@
     <Compile Include="SSRS\Reader\ReportServerReader.cs" />
     <Compile Include="SSRS\Repository\ReportServer2010Repository.cs" />
     <Compile Include="SSRS\Repository\ReportServer2005Repository.cs" />
+    <Compile Include="SSRS\Writer\IReportServerWriter.cs" />
+    <Compile Include="SSRS\Writer\ReportServerWriter.cs" />
     <Compile Include="Utility\SSRSUtil.cs" />
     <Compile Include="Web References\ReportServer2005\Reference.cs">
       <AutoGen>True</AutoGen>
