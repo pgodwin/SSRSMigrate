@@ -22,4 +22,22 @@ namespace SSRSMigrate.SSRS.Errors
         {
         }
     }
+
+    public class FolderAlreadyExistsException : Exception
+    {
+        public FolderAlreadyExistsException()
+            : base("FolderAlreadyExistsException exception")
+        {
+        }
+
+        public FolderAlreadyExistsException(string Message)
+            : base(Message)
+        {
+        }
+
+        public FolderAlreadyExistsException(string Message, Exception inner)
+            : base(Message, inner)
+        {
+        }
+    }
 }
