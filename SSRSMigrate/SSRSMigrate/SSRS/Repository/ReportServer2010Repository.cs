@@ -15,6 +15,7 @@ namespace SSRSMigrate.SSRS.Repository
 
         private string mRootPath = null;
         private string mInvalidPathChars = ":?;@&=+$,\\*><|.\"";
+        private int mPathMaxLength = 260;
 
         public ReportServer2010Repository(string rootPath, ReportingService2010 reportingService)
         {
@@ -362,10 +363,19 @@ namespace SSRSMigrate.SSRS.Repository
         #region Misc.
         public bool ValidatePath(string path)
         {
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentException("path");
+            //if (string.IsNullOrEmpty(path))
+            //    throw new ArgumentException("path");
 
-            return path.IndexOfAny(this.mInvalidPathChars.ToCharArray()) < 0;
+            //return path.IndexOfAny(this.mInvalidPathChars.ToCharArray()) < 0;
+
+            if (string.IsNullOrEmpty(path))
+                return false;
+            else if (path.IndexOfAny(this.mInvalidPathChars.ToCharArray()) >= 0)
+                return false;
+            else if (path.Length > this.mPathMaxLength)
+                return false;
+            else
+                return true;
         }
         #endregion
 
