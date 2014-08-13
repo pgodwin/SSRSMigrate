@@ -88,7 +88,7 @@ namespace SSRSMigrate.SSRS.Repository
                     yield return item;
         }
 
-        public string CreateFolder(string folderPath)
+        public string CreateFolder(string name, string parentPath)
         {
             throw new NotImplementedException();
         }

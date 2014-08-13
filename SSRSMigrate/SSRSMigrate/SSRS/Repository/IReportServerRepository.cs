@@ -14,7 +14,7 @@ namespace SSRSMigrate.SSRS.Repository
         // Folders
         List<FolderItem> GetFolders(string path);
         IEnumerable<FolderItem> GetFolderList(string path);
-        string CreateFolder(string folderPath);
+        string CreateFolder(string name, string parentPath);
 
         // Reports
         byte[] GetReportDefinition(string reportPath);
