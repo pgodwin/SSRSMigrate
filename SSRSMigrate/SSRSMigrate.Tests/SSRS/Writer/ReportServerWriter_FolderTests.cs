@@ -142,7 +142,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
 
         #region WriteFolder Tests
         [Test]
-        public void CreateFolder()
+        public void WriteFolder()
         {
             string actual = writer.WriteFolder(rootFolderItem);
 
@@ -150,7 +150,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         }
 
         [Test]
-        public void CreateFolder_AlreadyExists()
+        public void WriteFolder_AlreadyExists()
         {
             FolderAlreadyExistsException ex = Assert.Throws<FolderAlreadyExistsException>(
                 delegate
@@ -162,7 +162,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         }
 
         [Test]
-        public void CreateFolder_NullFolderItem()
+        public void WriteFolder_NullFolderItem()
         {
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
@@ -174,7 +174,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         }
 
         [Test]
-        public void CreateFolder_InvalidPath()
+        public void WriteFolder_InvalidPath()
         {
             InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
                 delegate
@@ -186,7 +186,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         }
 
         [Test]
-        public void CreateFolder_FolderItemNullName()
+        public void WriteFolder_FolderItemNullName()
         {
             FolderItem folderItem = new FolderItem()
             {
@@ -204,7 +204,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         }
 
         [Test]
-        public void CreateFolder_FolderItemEmptyName()
+        public void WriteFolder_FolderItemEmptyName()
         {
             FolderItem folderItem = new FolderItem()
             {
@@ -222,7 +222,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         }
 
         [Test]
-        public void CreateFolder_FolderItemNullPath()
+        public void WriteFolder_FolderItemNullPath()
         {
             FolderItem folderItem = new FolderItem()
             {
@@ -240,7 +240,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         }
 
         [Test]
-        public void CreateFolder_FolderItemEmptyPath()
+        public void WriteFolder_FolderItemEmptyPath()
         {
             FolderItem folderItem = new FolderItem()
             {
