@@ -5,7 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.SSRS.Reader;
 
-namespace SSRSMigrate.Tests.SSRS
+namespace SSRSMigrate.Tests.SSRS.Reader
 {
     [TestFixture]
     class ReportServerReaderTests

@@ -10,7 +10,7 @@ using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.SSRS.Errors;
 using System.Text.RegularExpressions;
 
-namespace SSRSMigrate.Tests.SSRS
+namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2005
 {
     [TestFixture]
     [CoverageExcludeAttribute]

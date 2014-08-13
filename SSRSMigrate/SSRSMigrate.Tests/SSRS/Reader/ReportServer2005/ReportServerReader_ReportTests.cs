@@ -11,7 +11,7 @@ using SSRSMigrate.SSRS.Repository;
 using System.Text.RegularExpressions;
 using SSRSMigrate.SSRS.Errors;
 
-namespace SSRSMigrate.Tests.SSRS.ReportServer2005
+namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2005
 {
     [TestFixture]
     [CoverageExcludeAttribute]
