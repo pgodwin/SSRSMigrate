@@ -108,6 +108,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 .Throws(new FolderAlreadyExistsException(string.Format("The folder '{0}' already exists.", alreadyExistsFolderItem.Path)));
 
             // IReportServerRepository.ValidatePath Mocks
+            //TODO Need to fix this so it correctly mocks the ValidatePath with a null or empty parameter.
             reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
                .Throws(new ArgumentException("path"));
 
@@ -176,7 +177,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolder_InvalidPath()
         {
-            InvalidPathCharsException ex = Assert.Throws<InvalidPathCharsException>(
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
                     writer.WriteFolder(invalidPathFolderItem);
@@ -259,6 +260,55 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         #endregion
 
         #region WriteFolders Tests
+        [Test]
+        public void WriteFolders()
+        {
+            string[] actual = writer.WriteFolders(folderItems.ToArray());
+
+            Assert.AreEqual(0, actual.Length);
+        }
+
+        [Test]
+        public void WriteFolders_OneOrMoreAlreadyExists()
+        {
+
+        }
+
+        [Test]
+        public void WriteFolders_NullFolderItems()
+        {
+
+        }
+
+        [Test]
+        public void WriteFolders_OneOrMoreInvalidPaths()
+        {
+
+        }
+
+        [Test]
+        public void WriteFolders_OneOrMoreNullNames()
+        {
+
+        }
+
+        [Test]
+        public void WriteFolders_OneOrMoreEmptyNames()
+        {
+
+        }
+
+        [Test]
+        public void WriteFolders_OneOrMoreNullPaths()
+        {
+
+        }
+
+        [Test]
+        public void WriteFolders_OneOrMoreEmptyPaths()
+        {
+
+        }
         #endregion
     }
 }
