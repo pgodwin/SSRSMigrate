@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Xml;
-using SSRSMigrate.SSRS.Item;
 
 public class CoverageExcludeAttribute : System.Attribute { }
 
@@ -88,34 +87,6 @@ namespace SSRSMigrate.TestHelper
             IEnumerable<string> file2_only = file2_lines.Except(file1_lines);
 
             return !file2_only.Any();
-        }
-
-        public static string GetParentPath(ReportServerItem item)
-        {
-            if (item == null)
-                throw new ArgumentNullException("item");
-
-            if (string.IsNullOrEmpty(item.Path))
-                throw new ArgumentException("item.Path");
-
-            if (string.IsNullOrEmpty(item.Name))
-                throw new ArgumentException("item.Name");
-
-            string path = item.Path;
-            string name = item.Name;
-
-            string parentPath = null;
-            if (path == "/")
-                parentPath = path;
-            else
-            {
-                parentPath = path.Replace(name, "");
-
-                if (parentPath.EndsWith("/"))
-                    parentPath = parentPath.Substring(0, parentPath.Length - 1);
-            }
-
-            return parentPath;
         }
     }
 }
