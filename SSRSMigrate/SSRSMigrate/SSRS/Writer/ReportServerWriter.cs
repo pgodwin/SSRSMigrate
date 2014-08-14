@@ -62,19 +62,19 @@ namespace SSRSMigrate.SSRS.Writer
         #endregion
 
         #region Report Methods
-        public string[] WriteReport(string reportPath, Item.ReportItem reportItem)
+        public string WriteReport(string reportPath, Item.ReportItem reportItem)
         {
             throw new NotImplementedException();
         }
         #endregion
 
         #region Data Source Methods
-        public string[] WriteDataSource(string dataSourcePath, Item.DataSourceItem dataSourceItem)
+        public string WriteDataSource(string dataSourcePath, Item.DataSourceItem dataSourceItem)
         {
             throw new NotImplementedException();
         }
 
-        public string[] DeleteItem(string itemPath)
+        public string DeleteItem(string itemPath)
         {
             throw new NotImplementedException();
         }
