@@ -247,8 +247,16 @@ namespace SSRSMigrate.Utility
                 parentPath = path.Replace(name, "");
 
                 if (parentPath.EndsWith("/"))
+                {
                     parentPath = parentPath.Substring(0, parentPath.Length - 1);
+
+                    if (parentPath.EndsWith("/"))
+                        parentPath = parentPath.Substring(0, parentPath.Length - 1);
+                }
             }
+
+            if (!parentPath.StartsWith("/"))
+                parentPath = "/" + parentPath;
 
             return parentPath;
         }
