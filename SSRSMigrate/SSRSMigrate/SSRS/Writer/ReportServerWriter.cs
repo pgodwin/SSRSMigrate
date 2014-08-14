@@ -91,7 +91,26 @@ namespace SSRSMigrate.SSRS.Writer
 
         public string[] WriteDataSources(DataSourceItem[] dataSourceItems)
         {
-            throw new NotImplementedException();
+            if (dataSourceItems == null)
+                throw new ArgumentNullException("dataSourceItems");
+
+            List<string> warnings = new List<string>();
+
+            for (int i = 0; i < dataSourceItems.Count(); i++)
+            {
+                if (!this.mReportRepository.ValidatePath(dataSourceItems[i].Path))
+                    throw new InvalidPathException(string.Format("Invalid path '{0}'.", dataSourceItems[i].Path));
+
+                string name = dataSourceItems[i].Name;
+                string parentPath = SSRSUtil.GetParentPath(dataSourceItems[i]);
+
+                string warning = this.mReportRepository.WriteDataSource(dataSourceItems[i].Path, dataSourceItems[i]);
+                
+                if (!string.IsNullOrEmpty(warning))
+                    warnings.Add(warning);
+            }
+
+            return warnings.ToArray();
         }
 
         public string DeleteItem(string itemPath)

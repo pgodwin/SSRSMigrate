@@ -136,6 +136,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 WindowsCredentials = false
             };
 
+            dataSourceItems = new List<DataSourceItem>()
+            {
+                dataSourceItem,
+                dataSourceTwoItem
+            };
+
             // Setup IReportServerRepository mock
             var reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
@@ -311,61 +317,139 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteDataSources()
         {
-            throw new NotImplementedException();
+            string[] actual = writer.WriteDataSources(dataSourceItems.ToArray());
+
+            Assert.AreEqual(0, actual.Length);
         }
 
         [Test]
         public void WriteDataSources_OneOrMoreAlreadyExists()
         {
-            throw new NotImplementedException();
+            List<DataSourceItem> items = new List<DataSourceItem>();
+
+            items.AddRange(dataSourceItems);
+            items.Add(alreadyExistsDataSourceItem);
+
+            DataSourceAlreadyExistsException ex = Assert.Throws<DataSourceAlreadyExistsException>(
+                delegate
+                {
+                    writer.WriteDataSources(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("The data source '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
         }
 
         [Test]
         public void WriteDataSources_NullDataSourceItems()
         {
-            throw new NotImplementedException();
-        }
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    writer.WriteDataSources(null);
+                });
 
-        [Test]
-        public void WriteDataSources_OneOrMoreNullDataSourcePath()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void WriteDatasources_OneOrMoreEmptyDataSourcePath()
-        {
-            throw new NotImplementedException();
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: dataSourceItems"));
         }
 
         [Test]
         public void WriteDataSources_OneOrMoreInvalidDataSourcePath()
         {
-            throw new NotImplementedException();
+            List<DataSourceItem> items = new List<DataSourceItem>();
+            items.AddRange(dataSourceItems);
+            items.Add(invalidDataSourcePathItem);
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    writer.WriteDataSources(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.StringContaining(string.Format("Invalid path '{0}'.", invalidDataSourcePathItem.Path)));
+        
         }
 
         [Test]
         public void WriteDatasources_OneOrMoreDataSourceItemNullName()
         {
-            throw new NotImplementedException();
+            List<DataSourceItem> items = new List<DataSourceItem>();
+
+            items.AddRange(dataSourceItems);
+            items.Add(new DataSourceItem()
+            {
+                Name = null,
+                Path = "/SSRSMigrate_Tests",
+            });
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    writer.WriteDataSources(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("item.Name"));
         }
 
         [Test]
         public void WriteDataSources_OneOrMoreDataSourceItemEmptyName()
         {
-            throw new NotImplementedException();
+            List<DataSourceItem> items = new List<DataSourceItem>();
+
+            items.AddRange(dataSourceItems);
+            items.Add(new DataSourceItem()
+            {
+                Name = "",
+                Path = "/SSRSMigrate_Tests",
+            });
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    writer.WriteDataSources(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("item.Name"));
         }
 
         [Test]
         public void WriteDataSources_OneOrMoreDataSourceItemNullPath()
         {
-            throw new NotImplementedException();
+            List<DataSourceItem> items = new List<DataSourceItem>();
+
+            items.AddRange(dataSourceItems);
+            items.Add(new DataSourceItem()
+            {
+                Name = "SSRSMigrate_Tests",
+                Path = null,
+            });
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    writer.WriteDataSources(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
 
         [Test]
         public void WriteDataSources_OneOrMoreDataSourceItemEmptyPath()
         {
-            throw new NotImplementedException();
+            List<DataSourceItem> items = new List<DataSourceItem>();
+
+            items.AddRange(dataSourceItems);
+            items.Add(new DataSourceItem()
+            {
+                Name = "SSRSMigrate_Tests",
+                Path = "",
+            });
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    writer.WriteDataSources(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
         #endregion
     }
