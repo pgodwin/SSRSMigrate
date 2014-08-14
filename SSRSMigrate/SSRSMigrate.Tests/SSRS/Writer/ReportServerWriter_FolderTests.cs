@@ -117,6 +117,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             reportServerRepositoryMock.Setup(r => r.ValidatePath(reportsFolderItem.Path))
                .Returns(() => true);
 
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportsSubFolderItem.Path))
+                .Returns(() => true);
+
             reportServerRepositoryMock.Setup(r => r.ValidatePath(rootSubFolderItem.Path))
                .Returns(() => true);
 
@@ -144,7 +147,6 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [SetUp]
         public void SetUp()
         {
-            folderItems = new List<FolderItem>();
         }
 
         [TearDown]
