@@ -23,6 +23,24 @@ namespace SSRSMigrate.SSRS.Errors
         }
     }
 
+    public class InvalidReportDefinition : Exception
+    {
+        public InvalidReportDefinition()
+            : base("InvalidReportDefinition exception")
+        {
+        }
+
+        public InvalidReportDefinition(string Message)
+            : base(Message)
+        {
+        }
+
+        public InvalidReportDefinition(string Message, Exception inner)
+            : base(Message, inner)
+        {
+        }
+    }
+
     public class ItemAlreadyExistsException : Exception
     {
         public ItemAlreadyExistsException()
