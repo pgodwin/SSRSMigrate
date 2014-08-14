@@ -79,11 +79,29 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                 .Returns(() => new List<FolderItem>());
 
             // Setup IReportServerRepository.ValidatePath Mocks
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == true)))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests"))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests Doesnt Exist"))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports"))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/Sub Folder"))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Test Folder"))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == false)))
-               .Returns(() => true);
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(""))
+               .Returns(() => false);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == true)))
+               .Returns(() => false);
 
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
         }
@@ -157,7 +175,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                     reader.GetFolders(invalidPath);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(invalidPath));
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
         #endregion
 
@@ -225,7 +243,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                     reader.GetFolders(invalidPath, GetFolders_Reporter);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(invalidPath));
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
 
         private void GetFolders_Reporter(FolderItem folderItem)

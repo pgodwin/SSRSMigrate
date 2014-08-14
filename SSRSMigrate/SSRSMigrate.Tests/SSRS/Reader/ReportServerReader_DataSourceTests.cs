@@ -132,11 +132,29 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                 .Returns(() => new List<DataSourceItem>());
 
             // Setup IReportServerRepository.ValidatePath Mocks
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == true)))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests"))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests Doesnt Exist"))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Test Data Source Doesnt Exist"))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Test 2 Data Source"))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Test Data Source"))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == false)))
-               .Returns(() => true);
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(""))
+               .Returns(() => false);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == true)))
+               .Returns(() => false);
 
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
         }
@@ -211,7 +229,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                     reader.GetDataSource(invalidPath);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(invalidPath));
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
         #endregion
 
@@ -269,7 +287,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                     reader.GetDataSources(invalidPath);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(invalidPath));
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
         #endregion
 
@@ -339,7 +357,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                     reader.GetDataSources(invalidPath, GetDataSources_Reporter);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(invalidPath));
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
 
         private void GetDataSources_Reporter(DataSourceItem dataSourceItem)
