@@ -13,7 +13,7 @@ namespace SSRSMigrate.SSRS.Writer
         string[] WriteFolders(FolderItem[] folderItems);
 
         // Reports
-        string WriteReport(ReportItem reportItem);
+        string[] WriteReport(ReportItem reportItem);
         string[] WriteReports(ReportItem[] reportItems);
 
         // Data Sources

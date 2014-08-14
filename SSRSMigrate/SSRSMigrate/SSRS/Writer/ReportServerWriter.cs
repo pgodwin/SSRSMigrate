@@ -62,9 +62,18 @@ namespace SSRSMigrate.SSRS.Writer
         #endregion
 
         #region Report Methods
-        public string WriteReport(ReportItem reportItem)
+        public string[] WriteReport(ReportItem reportItem)
         {
-            throw new NotImplementedException();
+            if (reportItem == null)
+                throw new ArgumentNullException("reportItem");
+
+            if (!this.mReportRepository.ValidatePath(reportItem.Path))
+                throw new InvalidPathException(string.Format("Invalid path '{0}'.", reportItem.Path));
+
+            string name = reportItem.Name;
+            string parentPath = SSRSUtil.GetParentPath(reportItem);
+
+            return this.mReportRepository.WriteReport(parentPath, reportItem);
         }
 
         public string[] WriteReports(ReportItem[] reportItems)
