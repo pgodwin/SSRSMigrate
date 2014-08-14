@@ -23,6 +23,24 @@ namespace SSRSMigrate.SSRS.Errors
         }
     }
 
+    public class ItemAlreadyExistsException : Exception
+    {
+        public ItemAlreadyExistsException()
+            : base("ItemAlreadyExistsException exception")
+        {
+        }
+
+        public ItemAlreadyExistsException(string Message)
+            : base(Message)
+        {
+        }
+
+        public ItemAlreadyExistsException(string Message, Exception inner)
+            : base(Message, inner)
+        {
+        }
+    }
+
     public class FolderAlreadyExistsException : Exception
     {
         public FolderAlreadyExistsException()
@@ -36,6 +54,42 @@ namespace SSRSMigrate.SSRS.Errors
         }
 
         public FolderAlreadyExistsException(string Message, Exception inner)
+            : base(Message, inner)
+        {
+        }
+    }
+
+    public class DataSourceAlreadyExistsException : Exception
+    {
+        public DataSourceAlreadyExistsException()
+            : base("DataSourceAlreadyExistsException exception")
+        {
+        }
+
+        public DataSourceAlreadyExistsException(string Message)
+            : base(Message)
+        {
+        }
+
+        public DataSourceAlreadyExistsException(string Message, Exception inner)
+            : base(Message, inner)
+        {
+        }
+    }
+
+    public class ReportAlreadyExistsException : Exception
+    {
+        public ReportAlreadyExistsException()
+            : base("ReportAlreadyExistsException exception")
+        {
+        }
+
+        public ReportAlreadyExistsException(string Message)
+            : base(Message)
+        {
+        }
+
+        public ReportAlreadyExistsException(string Message, Exception inner)
             : base(Message, inner)
         {
         }
