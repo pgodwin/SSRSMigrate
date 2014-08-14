@@ -62,19 +62,44 @@ namespace SSRSMigrate.SSRS.Writer
         #endregion
 
         #region Report Methods
-        public string WriteReport(string reportPath, Item.ReportItem reportItem)
+        public string WriteReport(ReportItem reportItem)
         {
             throw new NotImplementedException();
         }
+
+        public string[] WriteReports(ReportItem[] reportItems)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Data Source Methods
-        public string WriteDataSource(string dataSourcePath, Item.DataSourceItem dataSourceItem)
+        public string WriteDataSource(DataSourceItem dataSourceItem)
+        {
+            if (dataSourceItem == null)
+                throw new ArgumentNullException("dataSourceItem");
+
+            if (!this.mReportRepository.ValidatePath(dataSourceItem.Path))
+                throw new InvalidPathException(string.Format("Invalid path '{0}'.", dataSourceItem.Path));
+
+            string name = dataSourceItem.Name;
+            string parentPath = SSRSUtil.GetParentPath(dataSourceItem);
+
+            return this.mReportRepository.WriteDataSource(dataSourceItem.Path, dataSourceItem);
+        }
+
+        public string[] WriteDataSources(DataSourceItem[] dataSourceItems)
         {
             throw new NotImplementedException();
         }
 
         public string DeleteItem(string itemPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string DeleteItem(ReportServerItem item)
         {
             throw new NotImplementedException();
         }
