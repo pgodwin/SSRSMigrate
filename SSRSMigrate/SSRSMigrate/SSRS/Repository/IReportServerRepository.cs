@@ -28,7 +28,7 @@ namespace SSRSMigrate.SSRS.Repository
         DataSourceItem GetDataSource(string dataSourcePath);
         List<DataSourceItem> GetDataSources(string path);
         IEnumerable<DataSourceItem> GetDataSourcesList(string path);
-        string[] WriteDataSource(string dataSourcePath, DataSourceItem dataSource);
+        string WriteDataSource(string dataSourcePath, DataSourceItem dataSource);
 
         // Misc.
         bool ValidatePath(string path);

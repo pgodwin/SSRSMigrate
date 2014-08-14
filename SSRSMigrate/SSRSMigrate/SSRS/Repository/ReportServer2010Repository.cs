@@ -309,7 +309,7 @@ namespace SSRSMigrate.SSRS.Repository
                     yield return item;
         }
 
-        public string[] WriteDataSource(string dataSourcePath, DataSourceItem dataSource)
+        public string WriteDataSource(string dataSourcePath, DataSourceItem dataSource)
         {
             throw new NotImplementedException();
         }
