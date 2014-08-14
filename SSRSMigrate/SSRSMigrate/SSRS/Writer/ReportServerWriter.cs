@@ -95,7 +95,7 @@ namespace SSRSMigrate.SSRS.Writer
             string name = dataSourceItem.Name;
             string parentPath = SSRSUtil.GetParentPath(dataSourceItem);
 
-            return this.mReportRepository.WriteDataSource(dataSourceItem.Path, dataSourceItem);
+            return this.mReportRepository.WriteDataSource(parentPath, dataSourceItem);
         }
 
         public string[] WriteDataSources(DataSourceItem[] dataSourceItems)
@@ -113,7 +113,7 @@ namespace SSRSMigrate.SSRS.Writer
                 string name = dataSourceItems[i].Name;
                 string parentPath = SSRSUtil.GetParentPath(dataSourceItems[i]);
 
-                string warning = this.mReportRepository.WriteDataSource(dataSourceItems[i].Path, dataSourceItems[i]);
+                string warning = this.mReportRepository.WriteDataSource(parentPath, dataSourceItems[i]);
                 
                 if (!string.IsNullOrEmpty(warning))
                     warnings.Add(warning);
