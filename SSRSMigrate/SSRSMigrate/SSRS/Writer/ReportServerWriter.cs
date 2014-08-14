@@ -27,12 +27,8 @@ namespace SSRSMigrate.SSRS.Writer
             if (folderItem == null)
                 throw new ArgumentNullException("folderItem");
 
-            //TODO This is only here until the test mocks can be fixed
-            if (string.IsNullOrEmpty(folderItem.Path))
-                throw new ArgumentException("path");
-
             if (!this.mReportRepository.ValidatePath(folderItem.Path))
-                throw new InvalidPathException(folderItem.Path);
+                throw new InvalidPathException(string.Format("Invalid path '{0}'.", folderItem.Path));
 
             string name = folderItem.Name;
             string parentPath = SSRSUtil.GetParentPath(folderItem);
@@ -50,7 +46,7 @@ namespace SSRSMigrate.SSRS.Writer
             for (int i = 0; i < folderItems.Count(); i++)
             {
                 if (!this.mReportRepository.ValidatePath(folderItems[i].Path))
-                    throw new InvalidPathException(folderItems[i].Path);
+                    throw new InvalidPathException(string.Format("Invalid path '{0}'.", folderItems[i].Path));
 
                 string name = folderItems[i].Name;
                 string parentPath = SSRSUtil.GetParentPath(folderItems[i]);

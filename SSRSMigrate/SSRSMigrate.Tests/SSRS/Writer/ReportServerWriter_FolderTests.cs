@@ -108,18 +108,29 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 .Throws(new FolderAlreadyExistsException(string.Format("The folder '{0}' already exists.", alreadyExistsFolderItem.Path)));
 
             // IReportServerRepository.ValidatePath Mocks
-            //TODO Need to fix this so it correctly mocks the ValidatePath with a null or empty parameter.
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(rootFolderItem.Path))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(rootSubFolderItem.Path))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportsFolderItem.Path))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(rootSubFolderItem.Path))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(alreadyExistsFolderItem.Path))
+              .Returns(() => true);
+
             reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
-               .Throws(new ArgumentException("path"));
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(""))
-               .Throws(new ArgumentException("path"));
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == true)))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == false && !string.IsNullOrEmpty(s))))
-               .Returns(() => true);
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(""))
+               .Returns(() => false);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
+               .Returns(() => false);
 
             writer = new ReportServerWriter(reportServerRepositoryMock.Object);
         }
@@ -183,7 +194,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                     writer.WriteFolder(invalidPathFolderItem);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(invalidPathFolderItem.Path));
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
 
         [Test]
@@ -231,13 +242,13 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 Path = null,
             };
 
-            ArgumentException ex = Assert.Throws<ArgumentException>(
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
                     writer.WriteFolder(folderItem);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo("path"));
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
 
         [Test]
@@ -249,13 +260,13 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 Path = "",
             };
 
-            ArgumentException ex = Assert.Throws<ArgumentException>(
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
                     writer.WriteFolder(folderItem);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo("path"));
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
         #endregion
 
