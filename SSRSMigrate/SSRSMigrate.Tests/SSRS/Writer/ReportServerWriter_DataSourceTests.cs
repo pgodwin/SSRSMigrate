@@ -9,6 +9,7 @@ using SSRSMigrate.SSRS.Repository;
 using Moq;
 using System.Text.RegularExpressions;
 using SSRSMigrate.SSRS.Errors;
+using SSRSMigrate.TestHelper;
 
 namespace SSRSMigrate.Tests.SSRS.Writer
 {
@@ -155,13 +156,13 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             reportServerRepositoryMock.Setup(r => r.WriteDataSource(It.IsAny<string>(), null))
                 .Throws(new ArgumentException("dataSource"));
 
-            reportServerRepositoryMock.Setup(r => r.WriteDataSource(dataSourceItem.Path, dataSourceItem))
+            reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(dataSourceItem), dataSourceItem))
                 .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.WriteDataSource(dataSourceTwoItem.Path, dataSourceTwoItem))
+            reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(dataSourceTwoItem), dataSourceTwoItem))
                 .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.WriteDataSource(alreadyExistsDataSourceItem.Path, alreadyExistsDataSourceItem))
+            reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(alreadyExistsDataSourceItem), alreadyExistsDataSourceItem))
                 .Throws(new DataSourceAlreadyExistsException(string.Format("The data source '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
 
             // Setup IReportServerRepository.ValidatePath Mocks
