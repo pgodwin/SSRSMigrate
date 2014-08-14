@@ -223,11 +223,44 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2005
                 .Returns(() => new List<ReportItem>());
 
             // Setup IReportServerRepository.ValidatePath Mocks
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == true)))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests"))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests Doesnt Exist"))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/Report Doesnt Exist"))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(expectedReportItem.Path))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/Listing"))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/SUB-Address"))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/SUB-Categories"))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/SUB-Phone Numbers"))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/SUB-Related Contacts"))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/SUB-Related Matters"))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == false)))
-               .Returns(() => true);
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(""))
+               .Returns(() => false);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
+               .Returns(() => false);
 
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
         }
@@ -307,7 +340,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2005
                     reader.GetReport(invalidPath);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(invalidPath));
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
 
         [Test]
@@ -378,7 +411,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2005
                     reader.GetReports(invalidPath);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(invalidPath));
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
         #endregion
 
@@ -446,7 +479,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2005
                     reader.GetReports(invalidPath, GetReports_Reporter);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(invalidPath));
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
 
         private void GetReports_Reporter(ReportItem reportItem)
