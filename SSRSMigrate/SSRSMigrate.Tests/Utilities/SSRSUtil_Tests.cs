@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.Utility;
 using SSRSMigrate.Enum;
+using SSRSMigrate.SSRS.Item;
 
 public class CoverageExcludeAttribute : System.Attribute { }
 
@@ -520,6 +521,156 @@ namespace SSRSMigrate.Tests.Utilities
         }
 
         
+        #endregion
+
+        #region SSRSUtil.GetParentPath Tests
+        [Test]
+        public void GetParentPath()
+        {
+            ReportServerItem item = new ReportServerItem()
+            {
+                Name = "Sub Folder",
+                Path = "/SSRSMigrate/Reports/Sub Folder"
+            };
+
+            string expected = "/SSRSMigrate/Reports";
+
+            string actual = SSRSUtil.GetParentPath(item);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetParentPath_PathIsSlash()
+        {
+            ReportServerItem item = new ReportServerItem()
+            {
+                Name = "Sub Folder",
+                Path = "/"
+            };
+
+            string expected = "/";
+
+            string actual = SSRSUtil.GetParentPath(item);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetParentPath_PathEndsWithSlash()
+        {
+            ReportServerItem item = new ReportServerItem()
+            {
+                Name = "Sub Folder",
+                Path = "/SSRSMigrate/Reports/Sub Folder/"
+            };
+
+            string expected = "/SSRSMigrate/Reports";
+
+            string actual = SSRSUtil.GetParentPath(item);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetParentPath_PathMissingFirstSlash()
+        {
+            ReportServerItem item = new ReportServerItem()
+            {
+                Name = "Sub Folder",
+                Path = "SSRSMigrate/Reports/Sub Folder"
+            };
+
+            string expected = "/SSRSMigrate/Reports";
+
+            string actual = SSRSUtil.GetParentPath(item);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetParentPath_NullItem()
+        {
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    SSRSUtil.GetParentPath(null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: item"));
+        }
+
+        [Test]
+        public void GetParentPath_NullName()
+        {
+            ReportServerItem item = new ReportServerItem()
+            {
+                Name = null,
+                Path = "/SSRSMigrate/Reports/Sub Folder"
+            };
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    SSRSUtil.GetParentPath(item);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("item.Name"));
+        }
+
+        [Test]
+        public void GetParentPath_EmptyName()
+        {
+            ReportServerItem item = new ReportServerItem()
+            {
+                Name = "",
+                Path = "/SSRSMigrate/Reports/Sub Folder"
+            };
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    SSRSUtil.GetParentPath(item);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("item.Name"));
+        }
+
+        [Test]
+        public void GetParentPath_NullPath()
+        {
+            ReportServerItem item = new ReportServerItem()
+            {
+                Name = "Sub Folder",
+                Path = null
+            };
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    SSRSUtil.GetParentPath(item);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("item.Path"));
+        }
+
+        [Test]
+        public void GetParentPath_EmptyPath()
+        {
+            ReportServerItem item = new ReportServerItem()
+            {
+                Name = "Sub Folder",
+                Path = ""
+            };
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    SSRSUtil.GetParentPath(item);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("item.Path"));
+        }
         #endregion
     }
 }
