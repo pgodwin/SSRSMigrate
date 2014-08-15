@@ -8,7 +8,7 @@ using SSRSMigrate.ReportServer2005;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
 
-namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
+namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
 {
     [TestFixture]
     [CoverageExcludeAttribute]

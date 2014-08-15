@@ -7,7 +7,7 @@ using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
 using Ninject;
 
-namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2010
+namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
 {
     [TestFixture]
     [CoverageExcludeAttribute]

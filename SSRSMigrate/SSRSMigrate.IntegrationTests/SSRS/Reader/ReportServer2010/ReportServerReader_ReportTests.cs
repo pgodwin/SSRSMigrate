@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using SSRSMigrate.TestHelper;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.TestHelper;
+using Ninject;
 
-namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
+namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
 {
     [TestFixture]
     [CoverageExcludeAttribute]
@@ -40,7 +41,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Inquiry.rdl"))
             };
 
             expectedReportItem_SUBAddress = new ReportItem()
@@ -50,7 +51,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
                 Description = null,
                 ID = "77b2135b-c52f-4a52-9406-7bd523ad9623",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\SUB-Addresses.rdl")),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Addresses.rdl")),
             };
 
             expectedReportItem_SUBCategories = new ReportItem()
@@ -60,7 +61,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
                 Description = null,
                 ID = "ab67975e-8535-4cca-88d8-79a1827a099e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\SUB-Categories.rdl")),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Categories.rdl")),
             };
 
             expectedReportItem_SUBPhoneNumbers = new ReportItem()
@@ -70,7 +71,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
                 Description = null,
                 ID = "7b64b5e4-4ca2-466c-94ce-19d32d8222f5",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\SUB-Phone Numbers.rdl")),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Phone Numbers.rdl")),
             };
 
             expectedReportItem_SUBRelatedContacts = new ReportItem()
@@ -80,7 +81,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
                 Description = null,
                 ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\SUB-Related Contacts.rdl")),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Related Contacts.rdl")),
             };
 
             expectedReportItem_SUBRelatedMatters = new ReportItem()
@@ -90,7 +91,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
                 Description = null,
                 ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\SUB-Related Matters.rdl")),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Related Matters.rdl")),
             };
 
             expectedReportItem_Listing = new ReportItem()
@@ -100,7 +101,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\Listing.rdl")),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Listing.rdl")),
                 SubReports = new List<ReportItem>()
                 {
                     expectedReportItem_SUBAddress,
@@ -129,7 +130,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
         {
             SetupExpectedResults();
 
-            reader = DependencySingleton.Instance.Get<ReportServerReader>();
+            StandardKernel kernel = new StandardKernel(new DependencyModule(false));
+            reader = kernel.Get<ReportServerReader>();
         }
 
         [TestFixtureTearDown]
@@ -149,6 +151,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
         {
             actualReportItems = null;
         }
+
 
         #region GetReport Tests
         [Test]
@@ -240,7 +243,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
         [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
             ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found",
             MatchType = MessageMatch.Contains)]
-        
+
         public void GetReports_PathDoesntExist()
         {
             string path = "/SSRSMigrate_Tests Doesnt Exist";
@@ -296,7 +299,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.ReportServer2005
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
-        
+
         }
 
         [Test]

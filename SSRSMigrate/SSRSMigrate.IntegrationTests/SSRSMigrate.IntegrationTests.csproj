@@ -83,12 +83,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SSRS\ReportServer2005\ReportServerReader_DataSourceTests.cs" />
-    <Compile Include="SSRS\ReportServer2005\ReportServerReader_FolderTests.cs" />
-    <Compile Include="SSRS\ReportServer2005\ReportServerReader_ReportTests.cs" />
-    <Compile Include="SSRS\ReportServer2010\ReportServerReader_DataSourceTests.cs" />
-    <Compile Include="SSRS\ReportServer2010\ReportServerReader_FolderTests.cs" />
-    <Compile Include="SSRS\ReportServer2010\ReportServerReader_ReportTests.cs" />
+    <Compile Include="SSRS\Reader\ReportServer2005\ReportServerReader_DataSourceTests.cs" />
+    <Compile Include="SSRS\Reader\ReportServer2005\ReportServerReader_FolderTests.cs" />
+    <Compile Include="SSRS\Reader\ReportServer2005\ReportServerReader_ReportTests.cs" />
+    <Compile Include="SSRS\Reader\ReportServer2010\ReportServerReader_DataSourceTests.cs" />
+    <Compile Include="SSRS\Reader\ReportServer2010\ReportServerReader_FolderTests.cs" />
+    <Compile Include="SSRS\Reader\ReportServer2010\ReportServerReader_ReportTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -112,7 +112,9 @@
       <Name>SSRSMigrate</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SSRS\Writer\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>echo d | xcopy "$(SolutionDir)SSRSMigrate.Tests\Test Reports" "$(ProjectDir)$(OutDir)Test Reports" /f /j /s /z /r /y</PreBuildEvent>
