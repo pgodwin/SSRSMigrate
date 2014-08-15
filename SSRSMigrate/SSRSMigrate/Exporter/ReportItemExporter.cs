@@ -11,7 +11,7 @@ namespace SSRSMigrate.Exporter
 {
     public class ReportItemExporter : IItemExporter<ReportItem>
     {
-        private IExportWriter mExportWriter = null;
+        private readonly IExportWriter mExportWriter = null;
 
         public ReportItemExporter(IExportWriter exportWriter)
         {

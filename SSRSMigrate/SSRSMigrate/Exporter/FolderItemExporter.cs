@@ -10,7 +10,7 @@ namespace SSRSMigrate.Exporter
 {
     public class FolderItemExporter : IItemExporter<FolderItem>
     {
-        private IExportWriter mExportWriter = null;
+        private readonly IExportWriter mExportWriter = null;
 
         public FolderItemExporter(IExportWriter exportWriter)
         {

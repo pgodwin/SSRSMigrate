@@ -11,7 +11,7 @@ namespace SSRSMigrate.SSRS.Repository
 {
     public class ReportServer2005Repository : IReportServerRepository
     {
-        private ReportingService2005 mReportingService;
+        private readonly ReportingService2005 mReportingService;
         private string mRootPath = null;
         private string mInvalidPathChars = ":?;@&=+$,\\*><|.\"";
         private int mPathMaxLength = 260;
@@ -45,7 +45,7 @@ namespace SSRSMigrate.SSRS.Repository
                 if (this.mReportingService != null)
                 {
                     this.mReportingService.Dispose();
-                    this.mReportingService = null;
+                    //this.mReportingService = null;
                 }
             }
         }

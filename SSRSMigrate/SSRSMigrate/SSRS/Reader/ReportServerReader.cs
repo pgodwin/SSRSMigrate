@@ -10,7 +10,7 @@ namespace SSRSMigrate.SSRS.Reader
 {
     public class ReportServerReader : IReportServerReader
     {
-        private IReportServerRepository mReportRepository;
+        private readonly IReportServerRepository mReportRepository;
 
         public ReportServerReader(IReportServerRepository repository)
         {

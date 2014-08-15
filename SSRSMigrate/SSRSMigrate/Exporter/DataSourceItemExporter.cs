@@ -11,7 +11,7 @@ namespace SSRSMigrate.Exporter
 {
     public class DataSourceItemExporter : IItemExporter<DataSourceItem>
     {
-        private IExportWriter mExportWriter = null;
+        private readonly IExportWriter mExportWriter = null;
 
         public DataSourceItemExporter(IExportWriter exportWriter)
         {

@@ -11,7 +11,7 @@ namespace SSRSMigrate.SSRS.Writer
 {
     public class ReportServerWriter : IReportServerWriter
     {
-        private IReportServerRepository mReportRepository;
+        private readonly IReportServerRepository mReportRepository;
 
         public ReportServerWriter(IReportServerRepository repository)
         {
