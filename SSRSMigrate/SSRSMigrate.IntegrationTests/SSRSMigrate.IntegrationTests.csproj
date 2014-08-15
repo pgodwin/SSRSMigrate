@@ -113,7 +113,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SSRS\Writer\" />
+    <Folder Include="SSRS\Writer\ReportServer2005\" />
+    <Folder Include="SSRS\Writer\ReportServer2010\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
