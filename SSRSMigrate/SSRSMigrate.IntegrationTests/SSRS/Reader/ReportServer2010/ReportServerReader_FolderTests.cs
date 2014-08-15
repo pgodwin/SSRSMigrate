@@ -9,6 +9,7 @@ using System.Net;
 using SSRSMigrate.SSRS.Repository;
 using Ninject;
 using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.IntegrationTests.Factory;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
 {
@@ -16,6 +17,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
     [CoverageExcludeAttribute]
     class ReportServerReader_FolderTests
     {
+        StandardKernel kernel = null;
         ReportServerReader reader = null;
 
         #region GetFolders - Expected FolderItems
@@ -29,6 +31,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
+            kernel = new StandardKernel(new DependencyModule());
+
             // Setup expected FolderItems
             expectedFolderItems = new List<FolderItem>()
             {
@@ -49,8 +53,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
                 }
             };
 
-            StandardKernel kernel = new StandardKernel(new DependencyModule(false));
-            reader = kernel.Get<ReportServerReader>();
+            reader = new ReportServerReader(kernel.Get<IReportServerRepositoryFactory>().GetRepository("2010-SRC"));
         }
 
         [TestFixtureTearDown]

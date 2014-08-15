@@ -5,6 +5,8 @@ using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
+using Ninject;
+using SSRSMigrate.IntegrationTests.Factory;
 
 public class CoverageExcludeAttribute : System.Attribute { }
 
@@ -14,6 +16,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
     [CoverageExcludeAttribute]
     class ReportServerReader_FolderTests
     {
+        StandardKernel kernel = null;
         ReportServerReader reader = null;
 
         #region GetFolders - Expected FolderItems
@@ -27,6 +30,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
+            kernel = new StandardKernel(new DependencyModule());
+
             // Setup expected FolderItems
             expectedFolderItems = new List<FolderItem>()
             {
@@ -47,7 +52,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
                 }
             };
 
-            reader = DependencySingleton.Instance.Get<ReportServerReader>();
+            reader = new ReportServerReader(kernel.Get<IReportServerRepositoryFactory>().GetRepository("2005-SRC"));
         }
 
         [TestFixtureTearDown]

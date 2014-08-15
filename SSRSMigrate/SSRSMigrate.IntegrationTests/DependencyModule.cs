@@ -8,35 +8,44 @@ using SSRSMigrate.ReportServer2005;
 using System.Net;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.ReportServer2010;
+using SSRSMigrate.IntegrationTests.Factory;
 
 namespace SSRSMigrate.IntegrationTests
 {
     [CoverageExcludeAttribute]
     public class DependencyModule : NinjectModule
     {
-        private readonly bool mReportServer2005 = true;
-
-        public DependencyModule(bool reportServer2005)
+        public override void  Load()
         {
-            this.mReportServer2005 = reportServer2005;
-        }
+            this.Bind<IReportServerRepository>()
+                .ToProvider<SourceReportServer2005RepositoryProvider>()
+                .InSingletonScope()
+                .Named("2005-SRC");
 
-        public override void Load()
-        {
-            if (this.mReportServer2005 == true)
-                this.Bind<IReportServerRepository>().ToProvider(new ReportServer2005RepositoryProvider());
-            else
-                this.Bind<IReportServerRepository>().ToProvider(new ReportServer2010RepositoryProvider());
+            this.Bind<IReportServerRepository>()
+                .ToProvider<SourceReportServer2010RepositoryProvider>()
+                .InSingletonScope()
+                .Named("2010-SRC");
+
+            this.Bind<IReportServerRepositoryFactory>().To<ReportServerRepositoryFactory>();
         }
     }
 
     [CoverageExcludeAttribute]
-    public class ReportServer2005RepositoryProvider : Provider<IReportServerRepository>
+    public class SourceReportServer2005RepositoryProvider : Provider<IReportServerRepository>
     {
         protected override IReportServerRepository CreateInstance(IContext context)
         {
             string url = Properties.Settings.Default.ReportServer2008WebServiceUrl;
             string path = Properties.Settings.Default.SourcePath;
+
+            if (!url.EndsWith("reportservice2005.asmx"))
+            {
+                if (url.EndsWith("/"))
+                    url = url.Substring(0, url.Length - 1);
+
+                url = string.Format("{0}/reportservice2005.asmx", url);
+            }
 
             ReportingService2005 service = new ReportingService2005();
             service.Url = url;
@@ -50,12 +59,20 @@ namespace SSRSMigrate.IntegrationTests
     }
 
     [CoverageExcludeAttribute]
-    public class ReportServer2010RepositoryProvider : Provider<IReportServerRepository>
+    public class SourceReportServer2010RepositoryProvider : Provider<IReportServerRepository>
     {
         protected override IReportServerRepository CreateInstance(IContext context)
         {
             string url = Properties.Settings.Default.ReportServer2008R2WebServiceUrl;
             string path = Properties.Settings.Default.SourcePath;
+
+            if (!url.EndsWith("reportservice2010.asmx"))
+            {
+                if (url.EndsWith("/"))
+                    url = url.Substring(0, url.Length - 1);
+
+                url = string.Format("{0}/reportservice2010.asmx", url);
+            }
 
             ReportingService2010 service = new ReportingService2010();
             service.Url = url;

@@ -7,6 +7,8 @@ using System.Web.Services.Protocols;
 using SSRSMigrate.ReportServer2005;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
+using Ninject;
+using SSRSMigrate.IntegrationTests.Factory;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
 {
@@ -14,6 +16,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
     [CoverageExcludeAttribute]
     class ReportServerReader_DataSourceTests
     {
+        StandardKernel kernel = null;
         ReportServerReader reader = null;
 
         #region GetDataSources - Expected DataSourceItems
@@ -27,6 +30,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
+            kernel = new StandardKernel(new DependencyModule());
+
             // Setup expected DataSourceItems
             expectedDataSourceItems = new List<DataSourceItem>()
             {
@@ -70,7 +75,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
                 },
             };
 
-            reader = DependencySingleton.Instance.Get<ReportServerReader>();
+            reader = new ReportServerReader(kernel.Get<IReportServerRepositoryFactory>().GetRepository("2005-SRC"));
         }
 
         [TestFixtureTearDown]

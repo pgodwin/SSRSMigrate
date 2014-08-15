@@ -72,11 +72,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DependencyModule.cs" />
-    <Compile Include="DependencySingleton.cs" />
     <Compile Include="EndToEnd_Export\ReportServer2005\ExportEverythingTests.cs" />
     <Compile Include="Exporter\DataSourceItemExporterTests.cs" />
     <Compile Include="Exporter\FolderItemExporterTests.cs" />
     <Compile Include="Exporter\ReportItem2005ExporterTests.cs" />
+    <Compile Include="Factory\IReportServerRepositoryFactory.cs" />
+    <Compile Include="Factory\ReportServerRepositoryFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

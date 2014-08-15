@@ -6,6 +6,7 @@ using NUnit.Framework;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
 using Ninject;
+using SSRSMigrate.IntegrationTests.Factory;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
 {
@@ -13,6 +14,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
     [CoverageExcludeAttribute]
     class ReportServerReader_DataSourceTests
     {
+        StandardKernel kernel = null;
         ReportServerReader reader = null;
 
         #region GetDataSources - Expected DataSourceItems
@@ -26,6 +28,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
+            kernel = new StandardKernel(new DependencyModule());
+
             // Setup expected DataSourceItems
             expectedDataSourceItems = new List<DataSourceItem>()
             {
@@ -69,8 +73,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
                 },
             };
 
-            StandardKernel kernel = new StandardKernel(new DependencyModule(false));
-            reader = kernel.Get<ReportServerReader>();
+            reader = new ReportServerReader(kernel.Get<IReportServerRepositoryFactory>().GetRepository("2010-SRC"));
         }
 
         [TestFixtureTearDown]

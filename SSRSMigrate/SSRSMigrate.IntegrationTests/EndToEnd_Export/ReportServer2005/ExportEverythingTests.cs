@@ -12,6 +12,8 @@ using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.TestHelper;
 using Newtonsoft.Json;
 using SSRSMigrate.Utility;
+using Ninject;
+using SSRSMigrate.IntegrationTests.Factory;
 
 namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
 {
@@ -19,6 +21,7 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
     [CoverageExcludeAttribute]
     class ExportSSRSFolderTests
     {
+        StandardKernel kernel = null;
         ReportServerReader reader = null;
 
         // Export Writers
@@ -72,6 +75,8 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
+            kernel = new StandardKernel(new DependencyModule());
+
             EnvironmentSetup();
             outputPath = GetOutPutPath();
             SetupExpectedValues();
@@ -85,7 +90,7 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
             dataSourceExporter = new DataSourceItemExporter(fileWriter);
             folderExporter = new FolderItemExporter(folderWriter);
 
-            reader = DependencySingleton.Instance.Get<ReportServerReader>();
+            reader = new ReportServerReader(kernel.Get<IReportServerRepositoryFactory>().GetRepository("2005-SRC"));
         }
 
         [TestFixtureTearDown]
