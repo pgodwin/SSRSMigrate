@@ -78,7 +78,26 @@ namespace SSRSMigrate.SSRS.Writer
 
         public string[] WriteReports(ReportItem[] reportItems)
         {
-            throw new NotImplementedException();
+            if (reportItems == null)
+                throw new ArgumentNullException("reportItems");
+
+            List<string> warnings = new List<string>();
+
+            for (int i = 0; i < reportItems.Count(); i++)
+            {
+                if (!this.mReportRepository.ValidatePath(reportItems[i].Path))
+                    throw new InvalidPathException(string.Format("Invalid path '{0}'.", reportItems[i].Path));
+
+                string name = reportItems[i].Name;
+                string parentPath = SSRSUtil.GetParentPath(reportItems[i]);
+
+                string[] report_warnings = this.mReportRepository.WriteReport(parentPath, reportItems[i]);
+
+                if (report_warnings != null)
+                    warnings.AddRange(report_warnings);
+            }
+
+            return warnings.ToArray();
         }
 
         #endregion

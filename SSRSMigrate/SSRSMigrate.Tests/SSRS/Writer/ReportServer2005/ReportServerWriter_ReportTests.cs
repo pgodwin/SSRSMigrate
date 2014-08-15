@@ -399,11 +399,11 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
 
         #region WriteReports Tests
         [Test]
-        public void WriteReporst()
+        public void WriteReports()
         {
             string[] actual = writer.WriteReports(reportItems.ToArray());
 
-            Assert.Null(actual);
+            Assert.AreEqual(0, actual.Count());
         }
 
         [Test]
