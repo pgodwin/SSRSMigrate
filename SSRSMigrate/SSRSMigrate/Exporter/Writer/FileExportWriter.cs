@@ -6,12 +6,26 @@ using System.IO;
 
 namespace SSRSMigrate.Exporter.Writer
 {
+    /// <summary>
+    /// Writes data to a file on disk.
+    /// </summary>
     public class FileExportWriter : IExportWriter
     {
         public FileExportWriter()
         {
         }
 
+        /// <summary>
+        /// Saves the specified file name with no data.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="overwrite">if set to <c>true</c> overwrites any file on disk if it already exists.</param>
+        /// <exception cref="System.ArgumentException">
+        /// fileName
+        /// or
+        /// fileName
+        /// </exception>
+        /// <exception cref="System.IO.IOException"></exception>
         public void Save(string fileName, bool overwrite = true)
         {
             if (string.IsNullOrEmpty(fileName))
@@ -33,6 +47,18 @@ namespace SSRSMigrate.Exporter.Writer
                 sw.Write("");
         }
 
+        /// <summary>
+        /// Saves the specified file name with the data provided.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="data">The data to write to disk.</param>
+        /// <param name="overwrite">if set to <c>true</c> overwrites any file on disk if it already exists.</param>
+        /// <exception cref="System.ArgumentException">
+        /// fileName
+        /// or
+        /// data
+        /// </exception>
+        /// <exception cref="System.IO.IOException"></exception>
         public void Save(string fileName, string data, bool overwrite = true)
         {
             if (string.IsNullOrEmpty(fileName))
@@ -54,6 +80,15 @@ namespace SSRSMigrate.Exporter.Writer
                 sw.Write(data);
         }
 
+        /// <summary>
+        /// Saves the specified file name with the data provided.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="data">The data to write to disk.</param>
+        /// <param name="overwrite">if set to <c>true</c> overwrites any file on disk if it already exists.</param>
+        /// <exception cref="System.ArgumentException">fileName</exception>
+        /// <exception cref="System.ArgumentNullException">data</exception>
+        /// <exception cref="System.IO.IOException"></exception>
         public void Save(string fileName, byte[] data, bool overwrite = true)
         {
             if (string.IsNullOrEmpty(fileName))

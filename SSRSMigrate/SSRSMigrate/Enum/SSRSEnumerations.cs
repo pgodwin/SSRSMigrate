@@ -5,6 +5,9 @@ using System.Text;
 
 namespace SSRSMigrate.Enum
 {
+    /// <summary>
+    /// SSRS Version Enumeration
+    /// </summary>
     public enum SSRSVersion
     {
         Unknown = 0,
