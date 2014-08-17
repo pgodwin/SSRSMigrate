@@ -90,7 +90,7 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
             dataSourceExporter = new DataSourceItemExporter(fileWriter);
             folderExporter = new FolderItemExporter(folderWriter);
 
-            reader = new ReportServerReader(kernel.Get<IReportServerRepositoryFactory>().GetRepository("2005-SRC"));
+            reader = kernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>("2005-SRC");
         }
 
         [TestFixtureTearDown]

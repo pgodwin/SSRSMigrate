@@ -52,7 +52,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
                 }
             };
 
-            reader = new ReportServerReader(kernel.Get<IReportServerRepositoryFactory>().GetRepository("2005-SRC"));
+            reader = kernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>("2005-SRC");
         }
 
         [TestFixtureTearDown]

@@ -11,5 +11,8 @@
     <Setting Name="SourcePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">/SSRSMigrate_Tests</Value>
     </Setting>
+    <Setting Name="DestinationPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/Dest_SSRSMigrate_Tests</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -9,6 +9,8 @@ using System.Net;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.ReportServer2010;
 using SSRSMigrate.IntegrationTests.Factory;
+using SSRSMigrate.SSRS.Reader;
+using SSRSMigrate.SSRS.Writer;
 
 namespace SSRSMigrate.IntegrationTests
 {
@@ -17,6 +19,7 @@ namespace SSRSMigrate.IntegrationTests
     {
         public override void  Load()
         {
+            // Bind repositories
             this.Bind<IReportServerRepository>()
                 .ToProvider<SourceReportServer2005RepositoryProvider>()
                 .InSingletonScope()
@@ -27,7 +30,49 @@ namespace SSRSMigrate.IntegrationTests
                 .InSingletonScope()
                 .Named("2010-SRC");
 
-            this.Bind<IReportServerRepositoryFactory>().To<ReportServerRepositoryFactory>();
+            this.Bind<IReportServerRepository>()
+                .ToProvider<DestinationReportServer2005RepositoryProvider>()
+                .InSingletonScope()
+                .Named("2005-DEST");
+
+            this.Bind<IReportServerRepository>()
+                .ToProvider<DestinationReportServer2010RepositoryProvider>()
+                .InSingletonScope()
+                .Named("2010-DEST");
+
+            // Bind factories
+            this.Bind<IReportServerRepositoryFactory>()
+                .To<ReportServerRepositoryFactory>();
+
+            this.Bind<IReportServerReaderFactory>()
+                .To<ReportServerReaderFactory>();
+
+            this.Bind<IReportServerWriterFactory>()
+                .To<ReportServerWriterFactory>();
+
+            // Bind readers
+            this.Bind<IReportServerReader>()
+                .To<ReportServerReader>()
+                .InSingletonScope()
+                .Named("2005-SRC");
+
+            this.Bind<IReportServerReader>()
+                .To<ReportServerReader>()
+                .InSingletonScope()
+                .Named("2010-SRC");
+
+            // Bind writers
+            this.Bind<IReportServerWriter>()
+                .To<ReportServerWriter>()
+                .InSingletonScope()
+                .Named("2005-DEST");
+
+            this.Bind<IReportServerWriter>()
+                .To<ReportServerWriter>()
+                .InSingletonScope()
+                .Named("2010-DEST");
+
+            //TODO IItemExporter bindings
         }
     }
 
@@ -65,6 +110,60 @@ namespace SSRSMigrate.IntegrationTests
         {
             string url = Properties.Settings.Default.ReportServer2008R2WebServiceUrl;
             string path = Properties.Settings.Default.SourcePath;
+
+            if (!url.EndsWith("reportservice2010.asmx"))
+            {
+                if (url.EndsWith("/"))
+                    url = url.Substring(0, url.Length - 1);
+
+                url = string.Format("{0}/reportservice2010.asmx", url);
+            }
+
+            ReportingService2010 service = new ReportingService2010();
+            service.Url = url;
+
+            service.Credentials = CredentialCache.DefaultNetworkCredentials;
+            service.PreAuthenticate = true;
+            service.UseDefaultCredentials = true;
+
+            return new ReportServer2010Repository(path, service);
+        }
+    }
+
+    [CoverageExcludeAttribute]
+    public class DestinationReportServer2005RepositoryProvider : Provider<IReportServerRepository>
+    {
+        protected override IReportServerRepository CreateInstance(IContext context)
+        {
+            string url = Properties.Settings.Default.ReportServer2008WebServiceUrl;
+            string path = Properties.Settings.Default.DestinationPath;
+
+            if (!url.EndsWith("reportservice2005.asmx"))
+            {
+                if (url.EndsWith("/"))
+                    url = url.Substring(0, url.Length - 1);
+
+                url = string.Format("{0}/reportservice2005.asmx", url);
+            }
+
+            ReportingService2005 service = new ReportingService2005();
+            service.Url = url;
+
+            service.Credentials = CredentialCache.DefaultNetworkCredentials;
+            service.PreAuthenticate = true;
+            service.UseDefaultCredentials = true;
+
+            return new ReportServer2005Repository(path, service);
+        }
+    }
+
+    [CoverageExcludeAttribute]
+    public class DestinationReportServer2010RepositoryProvider : Provider<IReportServerRepository>
+    {
+        protected override IReportServerRepository CreateInstance(IContext context)
+        {
+            string url = Properties.Settings.Default.ReportServer2008R2WebServiceUrl;
+            string path = Properties.Settings.Default.DestinationPath;
 
             if (!url.EndsWith("reportservice2010.asmx"))
             {
