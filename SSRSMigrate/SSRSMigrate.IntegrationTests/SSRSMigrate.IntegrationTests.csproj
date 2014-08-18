@@ -107,6 +107,60 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Test Data\Exports\2005\SSRSMigrate_Tests\Reports\Inquiry.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2005\SSRSMigrate_Tests\Reports\Listing.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2005\SSRSMigrate_Tests\Reports\SUB-Addresses.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2005\SSRSMigrate_Tests\Reports\SUB-Categories.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2005\SSRSMigrate_Tests\Reports\SUB-Phone Numbers.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2005\SSRSMigrate_Tests\Reports\SUB-Related Contacts.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2005\SSRSMigrate_Tests\Reports\SUB-Related Matters.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2005\SSRSMigrate_Tests\Test Data Source 2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2005\SSRSMigrate_Tests\Test Data Source.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2010\SSRSMigrate_Tests\Reports\Inquiry.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2010\SSRSMigrate_Tests\Reports\Listing.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2010\SSRSMigrate_Tests\Reports\SUB-Addresses.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2010\SSRSMigrate_Tests\Reports\SUB-Categories.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2010\SSRSMigrate_Tests\Reports\SUB-Phone Numbers.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2010\SSRSMigrate_Tests\Reports\SUB-Related Contacts.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2010\SSRSMigrate_Tests\Reports\SUB-Related Matters.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2010\SSRSMigrate_Tests\Test Data Source 2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test Data\Exports\2010\SSRSMigrate_Tests\Test Data Source.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SSRSMigrate.TestHelper\SSRSMigrate.TestHelper.csproj">
@@ -121,6 +175,20 @@
   <ItemGroup>
     <Folder Include="SSRS\Writer\ReportServer2005\" />
     <Folder Include="SSRS\Writer\ReportServer2010\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Test Data\Exports\2005\SSRSMigrate_Tests\Reports\Sub Folder\EmptyPlaceHolder.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Test Data\Exports\2005\SSRSMigrate_Tests\Test Folder\EmptyPlaceHolder.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Test Data\Exports\2010\SSRSMigrate_Tests\Reports\Sub Folder\EmptyPlaceHolder.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Test Data\Exports\2010\SSRSMigrate_Tests\Test Folder\EmptyPlaceHolder.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
