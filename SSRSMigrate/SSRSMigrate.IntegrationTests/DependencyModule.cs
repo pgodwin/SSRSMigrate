@@ -21,7 +21,7 @@ namespace SSRSMigrate.IntegrationTests
     {
         public override void  Load()
         {
-            // Bind repositories
+            // Bind source IReportServerRepository
             this.Bind<IReportServerRepository>()
                 .ToProvider<SourceReportServer2005RepositoryProvider>()
                 .InSingletonScope()
@@ -32,6 +32,7 @@ namespace SSRSMigrate.IntegrationTests
                 .InSingletonScope()
                 .Named("2010-SRC");
 
+            // Bind destination IReportServerRepository
             this.Bind<IReportServerRepository>()
                 .ToProvider<DestinationReportServer2005RepositoryProvider>()
                 .InSingletonScope()
@@ -42,17 +43,19 @@ namespace SSRSMigrate.IntegrationTests
                 .InSingletonScope()
                 .Named("2010-DEST");
 
-            // Bind factories
+            // Bind IReportServerRepositoryFactory
             this.Bind<IReportServerRepositoryFactory>()
                 .To<ReportServerRepositoryFactory>();
 
+            // Bind IReportServerReaderFactory
             this.Bind<IReportServerReaderFactory>()
                 .To<ReportServerReaderFactory>();
 
+            // Bind IReportServerWriterFactory
             this.Bind<IReportServerWriterFactory>()
                 .To<ReportServerWriterFactory>();
 
-            // Bind readers
+            // Bind IReportServerReader
             this.Bind<IReportServerReader>()
                 .To<ReportServerReader>()
                 .InSingletonScope()
@@ -74,10 +77,12 @@ namespace SSRSMigrate.IntegrationTests
                 .InSingletonScope()
                 .Named("2010-DEST");
 
+            // Bind IExportWriter
             this.Bind<IExportWriter>().To<FileExportWriter>().WhenInjectedExactlyInto<DataSourceItemExporter>();
             this.Bind<IExportWriter>().To<FileExportWriter>().WhenInjectedExactlyInto<ReportItemExporter>();
             this.Bind<IExportWriter>().To<FolderExportWriter>().WhenInjectedExactlyInto<FolderItemExporter>();
 
+            // Bind IItemExporter
             this.Bind(typeof(IItemExporter<>)).To(typeof(ReportItemExporter));
             this.Bind(typeof(IItemExporter<>)).To(typeof(FolderItemExporter));
             this.Bind(typeof(IItemExporter<>)).To(typeof(DataSourceItemExporter));
