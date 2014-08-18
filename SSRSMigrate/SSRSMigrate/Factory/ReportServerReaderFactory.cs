@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Ninject;
-using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Repository;
+using SSRSMigrate.SSRS.Reader;
 using Ninject.Parameters;
 
-namespace SSRSMigrate.IntegrationTests.Factory
+namespace SSRSMigrate.Factory
 {
     public class ReportServerReaderFactory : IReportServerReaderFactory
     {

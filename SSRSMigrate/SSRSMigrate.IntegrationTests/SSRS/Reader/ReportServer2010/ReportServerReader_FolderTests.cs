@@ -9,7 +9,7 @@ using System.Net;
 using SSRSMigrate.SSRS.Repository;
 using Ninject;
 using SSRSMigrate.SSRS.Item;
-using SSRSMigrate.IntegrationTests.Factory;
+using SSRSMigrate.Factory;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
 {

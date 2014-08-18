@@ -8,10 +8,10 @@ using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Exporter;
 using System.IO;
 using SSRSMigrate.SSRS.Item;
-using SSRSMigrate.IntegrationTests.Factory;
 using Newtonsoft.Json;
 using SSRSMigrate.TestHelper;
 using SSRSMigrate.Utility;
+using SSRSMigrate.Factory;
 
 namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2010
 {

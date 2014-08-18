@@ -8,7 +8,7 @@ using SSRSMigrate.ReportServer2005;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
 using Ninject;
-using SSRSMigrate.IntegrationTests.Factory;
+using SSRSMigrate.Factory;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
 {

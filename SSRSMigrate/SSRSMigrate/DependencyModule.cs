@@ -10,6 +10,10 @@ using Ninject.Modules;
 using System.Net;
 using Ninject.Parameters;
 using SSRSMigrate.Factory;
+using SSRSMigrate.SSRS.Writer;
+using SSRSMigrate.SSRS.Reader;
+using SSRSMigrate.Exporter.Writer;
+using SSRSMigrate.Exporter;
 
 namespace SSRSMigrate
 {
@@ -101,20 +105,7 @@ namespace SSRSMigrate
     {
         public override void Load()
         {
-            //this.Bind<IReportServerRepository>()
-            //   .To<ReportServer2005Repository>()
-            //   .InSingletonScope()
-            //   .Named("2005")
-            //   .WithConstructorArgument(Properties.Settings.Default.SrcPath)
-            //   .WithConstructorArgument(GetSourceReportingService2005());
-
-            //this.Bind<IReportServerRepository>()
-            //    .To<ReportServer2010Repository>()
-            //    .InSingletonScope()
-            //    .Named("2010")
-            //    .WithConstructorArgument(Properties.Settings.Default.SrcPath)
-            //    .WithConstructorArgument(GetSourceReportingService2010());
-
+            // Bind source IReportServerRepository
             this.Bind<IReportServerRepository>()
                .ToProvider<SourceReportServer2005RepositoryProvider>()
                .InSingletonScope()
@@ -125,7 +116,59 @@ namespace SSRSMigrate
                .InSingletonScope()
                .Named("2010-SRC");
 
+            //TODO Bind destination IReportServerRepository
+            //this.Bind<IReportServerRepository>()
+            //    .ToProvider<DestinationReportServer2005RepositoryProvider>()
+            //    .InSingletonScope()
+            //    .Named("2005-DEST");
+
+            //this.Bind<IReportServerRepository>()
+            //    .ToProvider<DestinationReportServer2010RepositoryProvider>()
+            //    .InSingletonScope()
+            //    .Named("2010-DEST");
+
+            // Bind IReportServerRepositoryFactory
             this.Bind<IReportServerRepositoryFactory>().To<ReportServerRepositoryFactory>();
+
+            // Bind IReportServerReaderFactory
+            this.Bind<IReportServerReaderFactory>()
+                .To<ReportServerReaderFactory>();
+
+            // Bind IReportServerWriterFactory
+            this.Bind<IReportServerWriterFactory>()
+                .To<ReportServerWriterFactory>();
+
+            // Bind IReportServerReader
+            this.Bind<IReportServerReader>()
+                .To<ReportServerReader>()
+                .InSingletonScope()
+                .Named("2005-SRC");
+
+            this.Bind<IReportServerReader>()
+                .To<ReportServerReader>()
+                .InSingletonScope()
+                .Named("2010-SRC");
+
+            // Bind IReportServerWriter
+            this.Bind<IReportServerWriter>()
+                .To<ReportServerWriter>()
+                .InSingletonScope()
+                .Named("2005-DEST");
+
+            this.Bind<IReportServerWriter>()
+                .To<ReportServerWriter>()
+                .InSingletonScope()
+                .Named("2010-DEST");
+
+            // Bind IExportWriter
+            this.Bind<IExportWriter>().To<FileExportWriter>().WhenInjectedExactlyInto<DataSourceItemExporter>();
+            this.Bind<IExportWriter>().To<FileExportWriter>().WhenInjectedExactlyInto<ReportItemExporter>();
+            this.Bind<IExportWriter>().To<FolderExportWriter>().WhenInjectedExactlyInto<FolderItemExporter>();
+
+            // Bind IItemExporter
+            this.Bind(typeof(IItemExporter<>)).To(typeof(ReportItemExporter));
+            this.Bind(typeof(IItemExporter<>)).To(typeof(FolderItemExporter));
+            this.Bind(typeof(IItemExporter<>)).To(typeof(DataSourceItemExporter));
         }
 
         private ReportingService2010 GetDestReportingService2010()

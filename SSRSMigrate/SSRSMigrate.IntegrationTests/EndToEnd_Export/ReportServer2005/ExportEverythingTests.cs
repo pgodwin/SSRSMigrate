@@ -13,7 +13,7 @@ using SSRSMigrate.TestHelper;
 using Newtonsoft.Json;
 using SSRSMigrate.Utility;
 using Ninject;
-using SSRSMigrate.IntegrationTests.Factory;
+using SSRSMigrate.Factory;
 
 namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
 {

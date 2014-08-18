@@ -7,7 +7,7 @@ using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.TestHelper;
 using Ninject;
-using SSRSMigrate.IntegrationTests.Factory;
+using SSRSMigrate.Factory;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
 {
