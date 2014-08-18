@@ -125,5 +125,37 @@ namespace SSRSMigrate.TestHelper
 
             return parentPath;
         }
+
+        public static string GetParentPath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            if (!path.StartsWith("/"))
+                path = "/" + path;
+
+            string name = path.Substring(path.LastIndexOf("/") + 1);
+
+            string parentPath = null;
+            if (path == "/")
+                parentPath = path;
+            else
+            {
+                parentPath = path.Substring(0, path.LastIndexOf("/"));
+
+                if (parentPath.EndsWith("/"))
+                {
+                    parentPath = parentPath.Substring(0, parentPath.Length - 1);
+
+                    if (parentPath.EndsWith("/"))
+                        parentPath = parentPath.Substring(0, parentPath.Length - 1);
+                }
+            }
+
+            if (!parentPath.StartsWith("/"))
+                parentPath = "/" + parentPath;
+
+            return parentPath;
+        }
     }
 }
