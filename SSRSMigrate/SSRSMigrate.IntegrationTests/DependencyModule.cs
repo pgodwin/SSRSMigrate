@@ -11,6 +11,8 @@ using SSRSMigrate.ReportServer2010;
 using SSRSMigrate.IntegrationTests.Factory;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Writer;
+using SSRSMigrate.Exporter.Writer;
+using SSRSMigrate.Exporter;
 
 namespace SSRSMigrate.IntegrationTests
 {
@@ -72,7 +74,13 @@ namespace SSRSMigrate.IntegrationTests
                 .InSingletonScope()
                 .Named("2010-DEST");
 
-            //TODO IItemExporter bindings
+            this.Bind<IExportWriter>().To<FileExportWriter>().WhenInjectedExactlyInto<DataSourceItemExporter>();
+            this.Bind<IExportWriter>().To<FileExportWriter>().WhenInjectedExactlyInto<ReportItemExporter>();
+            this.Bind<IExportWriter>().To<FolderExportWriter>().WhenInjectedExactlyInto<FolderItemExporter>();
+
+            this.Bind(typeof(IItemExporter<>)).To(typeof(ReportItemExporter));
+            this.Bind(typeof(IItemExporter<>)).To(typeof(FolderItemExporter));
+            this.Bind(typeof(IItemExporter<>)).To(typeof(DataSourceItemExporter));
         }
     }
 

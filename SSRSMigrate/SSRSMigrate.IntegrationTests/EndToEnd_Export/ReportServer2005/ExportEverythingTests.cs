@@ -86,9 +86,13 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
             folderWriter = new FolderExportWriter();
 
             // Create the IItemExporter objects
-            reportExporter = new ReportItemExporter(fileWriter);
-            dataSourceExporter = new DataSourceItemExporter(fileWriter);
-            folderExporter = new FolderItemExporter(folderWriter);
+            //reportExporter = new ReportItemExporter(fileWriter);
+            //dataSourceExporter = new DataSourceItemExporter(fileWriter);
+            //folderExporter = new FolderItemExporter(folderWriter);
+
+            reportExporter = kernel.Get<ReportItemExporter>();
+            dataSourceExporter = kernel.Get<DataSourceItemExporter>();
+            folderExporter = kernel.Get<FolderItemExporter>();
 
             reader = kernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>("2005-SRC");
         }
