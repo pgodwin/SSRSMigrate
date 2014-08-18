@@ -10,6 +10,7 @@ using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.TestHelper;
 using SSRSMigrate.Utility;
 using SSRSMigrate.Exporter.Writer;
+using Ninject;
 
 namespace SSRSMigrate.IntegrationTests.Exporter
 {
@@ -18,7 +19,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
     class ReportItem2005ExporterTests
     {
         ReportItemExporter exporter = null;
-        FileExportWriter writer = null;
+        StandardKernel kernel = null;
 
         List<ReportItem> reportItems = null;
         ReportItem reportItem_Inquiry;
@@ -47,8 +48,8 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         {
             EnvironmentSetup();
 
-            writer = new FileExportWriter();
-            exporter = new ReportItemExporter(writer);
+            kernel = new StandardKernel(new DependencyModule());
+            exporter = kernel.Get<ReportItemExporter>();
 
             reportItem_Inquiry = new ReportItem()
             {

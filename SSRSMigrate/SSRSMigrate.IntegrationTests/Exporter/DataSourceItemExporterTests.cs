@@ -9,6 +9,7 @@ using SSRSMigrate.Exporter;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.Utility;
 using SSRSMigrate.Exporter.Writer;
+using Ninject;
 
 namespace SSRSMigrate.IntegrationTests.Exporter
 {
@@ -16,10 +17,10 @@ namespace SSRSMigrate.IntegrationTests.Exporter
     [CoverageExcludeAttribute]
     class DataSourceItemExporterTests
     {
+        StandardKernel kernel = null;
         DataSourceItemExporter exporter = null;
 
         DataSourceItem dataSourceItem = null;
-        FileExportWriter writer = null;
 
         #region Expected DataSourceItem serialzed as JSON
         string expectedDataSourceJson = @"{
@@ -56,8 +57,9 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         {
             EnvironmentSetup();
 
-            writer = new FileExportWriter();
-            exporter = new DataSourceItemExporter(writer);
+            kernel = new StandardKernel(new DependencyModule());
+
+            exporter = kernel.Get<DataSourceItemExporter>();
 
             dataSourceItem = new DataSourceItem()
             {

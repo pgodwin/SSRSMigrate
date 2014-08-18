@@ -9,6 +9,7 @@ using System.Reflection;
 using System.IO;
 using SSRSMigrate.Utility;
 using SSRSMigrate.Exporter.Writer;
+using Ninject;
 
 namespace SSRSMigrate.IntegrationTests.Exporter
 {
@@ -17,7 +18,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
     class FolderItemExporterTests
     {
         FolderItemExporter exporter = null;
-        FolderExportWriter writer = null;
+        StandardKernel kernel = null;
 
         List<FolderItem> folderItems = null;
 
@@ -28,8 +29,8 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         {
             EnvironmentSetup();
 
-            writer = new FolderExportWriter();
-            exporter = new FolderItemExporter(writer);
+            kernel = new StandardKernel(new DependencyModule());
+            exporter = kernel.Get<FolderItemExporter>();
 
             folderItems = new List<FolderItem>()
             {

@@ -24,10 +24,6 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
         StandardKernel kernel = null;
         ReportServerReader reader = null;
 
-        // Export Writers
-        FileExportWriter fileWriter = null;
-        FolderExportWriter folderWriter = null;
-
         // Item Exporters
         ReportItemExporter reportExporter = null;
         DataSourceItemExporter dataSourceExporter = null;
@@ -81,15 +77,7 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
             outputPath = GetOutPutPath();
             SetupExpectedValues();
 
-            // Create the IExportWriter objects
-            fileWriter = new FileExportWriter();
-            folderWriter = new FolderExportWriter();
-
             // Create the IItemExporter objects
-            //reportExporter = new ReportItemExporter(fileWriter);
-            //dataSourceExporter = new DataSourceItemExporter(fileWriter);
-            //folderExporter = new FolderItemExporter(folderWriter);
-
             reportExporter = kernel.Get<ReportItemExporter>();
             dataSourceExporter = kernel.Get<DataSourceItemExporter>();
             folderExporter = kernel.Get<FolderItemExporter>();
