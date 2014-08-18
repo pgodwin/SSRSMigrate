@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="DependencyModule.cs" />
     <Compile Include="EndToEnd_Export\ReportServer2005\ExportEverythingTests.cs" />
+    <Compile Include="EndToEnd_Export\ReportServer2010\ExportEverythingTests.cs" />
     <Compile Include="Exporter\DataSourceItemExporterTests.cs" />
     <Compile Include="Exporter\FolderItemExporterTests.cs" />
     <Compile Include="Exporter\ReportItem2005ExporterTests.cs" />
