@@ -8,11 +8,11 @@ using SSRSMigrate.ReportServer2005;
 using System.Net;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.ReportServer2010;
-using SSRSMigrate.IntegrationTests.Factory;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.Exporter.Writer;
 using SSRSMigrate.Exporter;
+using SSRSMigrate.Factory;
 
 namespace SSRSMigrate.IntegrationTests
 {
@@ -66,7 +66,7 @@ namespace SSRSMigrate.IntegrationTests
                 .InSingletonScope()
                 .Named("2010-SRC");
 
-            // Bind writers
+            // Bind IReportServerWriter
             this.Bind<IReportServerWriter>()
                 .To<ReportServerWriter>()
                 .InSingletonScope()
