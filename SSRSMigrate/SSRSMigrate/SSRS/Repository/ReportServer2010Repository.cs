@@ -382,7 +382,18 @@ namespace SSRSMigrate.SSRS.Repository
         #region Item Methods
         public bool ItemExists(string itemPath, string itemType)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(itemPath))
+                throw new ArgumentException("itemPath");
+
+            if (string.IsNullOrEmpty(itemType))
+                throw new ArgumentException("itemType");
+
+            string actualItemType = this.mReportingService.GetItemType(itemPath);
+
+            if (itemType.ToLower() == actualItemType.ToLower())
+                return true;
+            else
+                return false;
         }
 
         public CatalogItem GetItem(string itemName, string itemPath, string itemType)

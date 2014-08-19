@@ -379,9 +379,47 @@ namespace SSRSMigrate.SSRS.Repository
         #endregion
 
         #region Item Methods
+        private ItemTypeEnum TypeNameToTypeEnum(string itemType)
+        {
+            ItemTypeEnum type = ItemTypeEnum.Unknown;
+
+            switch (itemType.ToLower())
+            {
+                case "unknown":
+                    type = ItemTypeEnum.Unknown; break;
+                case "datasource":
+                    type = ItemTypeEnum.DataSource; break;
+                case "folder":
+                    type = ItemTypeEnum.Folder; break;
+                case "linkedreport":
+                    type = ItemTypeEnum.LinkedReport; break;
+                case "model":
+                    type = ItemTypeEnum.Model; break;
+                case "report":
+                    type = ItemTypeEnum.Report; break;
+                case "resource":
+                    type = ItemTypeEnum.Resource; break;
+                default:
+                    type = ItemTypeEnum.Unknown; break;
+            };
+
+            return type;
+        }
+
         public bool ItemExists(string itemPath, string itemType)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(itemPath))
+                throw new ArgumentException("itemPath");
+
+            if (string.IsNullOrEmpty(itemType))
+                throw new ArgumentException("itemType");
+
+            ItemTypeEnum actualItemType = this.mReportingService.GetItemType(itemPath);
+
+            if (this.TypeNameToTypeEnum(itemType) == actualItemType)
+                return true;
+            else
+                return false;
         }
 
         public CatalogItem GetItem(string itemName, string itemPath, ItemTypeEnum itemType)
