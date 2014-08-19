@@ -27,16 +27,18 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
+            outputPath = Properties.Settings.Default.DestinationPath;
+
             kernel = new StandardKernel(new DependencyModule());
 
-            // SetupDataSourceItems
+            // Setup DataSourceItems
             dataSourceItems = new List<DataSourceItem>()
             {
                 new DataSourceItem()
                 {
                     Description = null,
                     Name = "Test Data Source",
-                    Path = "/SSRSMigrate_Tests/Test Data Source",
+                    Path = string.Format("{0}/Test Data Source", outputPath),
                     ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
                     CredentialsRetrieval ="Integrated",
                     Enabled = true,
@@ -55,7 +57,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                 {
                     Description = null,
                     Name = "Test 2 Data Source",
-                    Path = "/SSRSMigrate_Tests/Test 2 Data Source",
+                    Path = string.Format("{0}/Test 2 Data Source", outputPath),
                     ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
                     CredentialsRetrieval ="Integrated",
                     Enabled = true,
@@ -72,7 +74,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                 },
             };
 
-            outputPath = Properties.Settings.Default.DestinationPath;
+            
 
             writer = kernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>("2005-DEST");
         }
