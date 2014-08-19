@@ -38,22 +38,10 @@ namespace SSRSMigrate.TestHelper
             service.PreAuthenticate = true;
             service.UseDefaultCredentials = true;
 
-            string name = path.Substring(path.LastIndexOf("/") + 1);
-            string parent = TesterUtility.GetParentPath(path);
+            if (ReportingService2005Utility.ItemExists(service, path, ItemTypeEnum.Folder))
+                service.DeleteItem(path);
 
-            try
-            {
-                service.CreateFolder(name, parent, null);
-            }
-            catch (SoapException er)
-            {
-                if (er.Message.Contains("ItemAlreadyExists"))
-                {
-                    service.DeleteItem(path);
-
-                    service.CreateFolder(name, parent, null);
-                }
-            }
+            ReportingService2005Utility.CreateFolderFromPath(service, path);
         }
 
         public static void TeardownEnvironment(string url,
@@ -84,7 +72,54 @@ namespace SSRSMigrate.TestHelper
             service.PreAuthenticate = true;
             service.UseDefaultCredentials = true;
 
-            service.DeleteItem(path);
-        }   
+            if (ReportingService2005Utility.ItemExists(service, path, ItemTypeEnum.Folder))
+                service.DeleteItem(path);
+        }
+
+        private static void CreateFolderFromPath(ReportingService2005 reportingService, string path)
+        {
+            if (reportingService == null)
+                throw new ArgumentNullException("reportingService");
+
+            string [] folders = path.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+	
+	        string parentPath = "/";
+
+            foreach (string folder in folders)
+            {
+                string folderPath;
+
+                if (parentPath != "/" && parentPath.EndsWith("/"))
+                    parentPath = parentPath.Substring(0, parentPath.LastIndexOf("/"));
+
+                if (parentPath == "/")
+                    folderPath = parentPath + folder;
+                else
+                    folderPath = parentPath + "/" + folder;
+
+                if (!ReportingService2005Utility.ItemExists(reportingService, folderPath, ItemTypeEnum.Folder))
+                {
+                    reportingService.CreateFolder(folder, parentPath, null);
+                }
+
+                if (parentPath != "/")
+                    parentPath += "/" + folder;
+                else
+                    parentPath += folder;
+            }
+        }
+
+        private static bool ItemExists(ReportingService2005 reportingService, string path, ItemTypeEnum itemType)
+        {
+            if (reportingService == null)
+                throw new ArgumentNullException("reportingService");
+
+            ItemTypeEnum actualItemType = reportingService.GetItemType(path);
+
+            if (itemType == actualItemType)
+                return true;
+            else
+                return false;
+        }
     }
 }
