@@ -1,3 +1,142 @@
-<?xml version="1.0" encoding="utf-8"?><Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition"><AutoRefresh>0</AutoRefresh><DataSources><DataSource Name="ProLaw"><DataSourceReference>/ProLaw/Data Sources/ProLaw</DataSourceReference><rd:DataSourceID>1112f71a-e136-4cd1-a2a3-dbe98c1b4152</rd:DataSourceID><rd:SecurityType>None</rd:SecurityType></DataSource></DataSources><DataSets><DataSet Name="Contacts_Categories"><Fields><Field Name="ContactCategories"><DataField>ContactCategories</DataField><rd:TypeName>System.String</rd:TypeName></Field><Field Name="Category"><DataField>Category</DataField><rd:TypeName>System.String</rd:TypeName></Field><Field Name="CONTACTS"><DataField>Contacts</DataField><rd:TypeName>System.String</rd:TypeName></Field></Fields><Query><DataSourceName>ProLaw</DataSourceName><CommandText>SELECT     ContactCategories, Category, Contacts
-FROM         ContactCategories
-WHERE     (Contacts = @CONTACTS)</CommandText><QueryParameters><QueryParameter Name="@CONTACTS"><Value>=Parameters!CONTACTS.Value</Value></QueryParameter></QueryParameters></Query></DataSet></DataSets><ReportParameters><ReportParameter Name="CONTACTS"><DataType>String</DataType><Prompt>CONTACTS</Prompt></ReportParameter></ReportParameters><rd:ReportID>ab67975e-8535-4cca-88d8-79a1827a099e</rd:ReportID><rd:ReportUnitType>Inch</rd:ReportUnitType><rd:ReportServerUrl>http://nitzer/ReportServer/ReportService2005.asmx</rd:ReportServerUrl><ReportSections><ReportSection><Body><ReportItems><Tablix Name="Tablix1"><TablixBody><TablixColumns><TablixColumn><Width>1.1875in</Width></TablixColumn></TablixColumns><TablixRows><TablixRow><Height>0.25in</Height><TablixCells><TablixCell><CellContents><Textbox Name="Category"><CanGrow>true</CanGrow><KeepTogether>true</KeepTogether><Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!Category.Value</Value><Style><FontFamily>Times New Roman</FontFamily></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs><rd:DefaultName>Category</rd:DefaultName><Style><Border><Style>None</Style></Border><PaddingLeft>2pt</PaddingLeft><PaddingRight>2pt</PaddingRight><PaddingTop>2pt</PaddingTop><PaddingBottom>2pt</PaddingBottom></Style></Textbox></CellContents></TablixCell></TablixCells></TablixRow></TablixRows></TablixBody><TablixColumnHierarchy><TablixMembers><TablixMember /></TablixMembers></TablixColumnHierarchy><TablixRowHierarchy><TablixMembers><TablixMember><Group Name="Details" /></TablixMember></TablixMembers></TablixRowHierarchy><DataSetName>Contacts_Categories</DataSetName><Height>0.25in</Height><Width>1.1875in</Width><Style><Border><Style>None</Style></Border></Style></Tablix></ReportItems><Height>0.25in</Height><Style><Border><Style>None</Style></Border></Style></Body><Width>1.1875in</Width><Page><PageHeight>27.94cm</PageHeight><PageWidth>21.59cm</PageWidth><LeftMargin>0.635cm</LeftMargin><RightMargin>0.635cm</RightMargin><TopMargin>2.54cm</TopMargin><BottomMargin>2.54cm</BottomMargin><Style /></Page></ReportSection></ReportSections></Report>
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="Test_Data_Source">
+      <DataSourceReference>/SSRSMigrate_Tests/Test Data Source</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>f01e1a1c-9248-4864-9a19-5125559ca90e</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="Contacts_Categories">
+      <Fields>
+        <Field Name="ContactCategories">
+          <DataField>ContactCategories</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Category">
+          <DataField>Category</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CONTACTS">
+          <DataField>Contacts</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>Test_Data_Source</DataSourceName>
+        <CommandText>
+          SELECT     ContactCategories, Category, Contacts
+          FROM         ContactCategories
+          WHERE     (Contacts = @CONTACTS)
+        </CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@CONTACTS">
+            <Value>=Parameters!CONTACTS.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+      </Query>
+    </DataSet>
+  </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="CONTACTS">
+      <DataType>String</DataType>
+      <Prompt>CONTACTS</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <rd:ReportID>ab67975e-8535-4cca-88d8-79a1827a099e</rd:ReportID>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportServerUrl>http://localhost/ReportServer/ReportService2005.asmx</rd:ReportServerUrl>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Tablix Name="Tablix1">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>1.1875in</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Category">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Category.Value</Value>
+                                  <Style>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Category</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="Details" />
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>Contacts_Categories</DataSetName>
+            <Height>0.25in</Height>
+            <Width>1.1875in</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
+        </ReportItems>
+        <Height>0.25in</Height>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Body>
+      <Width>1.1875in</Width>
+      <Page>
+        <PageHeight>27.94cm</PageHeight>
+        <PageWidth>21.59cm</PageWidth>
+        <LeftMargin>0.635cm</LeftMargin>
+        <RightMargin>0.635cm</RightMargin>
+        <TopMargin>2.54cm</TopMargin>
+        <BottomMargin>2.54cm</BottomMargin>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+</Report>
