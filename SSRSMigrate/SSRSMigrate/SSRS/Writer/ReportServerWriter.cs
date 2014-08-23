@@ -111,6 +111,9 @@ namespace SSRSMigrate.SSRS.Writer
             if (!this.mReportRepository.ValidatePath(dataSourceItem.Path))
                 throw new InvalidPathException(string.Format("Invalid path '{0}'.", dataSourceItem.Path));
 
+            if (this.mReportRepository.ItemExists(dataSourceItem.Path, "DataSource"))
+                throw new DataSourceAlreadyExistsException(string.Format("The data source '{0}' already exists.", dataSourceItem.Path));
+
             string name = dataSourceItem.Name;
             string parentPath = SSRSUtil.GetParentPath(dataSourceItem);
 
@@ -128,6 +131,9 @@ namespace SSRSMigrate.SSRS.Writer
             {
                 if (!this.mReportRepository.ValidatePath(dataSourceItems[i].Path))
                     throw new InvalidPathException(string.Format("Invalid path '{0}'.", dataSourceItems[i].Path));
+
+                if (this.mReportRepository.ItemExists(dataSourceItems[i].Path, "DataSource"))
+                    throw new DataSourceAlreadyExistsException(string.Format("The data source '{0}' already exists.", dataSourceItems[i].Path));
 
                 string name = dataSourceItems[i].Name;
                 string parentPath = SSRSUtil.GetParentPath(dataSourceItems[i]);
