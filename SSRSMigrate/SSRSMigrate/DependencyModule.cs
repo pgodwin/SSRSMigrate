@@ -14,6 +14,7 @@ using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Exporter.Writer;
 using SSRSMigrate.Exporter;
+using SSRSMigrate.DataMapper;
 
 namespace SSRSMigrate
 {
@@ -246,7 +247,7 @@ namespace SSRSMigrate
                 service.UseDefaultCredentials = false;
             }
 
-            return new ReportServer2005Repository(path, service);
+            return new ReportServer2005Repository(path, service, new ReportingService2005DataMapper());
         }
     }
 
@@ -287,7 +288,7 @@ namespace SSRSMigrate
                 service.UseDefaultCredentials = false;
             }
 
-            return new ReportServer2010Repository(path, service);
+            return new ReportServer2010Repository(path, service, new ReportingService2010DataMapper());
         }
     }
 }

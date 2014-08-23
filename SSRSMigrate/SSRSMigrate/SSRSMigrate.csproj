@@ -89,6 +89,9 @@
     <Compile Include="ConnectInfoForm.Designer.cs">
       <DependentUpon>ConnectInfoForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataMapper\IDataMapper.cs" />
+    <Compile Include="DataMapper\ReportingService2005DataMapper.cs" />
+    <Compile Include="DataMapper\ReportingService2010DataMapper.cs" />
     <Compile Include="DependencyModule.cs" />
     <Compile Include="Enum\SSRSEnumerations.cs" />
     <Compile Include="Exporter\DataSourceItemExporter.cs" />

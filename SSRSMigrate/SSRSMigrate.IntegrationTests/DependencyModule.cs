@@ -13,6 +13,7 @@ using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.Exporter.Writer;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.Factory;
+using SSRSMigrate.DataMapper;
 
 namespace SSRSMigrate.IntegrationTests
 {
@@ -112,7 +113,7 @@ namespace SSRSMigrate.IntegrationTests
             service.PreAuthenticate = true;
             service.UseDefaultCredentials = true;
 
-            return new ReportServer2005Repository(path, service);
+            return new ReportServer2005Repository(path, service, new ReportingService2005DataMapper());
         }
     }
 
@@ -139,7 +140,7 @@ namespace SSRSMigrate.IntegrationTests
             service.PreAuthenticate = true;
             service.UseDefaultCredentials = true;
 
-            return new ReportServer2010Repository(path, service);
+            return new ReportServer2010Repository(path, service,  new ReportingService2010DataMapper());
         }
     }
 
@@ -166,7 +167,7 @@ namespace SSRSMigrate.IntegrationTests
             service.PreAuthenticate = true;
             service.UseDefaultCredentials = true;
 
-            return new ReportServer2005Repository(path, service);
+            return new ReportServer2005Repository(path, service, new ReportingService2005DataMapper());
         }
     }
 
@@ -193,7 +194,7 @@ namespace SSRSMigrate.IntegrationTests
             service.PreAuthenticate = true;
             service.UseDefaultCredentials = true;
 
-            return new ReportServer2010Repository(path, service);
+            return new ReportServer2010Repository(path, service, new ReportingService2010DataMapper());
         }
     }
 }

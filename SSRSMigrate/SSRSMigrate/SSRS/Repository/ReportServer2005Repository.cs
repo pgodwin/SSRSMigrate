@@ -6,17 +6,21 @@ using SSRSMigrate.ReportServer2005;
 using SSRSMigrate.Utility;
 using System.Xml;
 using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.DataMapper;
 
 namespace SSRSMigrate.SSRS.Repository
 {
     public class ReportServer2005Repository : IReportServerRepository
     {
         private readonly ReportingService2005 mReportingService;
+        private readonly ReportingService2005DataMapper mDataMapper;
         private string mRootPath = null;
         private string mInvalidPathChars = ":?;@&=+$,\\*><|.\"";
         private int mPathMaxLength = 260;
 
-        public ReportServer2005Repository(string rootPath, ReportingService2005 reportingService)
+        public ReportServer2005Repository(string rootPath,
+            ReportingService2005 reportingService,
+            ReportingService2005DataMapper dataMapper)
         {
             if (string.IsNullOrEmpty(rootPath))
                 throw new ArgumentException("rootPath");
@@ -24,8 +28,12 @@ namespace SSRSMigrate.SSRS.Repository
             if (reportingService == null)
                 throw new ArgumentNullException("reportingService");
 
+            if (dataMapper == null)
+                throw new ArgumentNullException("dataMapper");
+
             this.mRootPath = rootPath;
             this.mReportingService = reportingService;
+            this.mDataMapper = dataMapper;
         }
 
         ~ReportServer2005Repository()
@@ -69,7 +77,7 @@ namespace SSRSMigrate.SSRS.Repository
             if (items.Any())
             {
                 foreach (CatalogItem item in items)
-                    folderItems.Add(CatalogItemToFolderItem(item));
+                    folderItems.Add(this.mDataMapper.GetFolder(item));
 
                 return folderItems;
             }
@@ -82,7 +90,7 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
 
-            var items = this.GetItemsList<FolderItem>(path, ItemTypeEnum.Folder, folder => CatalogItemToFolderItem(folder));
+            var items = this.GetItemsList<FolderItem>(path, ItemTypeEnum.Folder, folder => this.mDataMapper.GetFolder(folder));
             if (items.Any())
                 foreach (FolderItem item in items)
                     yield return item;
@@ -91,24 +99,6 @@ namespace SSRSMigrate.SSRS.Repository
         public string CreateFolder(string name, string parentPath)
         {
             throw new NotImplementedException();
-        }
-
-        private FolderItem CatalogItemToFolderItem(CatalogItem item)
-        {
-            FolderItem folder = new FolderItem();
-
-            folder.CreatedBy = item.CreatedBy;
-            folder.CreationDate = item.CreationDate;
-            folder.Description = item.Description;
-            folder.ID = item.ID;
-            folder.ModifiedBy = item.ModifiedBy;
-            folder.ModifiedDate = item.ModifiedDate;
-            folder.Name = item.Name;
-            folder.Path = item.Path;
-            folder.Size = item.Size;
-            folder.VirtualPath = item.VirtualPath;
-
-            return folder;
         }
         #endregion
 
@@ -142,7 +132,10 @@ namespace SSRSMigrate.SSRS.Repository
                 ItemTypeEnum.Report);
 
             if (item != null)
-                return CatalogItemToReportItem(item);
+            {
+                byte[] def = this.GetReportDefinition(item.Path);
+                return this.mDataMapper.GetReport(item, def);
+            }
                 
             return null;
         }
@@ -158,7 +151,10 @@ namespace SSRSMigrate.SSRS.Repository
             if (items.Any())
             {
                 foreach (CatalogItem item in items)
-                    reportItems.Add(CatalogItemToReportItem(item));
+                {
+                    byte[] def = this.GetReportDefinition(item.Path);
+                    reportItems.Add(this.mDataMapper.GetReport(item, def));
+                }
 
                 return reportItems;
             }
@@ -171,7 +167,11 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
 
-            var items = this.GetItemsList<ReportItem>(path, ItemTypeEnum.Report, r => CatalogItemToReportItem(r));
+            var items = this.GetItemsList<ReportItem>(path, ItemTypeEnum.Report, r => 
+                {
+                    byte[] def = this.GetReportDefinition(r.Path);
+                    return this.mDataMapper.GetReport(r, def);
+                });
 
             if (items != null)
                 foreach (ReportItem item in items)
@@ -211,7 +211,8 @@ namespace SSRSMigrate.SSRS.Repository
 
                         if (subReportItem != null)
                         {
-                            ReportItem subReport = CatalogItemToReportItem(subReportItem);
+                            byte[] def = this.GetReportDefinition(subReportItem.Path);
+                            ReportItem subReport = this.mDataMapper.GetReport(subReportItem, def);
 
                             string subReportDefinition = SSRSUtil.ByteArrayToString(subReport.Definition);
 
@@ -238,27 +239,6 @@ namespace SSRSMigrate.SSRS.Repository
         {
             throw new NotImplementedException();
         }
-
-        private ReportItem CatalogItemToReportItem(CatalogItem item)
-        {
-            ReportItem report = new ReportItem();
-
-            report.Name = item.Name;
-            report.Path = item.Path;
-            report.CreatedBy = item.CreatedBy;
-            report.CreationDate = item.CreationDate;
-            report.Description = item.Description;
-            report.ID = item.ID;
-            report.ModifiedBy = item.ModifiedBy;
-            report.ModifiedDate = item.ModifiedDate;
-            report.Size = item.Size;
-            report.VirtualPath = item.VirtualPath;
-
-            report.Definition = GetReportDefinition(item.Path);
-            report.SubReports.AddRange(GetSubReports(SSRSUtil.ByteArrayToString(report.Definition)));
-
-            return report;
-        }
         #endregion
 
         #region Data Source Methods
@@ -272,7 +252,10 @@ namespace SSRSMigrate.SSRS.Repository
             CatalogItem item = this.GetItem(dsName, dataSourcePath, ItemTypeEnum.DataSource);
 
             if (item != null)
-                return CatalogItemToDataSourceItem(item);
+            {
+                DataSourceDefinition def = this.mReportingService.GetDataSourceContents(item.Path);
+                return this.mDataMapper.GetDataSource(item, def);
+            }
 
             return null;
         }
@@ -288,7 +271,10 @@ namespace SSRSMigrate.SSRS.Repository
             if (items.Any())
             {
                 foreach (CatalogItem item in items)
-                    dataSourceItems.Add(CatalogItemToDataSourceItem(item));
+                {
+                    DataSourceDefinition def = this.mReportingService.GetDataSourceContents(item.Path);
+                    dataSourceItems.Add(this.mDataMapper.GetDataSource(item, def));
+                }
 
                 return dataSourceItems;
             }
@@ -301,7 +287,11 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            var items = this.GetItemsList<DataSourceItem>(path, ItemTypeEnum.DataSource, ds => CatalogItemToDataSourceItem(ds));
+            var items = this.GetItemsList<DataSourceItem>(path, ItemTypeEnum.DataSource, ds => 
+                {
+                    DataSourceDefinition def = this.mReportingService.GetDataSourceContents(ds.Path);
+                    return this.mDataMapper.GetDataSource(ds, def);
+                });
 
             if (items != null)
                 foreach (DataSourceItem item in items)
@@ -311,51 +301,6 @@ namespace SSRSMigrate.SSRS.Repository
         public string WriteDataSource(string dataSourcePath, DataSourceItem dataSource)
         {
             throw new NotImplementedException();
-        }
-
-        private DataSourceItem CatalogItemToDataSourceItem(CatalogItem item)
-        {
-            DataSourceItem ds = new DataSourceItem();
-            DataSourceDefinition dsDef = this.mReportingService.GetDataSourceContents(item.Path);
-
-            ds.Name = item.Name;
-            ds.Path = item.Path;
-            ds.CreatedBy = item.CreatedBy;
-            ds.CreationDate = item.CreationDate;
-            ds.Description = item.Description;
-            ds.ID = item.ID;
-            ds.ModifiedBy = item.ModifiedBy;
-            ds.ModifiedDate = item.ModifiedDate;
-            ds.Size = item.Size;
-            ds.VirtualPath = item.VirtualPath;
-
-            ds.ConnectString = dsDef.ConnectString;
-
-            switch (dsDef.CredentialRetrieval)
-            {
-                case CredentialRetrievalEnum.Integrated:
-                    ds.CredentialsRetrieval = "Integrated"; break;
-                case CredentialRetrievalEnum.None:
-                    ds.CredentialsRetrieval = "None"; break;
-                case CredentialRetrievalEnum.Prompt:
-                    ds.CredentialsRetrieval = "Prompt"; break;
-                case CredentialRetrievalEnum.Store:
-                    ds.CredentialsRetrieval = "Store"; break;
-            }
-
-            ds.Enabled = dsDef.Enabled;
-            ds.EnabledSpecified = dsDef.EnabledSpecified;
-            ds.Extension = dsDef.Extension;
-            ds.ImpersonateUser = dsDef.ImpersonateUser;
-            ds.ImpersonateUserSpecified = dsDef.ImpersonateUserSpecified;
-            ds.OriginalConnectStringExpressionBased = ds.OriginalConnectStringExpressionBased;
-            ds.Password = dsDef.Password;
-            ds.Prompt = dsDef.Prompt;
-            ds.UseOriginalConnectString = dsDef.UseOriginalConnectString;
-            ds.UserName = dsDef.UserName;
-            ds.WindowsCredentials = dsDef.WindowsCredentials;
-
-            return ds;
         }
         #endregion
 
