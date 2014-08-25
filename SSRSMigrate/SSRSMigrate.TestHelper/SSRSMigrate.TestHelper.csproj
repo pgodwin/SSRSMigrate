@@ -61,7 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReportingService2005Utility.cs" />
+    <Compile Include="ReportingService2005TestEnvironment.cs" />
     <Compile Include="TesterUtility.cs" />
   </ItemGroup>
   <ItemGroup>
