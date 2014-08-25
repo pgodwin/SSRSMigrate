@@ -97,6 +97,25 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                     UserName = null,
                     WindowsCredentials = false
                 },
+                new DataSourceItem()
+                {
+                    Description = null,
+                    Name = "Data Source Already Exists",
+                    Path = string.Format("{0}/Data Source Already Exists", outputPath),
+                    ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                    CredentialsRetrieval ="Integrated",
+                    Enabled = true,
+                    EnabledSpecified = true,
+                    Extension = "SQL",
+                    ImpersonateUser = false,
+                    ImpersonateUserSpecified = true,
+                    OriginalConnectStringExpressionBased = false,
+                    Password = null,
+                    Prompt = "Enter a user name and password to access the data source:",
+                    UseOriginalConnectString = false,
+                    UserName = null,
+                    WindowsCredentials = false
+                },
             };
 
             writer = kernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>("2005-DEST");
@@ -123,7 +142,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         #region Environment Setup/Teardown
         private void SetupEnvironment()
         {
-            ReportingService2005Utility.SetupEnvironment(
+            ReportingService2005TestEnvironment.SetupEnvironment(
                 Properties.Settings.Default.ReportServer2008WebServiceUrl, 
                 CredentialCache.DefaultNetworkCredentials,
                 outputPath);
@@ -133,7 +152,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
 
         private void TeardownEnvironment()
         {
-            ReportingService2005Utility.TeardownEnvironment(
+            ReportingService2005TestEnvironment.TeardownEnvironment(
                 Properties.Settings.Default.ReportServer2008WebServiceUrl,
                 CredentialCache.DefaultNetworkCredentials,
                 outputPath);
@@ -159,10 +178,10 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
             DataSourceAlreadyExistsException ex = Assert.Throws<DataSourceAlreadyExistsException>(
                 delegate
                 {
-                    writer.WriteDataSource(dataSourceItems[0]);
+                    writer.WriteDataSource(dataSourceItems[3]);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(string.Format("The data source '{0}' already exists.", dataSourceItems[0].Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("The data source '{0}' already exists.", dataSourceItems[3].Path)));
         }
 
         [Test]
