@@ -28,7 +28,12 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         #region DataSourceItems
         List<DataSourceItem> dataSourceItems = null;
         DataSourceItem alreadyExistsDataSourceItem = null;
-        #endregion
+        DataSourceItem invalidPathDataSourceItem = null;
+        DataSourceItem nullNameDataSourceItem = null;
+        DataSourceItem emptyNameDataSourceItem = null;
+        DataSourceItem nullPathDataSourceItem = null;
+        DataSourceItem emptyPathDataSourceItem = null;
+         #endregion
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
@@ -77,27 +82,28 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                     UseOriginalConnectString = false,
                     UserName = null,
                     WindowsCredentials = false
-                },
-                // To test invalid path
-                new DataSourceItem()
-                {
-                    Description = null,
-                    Name = "Test.Data Source",
-                    Path = string.Format("{0}/Test.Data Source", outputPath),
-                    ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
-                    CredentialsRetrieval ="Integrated",
-                    Enabled = true,
-                    EnabledSpecified = true,
-                    Extension = "SQL",
-                    ImpersonateUser = false,
-                    ImpersonateUserSpecified = true,
-                    OriginalConnectStringExpressionBased = false,
-                    Password = null,
-                    Prompt = "Enter a user name and password to access the data source:",
-                    UseOriginalConnectString = false,
-                    UserName = null,
-                    WindowsCredentials = false
                 }
+            };
+
+            // To test invalid path
+            invalidPathDataSourceItem = new DataSourceItem()
+            {
+                Description = null,
+                Name = "Test.Data Source",
+                Path = string.Format("{0}/Test.Data Source", outputPath),
+                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                CredentialsRetrieval = "Integrated",
+                Enabled = true,
+                EnabledSpecified = true,
+                Extension = "SQL",
+                ImpersonateUser = false,
+                ImpersonateUserSpecified = true,
+                OriginalConnectStringExpressionBased = false,
+                Password = null,
+                Prompt = "Enter a user name and password to access the data source:",
+                UseOriginalConnectString = false,
+                UserName = null,
+                WindowsCredentials = false
             };
 
             alreadyExistsDataSourceItem = new DataSourceItem()
@@ -119,6 +125,87 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                 UserName = null,
                 WindowsCredentials = false
             };
+
+            nullNameDataSourceItem = new DataSourceItem()
+            {
+                Description = null,
+                Name = null,
+                Path = string.Format("{0}/Test Data Source", outputPath),
+                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                CredentialsRetrieval = "Integrated",
+                Enabled = true,
+                EnabledSpecified = true,
+                Extension = "SQL",
+                ImpersonateUser = false,
+                ImpersonateUserSpecified = true,
+                OriginalConnectStringExpressionBased = false,
+                Password = null,
+                Prompt = "Enter a user name and password to access the data source:",
+                UseOriginalConnectString = false,
+                UserName = null,
+                WindowsCredentials = false
+            };
+
+            emptyNameDataSourceItem = new DataSourceItem()
+            {
+                Description = null,
+                Name = null,
+                Path = string.Format("{0}/Test Data Source", outputPath),
+                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                CredentialsRetrieval = "Integrated",
+                Enabled = true,
+                EnabledSpecified = true,
+                Extension = "SQL",
+                ImpersonateUser = false,
+                ImpersonateUserSpecified = true,
+                OriginalConnectStringExpressionBased = false,
+                Password = null,
+                Prompt = "Enter a user name and password to access the data source:",
+                UseOriginalConnectString = false,
+                UserName = null,
+                WindowsCredentials = false
+            };
+
+            nullPathDataSourceItem = new DataSourceItem()
+            {
+                Description = null,
+                Name = "Test Data Source",
+                Path = null,
+                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                CredentialsRetrieval = "Integrated",
+                Enabled = true,
+                EnabledSpecified = true,
+                Extension = "SQL",
+                ImpersonateUser = false,
+                ImpersonateUserSpecified = true,
+                OriginalConnectStringExpressionBased = false,
+                Password = null,
+                Prompt = "Enter a user name and password to access the data source:",
+                UseOriginalConnectString = false,
+                UserName = null,
+                WindowsCredentials = false
+            };
+
+            emptyPathDataSourceItem = new DataSourceItem()
+            {
+                Description = null,
+                Name = "Test Data Source",
+                Path = "",
+                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                CredentialsRetrieval = "Integrated",
+                Enabled = true,
+                EnabledSpecified = true,
+                Extension = "SQL",
+                ImpersonateUser = false,
+                ImpersonateUserSpecified = true,
+                OriginalConnectStringExpressionBased = false,
+                Password = null,
+                Prompt = "Enter a user name and password to access the data source:",
+                UseOriginalConnectString = false,
+                UserName = null,
+                WindowsCredentials = false
+            };
+
 
             writer = kernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>("2005-DEST");
         }
@@ -204,11 +291,10 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
-                    writer.WriteDataSource(dataSourceItems[2]);
+                    writer.WriteDataSource(invalidPathDataSourceItem);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining(string.Format("Invalid path '{0}'.", dataSourceItems[2].Path)));
-        
+            Assert.That(ex.Message, Is.StringContaining(string.Format("Invalid path '{0}'.", invalidPathDataSourceItem.Path)));
         }
 
         [Test]
@@ -288,49 +374,130 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         [Test]
         public void WriteDataSources()
         {
-            throw new NotImplementedException();
+            string[] actual = writer.WriteDataSources(dataSourceItems.ToArray());
+
+            Assert.AreEqual(0, actual.Length);
         }
 
         [Test]
         public void WriteDataSources_OneOrMoreAlreadyExists()
         {
-            throw new NotImplementedException();
+            List<DataSourceItem> items = new List<DataSourceItem>();
+            items.AddRange(dataSourceItems);
+            items.Add(alreadyExistsDataSourceItem);
+
+            DataSourceAlreadyExistsException ex = Assert.Throws<DataSourceAlreadyExistsException>(
+                delegate
+                {
+                    writer.WriteDataSources(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("The data source '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
         }
 
         [Test]
         public void WriteDataSources_NullDataSourceItems()
         {
-            throw new NotImplementedException();
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    writer.WriteDataSource(null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: dataSourceItem"));
+        
         }
 
         [Test]
         public void WriteDataSources_OneOrMoreInvalidDataSourcePath()
         {
-            throw new NotImplementedException();
+            List<DataSourceItem> items = new List<DataSourceItem>();
+            items.AddRange(dataSourceItems);
+            items.Add(invalidPathDataSourceItem);
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    writer.WriteDataSources(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.StringContaining(string.Format("Invalid path '{0}'.", invalidPathDataSourceItem.Path)));
         }
 
         [Test]
         public void WriteDataSources_OneOrMoreDataSourceItemNullName()
         {
-            throw new NotImplementedException();
+            List<DataSourceItem> items = new List<DataSourceItem>()
+            {
+               nullNameDataSourceItem
+            };
+
+            items.AddRange(dataSourceItems);
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    writer.WriteDataSources(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("item.Name"));
         }
 
         [Test]
         public void WriteDataSources_OneOrMoreDataSourceItemEmptyName()
         {
-            throw new NotImplementedException();
+            List<DataSourceItem> items = new List<DataSourceItem>()
+            {
+               emptyNameDataSourceItem
+            };
+
+            items.AddRange(dataSourceItems);
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    writer.WriteDataSources(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("item.Name"));
         }
 
         [Test]
         public void WriteDataSources_OneOrMoreDataSourceItemNullPath()
         {
-            throw new NotImplementedException();
+            List<DataSourceItem> items = new List<DataSourceItem>()
+            {
+               nullPathDataSourceItem
+            };
+
+            items.AddRange(dataSourceItems);
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    writer.WriteDataSources(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
 
         [Test]
         public void WriteDataSources_OneOrMoreDataSourceItemEmptyPath()
         {
-            throw new NotImplementedException();
+            List<DataSourceItem> items = new List<DataSourceItem>()
+            {
+               emptyPathDataSourceItem
+            };
+
+            items.AddRange(dataSourceItems);
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    writer.WriteDataSources(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
         #endregion
     }
