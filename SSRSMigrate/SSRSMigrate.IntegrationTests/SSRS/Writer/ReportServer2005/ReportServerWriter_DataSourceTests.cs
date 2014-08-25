@@ -27,6 +27,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
 
         #region DataSourceItems
         List<DataSourceItem> dataSourceItems = null;
+        DataSourceItem alreadyExistsDataSourceItem = null;
         #endregion
 
         [TestFixtureSetUp]
@@ -96,26 +97,27 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                     UseOriginalConnectString = false,
                     UserName = null,
                     WindowsCredentials = false
-                },
-                new DataSourceItem()
-                {
-                    Description = null,
-                    Name = "Data Source Already Exists",
-                    Path = string.Format("{0}/Data Source Already Exists", outputPath),
-                    ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
-                    CredentialsRetrieval ="Integrated",
-                    Enabled = true,
-                    EnabledSpecified = true,
-                    Extension = "SQL",
-                    ImpersonateUser = false,
-                    ImpersonateUserSpecified = true,
-                    OriginalConnectStringExpressionBased = false,
-                    Password = null,
-                    Prompt = "Enter a user name and password to access the data source:",
-                    UseOriginalConnectString = false,
-                    UserName = null,
-                    WindowsCredentials = false
-                },
+                }
+            };
+
+            alreadyExistsDataSourceItem = new DataSourceItem()
+            {
+                Description = null,
+                Name = "Data Source Already Exists",
+                Path = string.Format("{0}/Data Source Already Exists", outputPath),
+                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                CredentialsRetrieval = "Integrated",
+                Enabled = true,
+                EnabledSpecified = true,
+                Extension = "SQL",
+                ImpersonateUser = false,
+                ImpersonateUserSpecified = true,
+                OriginalConnectStringExpressionBased = false,
+                Password = null,
+                Prompt = "Enter a user name and password to access the data source:",
+                UseOriginalConnectString = false,
+                UserName = null,
+                WindowsCredentials = false
             };
 
             writer = kernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>("2005-DEST");
@@ -178,10 +180,10 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
             DataSourceAlreadyExistsException ex = Assert.Throws<DataSourceAlreadyExistsException>(
                 delegate
                 {
-                    writer.WriteDataSource(dataSourceItems[3]);
+                    writer.WriteDataSource(alreadyExistsDataSourceItem);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(string.Format("The data source '{0}' already exists.", dataSourceItems[3].Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("The data source '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
         }
 
         [Test]
