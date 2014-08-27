@@ -3,7 +3,7 @@
   <Description>Adventure Works sales by quarter and product category. This report illustrates the use of a tablix data region with nested row groups and column groups. You can drilldown from summary data into detail data by showing and hiding rows. This report also illustrates the use of a logo image and a background image.</Description>
   <DataSources>
     <DataSource Name="AWDataSource">
-      <DataSourceReference>AWDataSource</DataSourceReference>
+      <DataSourceReference>/SSRSMigrate_AW_Tests/Data Sources/AWDataSource</DataSourceReference>
       <rd:DataSourceID xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">4250a7e9-e24a-40ff-8856-5a7e6424aa29</rd:DataSourceID>
     </DataSource>
   </DataSources>

@@ -3,7 +3,7 @@
   <Description>Detail of an individual Adventure Works order. This report can be accessed as a drillthrough report from the Employee Sales Summary and Territory Sales drilldown report. This report illustrates the use of a free form layout, a table, parameters, a subreport that shows multiple store contacts, and expressions.</Description>
   <DataSources>
     <DataSource Name="AWDataSource">
-      <DataSourceReference>AWDataSource</DataSourceReference>
+      <DataSourceReference>/SSRSMigrate_AW_Tests/Data Sources/AWDataSource</DataSourceReference>
       <rd:DataSourceID xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">9d4e7b1f-0315-4083-8ff3-aa70c1fb2920</rd:DataSourceID>
     </DataSource>
   </DataSources>
@@ -1737,7 +1737,7 @@
                             <Rectangle Name="Rectangle1">
                               <ReportItems>
                                 <Subreport Name="Subreport1">
-                                  <ReportName>Store Contacts 2008</ReportName>
+                                  <ReportName>/SSRSMigrate_AW_Tests/Reports/Store Contacts</ReportName>
                                   <Parameters>
                                     <Parameter Name="StoreID">
                                       <Value>=Fields!BusinessEntityID.Value</Value>
