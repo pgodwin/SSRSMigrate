@@ -56,7 +56,6 @@ namespace SSRSMigrate.IntegrationTests.Exporter
             {
                 Name = "Store Contacts",
                 Path = "/SSRSMigrate_AW_Tests/Reports/Store Contacts",
-                CreatedBy = "DOMAIN\\user",
                 Description = "AdventureWorks store contacts. This report is a subreport used in Sales Order Detail to show all contacts for a store. Borderstyle is None so lines do not display in main report.",
                 ID = "18fc782e-dd5f-4c65-95ff-957e1bdc98de",
                 VirtualPath = null,
