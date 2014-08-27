@@ -42,9 +42,9 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                     ModifiedDate = DateTime.Parse("7/23/2014 8:28:43 AM"),
                     Size = 414,
                     VirtualPath = null,
-                    Name = "Test Data Source",
-                    Path = "/SSRSMigrate_Tests/Test Data Source",
-                    ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                    Name = "AWDataSource",
+                    Path = "/SSRSMigrate_AW_Tests/Data Sources/AWDataSource",
+                    ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                     CredentialsRetrieval = "Integrated",
                     Enabled = true,
                     EnabledSpecified = true,
@@ -68,9 +68,9 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                     ModifiedDate = DateTime.Parse("7/23/2014 8:29:25 AM"),
                     Size = 414,
                     VirtualPath = null,
-                    Name = "Test  2 Data Source",
-                    Path = "/SSRSMigrate_Tests/Test 2 Data Source",
-                    ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                    Name = "Test Data Source",
+                    Path = "/SSRSMigrate_AW_Tests/Data Sources/Test Data Source",
+                    ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                     CredentialsRetrieval = "Integrated",
                     Enabled = true,
                     EnabledSpecified = true,
@@ -96,10 +96,10 @@ namespace SSRSMigrate.Tests.SSRS.Reader
             reportServerRepositoryMock.Setup(r => r.GetDataSource(""))
                 .Throws(new ArgumentException("dataSourcePath"));
 
-            reportServerRepositoryMock.Setup(r => r.GetDataSource("/SSRSMigrate_Tests/Test Data Source"))
+            reportServerRepositoryMock.Setup(r => r.GetDataSource("/SSRSMigrate_AW_Tests/Data Sources/AWDataSource"))
                 .Returns(() => expectedDataSourceItems[0]);
 
-            reportServerRepositoryMock.Setup(r => r.GetDataSource("/SSRSMigrate_Tests/Test 2 Data Source"))
+            reportServerRepositoryMock.Setup(r => r.GetDataSource("/SSRSMigrate_AW_Tests/Data Sources/Test Data Source"))
                 .Returns(() => expectedDataSourceItems[1]);
 
             reportServerRepositoryMock.Setup(r => r.GetDataSource("/SSRSMigrate_Tests/Test Data Source Doesnt Exist"))
@@ -112,10 +112,10 @@ namespace SSRSMigrate.Tests.SSRS.Reader
             reportServerRepositoryMock.Setup(r => r.GetDataSources(""))
                 .Throws(new ArgumentException("path"));
 
-            reportServerRepositoryMock.Setup(r => r.GetDataSources("/SSRSMigrate_Tests"))
+            reportServerRepositoryMock.Setup(r => r.GetDataSources("/SSRSMigrate_AW_Tests"))
                 .Returns(() => expectedDataSourceItems);
 
-            reportServerRepositoryMock.Setup(r => r.GetDataSources("/SSRSMigrate_Tests Doesnt Exist"))
+            reportServerRepositoryMock.Setup(r => r.GetDataSources("/SSRSMigrate_AW_Tests Doesnt Exist"))
                 .Returns(() => new List<DataSourceItem>());
 
             // IReportServerRepository.GetDataSourcesList Mocks
@@ -125,26 +125,26 @@ namespace SSRSMigrate.Tests.SSRS.Reader
             reportServerRepositoryMock.Setup(r => r.GetDataSourcesList(""))
                 .Throws(new ArgumentException("path"));
 
-            reportServerRepositoryMock.Setup(r => r.GetDataSourcesList("/SSRSMigrate_Tests"))
+            reportServerRepositoryMock.Setup(r => r.GetDataSourcesList("/SSRSMigrate_AW_Tests"))
                 .Returns(() => expectedDataSourceItems);
 
-            reportServerRepositoryMock.Setup(r => r.GetDataSourcesList("/SSRSMigrate_Tests Doesnt Exist"))
+            reportServerRepositoryMock.Setup(r => r.GetDataSourcesList("/SSRSMigrate_AW_Tests Doesnt Exist"))
                 .Returns(() => new List<DataSourceItem>());
 
             // Setup IReportServerRepository.ValidatePath Mocks
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests"))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests Doesnt Exist"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests Doesnt Exist"))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Test Data Source Doesnt Exist"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests/Data Sources/Test Data Source Doesnt Exist"))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Test 2 Data Source"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests/Data Sources/AWDataSource"))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Test Data Source"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests/Data Sources/Test Data Source"))
                .Returns(() => true);
 
             reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
@@ -181,7 +181,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetDataSource()
         {
-            DataSourceItem actualDataSource = reader.GetDataSource("/SSRSMigrate_Tests/Test Data Source");
+            DataSourceItem actualDataSource = reader.GetDataSource("/SSRSMigrate_AW_Tests/Data Sources/AWDataSource");
 
             Assert.AreEqual(expectedDataSourceItems[0], actualDataSource);
         }
@@ -189,7 +189,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetDataSource_PathDoesntExist()
         {
-            DataSourceItem actualDataSource = reader.GetDataSource("/SSRSMigrate_Tests/Test Data Source Doesnt Exist");
+            DataSourceItem actualDataSource = reader.GetDataSource("/SSRSMigrate_AW_Tests/Data Sources/Test Data Source Doesnt Exist");
 
             Assert.Null(actualDataSource);
         }
@@ -221,7 +221,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetDataSource_InvalidPath()
         {
-            string invalidPath = "/SSRSMigrate_Tests/Test.Data Source";
+            string invalidPath = "/SSRSMigrate_AW_Tests/Data Sources/Test.Data Source";
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
@@ -237,7 +237,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetDataSources()
         {
-            List<DataSourceItem> dataSourceItems = reader.GetDataSources("/SSRSMigrate_Tests");
+            List<DataSourceItem> dataSourceItems = reader.GetDataSources("/SSRSMigrate_AW_Tests");
 
             Assert.AreEqual(dataSourceItems.Count(), expectedDataSourceItems.Count());
             Assert.AreEqual(expectedDataSourceItems[0], dataSourceItems[0]);
@@ -247,7 +247,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetDataSources_PathDoesntExist()
         {
-            List<DataSourceItem> dataSourceItems = reader.GetDataSources("/SSRSMigrate_Tests Doesnt Exist");
+            List<DataSourceItem> dataSourceItems = reader.GetDataSources("/SSRSMigrate_AW_Tests Doesnt Exist");
 
             Assert.AreEqual(0, dataSourceItems.Count());
         }
@@ -279,7 +279,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetDataSources_InvalidPath()
         {
-            string invalidPath = "/SSRSMigrate.Tests";
+            string invalidPath = "/SSRSMigrate_AW.Tests";
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
@@ -295,7 +295,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetDataSources_UsingDelegate()
         {
-            reader.GetDataSources("/SSRSMigrate_Tests", GetDataSources_Reporter);
+            reader.GetDataSources("/SSRSMigrate_AW_Tests", GetDataSources_Reporter);
 
             Assert.AreEqual(expectedDataSourceItems.Count(), actualDataSourceItems.Count());
             Assert.AreEqual(expectedDataSourceItems[0], actualDataSourceItems[0]);
@@ -305,7 +305,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetDataSources_UsingDelegate_PathDoesntExist()
         {
-            reader.GetDataSources("/SSRSMigrate_Tests Doesnt Exist", GetDataSources_Reporter);
+            reader.GetDataSources("/SSRSMigrate_AW_Tests Doesnt Exist", GetDataSources_Reporter);
 
             Assert.AreEqual(0, actualDataSourceItems.Count());
         }
@@ -340,7 +340,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    reader.GetDataSources("/SSRSMigrate_Tests", null);
+                    reader.GetDataSources("/SSRSMigrate_AW_Tests", null);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
@@ -349,7 +349,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetDataSources_UsingDelegate_InvalidPath()
         {
-            string invalidPath = "/SSRSMigrate.Tests";
+            string invalidPath = "/SSRSMigrate_AW.Tests";
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate

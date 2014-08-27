@@ -35,17 +35,17 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                 new FolderItem()
                 {
                     Name = "Reports",
-                    Path = "/SSRSMigrate_Tests/Reports",
+                    Path = "/SSRSMigrate_AW_Tests/Reports",
                 },
                 new FolderItem()
                 {
                     Name = "Sub Folder",
-                    Path = "/SSRSMigrate_Tests/Reports/Sub Folder",
+                    Path = "/SSRSMigrate_AW_Tests/Reports/Sub Folder",
                 },
                 new FolderItem()
                 {
-                    Name = "Test Folder",
-                    Path = "/SSRSMigrate_Tests/Test Folder",
+                    Name = "Data Sources",
+                    Path = "/SSRSMigrate_AW_Tests/Data Sources",
                 }
             };
 
@@ -59,10 +59,10 @@ namespace SSRSMigrate.Tests.SSRS.Reader
             reportServerRepositoryMock.Setup(r => r.GetFolders(""))
                 .Throws(new ArgumentException("path"));
 
-            reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_Tests"))
+            reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_AW_Tests"))
                 .Returns(() => expectedFolderItems);
 
-            reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_Tests Doesnt Exist"))
+            reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_AW_Tests Doesnt Exist"))
                 .Returns(() => new List<FolderItem>());
 
             // IReportServerRepository.GetFolderList Mocks
@@ -72,26 +72,26 @@ namespace SSRSMigrate.Tests.SSRS.Reader
             reportServerRepositoryMock.Setup(r => r.GetFolderList(""))
                 .Throws(new ArgumentException("path"));
 
-            reportServerRepositoryMock.Setup(r => r.GetFolderList("/SSRSMigrate_Tests"))
+            reportServerRepositoryMock.Setup(r => r.GetFolderList("/SSRSMigrate_AW_Tests"))
                 .Returns(() => expectedFolderItems);
 
-            reportServerRepositoryMock.Setup(r => r.GetFolderList("/SSRSMigrate_Tests Doesnt Exist"))
+            reportServerRepositoryMock.Setup(r => r.GetFolderList("/SSRSMigrate_AW_Tests Doesnt Exist"))
                 .Returns(() => new List<FolderItem>());
 
             // Setup IReportServerRepository.ValidatePath Mocks
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests"))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests Doesnt Exist"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests Doesnt Exist"))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests/Reports"))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/Sub Folder"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests/Reports/Sub Folder"))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Test Folder"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests/Data Sources"))
                .Returns(() => true);
 
             reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
@@ -127,7 +127,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetFolders()
         {
-            List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_Tests");
+            List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_AW_Tests");
 
             Assert.AreEqual(expectedFolderItems.Count(), actual.Count());
         }
@@ -135,7 +135,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetFolders_PathDoesntExist()
         {
-            List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_Tests Doesnt Exist");
+            List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_AW_Tests Doesnt Exist");
 
             Assert.AreEqual(0, actual.Count());
         }
@@ -167,7 +167,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetFolders_InvalidPath()
         {
-            string invalidPath = "/SSRSMigrate.Tests";
+            string invalidPath = "/SSRSMigrate_AW.Tests";
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
@@ -183,7 +183,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetFolders_UsingDelegate()
         {
-            reader.GetFolders("/SSRSMigrate_Tests", GetFolders_Reporter);
+            reader.GetFolders("/SSRSMigrate_AW_Tests", GetFolders_Reporter);
 
             Assert.AreEqual(expectedFolderItems.Count(), actualFolderItems.Count());
         }
@@ -191,7 +191,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetFolders_UsingDelegate_PathDoesntExist()
         {
-            reader.GetFolders("/SSRSMigrate_Tests Doesnt Exist", GetFolders_Reporter);
+            reader.GetFolders("/SSRSMigrate_AW_Tests Doesnt Exist", GetFolders_Reporter);
 
             Assert.AreEqual(0, actualFolderItems.Count());
         }
@@ -226,7 +226,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    reader.GetFolders("/SSRSMigrate_Tests", null);
+                    reader.GetFolders("/SSRSMigrate_AW_Tests", null);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
@@ -235,7 +235,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetFolders_UsingDelegate_InvalidPath()
         {
-            string invalidPath = "/SSRSMigrate.Tests";
+            string invalidPath = "/SSRSMigrate_AW.Tests";
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate

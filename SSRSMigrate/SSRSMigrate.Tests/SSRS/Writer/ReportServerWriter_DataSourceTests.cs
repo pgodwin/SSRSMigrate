@@ -39,9 +39,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 ModifiedDate = DateTime.Parse("7/23/2014 8:28:43 AM"),
                 Size = 414,
                 VirtualPath = null,
-                Name = "Test Data Source",
-                Path = "/SSRSMigrate_Tests/Test Data Source",
-                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                Name = "AWDataSource",
+                Path = "/SSRSMigrate_AW_Tests/Data Sources/AWDataSource",
+                ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                 CredentialsRetrieval = "Integrated",
                 Enabled = true,
                 EnabledSpecified = true,
@@ -66,9 +66,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 ModifiedDate = DateTime.Parse("7/23/2014 8:29:25 AM"),
                 Size = 414,
                 VirtualPath = null,
-                Name = "Test  2 Data Source",
-                Path = "/SSRSMigrate_Tests/Test 2 Data Source",
-                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                Name = "Test Data Source",
+                Path = "/SSRSMigrate_AW_Tests/Data Sources/Test Data Source",
+                ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                 CredentialsRetrieval = "Integrated",
                 Enabled = true,
                 EnabledSpecified = true,
@@ -94,8 +94,8 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 Size = 414,
                 VirtualPath = null,
                 Name = "Already Exists Data Source",
-                Path = "/SSRSMigrate_Tests/Already Exists Data Source",
-                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                Path = "/SSRSMigrate_AW_Tests/Data Sources/Already Exists Data Source",
+                ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                 CredentialsRetrieval = "Integrated",
                 Enabled = true,
                 EnabledSpecified = true,
@@ -121,8 +121,8 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 Size = 414,
                 VirtualPath = null,
                 Name = "Test.Data Source",
-                Path = "/SSRSMigrate_Tests/Test.Data Source",
-                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                Path = "/SSRSMigrate_AW_Tests/Data Sources/Test.Data Source",
+                ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                 CredentialsRetrieval = "Integrated",
                 Enabled = true,
                 EnabledSpecified = true,
@@ -175,7 +175,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             reportServerRepositoryMock.Setup(r => r.ValidatePath(alreadyExistsDataSourceItem.Path))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests"))
                 .Returns(() => true);
 
             reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
@@ -247,7 +247,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             DataSourceItem dataSource = new DataSourceItem()
             {
                 Name = null,
-                Path = "/SSRSMigrate_Tests",
+                Path = "/SSRSMigrate_AW_Tests/Data Sources/Test Data Source",
             };
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -265,7 +265,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             DataSourceItem dataSource = new DataSourceItem()
             {
                 Name = "",
-                Path = "/SSRSMigrate_Tests",
+                Path = "/SSRSMigrate_AW_Tests/Data Sources/Test Data Source",
             };
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -378,7 +378,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             items.Add(new DataSourceItem()
             {
                 Name = null,
-                Path = "/SSRSMigrate_Tests",
+                Path = "/SSRSMigrate_AW_Tests/Data Sources/Test Data Source",
             });
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -399,7 +399,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             items.Add(new DataSourceItem()
             {
                 Name = "",
-                Path = "/SSRSMigrate_Tests",
+                Path = "/SSRSMigrate_AW_Tests/Data Sources/Test Data Source",
             });
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -419,7 +419,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             items.AddRange(dataSourceItems);
             items.Add(new DataSourceItem()
             {
-                Name = "SSRSMigrate_Tests",
+                Name = "Test Data Source",
                 Path = null,
             });
 
@@ -440,7 +440,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             items.AddRange(dataSourceItems);
             items.Add(new DataSourceItem()
             {
-                Name = "SSRSMigrate_Tests",
+                Name = "Test Data Source",
                 Path = "",
             });
 

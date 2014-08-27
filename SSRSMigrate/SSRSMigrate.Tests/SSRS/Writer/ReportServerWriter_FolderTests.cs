@@ -34,38 +34,38 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         {
             rootFolderItem = new FolderItem()
             {
-                Name = "SSRSMigrate_Tests",
-                Path = "/SSRSMigrate_Tests",
+                Name = "SSRSMigrate_AW_Tests",
+                Path = "/SSRSMigrate_AW_Tests",
             };
 
             reportsFolderItem = new FolderItem()
             {
                 Name = "Reports",
-                Path = "/SSRSMigrate_Tests/Reports",
+                Path = "/SSRSMigrate_AW_Tests/Reports",
             };
 
             reportsSubFolderItem = new FolderItem()
             {
                 Name = "Sub Folder",
-                Path = "/SSRSMigrate_Tests/Reports/Sub Folder",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Sub Folder",
             };
 
             rootSubFolderItem = new FolderItem()
             {
-                Name = "Test Folder",
-                Path = "/SSRSMigrate_Tests/Test Folder",
+                Name = "Data Sources",
+                Path = "/SSRSMigrate_AW_Tests/Data Sources",
             };
 
             alreadyExistsFolderItem = new FolderItem()
             {
                 Name = "Already Exists",
-                Path = "/SSRSMigrate_Tests/Already Exists"
+                Path = "/SSRSMigrate_AW_Tests/Already Exists"
             };
 
             invalidPathFolderItem = new FolderItem()
             {
-                Name = "SSRSMigrate.Tests",
-                Path = "/SSRSMigrate.Tests",
+                Name = "SSRSMigrate_AW_Tests.Tests",
+                Path = "/SSRSMigrate_AW.Tests",
             };
 
             folderItems = new List<FolderItem>()
@@ -205,7 +205,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             FolderItem folderItem = new FolderItem()
             {
                 Name = null,
-                Path = "/SSRSMigrate_Tests",
+                Path = "/SSRSMigrate_AW_Tests",
             };
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -223,7 +223,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             FolderItem folderItem = new FolderItem()
             {
                 Name = "",
-                Path = "/SSRSMigrate_Tests",
+                Path = "/SSRSMigrate_AW_Tests",
             };
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -240,7 +240,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         {
             FolderItem folderItem = new FolderItem()
             {
-                Name = "SSRSMigrate_Tests",
+                Name = "SSRSMigrate_AW_Tests",
                 Path = null,
             };
 
@@ -258,7 +258,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         {
             FolderItem folderItem = new FolderItem()
             {
-                Name = "SSRSMigrate_Tests",
+                Name = "SSRSMigrate_AW_Tests",
                 Path = "",
             };
 
@@ -336,7 +336,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             items.Add(new FolderItem()
             {
                 Name = null,
-                Path = "/SSRSMigrate_Tests",
+                Path = "/SSRSMigrate_AW_Tests",
             });
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -357,7 +357,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             items.Add(new FolderItem()
             {
                 Name = "",
-                Path = "/SSRSMigrate_Tests",
+                Path = "/SSRSMigrate_AW_Tests",
             });
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -377,7 +377,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             items.AddRange(folderItems);
             items.Add(new FolderItem()
             {
-                Name = "SSRSMigrate_Tests",
+                Name = "SSRSMigrate_AW_Tests",
                 Path = null,
             });
 
@@ -398,7 +398,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             items.AddRange(folderItems);
             items.Add(new FolderItem()
             {
-                Name = "SSRSMigrate_Tests",
+                Name = "SSRSMigrate_AW_Tests",
                 Path = "",
             });
 

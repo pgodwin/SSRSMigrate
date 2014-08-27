@@ -38,17 +38,17 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
             // Setup GetReport - Expected ReportItem
             expectedReportItem = new ReportItem()
             {
-                Name = "Inquiry",
-                Path = "/SSRSMigrate_Tests/Reports/Inquiry",
+                Name = "Company Sales",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
                 CreatedBy = "DOMAIN\\user",
                 CreationDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
                 Description = null,
-                ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
+                ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
                 ModifiedBy = "DOMAIN\\user",
                 ModifiedDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
                 Size = 10,
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
             // Setup GetReports - Expected ReportItems
@@ -57,89 +57,33 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
                 expectedReportItem,
                 new ReportItem()
                 {
-                    Name = "Listing",
-                    Path = "/SSRSMigrate_Tests/Reports/Listing",
+                    Name = "Sales Order Detail",
+                    Path = "/SSRSMigrate_AW_Tests/Reports/Sales Order Detail",
                     CreatedBy = "DOMAIN\\user",
                     CreationDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
                     Description = null,
-                    ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
+                    ID = "70650568-7dd4-4ef4-aeaa-67502de11b4f",
                     ModifiedBy = "DOMAIN\\user",
                     ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
                     Size = 10,
                     VirtualPath = null,
-                    Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Listing.rdl")),
+                    Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Sales Order Detail.rdl")),
                     SubReports = new List<ReportItem>()
                     {
                         new ReportItem()
                         {
-                            Name = "SUB-Address",
-                            Path = "/SSRSMigrate_Tests/Reports/SUB-Address",
+                            Name = "Store Contacts",
+                            Path = "/SSRSMigrate_AW_Tests/Reports/Store Contacts",
                             CreatedBy = "DOMAIN\\user",
                             CreationDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
                             Description = null,
-                            ID = "77b2135b-c52f-4a52-9406-7bd523ad9623",
+                            ID = "18fc782e-dd5f-4c65-95ff-957e1bdc98de",
                             ModifiedBy = "DOMAIN\\user",
                             ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
                             Size = 10,
                             VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Addresses.rdl")),
-                        },
-                        new ReportItem()
-                        {
-                            Name = "SUB-Categories",
-                            Path = "/SSRSMigrate_Tests/Reports/SUB-Categories",
-                            CreatedBy = "DOMAIN\\user",
-                            CreationDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
-                            Description = null,
-                            ID = "ab67975e-8535-4cca-88d8-79a1827a099e",
-                            ModifiedBy = "DOMAIN\\user",
-                            ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
-                            Size = 10,
-                            VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Categories.rdl")),
-                        },
-                        new ReportItem()
-                        {
-                            Name = "SUB-Phone Numbers",
-                            Path = "/SSRSMigrate_Tests/Reports/SUB-Phone Numbers",
-                            CreatedBy = "DOMAIN\\user",
-                            CreationDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
-                            Description = null,
-                            ID = "7b64b5e4-4ca2-466c-94ce-19d32d8222f5",
-                            ModifiedBy = "DOMAIN\\user",
-                            ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
-                            Size = 10,
-                            VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Phone Numbers.rdl")),
-                        },
-                        new ReportItem()
-                        {
-                            Name = "SUB-Related Contacts",
-                            Path = "/SSRSMigrate_Tests/Reports/SUB-Related Contacts",
-                            CreatedBy = "DOMAIN\\user",
-                            CreationDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
-                            Description = null,
-                            ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
-                            ModifiedBy = "DOMAIN\\user",
-                            ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
-                            Size = 10,
-                            VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Related Contacts.rdl")),
-                        },
-                        new ReportItem()
-                        {
-                            Name = "SUB-Related Matters",
-                            Path = "/SSRSMigrate_Tests/Reports/SUB-Related Matters",
-                            CreatedBy = "DOMAIN\\user",
-                            CreationDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
-                            Description = null,
-                            ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
-                            ModifiedBy = "DOMAIN\\user",
-                            ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
-                            Size = 10,
-                            VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Related Matters.rdl")),
-                        },
+                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Store Contacts.rdl")),
+                        }
                     }
                 }
             };
@@ -152,31 +96,16 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
                 .Throws(new ArgumentException("reportPath"));
 
             reportServerRepositoryMock.Setup(r => r.GetReportDefinition(""))
-                .Throws(new ArgumentException("reportPath"));
+               .Throws(new ArgumentException("reportPath"));
 
-            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/Inquiry"))
+            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_AW_Tests/Reports/Company Sales"))
                 .Returns(() => expectedReportItem.Definition);
 
-            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/Listing"))
+            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_AW_Tests/Reports/Sales Order Detail"))
                 .Returns(() => expectedReportItems[1].Definition);
 
-            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/SUB-Address"))
+            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_AW_Tests/Reports/Store Contacts"))
                 .Returns(() => expectedReportItems[1].SubReports[0].Definition);
-
-            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/SUB-Categories"))
-                .Returns(() => expectedReportItems[1].SubReports[1].Definition);
-
-            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/SUB-Phone Number"))
-                .Returns(() => expectedReportItems[1].SubReports[2].Definition);
-
-            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/SUB-Related Contacts"))
-                .Returns(() => expectedReportItems[1].SubReports[3].Definition);
-
-            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/SUB-Related Matters"))
-                .Returns(() => expectedReportItems[1].SubReports[4].Definition);
-
-            reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_Tests/Reports/SUB-Related Matters"))
-                .Returns(() => expectedReportItems[1].SubReports[4].Definition);
 
             // Setup IReportServerRepository.GetReport Mocks
             reportServerRepositoryMock.Setup(r => r.GetReport(null))
@@ -185,13 +114,13 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
             reportServerRepositoryMock.Setup(r => r.GetReport(""))
                 .Throws(new ArgumentException("reportPath"));
 
-            reportServerRepositoryMock.Setup(r => r.GetReport("/SSRSMigrate_Tests/Reports/Inquiry"))
+            reportServerRepositoryMock.Setup(r => r.GetReport("/SSRSMigrate_AW_Tests/Reports/Company Sales"))
                 .Returns(() => expectedReportItem);
 
-            reportServerRepositoryMock.Setup(r => r.GetReport("/SSRSMigrate_Tests/Reports/Listing"))
+            reportServerRepositoryMock.Setup(r => r.GetReport("/SSRSMigrate_AW_Tests/Reports/Sales Order Detail"))
                 .Returns(() => expectedReportItems[1]);
 
-            reportServerRepositoryMock.Setup(r => r.GetReport("/SSRSMigrate_Tests/Reports/Report Doesnt Exist"))
+            reportServerRepositoryMock.Setup(r => r.GetReport("/SSRSMigrate_AW_Tests/Reports/Report Doesnt Exist"))
                 .Returns(() => null);
 
             // Setup IReportServerRepository.GetReports Mocks
@@ -201,10 +130,10 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
             reportServerRepositoryMock.Setup(r => r.GetReports(""))
                 .Throws(new ArgumentException("path"));
 
-            reportServerRepositoryMock.Setup(r => r.GetReports("/SSRSMigrate_Tests"))
+            reportServerRepositoryMock.Setup(r => r.GetReports("/SSRSMigrate_AW_Tests"))
                .Returns(() => expectedReportItems);
 
-            reportServerRepositoryMock.Setup(r => r.GetReports("/SSRSMigrate_Tests Doesnt Exist"))
+            reportServerRepositoryMock.Setup(r => r.GetReports("/SSRSMigrate_AW_Tests Doesnt Exist"))
                 .Returns(() => new List<ReportItem>());
 
             // Setup IReportServerRepository.GetReportsList Mocks
@@ -214,41 +143,29 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
             reportServerRepositoryMock.Setup(r => r.GetReportsList(""))
                 .Throws(new ArgumentException("path"));
 
-            reportServerRepositoryMock.Setup(r => r.GetReportsList("/SSRSMigrate_Tests"))
+            reportServerRepositoryMock.Setup(r => r.GetReportsList("/SSRSMigrate_AW_Tests"))
                .Returns(() => expectedReportItems);
 
-            reportServerRepositoryMock.Setup(r => r.GetReportsList("/SSRSMigrate_Tests Doesnt Exist"))
+            reportServerRepositoryMock.Setup(r => r.GetReportsList("/SSRSMigrate_AW_Tests Doesnt Exist"))
                 .Returns(() => new List<ReportItem>());
 
             // Setup IReportServerRepository.ValidatePath Mocks
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests"))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests Doesnt Exist"))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests Doesnt Exist"))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/Report Doesnt Exist"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests/Reports/Report Doesnt Exist"))
               .Returns(() => true);
 
             reportServerRepositoryMock.Setup(r => r.ValidatePath(expectedReportItem.Path))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/Listing"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests/Reports/Sales Order Detail"))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/SUB-Address"))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/SUB-Categories"))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/SUB-Phone Numbers"))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/SUB-Related Contacts"))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_Tests/Reports/SUB-Related Matters"))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests/Reports/Store Contacts"))
               .Returns(() => true);
 
             reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
@@ -257,7 +174,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
             reportServerRepositoryMock.Setup(r => r.ValidatePath(""))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == true)))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
                .Returns(() => false);
 
             reader = new ReportServerReader(reportServerRepositoryMock.Object);
@@ -285,7 +202,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReport()
         {
-            ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_Tests/Reports/Inquiry");
+            ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_AW_Tests/Reports/Company Sales");
 
             Assert.NotNull(actualReportItem);
             Assert.AreEqual(expectedReportItem.Name, actualReportItem.Name);
@@ -322,7 +239,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReport_PathDoesntExist()
         {
-            ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_Tests/Reports/Report Doesnt Exist");
+            ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_AW_Tests/Reports/Report Doesnt Exist");
 
             Assert.Null(actualReportItem);
         }
@@ -330,7 +247,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReport_InvalidPath()
         {
-            string invalidPath = "/SSRSMigrate_Tests/Reports/Invalid.Report";
+            string invalidPath = "/SSRSMigrate_AW_Tests/Reports/Invalid.Report";
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
@@ -344,7 +261,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReport_WithSubReports()
         {
-            ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_Tests/Reports/Listing");
+            ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_AW_Tests/Reports/Sales Order Detail");
 
             Assert.NotNull(actualReportItem);
             Assert.AreEqual(expectedReportItems[1].Name, actualReportItem.Name);
@@ -359,7 +276,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReports()
         {
-            List<ReportItem> actual = reader.GetReports("/SSRSMigrate_Tests");
+            List<ReportItem> actual = reader.GetReports("/SSRSMigrate_AW_Tests");
 
             Assert.NotNull(actual);
             Assert.AreEqual(expectedReportItems.Count(), actual.Count());
@@ -392,7 +309,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReports_PathDoesntExist()
         {
-            List<ReportItem> actual = reader.GetReports("/SSRSMigrate_Tests Doesnt Exist");
+            List<ReportItem> actual = reader.GetReports("/SSRSMigrate_AW_Tests Doesnt Exist");
 
             Assert.NotNull(actual);
             Assert.AreEqual(0, actual.Count());
@@ -401,7 +318,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReports_InvalidPath()
         {
-            string invalidPath = "/SSRSMigrate.Tests";
+            string invalidPath = "/SSRSMigrate_AW.Tests";
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
@@ -417,7 +334,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReports_UsingDelegate()
         {
-            reader.GetReports("/SSRSMigrate_Tests", GetReports_Reporter);
+            reader.GetReports("/SSRSMigrate_AW_Tests", GetReports_Reporter);
 
             Assert.AreEqual(expectedReportItems.Count(), actualReportItems.Count());
         }
@@ -452,7 +369,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    reader.GetReports("/SSRSMigrate_Tests", null);
+                    reader.GetReports("/SSRSMigrate_AW_Tests", null);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
@@ -461,7 +378,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReports_UsingDelegate_PathDoesntExist()
         {
-            reader.GetReports("/SSRSMigrate_Tests Doesnt Exist", GetReports_Reporter);
+            reader.GetReports("/SSRSMigrate_AW_Tests Doesnt Exist", GetReports_Reporter);
 
             Assert.AreEqual(0, actualReportItems.Count());
         }
@@ -469,7 +386,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReports_UsingDelegate_InvalidPath()
         {
-            string invalidPath = "/SSRSMigrate.Tests";
+            string invalidPath = "/SSRSMigrate_AW.Tests";
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate

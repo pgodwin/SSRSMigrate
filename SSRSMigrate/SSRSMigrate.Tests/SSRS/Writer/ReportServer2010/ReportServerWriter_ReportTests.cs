@@ -20,13 +20,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
 
         #region Report Items
         List<ReportItem> reportItems = null;
-        ReportItem reportItem_Inquiry;
-        ReportItem reportItem_Listing;
-        ReportItem reportItem_SUBAddress;
-        ReportItem reportItem_SUBCategories;
-        ReportItem reportItem_SUBPhoneNumbers;
-        ReportItem reportItem_SUBRelatedContacts;
-        ReportItem reportItem_SUBRelatedMatters;
+        ReportItem reportItem_CompanySales;
+        ReportItem reportItem_SalesOrderDetail;
+        ReportItem reportItem_StoreContacts;
         ReportItem reportItem_InvalidPath;
         ReportItem reportItem_AlreadyExists;
         ReportItem reportItem_NullDefinition;
@@ -34,108 +30,79 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
 
         private void SetupReportItems()
         {
-            reportItem_Inquiry = new ReportItem()
+            reportItem_CompanySales = new ReportItem()
             {
-                Name = "Inquiry",
-                Path = "/SSRSMigrate_Tests/Reports/Inquiry",
+                Name = "Company Sales",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
+                CreatedBy = "DOMAIN\\user",
+                CreationDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
                 Description = null,
-                ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
+                ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
+                ModifiedBy = "DOMAIN\\user",
+                ModifiedDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
+                Size = 10,
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
-            reportItem_SUBAddress = new ReportItem()
+            reportItem_StoreContacts = new ReportItem()
             {
-                Name = "SUB-Address",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Address",
+                Name = "Store Contacts",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Store Contacts",
+                CreatedBy = "DOMAIN\\user",
+                CreationDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
                 Description = null,
-                ID = "77b2135b-c52f-4a52-9406-7bd523ad9623",
+                ID = "18fc782e-dd5f-4c65-95ff-957e1bdc98de",
+                ModifiedBy = "DOMAIN\\user",
+                ModifiedDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
+                Size = 10,
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Addresses.rdl")),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Store Contacts.rdl")),
             };
 
-            reportItem_SUBCategories = new ReportItem()
+            reportItem_SalesOrderDetail = new ReportItem()
             {
-                Name = "SUB-Categories",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Categories",
+                Name = "Sales Order Detail",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Sales Order Detail",
+                CreatedBy = "DOMAIN\\user",
+                CreationDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
                 Description = null,
-                ID = "ab67975e-8535-4cca-88d8-79a1827a099e",
+                ID = "70650568-7dd4-4ef4-aeaa-67502de11b4f",
+                ModifiedBy = "DOMAIN\\user",
+                ModifiedDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
+                Size = 10,
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Categories.rdl")),
-            };
-
-            reportItem_SUBPhoneNumbers = new ReportItem()
-            {
-                Name = "SUB-Phone Numbers",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Phone Numbers",
-                Description = null,
-                ID = "7b64b5e4-4ca2-466c-94ce-19d32d8222f5",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Phone Numbers.rdl")),
-            };
-
-            reportItem_SUBRelatedContacts = new ReportItem()
-            {
-                Name = "SUB-Related Contacts",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Related Contacts",
-                Description = null,
-                ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Related Contacts.rdl")),
-            };
-
-            reportItem_SUBRelatedMatters = new ReportItem()
-            {
-                Name = "SUB-Related Matters",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Related Matters",
-                Description = null,
-                ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Related Matters.rdl")),
-            };
-
-            reportItem_Listing = new ReportItem()
-            {
-                Name = "Listing",
-                Path = "/SSRSMigrate_Tests/Reports/Listing",
-                Description = null,
-                ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Listing.rdl")),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Sales Order Detail.rdl")),
                 SubReports = new List<ReportItem>()
                 {
-                    reportItem_SUBAddress,
-                    reportItem_SUBCategories,
-                    reportItem_SUBPhoneNumbers,
-                    reportItem_SUBRelatedContacts,
-                    reportItem_SUBRelatedMatters
+                    reportItem_StoreContacts
                 }
             };
 
             reportItem_AlreadyExists = new ReportItem()
             {
                 Name = "Already Exists",
-                Path = "/SSRSMigrate_Tests/Reports/Already Exists",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Already Exists",
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
             reportItem_InvalidPath = new ReportItem()
             {
                 Name = "Invalid.Path",
-                Path = "/SSRSMigrate_Tests/Reports/Invalid.Path",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Invalid.Path",
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
             reportItem_NullDefinition = new ReportItem()
             {
                 Name = "Null Definition",
-                Path = "/SSRSMigrate_Tests/Reports/Null Definition",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Null Definition",
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
@@ -144,13 +111,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
 
             reportItems = new List<ReportItem>()
             {
-                reportItem_Inquiry,
-                reportItem_Listing,
-                reportItem_SUBAddress,
-                reportItem_SUBCategories,
-                reportItem_SUBPhoneNumbers,
-                reportItem_SUBRelatedContacts,
-                reportItem_SUBRelatedMatters
+                reportItem_CompanySales,
+                reportItem_SalesOrderDetail,
+                reportItem_StoreContacts
             };
         }
 
@@ -172,28 +135,13 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
             reportServerRepositoryMock.Setup(r => r.WriteReport(It.IsAny<string>(), null))
                 .Throws(new ArgumentException("reportItem"));
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_Inquiry), reportItem_Inquiry))
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_CompanySales), reportItem_CompanySales))
                 .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_Listing), reportItem_Listing))
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_SalesOrderDetail), reportItem_SalesOrderDetail))
                 .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_SUBAddress), reportItem_SUBAddress))
-                .Returns(() => null);
-
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_SUBCategories), reportItem_SUBCategories))
-                .Returns(() => null);
-
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_SUBPhoneNumbers), reportItem_SUBPhoneNumbers))
-                .Returns(() => null);
-
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_SUBPhoneNumbers), reportItem_SUBPhoneNumbers))
-                .Returns(() => null);
-
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_SUBRelatedContacts), reportItem_SUBRelatedContacts))
-                .Returns(() => null);
-
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_SUBRelatedMatters), reportItem_SUBRelatedMatters))
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_StoreContacts), reportItem_StoreContacts))
                 .Returns(() => null);
 
             reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_AlreadyExists), reportItem_AlreadyExists))
@@ -203,28 +151,13 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
                 .Throws(new InvalidReportDefinition(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition)));
 
             // Setup IReportServerRepository.ValidatePath Mocks
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_Inquiry.Path))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_CompanySales.Path))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_Listing.Path))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_SalesOrderDetail.Path))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_SUBAddress.Path))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_SUBCategories.Path))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_SUBPhoneNumbers.Path))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_SUBPhoneNumbers.Path))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_SUBRelatedMatters.Path))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_SUBRelatedContacts.Path))
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_StoreContacts.Path))
               .Returns(() => true);
 
             reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_AlreadyExists.Path))
@@ -255,7 +188,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [Test]
         public void WriteReport()
         {
-            string[] actual = writer.WriteReport(reportItem_Inquiry);
+            string[] actual = writer.WriteReport(reportItem_CompanySales);
 
             Assert.Null(actual);
         }
@@ -302,11 +235,11 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
             ReportItem report = new ReportItem()
             {
                 Name = null,
-                Path = "/SSRSMigrate_Tests/Reports/Inquiry",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -324,11 +257,11 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
             ReportItem report = new ReportItem()
             {
                 Name = "",
-                Path = "/SSRSMigrate_Tests/Reports/Inquiry",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -345,12 +278,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         {
             ReportItem report = new ReportItem()
             {
-                Name = "Inquiry",
+                Name = "Company Sales",
                 Path = null,
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
@@ -367,12 +300,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         {
             ReportItem report = new ReportItem()
             {
-                Name = "Inquiry",
+                Name = "Company Sales",
                 Path = "",
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
@@ -448,11 +381,11 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
             ReportItem report = new ReportItem()
             {
                 Name = null,
-                Path = "/SSRSMigrate_Tests/Reports/Inquiry",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -470,11 +403,11 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
             ReportItem report = new ReportItem()
             {
                 Name = "",
-                Path = "/SSRSMigrate_Tests/Reports/Inquiry",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -491,12 +424,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         {
             ReportItem report = new ReportItem()
             {
-                Name = "Inquiry",
+                Name = "Company Sales",
                 Path = null,
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
@@ -513,12 +446,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         {
             ReportItem report = new ReportItem()
             {
-                Name = "Inquiry",
+                Name = "Company Sales",
                 Path = "",
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
