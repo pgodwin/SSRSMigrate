@@ -186,7 +186,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>echo d | xcopy "$(SolutionDir)SSRSMigrate.Tests\Test Reports" "$(ProjectDir)$(OutDir)Test Reports" /f /j /s /z /r /y</PreBuildEvent>
+    <PreBuildEvent>echo d | xcopy "$(SolutionDir)SSRSMigrate.Tests\Test Reports" "$(ProjectDir)$(OutDir)Test Reports" /f /j /s /z /r /y
+echo d | xcopy "$(SolutionDir)SSRSMigrate.Tests\Test AW Reports" "$(ProjectDir)$(OutDir)Test AW Reports" /f /j /s /z /r /y</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
