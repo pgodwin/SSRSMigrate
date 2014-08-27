@@ -20,7 +20,7 @@ namespace SSRSMigrate.Tests.Exporter
 
         #region Expected Values
         FolderItem expectedFolderItem = null;
-        string expectedFolderItemFileName = "C:\\temp\\SSRSMigrate_Tests\\Reports";
+        string expectedFolderItemFileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports";
         #endregion
 
         [TestFixtureSetUp]
@@ -29,7 +29,7 @@ namespace SSRSMigrate.Tests.Exporter
             expectedFolderItem = new FolderItem()
                 {
                     Name = "Reports",
-                    Path = "/SSRSMigrate_Tests/Reports",
+                    Path = "/SSRSMigrate_AW_Tests/Reports",
                 };
 
             exportWriterMock = new Mock<IExportWriter>();

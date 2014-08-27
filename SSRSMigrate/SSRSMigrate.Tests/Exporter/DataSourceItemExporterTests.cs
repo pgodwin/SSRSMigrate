@@ -22,7 +22,7 @@ namespace SSRSMigrate.Tests.Exporter
         #region Expected Values
         DataSourceItem expectedDataSourceItem = null;
 
-        string expectedDataSourceItemFileName = "C:\\temp\\SSRSMigrate_Tests\\Test Data Source.json";
+        string expectedDataSourceItemFileName = "C:\\temp\\SSRSMigrate_AW_Tests\\AWDataSource.json";
 
         string expectedDataSourceItemJson = null;
         #endregion
@@ -40,9 +40,9 @@ namespace SSRSMigrate.Tests.Exporter
                 ModifiedDate = DateTime.Parse("7/23/2014 8:28:43 AM"),
                 Size = 414,
                 VirtualPath = null,
-                Name = "Test Data Source",
-                Path = "/SSRSMigrate_Tests/Test Data Source",
-                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                Name = "AWDataSource",
+                Path = "/SSRSMigrate_AW_Tests/Data Sources/AWDataSource",
+                ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                 CredentialsRetrieval = "Integrated",
                 Enabled = true,
                 EnabledSpecified = true,

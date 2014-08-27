@@ -19,10 +19,10 @@ namespace SSRSMigrate.Tests.Exporter
         ReportItemExporter exporter = null;
         Mock<IExportWriter> exportWriterMock = null;
         ReportItem reportItem;
-        string testReportPath = "Test Reports\\2010\\Inquiry.rdl";
+        string testReportPath = "Test AW Reports\\2010\\Company Sales.rdl";
 
         #region Expected Values
-        string expectedReportItemFileName = "C:\\temp\\SSRSMigrate_Tests\\Reports\\Inquiry.rdl";
+        string expectedReportItemFileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl";
         #endregion
 
         [TestFixtureSetUp]
@@ -30,10 +30,10 @@ namespace SSRSMigrate.Tests.Exporter
         {
             reportItem = new ReportItem()
             {
-                Name = "Inquiry",
-                Path = "/SSRSMigrate_Tests/Reports/Inquiry",
+                Name = "Company Sales",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
                 Description = null,
-                ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
+                ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
                 VirtualPath = null,
                 Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportPath))
             };
