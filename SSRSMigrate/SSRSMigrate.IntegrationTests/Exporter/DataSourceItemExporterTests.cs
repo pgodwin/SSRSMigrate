@@ -24,7 +24,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
 
         #region Expected DataSourceItem serialzed as JSON
         string expectedDataSourceJson = @"{
-  ""ConnectString"": ""Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest"",
+  ""ConnectString"": ""Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008"",
   ""CredentialsRetrieval"": ""Integrated"",
   ""Enabled"": true,
   ""EnabledSpecified"": true,
@@ -37,8 +37,8 @@ namespace SSRSMigrate.IntegrationTests.Exporter
   ""UseOriginalConnectString"": false,
   ""UserName"": null,
   ""WindowsCredentials"": false,
-  ""Name"": ""Test Data Source"",
-  ""Path"": ""/SSRSMigrate_Tests/Test Data Source"",
+  ""Name"": ""AWDataSource"",
+  ""Path"": ""/SSRSMigrate_AW_Tests/Data Sources/AWDataSource"",
   ""CreatedBy"": null,
   ""CreationDate"": ""0001-01-01T00:00:00"",
   ""Description"": null,
@@ -64,9 +64,10 @@ namespace SSRSMigrate.IntegrationTests.Exporter
             dataSourceItem = new DataSourceItem()
             {
                 Description = null,
-                Name = "Test Data Source",
-                Path = "/SSRSMigrate_Tests/Test Data Source",
-                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                VirtualPath = null,
+                Name = "AWDataSource",
+                Path = "/SSRSMigrate_AW_Tests/Data Sources/AWDataSource",
+                ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                 CredentialsRetrieval = "Integrated",
                 Enabled = true,
                 EnabledSpecified = true,

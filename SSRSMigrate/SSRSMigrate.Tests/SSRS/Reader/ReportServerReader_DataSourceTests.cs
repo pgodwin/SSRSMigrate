@@ -102,7 +102,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
             reportServerRepositoryMock.Setup(r => r.GetDataSource("/SSRSMigrate_AW_Tests/Data Sources/Test Data Source"))
                 .Returns(() => expectedDataSourceItems[1]);
 
-            reportServerRepositoryMock.Setup(r => r.GetDataSource("/SSRSMigrate_Tests/Test Data Source Doesnt Exist"))
+            reportServerRepositoryMock.Setup(r => r.GetDataSource("/SSRSMigrate_AW_Tests/Data Sources/Test Data Source Doesnt Exist"))
                 .Returns(() => null);
 
             // IReportServerRepository.GetDataSources Mocks

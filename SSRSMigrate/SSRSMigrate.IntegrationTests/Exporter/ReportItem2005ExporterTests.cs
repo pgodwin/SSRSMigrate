@@ -22,23 +22,15 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         StandardKernel kernel = null;
 
         List<ReportItem> reportItems = null;
-        ReportItem reportItem_Inquiry;
-        ReportItem reportItem_Listing;
-        ReportItem reportItem_SUBAddress;
-        ReportItem reportItem_SUBCategories;
-        ReportItem reportItem_SUBPhoneNumbers;
-        ReportItem reportItem_SUBRelatedContacts;
-        ReportItem reportItem_SUBRelatedMatters;
+        ReportItem reportItem_CompanySales;
+        ReportItem reportItem_SalesOrderDetail;
+        ReportItem reportItem_StoreContacts;
 
         string[] testReportFiles = new string[]
         {
-            "Test Reports\\2005\\Inquiry.rdl",
-            "Test Reports\\2005\\Listing.rdl",
-            "Test Reports\\2005\\SUB-Addresses.rdl",
-            "Test Reports\\2005\\SUB-Categories.rdl",
-            "Test Reports\\2005\\SUB-Phone Numbers.rdl",
-            "Test Reports\\2005\\SUB-Related Contacts.rdl",
-            "Test Reports\\2005\\SUB-Related Matters.rdl"
+            "Test AW Reports\\2005\\Company Sales.rdl",
+            "Test AW Reports\\2005\\Sales Order Detail.rdl",
+            "Test AW Reports\\2005\\Store Contacts.rdl",
         };
 
         string outputPath = null;
@@ -51,94 +43,46 @@ namespace SSRSMigrate.IntegrationTests.Exporter
             kernel = new StandardKernel(new DependencyModule());
             exporter = kernel.Get<ReportItemExporter>();
 
-            reportItem_Inquiry = new ReportItem()
+            reportItem_CompanySales = new ReportItem()
             {
-                Name = "Inquiry",
-                Path = "/SSRSMigrate_Tests/Reports/Inquiry",
-                Description = null,
-                ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
-                VirtualPath = null,
+                Name = "Company Sales",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
+                Description = "Adventure Works sales by quarter and product category. This report illustrates the use of a tablix data region with nested row groups and column groups. You can drilldown from summary data into detail data by showing and hiding rows. This report also illustrates the use of a logo image and a background image.",
+                ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
                 Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[0]))
             };
 
-            reportItem_SUBAddress = new ReportItem()
+            reportItem_StoreContacts = new ReportItem()
             {
-                Name = "SUB-Address",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Address",
-                Description = null,
-                ID = "77b2135b-c52f-4a52-9406-7bd523ad9623",
+                Name = "Store Contacts",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Store Contacts",
+                CreatedBy = "DOMAIN\\user",
+                Description = "AdventureWorks store contacts. This report is a subreport used in Sales Order Detail to show all contacts for a store. Borderstyle is None so lines do not display in main report.",
+                ID = "18fc782e-dd5f-4c65-95ff-957e1bdc98de",
                 VirtualPath = null,
                 Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[2])),
             };
 
-            reportItem_SUBCategories = new ReportItem()
+            reportItem_SalesOrderDetail = new ReportItem()
             {
-                Name = "SUB-Categories",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Categories",
-                Description = null,
-                ID = "ab67975e-8535-4cca-88d8-79a1827a099e",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[3])),
-            };
-
-            reportItem_SUBPhoneNumbers = new ReportItem()
-            {
-                Name = "SUB-Phone Numbers",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Phone Numbers",
-                Description = null,
-                ID = "7b64b5e4-4ca2-466c-94ce-19d32d8222f5",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[4])),
-            };
-
-            reportItem_SUBRelatedContacts = new ReportItem()
-            {
-                Name = "SUB-Related Contacts",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Related Contacts",
-                Description = null,
-                ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[5])),
-            };
-
-            reportItem_SUBRelatedMatters = new ReportItem()
-            {
-                Name = "SUB-Related Matters",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Related Matters",
-                Description = null,
-                ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[6])),
-            };
-
-            reportItem_Listing = new ReportItem()
-            {
-                Name = "Listing",
-                Path = "/SSRSMigrate_Tests/Reports/Listing",
-                Description = null,
-                ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
+                Name = "Sales Order Detail",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Sales Order Detail",
+                Description = "Detail of an individual Adventure Works order. This report can be accessed as a drillthrough report from the Employee Sales Summary and Territory Sales drilldown report. This report illustrates the use of a free form layout, a table, parameters, a subreport that shows multiple store contacts, and expressions.",
+                ID = "70650568-7dd4-4ef4-aeaa-67502de11b4f",
                 VirtualPath = null,
                 Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[1])),
                 SubReports = new List<ReportItem>()
                 {
-                    reportItem_SUBAddress,
-                    reportItem_SUBCategories,
-                    reportItem_SUBPhoneNumbers,
-                    reportItem_SUBRelatedContacts,
-                    reportItem_SUBRelatedMatters
+                    reportItem_StoreContacts
                 }
             };
 
             // Setup GetReports - Expected ReportItems
             reportItems = new List<ReportItem>()
             {
-                reportItem_Inquiry,
-                reportItem_Listing,
-                reportItem_SUBAddress,
-                reportItem_SUBCategories,
-                reportItem_SUBPhoneNumbers,
-                reportItem_SUBRelatedContacts,
-                reportItem_SUBRelatedMatters
+                reportItem_CompanySales,
+                reportItem_SalesOrderDetail,
+                reportItem_StoreContacts
             };
 
             outputPath = GetOutPutPath();
@@ -185,9 +129,9 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         [Test]
         public void ExportReportItem()
         {
-            string filePath = outputPath + SSRSUtil.GetServerPathToPhysicalPath(reportItem_Inquiry.Path, "rdl");
+            string filePath = outputPath + SSRSUtil.GetServerPathToPhysicalPath(reportItem_CompanySales.Path, "rdl");
 
-            ExportStatus actualStatus = exporter.SaveItem(reportItem_Inquiry, filePath);
+            ExportStatus actualStatus = exporter.SaveItem(reportItem_CompanySales, filePath);
 
             Assert.True(actualStatus.Success);
             Assert.AreEqual(filePath, actualStatus.ToPath);
@@ -199,7 +143,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         [Test]
         public void ExportReportItem_NullItem()
         {
-            string filePath = outputPath + SSRSUtil.GetServerPathToPhysicalPath(reportItem_Inquiry.Path, "rdl");
+            string filePath = outputPath + SSRSUtil.GetServerPathToPhysicalPath(reportItem_CompanySales.Path, "rdl");
 
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
@@ -216,7 +160,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
             ArgumentException ex = Assert.Throws<ArgumentException>(
                 delegate
                 {
-                    exporter.SaveItem(reportItem_Inquiry, null);
+                    exporter.SaveItem(reportItem_CompanySales, null);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("fileName"));
@@ -228,7 +172,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
             ArgumentException ex = Assert.Throws<ArgumentException>(
                 delegate
                 {
-                    exporter.SaveItem(reportItem_Inquiry, "");
+                    exporter.SaveItem(reportItem_CompanySales, "");
                 });
 
             Assert.That(ex.Message, Is.EqualTo("fileName"));
@@ -237,13 +181,13 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         [Test]
         public void ExportReportItem_FileDontOverwrite()
         {
-            string filePath = outputPath + SSRSUtil.GetServerPathToPhysicalPath(reportItem_Inquiry.Path, "rdl");
+            string filePath = outputPath + SSRSUtil.GetServerPathToPhysicalPath(reportItem_CompanySales.Path, "rdl");
 
             // Create dummy file, so the output file already exists, causing the SaveItem to fail
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
             File.WriteAllText(filePath, "DUMMY FILE");
 
-            ExportStatus actualStatus = exporter.SaveItem(reportItem_Inquiry, filePath, false);
+            ExportStatus actualStatus = exporter.SaveItem(reportItem_CompanySales, filePath, false);
 
             Assert.False(actualStatus.Success);
             Assert.AreEqual(filePath, actualStatus.ToPath);

@@ -129,7 +129,7 @@ namespace SSRSMigrate.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("/SSRSMigrate_Tests")]
+        [global::System.Configuration.DefaultSettingValueAttribute("/SSRSMigrate_AW_Tests")]
         public string SrcPath {
             get {
                 return ((string)(this["SrcPath"]));

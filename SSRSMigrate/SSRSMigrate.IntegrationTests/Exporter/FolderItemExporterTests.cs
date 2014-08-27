@@ -37,17 +37,17 @@ namespace SSRSMigrate.IntegrationTests.Exporter
                 new FolderItem()
                 {
                     Name = "Reports",
-                    Path = "/SSRSMigrate_Tests/Reports",
+                    Path = "/SSRSMigrate_AW_Tests/Reports",
                 },
                 new FolderItem()
                 {
                     Name = "Sub Folder",
-                    Path = "/SSRSMigrate_Tests/Reports/Sub Folder",
+                    Path = "/SSRSMigrate_AW_Tests/Reports/Sub Folder",
                 },
                 new FolderItem()
                 {
-                    Name = "Test Folder",
-                    Path = "/SSRSMigrate_Tests/Test Folder",
+                    Name = "Data Sources",
+                    Path = "/SSRSMigrate_AW_Tests/Data Sources",
                 }
             };
 

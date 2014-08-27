@@ -169,8 +169,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="SSRS\Writer\ReportServer2010\" />
+    <Folder Include="Test AW Data\Exports\2005\SSRSMigrate_AW_Tests\Data Sources\" />
+    <Folder Include="Test AW Data\Exports\2010\SSRSMigrate_AW_Tests\Data Sources\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Test AW Data\Exports\2005\SSRSMigrate_AW_Tests\Reports\Sub Folder\EmptyPlaceHolder.txt" />
+    <Content Include="Test AW Data\Exports\2010\SSRSMigrate_AW_Tests\Reports\Sub Folder\EmptyPlaceHolder.txt" />
     <Content Include="Test Data\Exports\2005\SSRSMigrate_Tests\Reports\Sub Folder\EmptyPlaceHolder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

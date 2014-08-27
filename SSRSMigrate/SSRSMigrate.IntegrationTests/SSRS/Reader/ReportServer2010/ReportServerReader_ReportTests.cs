@@ -20,13 +20,9 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
 
         #region GetReport - Expected ReportItems
         List<ReportItem> expectedReportItems = null;
-        ReportItem expectedReportItem_Inquiry;
-        ReportItem expectedReportItem_Listing;
-        ReportItem expectedReportItem_SUBAddress;
-        ReportItem expectedReportItem_SUBCategories;
-        ReportItem expectedReportItem_SUBPhoneNumbers;
-        ReportItem expectedReportItem_SUBRelatedContacts;
-        ReportItem expectedReportItem_SUBRelatedMatters;
+        ReportItem expectedReportItem_CompanySales;
+        ReportItem expectedReportItem_SalesOrderDetail;
+        ReportItem expectedReportItem_StoreContacts;
         #endregion
 
         #region GetReports - Actual ReportItems
@@ -36,94 +32,46 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         private void SetupExpectedResults()
         {
             // Setup expected ReportItems
-            expectedReportItem_Inquiry = new ReportItem()
+            expectedReportItem_CompanySales = new ReportItem()
             {
-                Name = "Inquiry",
-                Path = "/SSRSMigrate_Tests/Reports/Inquiry",
-                Description = null,
-                ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
+                Name = "Company Sales",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
+                Description = "Adventure Works sales by quarter and product category. This report illustrates the use of a tablix data region with nested row groups and column groups. You can drilldown from summary data into detail data by showing and hiding rows. This report also illustrates the use of a logo image and a background image.",
+                ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Inquiry.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
-            expectedReportItem_SUBAddress = new ReportItem()
+            expectedReportItem_StoreContacts = new ReportItem()
             {
-                Name = "SUB-Address",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Address",
-                Description = null,
-                ID = "77b2135b-c52f-4a52-9406-7bd523ad9623",
+                Name = "Store Contacts",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Store Contacts",
+                Description = "AdventureWorks store contacts. This report is a subreport used in Sales Order Detail to show all contacts for a store. Borderstyle is None so lines do not display in main report.",
+                ID = "18fc782e-dd5f-4c65-95ff-957e1bdc98de",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Addresses.rdl")),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Store Contacts.rdl")),
             };
 
-            expectedReportItem_SUBCategories = new ReportItem()
+            expectedReportItem_SalesOrderDetail = new ReportItem()
             {
-                Name = "SUB-Categories",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Categories",
-                Description = null,
-                ID = "ab67975e-8535-4cca-88d8-79a1827a099e",
+                Name = "Sales Order Detail",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Sales Order Detail",
+                Description = "Detail of an individual Adventure Works order. This report can be accessed as a drillthrough report from the Employee Sales Summary and Territory Sales drilldown report. This report illustrates the use of a free form layout, a table, parameters, a subreport that shows multiple store contacts, and expressions.",
+                ID = "70650568-7dd4-4ef4-aeaa-67502de11b4f",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Categories.rdl")),
-            };
-
-            expectedReportItem_SUBPhoneNumbers = new ReportItem()
-            {
-                Name = "SUB-Phone Numbers",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Phone Numbers",
-                Description = null,
-                ID = "7b64b5e4-4ca2-466c-94ce-19d32d8222f5",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Phone Numbers.rdl")),
-            };
-
-            expectedReportItem_SUBRelatedContacts = new ReportItem()
-            {
-                Name = "SUB-Related Contacts",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Related Contacts",
-                Description = null,
-                ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Related Contacts.rdl")),
-            };
-
-            expectedReportItem_SUBRelatedMatters = new ReportItem()
-            {
-                Name = "SUB-Related Matters",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Related Matters",
-                Description = null,
-                ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\SUB-Related Matters.rdl")),
-            };
-
-            expectedReportItem_Listing = new ReportItem()
-            {
-                Name = "Listing",
-                Path = "/SSRSMigrate_Tests/Reports/Listing",
-                Description = null,
-                ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2010\\Listing.rdl")),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Sales Order Detail.rdl")),
                 SubReports = new List<ReportItem>()
                 {
-                    expectedReportItem_SUBAddress,
-                    expectedReportItem_SUBCategories,
-                    expectedReportItem_SUBPhoneNumbers,
-                    expectedReportItem_SUBRelatedContacts,
-                    expectedReportItem_SUBRelatedMatters
+                    expectedReportItem_StoreContacts
                 }
             };
 
             // Setup GetReports - Expected ReportItems
             expectedReportItems = new List<ReportItem>()
             {
-                expectedReportItem_Inquiry,
-                expectedReportItem_Listing,
-                expectedReportItem_SUBAddress,
-                expectedReportItem_SUBCategories,
-                expectedReportItem_SUBPhoneNumbers,
-                expectedReportItem_SUBRelatedContacts,
-                expectedReportItem_SUBRelatedMatters
+                expectedReportItem_CompanySales,
+                expectedReportItem_SalesOrderDetail,
+                expectedReportItem_StoreContacts
             };
         }
 
@@ -160,13 +108,13 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReport()
         {
-            ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_Tests/Reports/Inquiry");
+            ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_AW_Tests/Reports/Company Sales");
 
             Assert.NotNull(actualReportItem);
-            Assert.AreEqual(expectedReportItem_Inquiry.Name, actualReportItem.Name);
-            Assert.AreEqual(expectedReportItem_Inquiry.Path, actualReportItem.Path);
-            Assert.AreEqual(expectedReportItem_Inquiry.SubReports.Count(), actualReportItem.SubReports.Count());
-            Assert.AreEqual(expectedReportItem_Inquiry.Definition, actualReportItem.Definition, "Report Definition");
+            Assert.AreEqual(expectedReportItem_CompanySales.Name, actualReportItem.Name);
+            Assert.AreEqual(expectedReportItem_CompanySales.Path, actualReportItem.Path);
+            Assert.AreEqual(expectedReportItem_CompanySales.SubReports.Count(), actualReportItem.SubReports.Count());
+            Assert.AreEqual(expectedReportItem_CompanySales.Definition, actualReportItem.Definition, "Report Definition");
         }
 
         [Test]
@@ -196,7 +144,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReport_PathDoesntExist()
         {
-            ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_Tests/Reports/Report Doesnt Exist");
+            ReportItem actualReportItem = reader.GetReport("/SSRSMigrate_AW_Tests/Reports/Report Doesnt Exist");
 
             Assert.Null(actualReportItem);
         }
@@ -211,7 +159,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReports()
         {
-            string path = "/SSRSMigrate_Tests";
+            string path = "/SSRSMigrate_AW_Tests";
 
             List<ReportItem> actual = reader.GetReports(path);
 
@@ -244,12 +192,12 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
 
         [Test]
         [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
-            ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found",
+            ExpectedMessage = "The item '/SSRSMigrate_AW_Tests Doesnt Exist' cannot be found",
             MatchType = MessageMatch.Contains)]
 
         public void GetReports_PathDoesntExist()
         {
-            string path = "/SSRSMigrate_Tests Doesnt Exist";
+            string path = "/SSRSMigrate_AW_Tests Doesnt Exist";
 
             List<ReportItem> actual = reader.GetReports(path);
 
@@ -261,7 +209,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReports_UsingDelegate()
         {
-            string path = "/SSRSMigrate_Tests";
+            string path = "/SSRSMigrate_AW_Tests";
 
             reader.GetReports(path, GetReports_Reporter);
 
@@ -298,7 +246,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    reader.GetReports("SSRSMigrate_Tests", null);
+                    reader.GetReports("/SSRSMigrate_AW_Tests", null);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
@@ -307,11 +255,11 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
 
         [Test]
         [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
-            ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found",
+            ExpectedMessage = "The item '/SSRSMigrate_AW_Tests Doesnt Exist' cannot be found",
             MatchType = MessageMatch.Contains)]
         public void GetReports_UsingDelegate_PathDoesntExist()
         {
-            string path = "/SSRSMigrate_Tests Doesnt Exist";
+            string path = "/SSRSMigrate_AW_Tests Doesnt Exist";
 
             reader.GetReports(path, GetReports_Reporter);
 

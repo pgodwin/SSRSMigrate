@@ -67,8 +67,8 @@ namespace SSRSMigrate.Tests.Utilities
 
             byte[] actualByteArray = SSRSUtil.UpdateReportDefinition(
                 "http://localhost/ReportServer_NEWSERVER",
-                "/SSRSMigrate_Tests",
-                "/SSRSMigrate_Tests",
+                "/SSRSMigrate_AW_Tests",
+                "/SSRSMigrate_AW_Tests",
                 argument);
 
             UTF8Encoding decoder = new UTF8Encoding();
@@ -87,8 +87,8 @@ namespace SSRSMigrate.Tests.Utilities
                 {
                     SSRSUtil.UpdateReportDefinition(
                         null,
-                        "SSRSMigrate_Tests",
-                        "/SSRSMigrate_Tests",
+                        "SSRSMigrate_AW_Tests",
+                        "/SSRSMigrate_AW_Tests",
                         argument);
                 });
 
@@ -105,8 +105,8 @@ namespace SSRSMigrate.Tests.Utilities
                 {
                     SSRSUtil.UpdateReportDefinition(
                         "",
-                        "SSRSMigrate_Tests",
-                        "/SSRSMigrate_Tests",
+                        "SSRSMigrate_AW_Tests",
+                        "/SSRSMigrate_AW_Tests",
                         argument);
                 });
 
@@ -124,7 +124,7 @@ namespace SSRSMigrate.Tests.Utilities
                     SSRSUtil.UpdateReportDefinition(
                         "http://localhost/ReportServer_NEWSERVER",
                         null,
-                        "/SSRSMigrate_Tests",
+                        "/SSRSMigrate_AW_Tests",
                         argument);
                 });
 
@@ -142,7 +142,7 @@ namespace SSRSMigrate.Tests.Utilities
                     SSRSUtil.UpdateReportDefinition(
                         "http://localhost/ReportServer_NEWSERVER",
                         "",
-                        "/SSRSMigrate_Tests",
+                        "/SSRSMigrate_AW_Tests",
                         argument);
                 });
 
@@ -159,7 +159,7 @@ namespace SSRSMigrate.Tests.Utilities
                 {
                     SSRSUtil.UpdateReportDefinition(
                         "http://localhost/ReportServer_NEWSERVER",
-                        "/SSRSMigrate_Tests",
+                        "/SSRSMigrate_AW_Tests",
                         null,
                         argument);
                 });
@@ -177,7 +177,7 @@ namespace SSRSMigrate.Tests.Utilities
                 {
                     SSRSUtil.UpdateReportDefinition(
                         "http://localhost/ReportServer_NEWSERVER",
-                        "/SSRSMigrate_Tests",
+                        "/SSRSMigrate_AW_Tests",
                         "",
                         argument);
                 });
@@ -193,8 +193,8 @@ namespace SSRSMigrate.Tests.Utilities
                 {
                     SSRSUtil.UpdateReportDefinition(
                         "http://localhost/ReportServer_NEWSERVER",
-                        "/SSRSMigrate_Tests",
-                        "/SSRSMigrats_Tests",
+                        "/SSRSMigrate_AW_Tests",
+                        "/SSRSMigrate_AW_Tests",
                         null);
                 });
 
@@ -206,12 +206,12 @@ namespace SSRSMigrate.Tests.Utilities
         [Test]
         public void GetFullDestinationPathForItem_InstanceChange()
         {
-            string expected = "http://localhost/ReportServer_NEWSERVER/SSRSMigrate_Tests/Reports/Test Report";
+            string expected = "http://localhost/ReportServer_NEWSERVER/SSRSMigrate_AW_Tests/Reports/Test Report";
 
             string actual = SSRSUtil.GetFullDestinationPathForItem(
-                "http://localhost/ReportServer/SSRSMigrate_Tests",
-                "http://localhost/ReportServer_NEWSERVER/SSRSMigrate_Tests",
-                "http://localhost/ReportServer/SSRSMigrate_Tests/Reports/Test Report");
+                "http://localhost/ReportServer/SSRSMigrate_AW_Tests",
+                "http://localhost/ReportServer_NEWSERVER/SSRSMigrate_AW_Tests",
+                "http://localhost/ReportServer/SSRSMigrate_AW_Tests/Reports/Test Report");
 
             Assert.AreEqual(expected, actual);
         }
@@ -222,9 +222,9 @@ namespace SSRSMigrate.Tests.Utilities
             string expected = "http://localhost/ReportServer/SSRSMigrate_NewFolder/Reports/Test Report";
 
             string actual = SSRSUtil.GetFullDestinationPathForItem(
-                "http://localhost/ReportServer/SSRSMigrate_Tests",
+                "http://localhost/ReportServer/SSRSMigrate_AW_Tests",
                 "http://localhost/ReportServer/SSRSMigrate_NewFolder",
-                "http://localhost/ReportServer/SSRSMigrate_Tests/Reports/Test Report");
+                "http://localhost/ReportServer/SSRSMigrate_AW_Tests/Reports/Test Report");
 
             Assert.AreEqual(expected, actual);
         }
@@ -235,9 +235,9 @@ namespace SSRSMigrate.Tests.Utilities
             string expected = "http://localhost/ReportServer_NEWSERVER/SSRSMigrate_NewFolder/Reports/Test Report";
 
             string actual = SSRSUtil.GetFullDestinationPathForItem(
-                "http://localhost/ReportServer/SSRSMigrate_Tests",
+                "http://localhost/ReportServer/SSRSMigrate_AW_Tests",
                 "http://localhost/ReportServer_NEWSERVER/SSRSMigrate_NewFolder",
-                "http://localhost/ReportServer/SSRSMigrate_Tests/Reports/Test Report");
+                "http://localhost/ReportServer/SSRSMigrate_AW_Tests/Reports/Test Report");
 
             Assert.AreEqual(expected, actual);
         }
@@ -251,7 +251,7 @@ namespace SSRSMigrate.Tests.Utilities
                     SSRSUtil.GetFullDestinationPathForItem(
                         null,
                         "http://localhost/ReportServer/SSRSMigrate_NewFolder",
-                        "http://localhost/ReportServer/SSRSMigrate_Tests/Reports/Test Report");
+                        "http://localhost/ReportServer/SSRSMigrate_AW_Tests/Reports/Test Report");
                 });
 
             Assert.That(ex.Message, Is.EqualTo("sourcePath"));
@@ -266,7 +266,7 @@ namespace SSRSMigrate.Tests.Utilities
                     SSRSUtil.GetFullDestinationPathForItem(
                         "",
                         "http://localhost/ReportServer/SSRSMigrate_NewFolder",
-                        "http://localhost/ReportServer/SSRSMigrate_Tests/Reports/Test Report");
+                        "http://localhost/ReportServer/SSRSMigrate_AW_Tests/Reports/Test Report");
                 });
 
             Assert.That(ex.Message, Is.EqualTo("sourcePath"));
@@ -278,9 +278,9 @@ namespace SSRSMigrate.Tests.Utilities
             string expected = "http://localhost/ReportServer/SSRSMigrate_NewFolder/Reports/Test Report";
 
             string actual = SSRSUtil.GetFullDestinationPathForItem(
-                "http://localhost/ReportServer/SSRSMigrate_Tests/",
+                "http://localhost/ReportServer/SSRSMigrate_AW_Tests/",
                 "http://localhost/ReportServer/SSRSMigrate_NewFolder",
-                "http://localhost/ReportServer/SSRSMigrate_Tests/Reports/Test Report");
+                "http://localhost/ReportServer/SSRSMigrate_AW_Tests/Reports/Test Report");
 
             Assert.AreEqual(expected, actual);
         }
@@ -292,9 +292,9 @@ namespace SSRSMigrate.Tests.Utilities
                 delegate
                 {
                     SSRSUtil.GetFullDestinationPathForItem(
-                        "http://localhost/ReportServer/SSRSMigrate_Tests",
+                        "http://localhost/ReportServer/SSRSMigrate_AW_Tests",
                         null,
-                        "http://localhost/ReportServer/SSRSMigrate_Tests/Reports/Test Report");
+                        "http://localhost/ReportServer/SSRSMigrate_AW_Tests/Reports/Test Report");
                 });
 
             Assert.That(ex.Message, Is.EqualTo("destinationPath"));
@@ -307,9 +307,9 @@ namespace SSRSMigrate.Tests.Utilities
                 delegate
                 {
                     SSRSUtil.GetFullDestinationPathForItem(
-                        "http://localhost/ReportServer/SSRSMigrate_Tests",
+                        "http://localhost/ReportServer/SSRSMigrate_AW_Tests",
                         "",
-                        "http://localhost/ReportServer/SSRSMigrate_Tests/Reports/Test Report");
+                        "http://localhost/ReportServer/SSRSMigrate_AW_Tests/Reports/Test Report");
                 });
 
             Assert.That(ex.Message, Is.EqualTo("destinationPath"));
@@ -321,9 +321,9 @@ namespace SSRSMigrate.Tests.Utilities
             string expected = "http://localhost/ReportServer/SSRSMigrate_NewFolder/Reports/Test Report";
 
             string actual = SSRSUtil.GetFullDestinationPathForItem(
-                "http://localhost/ReportServer/SSRSMigrate_Tests",
+                "http://localhost/ReportServer/SSRSMigrate_AW_Tests",
                 "http://localhost/ReportServer/SSRSMigrate_NewFolder/",
-                "http://localhost/ReportServer/SSRSMigrate_Tests/Reports/Test Report");
+                "http://localhost/ReportServer/SSRSMigrate_AW_Tests/Reports/Test Report");
 
             Assert.AreEqual(expected, actual);
         }
@@ -335,7 +335,7 @@ namespace SSRSMigrate.Tests.Utilities
                 delegate
                 {
                     SSRSUtil.GetFullDestinationPathForItem(
-                        "http://localhost/ReportServer/SSRSMigrate_Tests",
+                        "http://localhost/ReportServer/SSRSMigrate_AW_Tests",
                         "http://localhost/ReportServer/SSRSMigrate_NewFolder",
                         null);
                 });
@@ -350,7 +350,7 @@ namespace SSRSMigrate.Tests.Utilities
                 delegate
                 {
                     SSRSUtil.GetFullDestinationPathForItem(
-                        "http://localhost/ReportServer/SSRSMigrate_Tests",
+                        "http://localhost/ReportServer/SSRSMigrate_AW_Tests",
                         "http://localhost/ReportServer/SSRSMigrate_NewFolder",
                         "");
                 });

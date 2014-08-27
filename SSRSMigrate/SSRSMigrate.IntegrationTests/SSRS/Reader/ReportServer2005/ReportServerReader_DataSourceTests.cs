@@ -38,10 +38,11 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
                 new DataSourceItem()
                 {
                     Description = null,
-                    Name = "Test Data Source",
-                    Path = "/SSRSMigrate_Tests/Test Data Source",
-                    ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
-                    CredentialsRetrieval ="Integrated",
+                    VirtualPath = null,
+                    Name = "AWDataSource",
+                    Path = "/SSRSMigrate_AW_Tests/Data Sources/AWDataSource",
+                    ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
+                    CredentialsRetrieval = "Integrated",
                     Enabled = true,
                     EnabledSpecified = true,
                     Extension = "SQL",
@@ -57,10 +58,11 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
                new DataSourceItem()
                 {
                     Description = null,
-                    Name = "Test 2 Data Source",
-                    Path = "/SSRSMigrate_Tests/Test 2 Data Source",
-                    ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
-                    CredentialsRetrieval ="Integrated",
+                    VirtualPath = null,
+                    Name = "Test Data Source",
+                    Path = "/SSRSMigrate_AW_Tests/Data Sources/Test Data Source",
+                    ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
+                    CredentialsRetrieval = "Integrated",
                     Enabled = true,
                     EnabledSpecified = true,
                     Extension = "SQL",
@@ -100,7 +102,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         [Test]
         public void GetDataSourceItem()
         {
-            string dsPath = "/SSRSMigrate_Tests/Test Data Source";
+            string dsPath = "/SSRSMigrate_AW_Tests/Data Sources/AWDataSource";
 
             DataSourceItem actual = reader.GetDataSource(dsPath);
 
@@ -149,7 +151,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         [Test]
         public void GetDataSourceItem_PathDoesntExist()
         {
-            string dsPath = "/SSRSMigrate_Tests/Test Data Source Doesnt Exist";
+            string dsPath = "/SSRSMigrate_AW_Tests/Test Data Source Doesnt Exist";
 
             DataSourceItem actual = reader.GetDataSource(dsPath);
 
@@ -161,7 +163,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         [Test]
         public void GetDataSources()
         {
-            string path = "/SSRSMigrate_Tests";
+            string path = "/SSRSMigrate_AW_Tests";
 
             List<DataSourceItem> actual = reader.GetDataSources(path);
 
@@ -194,11 +196,11 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
 
         [Test]
         [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
-            ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found",
+            ExpectedMessage = "The item '/SSRSMigrate_AW_Tests Doesnt Exist' cannot be found",
             MatchType = MessageMatch.Contains)]
         public void GetDataSources_PathDoesntExist()
         {
-            string path = "/SSRSMigrate_Tests Doesnt Exist";
+            string path = "/SSRSMigrate_AW_Tests Doesnt Exist";
 
             List<DataSourceItem> actual = reader.GetDataSources(path);
 
@@ -210,7 +212,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         [Test]
         public void GetDataSources_UsingDelegate()
         {
-            string path = "/SSRSMigrate_Tests";
+            string path = "/SSRSMigrate_AW_Tests";
 
             reader.GetDataSources(path, GetDataSources_Reporter);
 
@@ -247,7 +249,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    reader.GetDataSources("SSRSMigrate_Tests", null);
+                    reader.GetDataSources("/SSRSMigrate_AW_Tests", null);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
@@ -255,11 +257,11 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
 
         [Test]
         [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
-            ExpectedMessage = "The item '/SSRSMigrate_Tests Doesnt Exist' cannot be found",
+            ExpectedMessage = "The item '/SSRSMigrate_AW_Tests Doesnt Exist' cannot be found",
             MatchType = MessageMatch.Contains)]
         public void GetDataSources_UsingDelegate_PathDoesntExist()
         {
-            string path = "/SSRSMigrate_Tests Doesnt Exist";
+            string path = "/SSRSMigrate_AW_Tests Doesnt Exist";
 
             reader.GetDataSources(path, GetDataSources_Reporter);
 

@@ -14,8 +14,8 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void Succeed()
         {
-            string expectedToPath = "C:\\temp\\SSRSMigrate_Tests\\Reports";
-            string expectedFromPath = "/SSRSMigrate_Tests/Reports";
+            string expectedToPath = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports";
+            string expectedFromPath = "/SSRSMigrate_AW_Tests/Reports";
             bool expectedSuccess = true;
             string[] expectedErrors = null;
 
@@ -30,8 +30,8 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void WithErrors()
         {
-            string expectedToPath = "C:\\temp\\SSRSMigrate_Tests\\Reports";
-            string expectedFromPath = "/SSRSMigrate_Tests/Reports";
+            string expectedToPath = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports";
+            string expectedFromPath = "/SSRSMigrate_AW_Tests/Reports";
             bool expectedSuccess = false;
             string[] expectedErrors = new string[] { "Permission denied." };
 
@@ -46,7 +46,7 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void NullToPath()
         {
-            string expectedFromPath = "/SSRSMigrate_Tests/Reports";
+            string expectedFromPath = "/SSRSMigrate_AW_Tests/Reports";
             bool expectedSuccess = true;
             string[] expectedErrors = null;
 
@@ -62,7 +62,7 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void EmptyToPath()
         {
-            string expectedFromPath = "/SSRSMigrate_Tests/Reports";
+            string expectedFromPath = "/SSRSMigrate_AW_Tests/Reports";
             bool expectedSuccess = true;
             string[] expectedErrors = null;
 

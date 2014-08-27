@@ -34,25 +34,17 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
 
         string[] testReportFiles = new string[]
         {
-            "Test Reports\\2005\\Inquiry.rdl",
-            "Test Reports\\2005\\Listing.rdl",
-            "Test Reports\\2005\\SUB-Addresses.rdl",
-            "Test Reports\\2005\\SUB-Categories.rdl",
-            "Test Reports\\2005\\SUB-Phone Numbers.rdl",
-            "Test Reports\\2005\\SUB-Related Contacts.rdl",
-            "Test Reports\\2005\\SUB-Related Matters.rdl"
+            "Test AW Reports\\2005\\Company Sales.rdl",
+            "Test AW Reports\\2005\\Sales Order Detail.rdl",
+            "Test AW Reports\\2005\\Store Contacts.rdl"
         };
 
         #region Expected Values
         // ReportItem
         List<ReportItem> expectedReportItems = null;
-        ReportItem expectedReportItem_Inquiry;
-        ReportItem expectedReportItem_Listing;
-        ReportItem expectedReportItem_SUBAddress;
-        ReportItem expectedReportItem_SUBCategories;
-        ReportItem expectedReportItem_SUBPhoneNumbers;
-        ReportItem expectedReportItem_SUBRelatedContacts;
-        ReportItem expectedReportItem_SUBRelatedMatters;
+        ReportItem expectedReportItem_CompanySales;
+        ReportItem expectedReportItem_SalesOrderDetail;
+        ReportItem expectedReportItem_StoreContacts;
 
         // DataSourceItem
         List<DataSourceItem> expectedDataSourceItems = null;
@@ -114,93 +106,45 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
         private void SetupExpectedValues()
         {
             // ReportItem
-            expectedReportItem_Inquiry = new ReportItem()
+            expectedReportItem_CompanySales = new ReportItem()
             {
-                Name = "Inquiry",
-                Path = "/SSRSMigrate_Tests/Reports/Inquiry",
-                Description = null,
-                ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
+                Name = "Company Sales",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
+                Description = "Adventure Works sales by quarter and product category. This report illustrates the use of a tablix data region with nested row groups and column groups. You can drilldown from summary data into detail data by showing and hiding rows. This report also illustrates the use of a logo image and a background image.",
+                ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
                 VirtualPath = null,
                 Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[0]))
             };
 
-            expectedReportItem_SUBAddress = new ReportItem()
+            expectedReportItem_StoreContacts = new ReportItem()
             {
-                Name = "SUB-Address",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Address",
-                Description = null,
-                ID = "77b2135b-c52f-4a52-9406-7bd523ad9623",
+                Name = "Store Contacts",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Store Contacts",
+                Description = "AdventureWorks store contacts. This report is a subreport used in Sales Order Detail to show all contacts for a store. Borderstyle is None so lines do not display in main report.",
+                ID = "18fc782e-dd5f-4c65-95ff-957e1bdc98de",
                 VirtualPath = null,
                 Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[2])),
             };
 
-            expectedReportItem_SUBCategories = new ReportItem()
+            expectedReportItem_SalesOrderDetail = new ReportItem()
             {
-                Name = "SUB-Categories",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Categories",
-                Description = null,
-                ID = "ab67975e-8535-4cca-88d8-79a1827a099e",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[3])),
-            };
-
-            expectedReportItem_SUBPhoneNumbers = new ReportItem()
-            {
-                Name = "SUB-Phone Numbers",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Phone Numbers",
-                Description = null,
-                ID = "7b64b5e4-4ca2-466c-94ce-19d32d8222f5",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[4])),
-            };
-
-            expectedReportItem_SUBRelatedContacts = new ReportItem()
-            {
-                Name = "SUB-Related Contacts",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Related Contacts",
-                Description = null,
-                ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[5])),
-            };
-
-            expectedReportItem_SUBRelatedMatters = new ReportItem()
-            {
-                Name = "SUB-Related Matters",
-                Path = "/SSRSMigrate_Tests/Reports/SUB-Related Matters",
-                Description = null,
-                ID = "a22cf477-4db7-4f0f-bc6e-69e0a8a8bd70",
-                VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[6])),
-            };
-
-            expectedReportItem_Listing = new ReportItem()
-            {
-                Name = "Listing",
-                Path = "/SSRSMigrate_Tests/Reports/Listing",
-                Description = null,
-                ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
+                Name = "Sales Order Detail",
+                Path = "/SSRSMigrate_AW_Tests/Reports/Sales Order Detail",
+                Description = "Detail of an individual Adventure Works order. This report can be accessed as a drillthrough report from the Employee Sales Summary and Territory Sales drilldown report. This report illustrates the use of a free form layout, a table, parameters, a subreport that shows multiple store contacts, and expressions.",
+                ID = "70650568-7dd4-4ef4-aeaa-67502de11b4f",
                 VirtualPath = null,
                 Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[1])),
                 SubReports = new List<ReportItem>()
                 {
-                    expectedReportItem_SUBAddress,
-                    expectedReportItem_SUBCategories,
-                    expectedReportItem_SUBPhoneNumbers,
-                    expectedReportItem_SUBRelatedContacts,
-                    expectedReportItem_SUBRelatedMatters
+                    expectedReportItem_StoreContacts
                 }
             };
 
             expectedReportItems = new List<ReportItem>()
             {
-                expectedReportItem_Inquiry,
-                expectedReportItem_Listing,
-                expectedReportItem_SUBAddress,
-                expectedReportItem_SUBCategories,
-                expectedReportItem_SUBPhoneNumbers,
-                expectedReportItem_SUBRelatedContacts,
-                expectedReportItem_SUBRelatedMatters
+                expectedReportItem_CompanySales,
+                expectedReportItem_SalesOrderDetail,
+                expectedReportItem_StoreContacts
             };
 
             // DataSourceItem
@@ -209,10 +153,11 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
                 new DataSourceItem()
                 {
                     Description = null,
-                    Name = "Test Data Source",
-                    Path = "/SSRSMigrate_Tests/Test Data Source",
-                    ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
-                    CredentialsRetrieval ="Integrated",
+                    VirtualPath = null,
+                    Name = "AWDataSource",
+                    Path = "/SSRSMigrate_AW_Tests/Data Sources/AWDataSource",
+                    ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
+                    CredentialsRetrieval = "Integrated",
                     Enabled = true,
                     EnabledSpecified = true,
                     Extension = "SQL",
@@ -228,10 +173,11 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
                new DataSourceItem()
                 {
                     Description = null,
-                    Name = "Test 2 Data Source",
-                    Path = "/SSRSMigrate_Tests/Test 2 Data Source",
-                    ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
-                    CredentialsRetrieval ="Integrated",
+                    VirtualPath = null,
+                    Name = "Test Data Source",
+                    Path = "/SSRSMigrate_AW_Tests/Data Sources/Test Data Source",
+                    ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
+                    CredentialsRetrieval = "Integrated",
                     Enabled = true,
                     EnabledSpecified = true,
                     Extension = "SQL",
@@ -255,17 +201,17 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
                 new FolderItem()
                 {
                     Name = "Reports",
-                    Path = "/SSRSMigrate_Tests/Reports",
+                    Path = "/SSRSMigrate_AW_Tests/Reports",
                 },
                 new FolderItem()
                 {
                     Name = "Sub Folder",
-                    Path = "/SSRSMigrate_Tests/Reports/Sub Folder",
+                    Path = "/SSRSMigrate_AW_Tests/Reports/Sub Folder",
                 },
                 new FolderItem()
                 {
-                    Name = "Test Folder",
-                    Path = "/SSRSMigrate_Tests/Test Folder",
+                    Name = "Data Sources",
+                    Path = "/SSRSMigrate_AW_Tests/Data Sources",
                 }
             };
         }
@@ -293,7 +239,7 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
         [Test]
         public void ExportFolders()
         {
-            reader.GetFolders("/SSRSMigrate_Tests", GetFolders_Reporter);
+            reader.GetFolders("/SSRSMigrate_AW_Tests", GetFolders_Reporter);
 
             foreach (FolderItem actualFolderItem in actualFolderItems)
             {
@@ -328,7 +274,7 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
         [Test]
         public void ExportReports()
         {
-            reader.GetReports("/SSRSMigrate_Tests", GetReports_Reporter);
+            reader.GetReports("/SSRSMigrate_AW_Tests", GetReports_Reporter);
 
             foreach (ReportItem actualReportItem in actualReportItems)
             {
@@ -353,13 +299,9 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
             }
 
             // The exported reports file matches the expected file
-            Assert.True(TesterUtility.CompareTextFiles(testReportFiles[0], outputPath + "\\SSRSMigrate_Tests\\Reports\\Inquiry.rdl"));
-            Assert.True(TesterUtility.CompareTextFiles(testReportFiles[1], outputPath + "\\SSRSMigrate_Tests\\Reports\\Listing.rdl"));
-            Assert.True(TesterUtility.CompareTextFiles(testReportFiles[2], outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Addresses.rdl"));
-            Assert.True(TesterUtility.CompareTextFiles(testReportFiles[3], outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Categories.rdl"));
-            Assert.True(TesterUtility.CompareTextFiles(testReportFiles[4], outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Phone Numbers.rdl"));
-            Assert.True(TesterUtility.CompareTextFiles(testReportFiles[5], outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Related Contacts.rdl"));
-            Assert.True(TesterUtility.CompareTextFiles(testReportFiles[6], outputPath + "\\SSRSMigrate_Tests\\Reports\\SUB-Related Matters.rdl"));
+            Assert.True(TesterUtility.CompareTextFiles(testReportFiles[0], outputPath + "\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl"));
+            Assert.True(TesterUtility.CompareTextFiles(testReportFiles[1], outputPath + "\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl"));
+            Assert.True(TesterUtility.CompareTextFiles(testReportFiles[2], outputPath + "\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl"));
         }
 
         private void GetReports_Reporter(ReportItem reportItem)
@@ -372,7 +314,7 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2005
         [Test]
         public void ExportDataSources()
         {
-            reader.GetDataSources("/SSRSMigrate_Tests", GetDataSources_Reporter);
+            reader.GetDataSources("/SSRSMigrate_AW_Tests", GetDataSources_Reporter);
 
             foreach (DataSourceItem actualDataSourceItem in actualDataSourceItems)
             {

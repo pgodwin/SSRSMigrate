@@ -30,7 +30,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="SrcPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">/SSRSMigrate_Tests</Value>
+      <Value Profile="(Default)">/SSRSMigrate_AW_Tests</Value>
     </Setting>
     <Setting Name="DestWebServiceUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://localhost/ReportServer</Value>

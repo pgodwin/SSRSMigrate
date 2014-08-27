@@ -9,10 +9,10 @@
       <Value Profile="(Default)">http://localhost/reportserver/reportservice2010.asmx</Value>
     </Setting>
     <Setting Name="SourcePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">/SSRSMigrate_Tests</Value>
+      <Value Profile="(Default)">/SSRSMigrate_AW_Tests</Value>
     </Setting>
     <Setting Name="DestinationPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">/Dest_SSRSMigrate_Tests</Value>
+      <Value Profile="(Default)">/Dest_SSRSMigrate_AW_Tests</Value>
     </Setting>
   </Settings>
 </SettingsFile>

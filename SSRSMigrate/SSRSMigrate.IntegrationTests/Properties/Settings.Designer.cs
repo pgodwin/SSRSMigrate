@@ -49,7 +49,7 @@ namespace SSRSMigrate.IntegrationTests.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("/SSRSMigrate_Tests")]
+        [global::System.Configuration.DefaultSettingValueAttribute("/SSRSMigrate_AW_Tests")]
         public string SourcePath {
             get {
                 return ((string)(this["SourcePath"]));
@@ -61,7 +61,7 @@ namespace SSRSMigrate.IntegrationTests.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("/Dest_SSRSMigrate_Tests")]
+        [global::System.Configuration.DefaultSettingValueAttribute("/Dest_SSRSMigrate_AW_Tests")]
         public string DestinationPath {
             get {
                 return ((string)(this["DestinationPath"]));
