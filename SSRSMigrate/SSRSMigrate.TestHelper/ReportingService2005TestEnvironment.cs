@@ -11,33 +11,37 @@ namespace SSRSMigrate.TestHelper
 {
     public static class ReportingService2005TestEnvironment
     {
-        // Data for checking if an item already exists tests
-        private static List<ReportItem> AlreadyExistsReports = new List<ReportItem>()
+        // Data to create on environment setup
+        private static List<FolderItem> SetupFolderItems = new List<FolderItem>()
         {
-            new ReportItem()
-            {
-                Name = "Report Already Exists",
-                Path = "{0}/Reports/Report Already Exists",
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test Reports\\2005\\Inquiry.rdl"))
-            }
-        };
-
-        private static List<FolderItem> AlreadyExistsFolders = new List<FolderItem>()
-        {
+            // Create a folder named 'Folder Already Exists' so when we run integration tests that expect
+            //  this folder to exist, it does
             new FolderItem()
             {
                 Name = "Folder Already Exists",
                 Path = "{0}/Folder Already Exists",
+            },
+            new FolderItem()
+            {
+                Name = "Data Sources",
+                Path = "{0}/Data Sources"
+            },
+            new FolderItem()
+            {
+                Name = "Sub Folder",
+                Path = "{0}/Reports/Sub Folder"
             }
         };
 
-        private static List<DataSourceItem> AlreadyExistsDataSources = new List<DataSourceItem>()
+        private static List<DataSourceItem> SetupDataSourceItems = new List<DataSourceItem>()
         {
+            // Create a data source named 'Data Source Already Exists' so when we run integration tests that expect
+            //  this data source to exist, it does
             new DataSourceItem()
             {
                 Name = "Data Source Already Exists",
-                Path = "{0}/Data Source Already Exists",
-                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                Path = "{0}/Data Sources/Data Source Already Exists",
+                ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                 CredentialsRetrieval = "Integrated",
                 Enabled = true,
                 EnabledSpecified = true,
@@ -53,6 +57,29 @@ namespace SSRSMigrate.TestHelper
             }
         };
 
+        private static List<ReportItem> SetupReportItems = new List<ReportItem>()
+        {
+            // Create a report named 'Report Already Exists' so when we run integration tests that expect
+            //  this report to exist, it does
+            new ReportItem()
+            {
+                Name = "Report Already Exists",
+                Path = "{0}/Reports/Report Already Exists",
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+            }
+        };
+
+        /// <summary>
+        /// Setups the ReportServerWriter integration tests environment for ReportingService2005
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="credentials">The credentials.</param>
+        /// <param name="path">The parent path to write items to (e.g. /SSRSMigrate_Tests).</param>
+        /// <exception cref="System.ArgumentException">
+        /// url
+        /// or
+        /// path
+        /// </exception>
         public static void SetupEnvironment(string url,
             ICredentials credentials,
             string path)
@@ -84,17 +111,17 @@ namespace SSRSMigrate.TestHelper
             if (ReportingService2005TestEnvironment.ItemExists(service, path, ItemTypeEnum.Folder))
                 service.DeleteItem(path);
 
-            // Create the parent folder where the integration tests will be written to (e.g. /DEST_SSRSMigrate_Tests)
+            // Create the parent (base) folder where the integration tests will be written to (e.g. /DEST_SSRSMigrate_Tests)
             ReportingService2005TestEnvironment.CreateFolderFromPath(service, path);
 
-            // Create the the folders used in testing if a folder already exists
-            ReportingService2005TestEnvironment.CreateTestAlreadyExistsFolders(service, path);
+            // Create folder structure
+            ReportingService2005TestEnvironment.CreateFolders(service, path);
 
-            // Create the the data sources used in testing if a data source already exists
-            ReportingService2005TestEnvironment.CreateTestAlreadyExistsDataSources(service, path);
+            // Create the the data sources
+            ReportingService2005TestEnvironment.CreateDataSources(service, path);
 
-            // Create the the reports used in testing if a report already exists
-            ReportingService2005TestEnvironment.CreateTestAlreadyExistsReports(service, path);
+            // Create the the reports
+            ReportingService2005TestEnvironment.CreateReports(service, path);
         }
 
         public static void TeardownEnvironment(string url,
@@ -129,6 +156,12 @@ namespace SSRSMigrate.TestHelper
                 service.DeleteItem(path);
         }
 
+        /// <summary>
+        /// Creates the folder structure of a given path. This will go through each folder in the path and create it.
+        /// </summary>
+        /// <param name="reportingService">The reporting service.</param>
+        /// <param name="path">The path.</param>
+        /// <exception cref="System.ArgumentNullException">reportingService</exception>
         private static void CreateFolderFromPath(ReportingService2005 reportingService, string path)
         {
             if (reportingService == null)
@@ -162,6 +195,14 @@ namespace SSRSMigrate.TestHelper
             }
         }
 
+        /// <summary>
+        /// Checks if an item of the specified type exists at path.
+        /// </summary>
+        /// <param name="reportingService">The reporting service.</param>
+        /// <param name="path">The path.</param>
+        /// <param name="itemType">Type of the item.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">reportingService</exception>
         private static bool ItemExists(ReportingService2005 reportingService, string path, ItemTypeEnum itemType)
         {
             if (reportingService == null)
@@ -175,9 +216,9 @@ namespace SSRSMigrate.TestHelper
                 return false;
         }
 
-        private static void CreateTestAlreadyExistsFolders(ReportingService2005 reportingService, string path)
+        private static void CreateFolders(ReportingService2005 reportingService, string path)
         {
-            foreach (FolderItem folder in AlreadyExistsFolders)
+            foreach (FolderItem folder in SetupFolderItems)
             {
                 string fullPath = string.Format(folder.Path, path);
 
@@ -185,9 +226,9 @@ namespace SSRSMigrate.TestHelper
             }
         }
 
-        private static void CreateTestAlreadyExistsDataSources(ReportingService2005 reportingService, string path)
+        private static void CreateDataSources(ReportingService2005 reportingService, string path)
         {
-            foreach (DataSourceItem dataSource in AlreadyExistsDataSources)
+            foreach (DataSourceItem dataSource in SetupDataSourceItems)
             {
                 DataSourceDefinition def = new DataSourceDefinition();
                 def.ConnectString = dataSource.ConnectString;
@@ -216,15 +257,21 @@ namespace SSRSMigrate.TestHelper
                 def.UserName = dataSource.UserName;
                 def.WindowsCredentials = dataSource.WindowsCredentials;
 
-                reportingService.CreateDataSource(dataSource.Name, path, true, def, null);
+                string fullPath = string.Format(dataSource.Path, path);
+                string parent = TesterUtility.GetParentPath(fullPath);
+
+                reportingService.CreateDataSource(dataSource.Name, parent, true, def, null);
             }
         }
 
-        private static void CreateTestAlreadyExistsReports(ReportingService2005 reportingService, string path)
+        private static void CreateReports(ReportingService2005 reportingService, string path)
         {
-            foreach (ReportItem report in AlreadyExistsReports)
+            foreach (ReportItem report in SetupReportItems)
             {
-                reportingService.CreateReport(report.Name, path, true, report.Definition, null);
+                string fullPath = string.Format(report.Path, path);
+                string parent = TesterUtility.GetParentPath(fullPath);
+
+                reportingService.CreateReport(report.Name, parent, true, report.Definition, null);
             }
         }
     }

@@ -48,9 +48,9 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                 new DataSourceItem()
                 {
                     Description = null,
-                    Name = "Test Data Source",
-                    Path = string.Format("{0}/Test Data Source", outputPath),
-                    ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                    Name = "AWDataSource",
+                    Path = string.Format("{0}/Data Sources/AWDataSource", outputPath),
+                    ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                     CredentialsRetrieval ="Integrated",
                     Enabled = true,
                     EnabledSpecified = true,
@@ -67,9 +67,9 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                new DataSourceItem()
                 {
                     Description = null,
-                    Name = "Test 2 Data Source",
-                    Path = string.Format("{0}/Test 2 Data Source", outputPath),
-                    ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                    Name = "Test Data Source",
+                    Path = string.Format("{0}/Data Sources/Test Data Source", outputPath),
+                    ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                     CredentialsRetrieval ="Integrated",
                     Enabled = true,
                     EnabledSpecified = true,
@@ -90,8 +90,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
             {
                 Description = null,
                 Name = "Test.Data Source",
-                Path = string.Format("{0}/Test.Data Source", outputPath),
-                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                Path = string.Format("{0}/Data Sources/Test.Data Source", outputPath),
+                ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                 CredentialsRetrieval = "Integrated",
                 Enabled = true,
                 EnabledSpecified = true,
@@ -110,8 +110,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
             {
                 Description = null,
                 Name = "Data Source Already Exists",
-                Path = string.Format("{0}/Data Source Already Exists", outputPath),
-                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                Path = string.Format("{0}/Data Sources/Data Source Already Exists", outputPath),
+                ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                 CredentialsRetrieval = "Integrated",
                 Enabled = true,
                 EnabledSpecified = true,
@@ -130,8 +130,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
             {
                 Description = null,
                 Name = null,
-                Path = string.Format("{0}/Test Data Source", outputPath),
-                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                Path = string.Format("{0}/Data Sources/Test Data Source", outputPath),
+                ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                 CredentialsRetrieval = "Integrated",
                 Enabled = true,
                 EnabledSpecified = true,
@@ -150,8 +150,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
             {
                 Description = null,
                 Name = null,
-                Path = string.Format("{0}/Test Data Source", outputPath),
-                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                Path = string.Format("{0}/Data Sources/Test Data Source", outputPath),
+                ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                 CredentialsRetrieval = "Integrated",
                 Enabled = true,
                 EnabledSpecified = true,
@@ -171,7 +171,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                 Description = null,
                 Name = "Test Data Source",
                 Path = null,
-                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                 CredentialsRetrieval = "Integrated",
                 Enabled = true,
                 EnabledSpecified = true,
@@ -191,7 +191,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                 Description = null,
                 Name = "Test Data Source",
                 Path = "",
-                ConnectString = "Data Source=(local);Initial Catalog=TestDatabase;Application Name=SSRSMigrate_IntegrationTest",
+                ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
                 CredentialsRetrieval = "Integrated",
                 Enabled = true,
                 EnabledSpecified = true,
@@ -235,8 +235,6 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                 Properties.Settings.Default.ReportServer2008WebServiceUrl, 
                 CredentialCache.DefaultNetworkCredentials,
                 outputPath);
-
-            //TODO Need to deploy a DataSource that already exists for the 'WriteDataSource_AlreadyExists' test
         }
 
         private void TeardownEnvironment()
@@ -245,8 +243,6 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                 Properties.Settings.Default.ReportServer2008WebServiceUrl,
                 CredentialCache.DefaultNetworkCredentials,
                 outputPath);
-
-            //TODO Teardown DataSource that already exists for the 'WriteDataSource_AlreadyExists' test
         }
         #endregion
 
@@ -303,7 +299,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
             DataSourceItem dataSource = new DataSourceItem()
             {
                 Name = null,
-                Path = string.Format("{0}/Test Data Source", outputPath),
+                Path = string.Format("{0}/Data Sources/Test Data Source", outputPath),
             };
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -321,7 +317,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
             DataSourceItem dataSource = new DataSourceItem()
             {
                 Name = "",
-                Path = string.Format("{0}/Test Data Source", outputPath),
+                Path = string.Format("{0}/Data Sources/Test Data Source", outputPath),
             };
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
