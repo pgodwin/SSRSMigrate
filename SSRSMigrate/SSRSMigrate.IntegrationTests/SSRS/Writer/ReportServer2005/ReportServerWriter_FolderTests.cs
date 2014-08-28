@@ -5,6 +5,11 @@ using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Writer;
+using SSRSMigrate.Factory;
+using Ninject;
+using SSRSMigrate.TestHelper;
+using System.Net;
+using SSRSMigrate.SSRS.Errors;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
 {
@@ -16,7 +21,9 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
     [CoverageExcludeAttribute]
     class ReportServerWriter_FolderTests
     {
+        StandardKernel kernel = null;
         ReportServerWriter writer = null;
+        string outputPath = null;
 
         #region FolderItems
         FolderItem rootFolderItem = null;
@@ -32,25 +39,217 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
+            outputPath = Properties.Settings.Default.DestinationPath;
 
+            kernel = new StandardKernel(new DependencyModule());
+
+            rootFolderItem = new FolderItem()
+            {
+                Name =  string.Format("{0}", outputPath.Replace("/", "")),
+                Path = string.Format("{0}", outputPath)
+            };
+
+            reportsFolderItem = new FolderItem()
+            {
+                Name = "Reports",
+                Path = string.Format("{0}/Reports", outputPath)
+            };
+
+            reportsSubFolderItem = new FolderItem()
+            {
+                Name = "Sub Folder",
+                Path = string.Format("{0}/Reports/Sub Folder", outputPath)
+            };
+
+            rootSubFolderItem = new FolderItem()
+            {
+                Name = "Data Sources",
+                Path = string.Format("{0}/Data Sources", outputPath)
+            };
+
+            alreadyExistsFolderItem = new FolderItem()
+            {
+                Name = "Folder Already Exists",
+                Path = "/SSRSMigrate_AW_Tests_Exists/Folder Already Exists"
+            };
+
+            invalidPathFolderItem = new FolderItem()
+            {
+                Name = "SSRSMigrate_AW_Tests.Tests",
+                Path = "/SSRSMigrate_AW.Tests",
+            };
+
+            folderItems = new List<FolderItem>()
+            {
+                rootFolderItem,
+                reportsFolderItem,
+                reportsSubFolderItem,
+                rootSubFolderItem,
+            };
+
+            writer = kernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>("2005-DEST");
         }
 
         [TestFixtureTearDown]
         public void TestFixtureTearDown()
         {
+            writer = null;
         }
 
         [SetUp]
         public void SetUp()
         {
+            SetupEnvironment();
         }
 
         [TearDown]
         public void TearDown()
         {
+            TeardownEnvironment();
         }
 
+        #region Environment Setup/Teardown
+        private void SetupEnvironment()
+        {
+            ReportingService2005TestEnvironment.SetupFolderWriterEnvironment(
+                Properties.Settings.Default.ReportServer2008WebServiceUrl,
+                CredentialCache.DefaultNetworkCredentials,
+                outputPath,
+                new List<FolderItem> 
+                { 
+                    alreadyExistsFolderItem 
+                });
+        }
+
+        private void TeardownEnvironment()
+        {
+            ReportingService2005TestEnvironment.TeardownFolderWriterEnvironment(
+                Properties.Settings.Default.ReportServer2008WebServiceUrl,
+                CredentialCache.DefaultNetworkCredentials,
+                outputPath,
+                new List<FolderItem> 
+                { 
+                    alreadyExistsFolderItem 
+                });
+        }
+        #endregion
+
         #region WriteFolder Tests
+        [Test]
+        public void WriteFolder()
+        {
+            string actual = writer.WriteFolder(rootFolderItem);
+
+            Assert.Null(actual);
+        }
+
+        [Test]
+        public void WriteFolder_AlreadyExists()
+        {
+            FolderAlreadyExistsException ex = Assert.Throws<FolderAlreadyExistsException>(
+                delegate
+                {
+                    writer.WriteFolder(alreadyExistsFolderItem);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("The folder '{0}' already exists.", alreadyExistsFolderItem.Path)));
+        }
+
+        [Test]
+        public void WriteFolder_NullFolderItem()
+        {
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    writer.WriteFolder(null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: folderItem"));
+        }
+
+        [Test]
+        public void WriteFolder_InvalidPath()
+        {
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    writer.WriteFolder(invalidPathFolderItem);
+                });
+
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+        }
+
+        [Test]
+        public void WriteFolder_FolderItemNullName()
+        {
+            FolderItem folderItem = new FolderItem()
+            {
+                Name = null,
+                Path = "/SSRSMigrate_AW_Tests",
+            };
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    writer.WriteFolder(folderItem);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("item.Name"));
+        }
+
+        [Test]
+        public void WriteFolder_FolderItemEmptyName()
+        {
+            FolderItem folderItem = new FolderItem()
+            {
+                Name = "",
+                Path = "/SSRSMigrate_AW_Tests",
+            };
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    writer.WriteFolder(folderItem);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("item.Name"));
+        }
+
+        [Test]
+        public void WriteFolder_FolderItemNullPath()
+        {
+            FolderItem folderItem = new FolderItem()
+            {
+                Name = "SSRSMigrate_AW_Tests",
+                Path = null,
+            };
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    writer.WriteFolder(folderItem);
+                });
+
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+        }
+
+        [Test]
+        public void WriteFolder_FolderItemEmptyPath()
+        {
+            FolderItem folderItem = new FolderItem()
+            {
+                Name = "SSRSMigrate_AW_Tests",
+                Path = "",
+            };
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    writer.WriteFolder(folderItem);
+                });
+
+            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+        }
         #endregion
 
         #region WriteFolders Tests
