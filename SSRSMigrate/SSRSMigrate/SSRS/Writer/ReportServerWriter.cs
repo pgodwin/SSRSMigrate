@@ -27,14 +27,21 @@ namespace SSRSMigrate.SSRS.Writer
             if (folderItem == null)
                 throw new ArgumentNullException("folderItem");
 
+            // Verify that the folder's path is valid
             if (!this.mReportRepository.ValidatePath(folderItem.Path))
                 throw new InvalidPathException(string.Format("Invalid path '{0}'.", folderItem.Path));
 
-            if (this.mReportRepository.ItemExists(folderItem.Path, "Folder"))
-                throw new FolderAlreadyExistsException(string.Format("The folder '{0}' already exists.", folderItem.Path));
+            //TODO Check folderItem.HasValidProperties and throw exception
+            //if (!folderItem.HasValidProperties)
+            //    throw new InvalidItemException(string.Format("The item with ID '{0}' has a null or empty name or path value.", folderItem.ID));
 
+            // Get the folder's name and path to its parent folder 
             string name = folderItem.Name;
             string parentPath = SSRSUtil.GetParentPath(folderItem);
+
+            // Check if a folder already exists at the specified path
+            if (this.mReportRepository.ItemExists(folderItem.Path, "Folder"))
+                throw new FolderAlreadyExistsException(string.Format("The folder '{0}' already exists.", folderItem.Path));
 
             return this.mReportRepository.CreateFolder(name, parentPath);
         }
@@ -48,14 +55,17 @@ namespace SSRSMigrate.SSRS.Writer
 
             for (int i = 0; i < folderItems.Count(); i++)
             {
+                // Verify that the folder's path is valid
                 if (!this.mReportRepository.ValidatePath(folderItems[i].Path))
                     throw new InvalidPathException(string.Format("Invalid path '{0}'.", folderItems[i].Path));
 
-                if (this.mReportRepository.ItemExists(folderItems[i].Path, "Folder"))
-                    throw new FolderAlreadyExistsException(string.Format("The folder '{0}' already exists.", folderItems[i].Path));
-
+                // Get the folder's name and path to its parent folder 
                 string name = folderItems[i].Name;
                 string parentPath = SSRSUtil.GetParentPath(folderItems[i]);
+
+                // Check if a folder already exists at the specified path
+                if (this.mReportRepository.ItemExists(folderItems[i].Path, "Folder"))
+                    throw new FolderAlreadyExistsException(string.Format("The folder '{0}' already exists.", folderItems[i].Path));
 
                 string warning = this.mReportRepository.CreateFolder(name, parentPath);
 
@@ -78,6 +88,8 @@ namespace SSRSMigrate.SSRS.Writer
 
             string name = reportItem.Name;
             string parentPath = SSRSUtil.GetParentPath(reportItem);
+
+            //TODO Check if report already exists at the specified path
 
             return this.mReportRepository.WriteReport(parentPath, reportItem);
         }
