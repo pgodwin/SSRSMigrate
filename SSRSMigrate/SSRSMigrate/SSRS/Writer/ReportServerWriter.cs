@@ -30,6 +30,9 @@ namespace SSRSMigrate.SSRS.Writer
             if (!this.mReportRepository.ValidatePath(folderItem.Path))
                 throw new InvalidPathException(string.Format("Invalid path '{0}'.", folderItem.Path));
 
+            if (this.mReportRepository.ItemExists(folderItem.Path, "Folder"))
+                throw new FolderAlreadyExistsException(string.Format("The folder '{0}' already exists.", folderItem.Path));
+
             string name = folderItem.Name;
             string parentPath = SSRSUtil.GetParentPath(folderItem);
 
@@ -47,6 +50,9 @@ namespace SSRSMigrate.SSRS.Writer
             {
                 if (!this.mReportRepository.ValidatePath(folderItems[i].Path))
                     throw new InvalidPathException(string.Format("Invalid path '{0}'.", folderItems[i].Path));
+
+                if (this.mReportRepository.ItemExists(folderItems[i].Path, "Folder"))
+                    throw new FolderAlreadyExistsException(string.Format("The folder '{0}' already exists.", folderItems[i].Path));
 
                 string name = folderItems[i].Name;
                 string parentPath = SSRSUtil.GetParentPath(folderItems[i]);
