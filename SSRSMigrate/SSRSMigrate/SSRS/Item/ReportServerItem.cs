@@ -34,5 +34,10 @@ namespace SSRSMigrate.SSRS.Item
                     return true;
             }
         }
+
+        public bool ShouldSerializeHasValidProperties()
+        {
+            return false;
+        }
     }
 }
