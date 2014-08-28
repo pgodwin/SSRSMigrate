@@ -37,6 +37,7 @@ namespace SSRSMigrate.SSRS.Item
 
         public bool ShouldSerializeHasValidProperties()
         {
+            // Prevent HasValidProperties from being serialized
             return false;
         }
     }

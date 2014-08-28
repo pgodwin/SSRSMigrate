@@ -253,6 +253,143 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         #endregion
 
         #region WriteFolders Tests
+        [Test]
+        public void WriteFolders()
+        {
+            string[] actual = writer.WriteFolders(folderItems.ToArray());
+
+            Assert.AreEqual(0, actual.Length);
+        }
+
+        [Test]
+        public void WriteFolders_OneOrMoreAlreadyExists()
+        {
+            List<FolderItem> items = new List<FolderItem>();
+
+            items.AddRange(folderItems);
+            items.Add(alreadyExistsFolderItem);
+
+            FolderAlreadyExistsException ex = Assert.Throws<FolderAlreadyExistsException>(
+                delegate
+                {
+                    writer.WriteFolders(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("The folder '{0}' already exists.", alreadyExistsFolderItem.Path)));
+        }
+
+        [Test]
+        public void WriteFolders_NullFolderItems()
+        {
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    writer.WriteFolders(null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: folderItems"));
+        }
+
+        [Test]
+        public void WriteFolders_OneOrMoreInvalidPaths()
+        {
+            List<FolderItem> items = new List<FolderItem>();
+
+            items.AddRange(folderItems);
+            items.Add(invalidPathFolderItem);
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    writer.WriteFolders(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.StringContaining(string.Format("Invalid path '{0}'", invalidPathFolderItem.Path)));
+        }
+
+        [Test]
+        public void WriteFolders_OneOrMoreNullNames()
+        {
+            List<FolderItem> items = new List<FolderItem>();
+
+            items.AddRange(folderItems);
+            items.Add(new FolderItem()
+            {
+                Name = null,
+                Path = "/SSRSMigrate_AW_Tests",
+            });
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    writer.WriteFolders(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("item.Name"));
+        }
+
+        [Test]
+        public void WriteFolders_OneOrMoreEmptyNames()
+        {
+            List<FolderItem> items = new List<FolderItem>();
+
+            items.AddRange(folderItems);
+            items.Add(new FolderItem()
+            {
+                Name = "",
+                Path = "/SSRSMigrate_AW_Tests",
+            });
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    writer.WriteFolders(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("item.Name"));
+        }
+
+        [Test]
+        public void WriteFolders_OneOrMoreNullPaths()
+        {
+            List<FolderItem> items = new List<FolderItem>();
+
+            items.AddRange(folderItems);
+            items.Add(new FolderItem()
+            {
+                Name = "SSRSMigrate_AW_Tests",
+                Path = null,
+            });
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    writer.WriteFolders(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.StringContaining("Invalid path ''."));
+        }
+
+        [Test]
+        public void WriteFolders_OneOrMoreEmptyPaths()
+        {
+            List<FolderItem> items = new List<FolderItem>();
+
+            items.AddRange(folderItems);
+            items.Add(new FolderItem()
+            {
+                Name = "SSRSMigrate_AW_Tests",
+                Path = "",
+            });
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    writer.WriteFolders(items.ToArray());
+                });
+
+            Assert.That(ex.Message, Is.StringContaining("Invalid path ''."));
+        }
         #endregion
     }
 }
