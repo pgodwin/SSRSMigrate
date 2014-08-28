@@ -109,7 +109,7 @@ namespace SSRSMigrate.SSRS.Repository
             {
                 this.mReportingService.CreateFolder(name, parentPath, null);
             }
-            catch (Exception er)
+            catch (SoapException er)
             {
                 return er.Message;
             }
