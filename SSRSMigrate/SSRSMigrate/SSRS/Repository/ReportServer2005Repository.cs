@@ -99,7 +99,22 @@ namespace SSRSMigrate.SSRS.Repository
 
         public string CreateFolder(string name, string parentPath)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentException("name");
+
+            if (string.IsNullOrEmpty(parentPath))
+                throw new ArgumentException("parentPath");
+
+            try
+            {
+                this.mReportingService.CreateFolder(name, parentPath, null);
+            }
+            catch (Exception er)
+            {
+                return er.Message;
+            }
+
+            return null;
         }
         #endregion
 
