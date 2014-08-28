@@ -145,7 +145,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 .Returns(() => null);
 
             reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_AlreadyExists), reportItem_AlreadyExists))
-                .Throws(new ReportAlreadyExistsException(string.Format("The report '{0}' already exists.", reportItem_AlreadyExists.Path)));
+                .Throws(new ItemAlreadyExistsException(string.Format("The report '{0}' already exists.", reportItem_AlreadyExists.Path)));
 
             reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_NullDefinition), reportItem_NullDefinition))
                 .Throws(new InvalidReportDefinition(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition)));
@@ -196,7 +196,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
         [Test]
         public void WriteReport_AlreadyExists()
         {
-            ReportAlreadyExistsException ex = Assert.Throws<ReportAlreadyExistsException>(
+            ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
                 {
                     writer.WriteReport(reportItem_AlreadyExists);
@@ -342,7 +342,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
         [Test]
         public void WriteReports_AlreadyExists()
         {
-            ReportAlreadyExistsException ex = Assert.Throws<ReportAlreadyExistsException>(
+            ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
                 {
                     writer.WriteReport(reportItem_AlreadyExists);

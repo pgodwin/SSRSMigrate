@@ -146,7 +146,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         [Test]
         public void WriteFolder_AlreadyExists()
         {
-            FolderAlreadyExistsException ex = Assert.Throws<FolderAlreadyExistsException>(
+            ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
                 {
                     writer.WriteFolder(alreadyExistsFolderItem);
@@ -269,7 +269,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
             items.AddRange(folderItems);
             items.Add(alreadyExistsFolderItem);
 
-            FolderAlreadyExistsException ex = Assert.Throws<FolderAlreadyExistsException>(
+            ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
                 {
                     writer.WriteFolders(items.ToArray());

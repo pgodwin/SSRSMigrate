@@ -163,7 +163,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 .Returns(() => null);
 
             reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(alreadyExistsDataSourceItem), alreadyExistsDataSourceItem))
-                .Throws(new DataSourceAlreadyExistsException(string.Format("The data source '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
+                .Throws(new ItemAlreadyExistsException(string.Format("The data source '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
 
             // Setup IReportServerRepository.ValidatePath Mocks
             reportServerRepositoryMock.Setup(r => r.ValidatePath(dataSourceItem.Path))
@@ -208,7 +208,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteDataSource_AlreadyExists()
         {
-            DataSourceAlreadyExistsException ex = Assert.Throws<DataSourceAlreadyExistsException>(
+            ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
                 {
                     writer.WriteDataSource(alreadyExistsDataSourceItem);
@@ -331,7 +331,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             items.AddRange(dataSourceItems);
             items.Add(alreadyExistsDataSourceItem);
 
-            DataSourceAlreadyExistsException ex = Assert.Throws<DataSourceAlreadyExistsException>(
+            ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
                 {
                     writer.WriteDataSources(items.ToArray());

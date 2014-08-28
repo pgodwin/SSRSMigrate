@@ -105,7 +105,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                .Returns(() => null);
 
             reportServerRepositoryMock.Setup(r => r.CreateFolder(alreadyExistsFolderItem.Name, TesterUtility.GetParentPath(alreadyExistsFolderItem)))
-                .Throws(new FolderAlreadyExistsException(string.Format("The folder '{0}' already exists.", alreadyExistsFolderItem.Path)));
+                .Throws(new ItemAlreadyExistsException(string.Format("The folder '{0}' already exists.", alreadyExistsFolderItem.Path)));
 
             // IReportServerRepository.ValidatePath Mocks
             reportServerRepositoryMock.Setup(r => r.ValidatePath(rootFolderItem.Path))
@@ -166,7 +166,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolder_AlreadyExists()
         {
-            FolderAlreadyExistsException ex = Assert.Throws<FolderAlreadyExistsException>(
+            ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
                 {
                     writer.WriteFolder(alreadyExistsFolderItem);
@@ -289,7 +289,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             items.AddRange(folderItems);
             items.Add(alreadyExistsFolderItem);
 
-            FolderAlreadyExistsException ex = Assert.Throws<FolderAlreadyExistsException>(
+            ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
                 {
                     writer.WriteFolders(items.ToArray());

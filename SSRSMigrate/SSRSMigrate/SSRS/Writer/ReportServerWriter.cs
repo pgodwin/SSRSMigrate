@@ -41,7 +41,7 @@ namespace SSRSMigrate.SSRS.Writer
 
             // Check if a folder already exists at the specified path
             if (this.mReportRepository.ItemExists(folderItem.Path, "Folder"))
-                throw new FolderAlreadyExistsException(string.Format("The folder '{0}' already exists.", folderItem.Path));
+                throw new ItemAlreadyExistsException(string.Format("The folder '{0}' already exists.", folderItem.Path));
 
             return this.mReportRepository.CreateFolder(name, parentPath);
         }
@@ -65,7 +65,7 @@ namespace SSRSMigrate.SSRS.Writer
 
                 // Check if a folder already exists at the specified path
                 if (this.mReportRepository.ItemExists(folderItems[i].Path, "Folder"))
-                    throw new FolderAlreadyExistsException(string.Format("The folder '{0}' already exists.", folderItems[i].Path));
+                    throw new ItemAlreadyExistsException(string.Format("The folder '{0}' already exists.", folderItems[i].Path));
 
                 string warning = this.mReportRepository.CreateFolder(name, parentPath);
 
@@ -130,7 +130,7 @@ namespace SSRSMigrate.SSRS.Writer
                 throw new InvalidPathException(string.Format("Invalid path '{0}'.", dataSourceItem.Path));
 
             if (this.mReportRepository.ItemExists(dataSourceItem.Path, "DataSource"))
-                throw new DataSourceAlreadyExistsException(string.Format("The data source '{0}' already exists.", dataSourceItem.Path));
+                throw new ItemAlreadyExistsException(string.Format("The data source '{0}' already exists.", dataSourceItem.Path));
 
             string name = dataSourceItem.Name;
             string parentPath = SSRSUtil.GetParentPath(dataSourceItem);
@@ -151,7 +151,7 @@ namespace SSRSMigrate.SSRS.Writer
                     throw new InvalidPathException(string.Format("Invalid path '{0}'.", dataSourceItems[i].Path));
 
                 if (this.mReportRepository.ItemExists(dataSourceItems[i].Path, "DataSource"))
-                    throw new DataSourceAlreadyExistsException(string.Format("The data source '{0}' already exists.", dataSourceItems[i].Path));
+                    throw new ItemAlreadyExistsException(string.Format("The data source '{0}' already exists.", dataSourceItems[i].Path));
 
                 string name = dataSourceItems[i].Name;
                 string parentPath = SSRSUtil.GetParentPath(dataSourceItems[i]);

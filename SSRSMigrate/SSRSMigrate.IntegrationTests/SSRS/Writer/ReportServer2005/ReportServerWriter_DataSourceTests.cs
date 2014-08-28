@@ -260,7 +260,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         public void WriteDataSource_AlreadyExists()
         {
             //TODO Need to create the test DataSource during environment setup
-            DataSourceAlreadyExistsException ex = Assert.Throws<DataSourceAlreadyExistsException>(
+            ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
                 {
                     writer.WriteDataSource(alreadyExistsDataSourceItem);
@@ -382,7 +382,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
             items.AddRange(dataSourceItems);
             items.Add(alreadyExistsDataSourceItem);
 
-            DataSourceAlreadyExistsException ex = Assert.Throws<DataSourceAlreadyExistsException>(
+            ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
                 {
                     writer.WriteDataSources(items.ToArray());
