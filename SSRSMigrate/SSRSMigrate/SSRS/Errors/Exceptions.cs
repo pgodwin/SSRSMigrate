@@ -5,6 +5,24 @@ using System.Text;
 
 namespace SSRSMigrate.SSRS.Errors
 {
+    public class InvalidItemException : Exception
+    {
+        public InvalidItemException()
+            : base("InvalidItemException exception")
+        {
+        }
+
+        public InvalidItemException(string Message)
+            : base(Message)
+        {
+        }
+
+        public InvalidItemException(string Message, Exception inner)
+            : base(Message, inner)
+        {
+        }
+    }
+
     public class InvalidPathException : Exception
     {
         public InvalidPathException()

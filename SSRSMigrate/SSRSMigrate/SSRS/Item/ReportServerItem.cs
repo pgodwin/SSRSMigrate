@@ -17,5 +17,22 @@ namespace SSRSMigrate.SSRS.Item
         public DateTime ModifiedDate { get; set; }
         public int Size { get; set; }
         public string VirtualPath { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance has valid Name and Path properties.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance has valid properties; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasValidProperties
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this.Name) || string.IsNullOrEmpty(this.Path))
+                    return false;
+                else
+                    return true;
+            }
+        }
     }
 }
