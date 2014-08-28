@@ -92,6 +92,10 @@
     <Compile Include="SSRS\Reader\ReportServer2010\ReportServerReader_ReportTests.cs" />
     <Compile Include="SSRS\Writer\ReportServer2005\ReportServerWriter_DataSourceTests.cs" />
     <Compile Include="SSRS\Writer\ReportServer2005\ReportServerWriter_FolderTests.cs" />
+    <Compile Include="SSRS\Writer\ReportServer2005\ReportServerWriter_ReportTests.cs" />
+    <Compile Include="SSRS\Writer\ReportServer2010\ReportServerWriter_DataSourceTests.cs" />
+    <Compile Include="SSRS\Writer\ReportServer2010\ReportServerWriter_FolderTests.cs" />
+    <Compile Include="SSRS\Writer\ReportServer2010\ReportServerWriter_ReportTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -170,7 +174,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SSRS\Writer\ReportServer2010\" />
     <Folder Include="Test AW Data\Exports\2005\SSRSMigrate_AW_Tests\Data Sources\" />
     <Folder Include="Test AW Data\Exports\2010\SSRSMigrate_AW_Tests\Data Sources\" />
   </ItemGroup>
