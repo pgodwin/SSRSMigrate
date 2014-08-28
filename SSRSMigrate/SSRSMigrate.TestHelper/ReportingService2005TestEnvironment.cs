@@ -70,6 +70,39 @@ namespace SSRSMigrate.TestHelper
         };
 
         /// <summary>
+        /// Gets the reporting service object.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="credentials">The credentials.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentException">url</exception>
+        private static ReportingService2005 GetReportingService(string url, ICredentials credentials)
+        {
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentException("url");
+
+            if (credentials == null)
+                credentials = CredentialCache.DefaultNetworkCredentials;
+
+            if (!url.EndsWith("reportservice2005.asmx"))
+            {
+                if (url.EndsWith("/"))
+                    url = url.Substring(0, url.Length - 1);
+
+                url = string.Format("{0}/reportservice2005.asmx", url);
+            }
+
+            ReportingService2005 service = new ReportingService2005();
+            service.Url = url;
+
+            service.Credentials = credentials;
+            service.PreAuthenticate = true;
+            service.UseDefaultCredentials = true;
+
+            return service;
+        }
+
+        /// <summary>
         /// Setups the ReportServerWriter integration tests environment for ReportingService2005
         /// </summary>
         /// <param name="url">The URL.</param>
@@ -87,26 +120,10 @@ namespace SSRSMigrate.TestHelper
             if (string.IsNullOrEmpty(url))
                 throw new ArgumentException("url");
 
-            if (credentials == null)
-                credentials = CredentialCache.DefaultNetworkCredentials;
-
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
 
-            if (!url.EndsWith("reportservice2005.asmx"))
-            {
-                if (url.EndsWith("/"))
-                    url = url.Substring(0, url.Length - 1);
-
-                url = string.Format("{0}/reportservice2005.asmx", url);
-            }
-
-            ReportingService2005 service = new ReportingService2005();
-            service.Url = url;
-
-            service.Credentials = credentials;
-            service.PreAuthenticate = true;
-            service.UseDefaultCredentials = true;
+            ReportingService2005 service = ReportingService2005TestEnvironment.GetReportingService(url, credentials);
 
             if (ReportingService2005TestEnvironment.ItemExists(service, path, ItemTypeEnum.Folder))
                 service.DeleteItem(path);
@@ -124,6 +141,56 @@ namespace SSRSMigrate.TestHelper
             ReportingService2005TestEnvironment.CreateReports(service, path);
         }
 
+        /// <summary>
+        /// Setups the folder writer environment.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="credentials">The credentials.</param>
+        /// <param name="path">The parent path to write items to (e.g. /SSRSMigrate_Tests).</param>
+        /// <param name="folders">The folders to create.</param>
+        /// <exception cref="System.ArgumentException">url</exception>
+        /// <exception cref="System.ArgumentNullException">folders</exception>
+        public static void SetupFolderWriterEnvironment(string url,
+            ICredentials credentials,
+            string path,
+            List<FolderItem> folders)
+        {
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentException("path");
+
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentException("path");
+
+            if (folders == null)
+                throw new ArgumentNullException("folders");
+
+            ReportingService2005 service = ReportingService2005TestEnvironment.GetReportingService(url, credentials);
+
+            // If the path exists, delete it so we don't get any unexpected 'FolderAlreadyExists' exceptions while testing
+            if (ReportingService2005TestEnvironment.ItemExists(service, path, ItemTypeEnum.Folder))
+                service.DeleteItem(path);
+
+            // Go through each folder and if it exists, delete it and then recreate it
+            foreach (FolderItem folder in folders)
+            {
+                if (ReportingService2005TestEnvironment.ItemExists(service, folder.Path, ItemTypeEnum.Folder))
+                    service.DeleteItem(folder.Path);
+
+                ReportingService2005TestEnvironment.CreateFolderFromPath(service, folder.Path);
+            }
+        }
+
+        /// <summary>
+        /// Teardowns the environment.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="credentials">The credentials.</param>
+        /// <param name="path">The path to delete.</param>/param>
+        /// <exception cref="System.ArgumentException">
+        /// url
+        /// or
+        /// path
+        /// </exception>
         public static void TeardownEnvironment(string url,
             ICredentials credentials,
             string path)
@@ -131,29 +198,49 @@ namespace SSRSMigrate.TestHelper
             if (string.IsNullOrEmpty(url))
                 throw new ArgumentException("url");
 
-            if (credentials == null)
-                credentials = CredentialCache.DefaultNetworkCredentials;
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            ReportingService2005 service = ReportingService2005TestEnvironment.GetReportingService(url, credentials);
+
+            // If the path exists, delete it to clean up after the tests
+            if (ReportingService2005TestEnvironment.ItemExists(service, path, ItemTypeEnum.Folder))
+                service.DeleteItem(path);
+
+            if (ReportingService2005TestEnvironment.ItemExists(service, path, ItemTypeEnum.Folder))
+                service.DeleteItem(path);
+        }
+
+        /// <summary>
+        /// Teardowns the folder writer environment.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="credentials">The credentials.</param>
+        /// <param name="folders">The folders to delete.</param>
+        /// <exception cref="System.ArgumentException">url</exception>
+        /// <exception cref="System.ArgumentNullException">folders</exception>
+        public static void TeardownFolderWriterEnvironment(string url,
+            ICredentials credentials,
+            string path,
+            List<FolderItem> folders)
+        {
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentException("url");
 
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
 
-            if (!url.EndsWith("reportservice2005.asmx"))
+            if (folders == null)
+                throw new ArgumentNullException("folders");
+
+            ReportingService2005 service = ReportingService2005TestEnvironment.GetReportingService(url, credentials);
+
+            // Go through each folder and delete it if it exists
+            foreach (FolderItem folder in folders)
             {
-                if (url.EndsWith("/"))
-                    url = url.Substring(0, url.Length - 1);
-
-                url = string.Format("{0}/reportservice2005.asmx", url);
+                if (ReportingService2005TestEnvironment.ItemExists(service, folder.Path, ItemTypeEnum.Folder))
+                    service.DeleteItem(folder.Path);
             }
-
-            ReportingService2005 service = new ReportingService2005();
-            service.Url = url;
-
-            service.Credentials = credentials;
-            service.PreAuthenticate = true;
-            service.UseDefaultCredentials = true;
-
-            if (ReportingService2005TestEnvironment.ItemExists(service, path, ItemTypeEnum.Folder))
-                service.DeleteItem(path);
         }
 
         /// <summary>
