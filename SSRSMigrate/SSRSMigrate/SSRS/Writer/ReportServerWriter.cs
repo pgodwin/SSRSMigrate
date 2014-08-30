@@ -83,14 +83,19 @@ namespace SSRSMigrate.SSRS.Writer
             if (reportItem == null)
                 throw new ArgumentNullException("reportItem");
 
+            // Verify that the report's path is valid
             if (!this.mReportRepository.ValidatePath(reportItem.Path))
                 throw new InvalidPathException(string.Format("Invalid path '{0}'.", reportItem.Path));
 
+            // Get the report's name and path to its parent folder
             string name = reportItem.Name;
             string parentPath = SSRSUtil.GetParentPath(reportItem);
 
-            //TODO Check if report already exists at the specified path
+            // Check if a report already exists at the specified path
+            if (this.mReportRepository.ItemExists(reportItem.Path, "Report"))
+                throw new ItemAlreadyExistsException(string.Format("The report '{0}' already exists.", reportItem.Path));
 
+            // Create the report at parentPath and return any warnings
             return this.mReportRepository.WriteReport(parentPath, reportItem);
         }
 
@@ -103,11 +108,17 @@ namespace SSRSMigrate.SSRS.Writer
 
             for (int i = 0; i < reportItems.Count(); i++)
             {
+                // Verify that the report's path is valid
                 if (!this.mReportRepository.ValidatePath(reportItems[i].Path))
                     throw new InvalidPathException(string.Format("Invalid path '{0}'.", reportItems[i].Path));
 
+                // Get the report's name and path to its parent folder
                 string name = reportItems[i].Name;
                 string parentPath = SSRSUtil.GetParentPath(reportItems[i]);
+
+                // Check if a report already exists at the specified path
+                if (this.mReportRepository.ItemExists(reportItems[i].Path, "Report"))
+                    throw new ItemAlreadyExistsException(string.Format("The report '{0}' already exists.", reportItems[i].Path));
 
                 string[] report_warnings = this.mReportRepository.WriteReport(parentPath, reportItems[i]);
 
@@ -129,11 +140,11 @@ namespace SSRSMigrate.SSRS.Writer
             if (!this.mReportRepository.ValidatePath(dataSourceItem.Path))
                 throw new InvalidPathException(string.Format("Invalid path '{0}'.", dataSourceItem.Path));
 
-            if (this.mReportRepository.ItemExists(dataSourceItem.Path, "DataSource"))
-                throw new ItemAlreadyExistsException(string.Format("The data source '{0}' already exists.", dataSourceItem.Path));
-
             string name = dataSourceItem.Name;
             string parentPath = SSRSUtil.GetParentPath(dataSourceItem);
+
+            if (this.mReportRepository.ItemExists(dataSourceItem.Path, "DataSource"))
+                throw new ItemAlreadyExistsException(string.Format("The data source '{0}' already exists.", dataSourceItem.Path));
 
             return this.mReportRepository.WriteDataSource(parentPath, dataSourceItem);
         }
@@ -150,11 +161,11 @@ namespace SSRSMigrate.SSRS.Writer
                 if (!this.mReportRepository.ValidatePath(dataSourceItems[i].Path))
                     throw new InvalidPathException(string.Format("Invalid path '{0}'.", dataSourceItems[i].Path));
 
-                if (this.mReportRepository.ItemExists(dataSourceItems[i].Path, "DataSource"))
-                    throw new ItemAlreadyExistsException(string.Format("The data source '{0}' already exists.", dataSourceItems[i].Path));
-
                 string name = dataSourceItems[i].Name;
                 string parentPath = SSRSUtil.GetParentPath(dataSourceItems[i]);
+
+                if (this.mReportRepository.ItemExists(dataSourceItems[i].Path, "DataSource"))
+                    throw new ItemAlreadyExistsException(string.Format("The data source '{0}' already exists.", dataSourceItems[i].Path));
 
                 string warning = this.mReportRepository.WriteDataSource(parentPath, dataSourceItems[i]);
                 

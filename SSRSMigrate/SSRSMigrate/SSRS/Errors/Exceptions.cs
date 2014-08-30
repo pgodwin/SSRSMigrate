@@ -41,19 +41,19 @@ namespace SSRSMigrate.SSRS.Errors
         }
     }
 
-    public class InvalidReportDefinition : Exception
+    public class InvalidReportDefinitionException : Exception
     {
-        public InvalidReportDefinition()
+        public InvalidReportDefinitionException()
             : base("InvalidReportDefinition exception")
         {
         }
 
-        public InvalidReportDefinition(string Message)
+        public InvalidReportDefinitionException(string Message)
             : base(Message)
         {
         }
 
-        public InvalidReportDefinition(string Message, Exception inner)
+        public InvalidReportDefinitionException(string Message, Exception inner)
             : base(Message, inner)
         {
         }

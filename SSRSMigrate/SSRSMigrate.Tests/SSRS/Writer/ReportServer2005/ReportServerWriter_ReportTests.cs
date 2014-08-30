@@ -148,7 +148,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 .Throws(new ItemAlreadyExistsException(string.Format("The report '{0}' already exists.", reportItem_AlreadyExists.Path)));
 
             reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_NullDefinition), reportItem_NullDefinition))
-                .Throws(new InvalidReportDefinition(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition)));
+                .Throws(new InvalidReportDefinitionException(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition.Path)));
 
             // Setup IReportServerRepository.ValidatePath Mocks
             reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_CompanySales.Path))
@@ -320,13 +320,13 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
         [Test]
         public void WriteReport_ReportItemNullDefinition()
         {
-            InvalidReportDefinition ex = Assert.Throws<InvalidReportDefinition>(
+            InvalidReportDefinitionException ex = Assert.Throws<InvalidReportDefinitionException>(
                 delegate
                 {
                     writer.WriteReport(reportItem_NullDefinition);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition.Path)));
         }
         #endregion
 
@@ -466,13 +466,13 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
         [Test]
         public void WriteReports_ReportItemNullDefinition()
         {
-            InvalidReportDefinition ex = Assert.Throws<InvalidReportDefinition>(
+            InvalidReportDefinitionException ex = Assert.Throws<InvalidReportDefinitionException>(
                 delegate
                 {
                     writer.WriteReport(reportItem_NullDefinition);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition.Path)));
         }
         #endregion
     }
