@@ -166,7 +166,7 @@ namespace SSRSMigrate.TestHelper
 
             ReportingService2005 service = ReportingService2005TestEnvironment.GetReportingService(url, credentials);
 
-            // If the path exists, delete it so we don't get any unexpected 'FolderAlreadyExists' exceptions while testing
+            // If the path exists, delete it so we don't get any unexpected 'ItemAlreadyExists' exceptions while testing
             if (ReportingService2005TestEnvironment.ItemExists(service, path, ItemTypeEnum.Folder))
                 service.DeleteItem(path);
 
@@ -177,6 +177,36 @@ namespace SSRSMigrate.TestHelper
                     service.DeleteItem(folder.Path);
 
                 ReportingService2005TestEnvironment.CreateFolderFromPath(service, folder.Path);
+            }
+        }
+
+        public static void SetupReportWriterEnvironment(string url,
+            ICredentials credentials,
+            string path,
+            List<ReportItem> reports)
+        {
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentException("path");
+
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentException("path");
+
+            if (reports == null)
+                throw new ArgumentNullException("reports");
+
+            ReportingService2005 service = ReportingService2005TestEnvironment.GetReportingService(url, credentials);
+
+            // If the path exists, delete it so we don't get any unexpected 'ItemAlreadyExists' exceptions while testing
+            if (ReportingService2005TestEnvironment.ItemExists(service, path, ItemTypeEnum.Folder))
+                service.DeleteItem(path);
+
+            // Go through each report and if it exists, delete it and then recreate it
+            foreach (ReportItem report in reports)
+            {
+                if (ReportingService2005TestEnvironment.ItemExists(service, report.Path, ItemTypeEnum.Report))
+                    service.DeleteItem(report.Path);
+
+                ReportingService2005TestEnvironment.CreateReport(service, report);
             }
         }
 
@@ -241,6 +271,38 @@ namespace SSRSMigrate.TestHelper
                 if (ReportingService2005TestEnvironment.ItemExists(service, folder.Path, ItemTypeEnum.Folder))
                     service.DeleteItem(folder.Path);
             }
+
+            // Delete the path if it exists
+            if (ReportingService2005TestEnvironment.ItemExists(service, path, ItemTypeEnum.Folder))
+                service.DeleteItem(path);
+        }
+
+        public static void TeardownReportWriterEnvironment(string url,
+            ICredentials credentials,
+            string path,
+            List<ReportItem> reports)
+        {
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentException("url");
+
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            if (reports == null)
+                throw new ArgumentNullException("reports");
+
+            ReportingService2005 service = ReportingService2005TestEnvironment.GetReportingService(url, credentials);
+
+            // Go through each folder and delete it if it exists
+            foreach (ReportItem report in reports)
+            {
+                if (ReportingService2005TestEnvironment.ItemExists(service, report.Path, ItemTypeEnum.Folder))
+                    service.DeleteItem(report.Path);
+            }
+
+            // Delete the path if it exists
+            if (ReportingService2005TestEnvironment.ItemExists(service, path, ItemTypeEnum.Folder))
+                service.DeleteItem(path);
         }
 
         /// <summary>
@@ -313,8 +375,56 @@ namespace SSRSMigrate.TestHelper
             }
         }
 
+        private static void CreateDataSource(ReportingService2005 reportingService, DataSourceItem dataSource)
+        {
+            if (reportingService == null)
+                throw new ArgumentNullException("reportingService");
+
+            if (dataSource == null)
+                throw new ArgumentNullException("dataSource");
+
+            DataSourceDefinition def = new DataSourceDefinition();
+            def.ConnectString = dataSource.ConnectString;
+
+            switch (dataSource.CredentialsRetrieval)
+            {
+                case "Integrated":
+                    def.CredentialRetrieval = CredentialRetrievalEnum.Integrated; break;
+                case "None":
+                    def.CredentialRetrieval = CredentialRetrievalEnum.None; break;
+                case "Prompt":
+                    def.CredentialRetrieval = CredentialRetrievalEnum.Prompt; break;
+                case "Store":
+                    def.CredentialRetrieval = CredentialRetrievalEnum.Store; break;
+            }
+
+            def.Enabled = dataSource.Enabled;
+            def.EnabledSpecified = dataSource.EnabledSpecified;
+            def.Extension = dataSource.Extension;
+            def.ImpersonateUser = dataSource.ImpersonateUser;
+            def.ImpersonateUserSpecified = dataSource.ImpersonateUserSpecified;
+            def.OriginalConnectStringExpressionBased = dataSource.OriginalConnectStringExpressionBased;
+            def.Password = dataSource.Password;
+            def.Prompt = dataSource.Prompt;
+            def.UseOriginalConnectString = dataSource.UseOriginalConnectString;
+            def.UserName = dataSource.UserName;
+            def.WindowsCredentials = dataSource.WindowsCredentials;
+
+            string parent = TesterUtility.GetParentPath(dataSource.Path);
+
+            ReportingService2005TestEnvironment.CreateFolderFromPath(reportingService, parent);
+
+            reportingService.CreateDataSource(dataSource.Name, parent, true, def, null);
+        }
+
         private static void CreateDataSources(ReportingService2005 reportingService, string path)
         {
+            if (reportingService == null)
+                throw new ArgumentNullException("reportingService");
+
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
             foreach (DataSourceItem dataSource in SetupDataSourceItems)
             {
                 DataSourceDefinition def = new DataSourceDefinition();
@@ -351,8 +461,29 @@ namespace SSRSMigrate.TestHelper
             }
         }
 
+        private static void CreateReport(ReportingService2005 reportingService, ReportItem report)
+        {
+            if (reportingService == null)
+                throw new ArgumentNullException("reportingService");
+
+            if (report == null)
+                throw new ArgumentNullException("report");
+
+            string parent = TesterUtility.GetParentPath(report.Path);
+
+            ReportingService2005TestEnvironment.CreateFolderFromPath(reportingService, parent);
+
+            reportingService.CreateReport(report.Name, parent, true, report.Definition, null);
+        }
+
         private static void CreateReports(ReportingService2005 reportingService, string path)
         {
+            if (reportingService == null)
+                throw new ArgumentNullException("reportingService");
+
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
             foreach (ReportItem report in SetupReportItems)
             {
                 string fullPath = string.Format(report.Path, path);
