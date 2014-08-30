@@ -23,6 +23,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         DataSourceItem dataSourceTwoItem = null;
         DataSourceItem invalidDataSourcePathItem = null;
         DataSourceItem alreadyExistsDataSourceItem = null;
+        DataSourceItem errorDataSourceItem = null;
         List<DataSourceItem> dataSourceItems = null;
         #endregion
 
@@ -137,6 +138,33 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 WindowsCredentials = false
             };
 
+            errorDataSourceItem = new DataSourceItem()
+            {
+                CreatedBy = "DOMAIN\\user",
+                CreationDate = DateTime.Parse("7/23/2014 8:28:43 AM"),
+                Description = null,
+                ID = Guid.NewGuid().ToString(),
+                ModifiedBy = "DOMAIN\\user",
+                ModifiedDate = DateTime.Parse("7/23/2014 8:28:43 AM"),
+                Size = 414,
+                VirtualPath = null,
+                Name = "ErrorDataSource",
+                Path = "/SSRSMigrate_AW_Tests/Data Sources/ErrorDataSource",
+                ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
+                CredentialsRetrieval = "Integrated",
+                Enabled = true,
+                EnabledSpecified = true,
+                Extension = "SQL",
+                ImpersonateUser = false,
+                ImpersonateUserSpecified = true,
+                OriginalConnectStringExpressionBased = false,
+                Password = null,
+                Prompt = "Enter a user name and password to access the data source:",
+                UseOriginalConnectString = false,
+                UserName = null,
+                WindowsCredentials = false
+            };
+
             dataSourceItems = new List<DataSourceItem>()
             {
                 dataSourceItem,
@@ -165,6 +193,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(alreadyExistsDataSourceItem), alreadyExistsDataSourceItem))
                 .Throws(new ItemAlreadyExistsException(string.Format("The data source '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
 
+            reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(errorDataSourceItem), errorDataSourceItem))
+                .Returns(() => string.Format("Error writing data source '{0}': Error!", errorDataSourceItem.Path));
+
             // Setup IReportServerRepository.ValidatePath Mocks
             reportServerRepositoryMock.Setup(r => r.ValidatePath(dataSourceItem.Path))
                .Returns(() => true);
@@ -176,6 +207,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                .Returns(() => true);
 
             reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests"))
+                .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(errorDataSourceItem.Path))
                 .Returns(() => true);
 
             reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
@@ -311,6 +345,14 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 });
 
             Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+        }
+
+        [Test]
+        public void WriteDataSource_DataSourceItemError()
+        {
+            string actual = writer.WriteDataSource(errorDataSourceItem);
+
+            Assert.AreEqual(string.Format("Error writing data source '{0}': Error!", errorDataSourceItem.Path), actual);
         }
         #endregion
 
@@ -451,6 +493,21 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 });
 
             Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+        }
+
+        [Test]
+        public void WriteDataSources_OneOrMoreDataSourceItemError()
+        {
+            List<DataSourceItem> items = new List<DataSourceItem>();
+
+            items.AddRange(dataSourceItems);
+            items.Add(errorDataSourceItem);
+
+            string[] actual = writer.WriteDataSources(items.ToArray());
+
+            Assert.NotNull(actual);
+            Assert.AreEqual(1, actual.Length);
+            Assert.AreEqual(string.Format("Error writing data source '{0}': Error!", errorDataSourceItem.Path), actual[0]);
         }
         #endregion
     }
