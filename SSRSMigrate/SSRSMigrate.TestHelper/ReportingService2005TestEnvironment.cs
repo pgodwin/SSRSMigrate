@@ -138,7 +138,7 @@ namespace SSRSMigrate.TestHelper
             ReportingService2005TestEnvironment.CreateDataSources(service, path);
 
             // Create the the reports
-            ReportingService2005TestEnvironment.CreateReports(service, path);
+            //ReportingService2005TestEnvironment.CreateReports(service, path);
         }
 
         /// <summary>
