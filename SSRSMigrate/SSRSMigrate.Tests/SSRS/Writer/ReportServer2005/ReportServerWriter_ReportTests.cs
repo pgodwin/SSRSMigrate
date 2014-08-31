@@ -357,10 +357,10 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    writer.WriteReport(null);
+                    writer.WriteReports(null);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: reportItem"));
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: reportItems"));
         }
 
         [Test]
