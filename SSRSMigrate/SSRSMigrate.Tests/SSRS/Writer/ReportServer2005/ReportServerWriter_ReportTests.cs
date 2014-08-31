@@ -144,8 +144,8 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
             reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_StoreContacts), reportItem_StoreContacts))
                 .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_AlreadyExists), reportItem_AlreadyExists))
-                .Throws(new ItemAlreadyExistsException(string.Format("The report '{0}' already exists.", reportItem_AlreadyExists.Path)));
+            reportServerRepositoryMock.Setup(r => r.ItemExists(reportItem_AlreadyExists.Path, "Report"))
+                .Returns(() => true);
 
             reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_NullDefinition), reportItem_NullDefinition))
                 .Throws(new InvalidReportDefinitionException(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition.Path)));

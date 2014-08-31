@@ -104,8 +104,8 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             reportServerRepositoryMock.Setup(r => r.CreateFolder(rootSubFolderItem.Name, TesterUtility.GetParentPath(rootSubFolderItem)))
                .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(alreadyExistsFolderItem.Name, TesterUtility.GetParentPath(alreadyExistsFolderItem)))
-                .Throws(new ItemAlreadyExistsException(string.Format("The folder '{0}' already exists.", alreadyExistsFolderItem.Path)));
+            reportServerRepositoryMock.Setup(r => r.ItemExists(alreadyExistsFolderItem.Path, "Folder"))
+                .Returns(() => true);
 
             // IReportServerRepository.ValidatePath Mocks
             reportServerRepositoryMock.Setup(r => r.ValidatePath(rootFolderItem.Path))

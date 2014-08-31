@@ -190,8 +190,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(dataSourceTwoItem), dataSourceTwoItem))
                 .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(alreadyExistsDataSourceItem), alreadyExistsDataSourceItem))
-                .Throws(new ItemAlreadyExistsException(string.Format("The data source '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
+
+            reportServerRepositoryMock.Setup(r => r.ItemExists(alreadyExistsDataSourceItem.Path, "DataSource"))
+                .Returns(() => true);
 
             reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(errorDataSourceItem), errorDataSourceItem))
                 .Returns(() => string.Format("Error writing data source '{0}': Error!", errorDataSourceItem.Path));
