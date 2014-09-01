@@ -26,6 +26,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         ReportItem reportItem_InvalidPath;
         ReportItem reportItem_AlreadyExists;
         ReportItem reportItem_NullDefinition;
+        ReportItem reportItem_Error;
         #endregion
 
         private void SetupReportItems()
@@ -109,6 +110,21 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
                 Definition = null
             };
 
+            reportItem_Error = new ReportItem()
+            {
+                Name = "ERROR",
+                Path = "/SSRSMigrate_AW_Tests/Reports/ERROR",
+                CreatedBy = "DOMAIN\\user",
+                CreationDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
+                Description = null,
+                ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
+                ModifiedBy = "DOMAIN\\user",
+                ModifiedDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
+                Size = 10,
+                VirtualPath = null,
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
+            };
+
             reportItems = new List<ReportItem>()
             {
                 reportItem_CompanySales,
@@ -144,6 +160,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
             reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_StoreContacts), reportItem_StoreContacts))
                 .Returns(() => null);
 
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_Error), reportItem_Error))
+                .Returns(() => new string[] { string.Format("Error writing report '{0}': Error!", reportItem_Error.Path) });
+
             reportServerRepositoryMock.Setup(r => r.ItemExists(reportItem_AlreadyExists.Path, "Report"))
                 .Returns(() => true);
 
@@ -166,10 +185,16 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
             reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_NullDefinition.Path))
               .Returns(() => true);
 
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_Error.Path))
+                .Returns(() => true);
+
             reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
                .Returns(() => false);
 
             reportServerRepositoryMock.Setup(r => r.ValidatePath(""))
+               .Returns(() => false);
+
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_InvalidPath.Path))
                .Returns(() => false);
 
             reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
@@ -328,6 +353,17 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
 
             Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition)));
         }
+
+        [Test]
+        public void WriteReport_ReportItemError()
+        {
+            string[] actual = writer.WriteReport(reportItem_Error);
+
+            Assert.NotNull(actual);
+            Assert.AreEqual(1, actual.Length);
+
+            Assert.AreEqual(string.Format("Error writing report '{0}': Error!", reportItem_Error.Path), actual[0]);
+        }
         #endregion
 
         #region WriteReports Tests
@@ -473,6 +509,24 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
                 });
 
             Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition)));
+        }
+
+        [Test]
+        public void WriteReports_OneOrMoreReportItemError()
+        {
+            List<ReportItem> items = new List<ReportItem>()
+            {
+                reportItem_Error
+            };
+
+            items.Add(reportItem_CompanySales);
+
+            string[] actual = writer.WriteReports(items.ToArray());
+
+            Assert.NotNull(actual);
+            Assert.AreEqual(1, actual.Length);
+
+            Assert.AreEqual(string.Format("Error writing report '{0}': Error!", reportItem_Error.Path), actual[0]);
         }
         #endregion
     }
