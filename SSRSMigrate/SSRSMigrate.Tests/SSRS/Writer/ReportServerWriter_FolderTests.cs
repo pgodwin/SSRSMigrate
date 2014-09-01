@@ -25,6 +25,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         FolderItem rootSubFolderItem = null;
         FolderItem alreadyExistsFolderItem = null;
         FolderItem invalidPathFolderItem = null;
+        FolderItem errorFolderItem = null;
 
         List<FolderItem> folderItems = null;
         #endregion
@@ -68,6 +69,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 Path = "/SSRSMigrate_AW.Tests",
             };
 
+            errorFolderItem = new FolderItem()
+            {
+                Name = "ERROR",
+                Path = "/SSRSMigrate_AW_Tests/ERROR"
+            };
+
             folderItems = new List<FolderItem>()
             {
                 rootFolderItem,
@@ -104,6 +111,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             reportServerRepositoryMock.Setup(r => r.CreateFolder(rootSubFolderItem.Name, TesterUtility.GetParentPath(rootSubFolderItem)))
                .Returns(() => null);
 
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(errorFolderItem.Name, TesterUtility.GetParentPath(errorFolderItem)))
+                .Returns(() => string.Format("Error writing folder '{0}': Error!", errorFolderItem.Path));
+
             reportServerRepositoryMock.Setup(r => r.ItemExists(alreadyExistsFolderItem.Path, "Folder"))
                 .Returns(() => true);
 
@@ -124,6 +134,10 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                .Returns(() => true);
 
             reportServerRepositoryMock.Setup(r => r.ValidatePath(alreadyExistsFolderItem.Path))
+              .Returns(() => true);
+
+            // Validate errorFolderItem.Path so we can mock the error returned by IReportServerRepository.CreateFolder
+            reportServerRepositoryMock.Setup(r => r.ValidatePath(errorFolderItem.Path))
               .Returns(() => true);
 
             reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
@@ -270,6 +284,15 @@ namespace SSRSMigrate.Tests.SSRS.Writer
 
             Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
+
+        [Test]
+        public void WriteFolder_FolderItemError()
+        {
+            string actual = writer.WriteFolder(errorFolderItem);
+
+            Assert.NotNull(actual);
+            Assert.AreEqual(string.Format("Error writing folder '{0}': Error!", errorFolderItem.Path), actual);
+        }
         #endregion
 
         #region WriteFolders Tests
@@ -409,6 +432,23 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 });
 
             Assert.That(ex.Message, Is.StringContaining("Invalid path ''."));
+        }
+
+        [Test]
+        public void WriteFolders_OneOrMoreFolderItemError()
+        {
+            List<FolderItem> items = new List<FolderItem>()
+            {
+                errorFolderItem
+            };
+
+            items.AddRange(folderItems);
+
+            string[] actual = writer.WriteFolders(items.ToArray());
+
+            Assert.NotNull(actual);
+            Assert.AreEqual(1, actual.Length);
+            Assert.AreEqual(string.Format("Error writing folder '{0}': Error!", errorFolderItem.Path), actual[0]);
         }
         #endregion
     }
