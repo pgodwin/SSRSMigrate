@@ -376,19 +376,26 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         }
 
         [Test]
-        public void WriteReports_AlreadyExists()
+        public void WriteReports_OneOrMoreAlreadyExists()
         {
+            List<ReportItem> items = new List<ReportItem>()
+            {
+                reportItem_AlreadyExists
+            };
+
+            items.AddRange(reportItems);
+
             ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
                 {
-                    writer.WriteReport(reportItem_AlreadyExists);
+                    writer.WriteReports(items.ToArray());
                 });
 
             Assert.That(ex.Message, Is.EqualTo(string.Format("The report '{0}' already exists.", reportItem_AlreadyExists.Path)));
         }
 
         [Test]
-        public void WriteReports_NullReportItem()
+        public void WriteReports_NullReportItems()
         {
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
@@ -400,19 +407,26 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         }
 
         [Test]
-        public void WriteReports_InvalidReportPath()
+        public void WriteReports_OneOrMoreInvalidReportPath()
         {
+            List<ReportItem> items = new List<ReportItem>()
+            {
+                reportItem_InvalidPath
+            };
+
+            items.AddRange(reportItems);
+
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
-                    writer.WriteReport(reportItem_InvalidPath);
+                    writer.WriteReports(items.ToArray());
                 });
 
             Assert.That(ex.Message, Is.StringContaining(string.Format("Invalid path '{0}'.", reportItem_InvalidPath.Path)));
         }
 
         [Test]
-        public void WriteReports_ReportItemNullName()
+        public void WriteReports_OneOrMoreReportItemNullName()
         {
             ReportItem report = new ReportItem()
             {
@@ -424,17 +438,24 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
                 Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
+            List<ReportItem> items = new List<ReportItem>()
+            {
+                report
+            };
+
+            items.AddRange(reportItems);
+
             ArgumentException ex = Assert.Throws<ArgumentException>(
                 delegate
                 {
-                    writer.WriteReport(report);
+                    writer.WriteReports(items.ToArray());
                 });
 
             Assert.That(ex.Message, Is.EqualTo("item.Name"));
         }
 
         [Test]
-        public void WriteReports_ReportItemEmptyName()
+        public void WriteReports_OneOrMoreReportItemEmptyName()
         {
             ReportItem report = new ReportItem()
             {
@@ -446,17 +467,24 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
                 Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
+            List<ReportItem> items = new List<ReportItem>()
+            {
+                report
+            };
+
+            items.AddRange(reportItems);
+
             ArgumentException ex = Assert.Throws<ArgumentException>(
                 delegate
                 {
-                    writer.WriteReport(report);
+                    writer.WriteReports(items.ToArray());
                 });
 
             Assert.That(ex.Message, Is.EqualTo("item.Name"));
         }
 
         [Test]
-        public void WriteReports_ReportItemNullPath()
+        public void WriteReports_OneOrMoreReportItemNullPath()
         {
             ReportItem report = new ReportItem()
             {
@@ -468,17 +496,24 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
                 Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
+            List<ReportItem> items = new List<ReportItem>()
+            {
+                report
+            };
+
+            items.AddRange(reportItems);
+
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
-                    writer.WriteReport(report);
+                    writer.WriteReports(items.ToArray());
                 });
 
             Assert.That(ex.Message, Is.StringContaining("Invalid path ''."));
         }
 
         [Test]
-        public void WriteReports_ReportItemEmptyPath()
+        public void WriteReports_OneOrMoreReportItemEmptyPath()
         {
             ReportItem report = new ReportItem()
             {
@@ -490,22 +525,36 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
                 Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
             };
 
+            List<ReportItem> items = new List<ReportItem>()
+            {
+                report
+            };
+
+            items.AddRange(reportItems);
+
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
-                    writer.WriteReport(report);
+                    writer.WriteReports(items.ToArray());
                 });
 
             Assert.That(ex.Message, Is.StringContaining("Invalid path ''."));
         }
 
         [Test]
-        public void WriteReports_ReportItemNullDefinition()
+        public void WriteReports_OneOrMoreReportItemNullDefinition()
         {
+            List<ReportItem> items = new List<ReportItem>()
+            {
+                reportItem_NullDefinition
+            };
+
+            items.AddRange(reportItems);
+
             InvalidReportDefinitionException ex = Assert.Throws<InvalidReportDefinitionException>(
                 delegate
                 {
-                    writer.WriteReport(reportItem_NullDefinition);
+                    writer.WriteReports(items.ToArray());
                 });
 
             Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition)));
