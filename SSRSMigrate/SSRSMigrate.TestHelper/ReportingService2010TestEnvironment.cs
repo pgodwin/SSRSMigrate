@@ -83,12 +83,12 @@ namespace SSRSMigrate.TestHelper
             if (credentials == null)
                 credentials = CredentialCache.DefaultNetworkCredentials;
 
-            if (!url.EndsWith("reportservice2005.asmx"))
+            if (!url.EndsWith("reportservice2010.asmx"))
             {
                 if (url.EndsWith("/"))
                     url = url.Substring(0, url.Length - 1);
 
-                url = string.Format("{0}/reportservice2005.asmx", url);
+                url = string.Format("{0}/reportservice2010.asmx", url);
             }
 
             ReportingService2010 service = new ReportingService2010();
