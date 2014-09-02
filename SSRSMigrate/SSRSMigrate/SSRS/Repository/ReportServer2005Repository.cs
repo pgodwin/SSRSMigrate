@@ -261,7 +261,7 @@ namespace SSRSMigrate.SSRS.Repository
                 throw new ArgumentNullException("reportItem");
 
             if (reportItem.Definition == null)
-                throw new InvalidReportDefinitionException(string.Format("Invalid report definition for report '{0}'.", reportItem.Path));
+                throw new InvalidReportDefinitionException(reportItem.Path);
 
             Warning[] warnings = this.mReportingService.CreateReport(reportItem.Name,
                 reportPath,

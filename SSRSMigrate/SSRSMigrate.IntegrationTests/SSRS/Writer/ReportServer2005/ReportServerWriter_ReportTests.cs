@@ -200,7 +200,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                     writer.WriteReport(reportItem_AlreadyExists);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(string.Format("The report '{0}' already exists.", reportItem_AlreadyExists.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("An item at '{0}' already exists.", reportItem_AlreadyExists.Path)));
         }
 
         [Test]
@@ -363,7 +363,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                     writer.WriteReports(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(string.Format("The report '{0}' already exists.", reportItem_AlreadyExists.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("An item at '{0}' already exists.", reportItem_AlreadyExists.Path)));
         }
 
         [Test]

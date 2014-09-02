@@ -258,7 +258,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                     writer.WriteDataSource(alreadyExistsDataSourceItem);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(string.Format("The data source '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("An item at '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
         }
 
         [Test]
@@ -399,7 +399,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                     writer.WriteDataSources(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(string.Format("The data source '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("An item at '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
         }
 
         [Test]

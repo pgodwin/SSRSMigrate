@@ -27,7 +27,7 @@ namespace SSRSMigrate.SSRS.Reader
                 throw new ArgumentException("path");
 
             if (!this.mReportRepository.ValidatePath(path))
-                throw new InvalidPathException(string.Format("Invalid path '{0}'.", path));
+                throw new InvalidPathException(path);
 
             List<FolderItem> folders = this.mReportRepository.GetFolders(path);
 
@@ -43,7 +43,7 @@ namespace SSRSMigrate.SSRS.Reader
                 throw new ArgumentNullException("progressReporter");
 
             if (!this.mReportRepository.ValidatePath(path))
-                throw new InvalidPathException(string.Format("Invalid path '{0}'.", path));
+                throw new InvalidPathException(path);
 
             var folders = this.mReportRepository.GetFolderList(path);
 
@@ -59,7 +59,7 @@ namespace SSRSMigrate.SSRS.Reader
                 throw new ArgumentException("reportPath");
 
             if (!this.mReportRepository.ValidatePath(reportPath))
-                throw new InvalidPathException(string.Format("Invalid path '{0}'.", reportPath));
+                throw new InvalidPathException(reportPath);
 
             ReportItem report = this.mReportRepository.GetReport(reportPath);
 
@@ -72,7 +72,7 @@ namespace SSRSMigrate.SSRS.Reader
                 throw new ArgumentException("path");
 
             if (!this.mReportRepository.ValidatePath(path))
-                throw new InvalidPathException(string.Format("Invalid path '{0}'.", path));
+                throw new InvalidPathException(path);
 
             return this.mReportRepository.GetReports(path);
         }
@@ -86,7 +86,7 @@ namespace SSRSMigrate.SSRS.Reader
                 throw new ArgumentNullException("progressReporter");
 
             if (!this.mReportRepository.ValidatePath(path))
-                throw new InvalidPathException(string.Format("Invalid path '{0}'.", path));
+                throw new InvalidPathException(path);
 
             var reports = this.mReportRepository.GetReportsList(path);
 
@@ -102,7 +102,7 @@ namespace SSRSMigrate.SSRS.Reader
                 throw new ArgumentException("dataSourcePath");
 
             if (!this.mReportRepository.ValidatePath(dataSourcePath))
-                throw new InvalidPathException(string.Format("Invalid path '{0}'.", dataSourcePath));
+                throw new InvalidPathException(dataSourcePath);
 
             DataSourceItem dataSource = this.mReportRepository.GetDataSource(dataSourcePath);
 
@@ -115,7 +115,7 @@ namespace SSRSMigrate.SSRS.Reader
                 throw new ArgumentException("path");
 
             if (!this.mReportRepository.ValidatePath(path))
-                throw new InvalidPathException(string.Format("Invalid path '{0}'.", path));
+                throw new InvalidPathException(path);
 
             return this.mReportRepository.GetDataSources(path);
         }
@@ -129,7 +129,7 @@ namespace SSRSMigrate.SSRS.Reader
                 throw new ArgumentNullException("progressReporter");
 
             if (!this.mReportRepository.ValidatePath(path))
-                throw new InvalidPathException(string.Format("Invalid path '{0}'.", path));
+                throw new InvalidPathException(path);
 
             var dataSources = this.mReportRepository.GetDataSourcesList(path);
 

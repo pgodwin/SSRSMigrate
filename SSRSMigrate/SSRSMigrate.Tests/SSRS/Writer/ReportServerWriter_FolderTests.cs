@@ -186,7 +186,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                     writer.WriteFolder(alreadyExistsFolderItem);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(string.Format("The folder '{0}' already exists.", alreadyExistsFolderItem.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("An item at '{0}' already exists.", alreadyExistsFolderItem.Path)));
         }
 
         [Test]
@@ -318,7 +318,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                     writer.WriteFolders(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(string.Format("The folder '{0}' already exists.", alreadyExistsFolderItem.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("An item at '{0}' already exists.", alreadyExistsFolderItem.Path)));
         }
 
         [Test]

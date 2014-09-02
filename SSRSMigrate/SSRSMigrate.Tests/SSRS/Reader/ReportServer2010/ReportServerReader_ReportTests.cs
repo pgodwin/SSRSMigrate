@@ -255,6 +255,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
                     reader.GetReport(invalidPath);
                 });
 
+            //TODO Should change this to verify the entire path from invalidPath
             Assert.That(ex.Message, Is.StringContaining("Invalid path"));
         }
 

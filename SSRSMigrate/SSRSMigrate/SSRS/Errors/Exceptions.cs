@@ -12,13 +12,13 @@ namespace SSRSMigrate.SSRS.Errors
         {
         }
 
-        public InvalidItemException(string Message)
-            : base(Message)
+        public InvalidItemException(string itemID)
+            : base(string.Format("The item with ID '{0}' is invalid.", itemID))
         {
         }
 
-        public InvalidItemException(string Message, Exception inner)
-            : base(Message, inner)
+        public InvalidItemException(string itemID, Exception inner)
+            : base(itemID, inner)
         {
         }
     }
@@ -30,13 +30,13 @@ namespace SSRSMigrate.SSRS.Errors
         {
         }
 
-        public InvalidPathException(string Message)
-            : base(Message)
+        public InvalidPathException(string itemPath)
+            : base(string.Format("Invalid path '{0}'.", itemPath))
         {
         }
 
-        public InvalidPathException(string Message, Exception inner)
-            : base(Message, inner)
+        public InvalidPathException(string itemPath, Exception inner)
+            : base(itemPath, inner)
         {
         }
     }
@@ -48,13 +48,13 @@ namespace SSRSMigrate.SSRS.Errors
         {
         }
 
-        public InvalidReportDefinitionException(string Message)
-            : base(Message)
+        public InvalidReportDefinitionException(string itemPath)
+            : base(string.Format("Invalid report definition for report '{0}'.", itemPath))
         {
         }
 
-        public InvalidReportDefinitionException(string Message, Exception inner)
-            : base(Message, inner)
+        public InvalidReportDefinitionException(string itemPath, Exception inner)
+            : base(itemPath, inner)
         {
         }
     }
@@ -66,13 +66,13 @@ namespace SSRSMigrate.SSRS.Errors
         {
         }
 
-        public ItemAlreadyExistsException(string Message)
-            : base(Message)
+        public ItemAlreadyExistsException(string itemPath)
+            : base(string.Format("An item at '{0}' already exists.", itemPath))
         {
         }
 
-        public ItemAlreadyExistsException(string Message, Exception inner)
-            : base(Message, inner)
+        public ItemAlreadyExistsException(string itemPath, Exception inner)
+            : base(itemPath, inner)
         {
         }
     }

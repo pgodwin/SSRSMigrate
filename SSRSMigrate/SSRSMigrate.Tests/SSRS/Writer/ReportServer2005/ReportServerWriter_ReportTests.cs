@@ -164,7 +164,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 .Returns(() => new string[] { string.Format("Error writing report '{0}': Error!", reportItem_Error.Path) });
 
             reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_NullDefinition), reportItem_NullDefinition, It.IsAny<bool>()))
-                .Throws(new InvalidReportDefinitionException(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition.Path)));
+                .Throws(new InvalidReportDefinitionException(reportItem_NullDefinition.Path));
 
             reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_AlreadyExists), reportItem_AlreadyExists, true))
                 .Returns(() => null);
@@ -237,7 +237,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                     writer.WriteReport(reportItem_AlreadyExists);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(string.Format("The report '{0}' already exists.", reportItem_AlreadyExists.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("An item at '{0}' already exists.", reportItem_AlreadyExists.Path)));
         }
 
         [Test]
@@ -410,7 +410,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                     writer.WriteReports(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(string.Format("The report '{0}' already exists.", reportItem_AlreadyExists.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("An item at '{0}' already exists.", reportItem_AlreadyExists.Path)));
         }
 
         [Test]
