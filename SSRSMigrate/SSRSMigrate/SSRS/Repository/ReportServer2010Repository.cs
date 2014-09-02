@@ -8,6 +8,7 @@ using SSRSMigrate.Utility;
 using System.Xml;
 using SSRSMigrate.DataMapper;
 using System.Web.Services.Protocols;
+using SSRSMigrate.SSRS.Errors;
 
 namespace SSRSMigrate.SSRS.Repository
 {
@@ -252,7 +253,30 @@ namespace SSRSMigrate.SSRS.Repository
 
         public string[] WriteReport(string reportPath, ReportItem reportItem)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(reportPath))
+                throw new ArgumentException("reportPath");
+
+            if (reportItem == null)
+                throw new ArgumentNullException("reportItem");
+
+            if (reportItem.Definition == null)
+                throw new InvalidReportDefinitionException(string.Format("Invalid report definition for report '{0}'.", reportItem.Path));
+
+            Warning[] warnings;
+
+            this.mReportingService.CreateCatalogItem("Report",
+                reportItem.Name,
+                reportPath,
+                true,
+                reportItem.Definition,
+                null,
+                out warnings);
+
+            if (warnings != null)
+                if (warnings.Any())
+                    return warnings.Select(s => string.Format("{0}: {1}", s.Code, s.Message)).ToArray<string>();
+
+            return null;
         }
         #endregion
 
