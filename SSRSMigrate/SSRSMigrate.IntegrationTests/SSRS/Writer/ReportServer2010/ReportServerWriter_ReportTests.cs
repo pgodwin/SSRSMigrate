@@ -146,6 +146,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
         public void SetUp()
         {
             SetupEnvironment();
+
+            writer.Overwrite = false; // Reset overwrite property
         }
 
         [TearDown]
@@ -190,7 +192,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
         }
 
         [Test]
-        public void WriteReport_AlreadyExists()
+        public void WriteReport_AlreadyExists_OverwriteDisallowed()
         {
             ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
@@ -199,6 +201,16 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
                 });
 
             Assert.That(ex.Message, Is.EqualTo(string.Format("The report '{0}' already exists.", reportItem_AlreadyExists.Path)));
+        }
+
+        [Test]
+        public void WriteReport_AlreadyExists_OverwriteAllowed()
+        {
+            writer.Overwrite = true; // Allow overwriting of report
+
+            string[] actual = writer.WriteReport(reportItem_AlreadyExists);
+
+            Assert.Null(actual);
         }
 
         [Test]
@@ -336,27 +348,39 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
         }
 
         [Test]
-        public void WriteReports_AlreadyExists()
+        public void WriteReports_AlreadyExists_OverwriteDisallowed()
         {
+            List<ReportItem> items = new List<ReportItem>()
+            {
+                reportItem_AlreadyExists
+            };
+
+            items.AddRange(reportItems);
+
             ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
                 {
-                    writer.WriteReport(reportItem_AlreadyExists);
+                    writer.WriteReports(items.ToArray());
                 });
 
             Assert.That(ex.Message, Is.EqualTo(string.Format("The report '{0}' already exists.", reportItem_AlreadyExists.Path)));
         }
 
         [Test]
-        public void WriteReports_NullReportItem()
+        public void WriteReports_AlreadyExists_OverwriteAllowedllowed()
         {
-            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
-                delegate
-                {
-                    writer.WriteReport(null);
-                });
+            List<ReportItem> items = new List<ReportItem>()
+            {
+                reportItem_AlreadyExists
+            };
 
-            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: reportItem"));
+            items.AddRange(reportItems);
+
+            writer.Overwrite = true; // Allow overwriting of report
+
+            string[] actual = writer.WriteReports(items.ToArray());
+
+            Assert.AreEqual(0, actual.Count());
         }
 
         [Test]

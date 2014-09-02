@@ -220,6 +220,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         public void SetUp()
         {
             SetupEnvironment();
+
+            writer.Overwrite = false; // Reset overwrite property
         }
 
         [TearDown]
@@ -257,7 +259,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         }
 
         [Test]
-        public void WriteDataSource_AlreadyExists()
+        public void WriteDataSource_AlreadyExists_OverwriteDisallow()
         {
             ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
@@ -266,6 +268,16 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                 });
 
             Assert.That(ex.Message, Is.EqualTo(string.Format("The data source '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
+        }
+
+        [Test]
+        public void WriteDataSource_AlreadyExists_OverwriteAllowed()
+        {
+            writer.Overwrite = true; // Allow overwriting of data source
+
+            string actual = writer.WriteDataSource(alreadyExistsDataSourceItem);
+
+            Assert.Null(actual);
         }
 
         [Test]
@@ -375,7 +387,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         }
 
         [Test]
-        public void WriteDataSources_OneOrMoreAlreadyExists()
+        public void WriteDataSources_OneOrMoreAlreadyExists_OverwriteDisallowed()
         {
             List<DataSourceItem> items = new List<DataSourceItem>();
             items.AddRange(dataSourceItems);
@@ -388,6 +400,20 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                 });
 
             Assert.That(ex.Message, Is.EqualTo(string.Format("The data source '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
+        }
+
+        [Test]
+        public void WriteDataSources_OneOrMoreAlreadyExists_OverwriteAllowed()
+        {
+            List<DataSourceItem> items = new List<DataSourceItem>();
+            items.AddRange(dataSourceItems);
+            items.Add(alreadyExistsDataSourceItem);
+
+            writer.Overwrite = true; // Allow overwriting of data soruce
+
+            string[] actual = writer.WriteDataSources(items.ToArray());
+
+            Assert.AreEqual(0, actual.Length);
         }
 
         [Test]
