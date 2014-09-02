@@ -175,27 +175,30 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             var reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
             // Setup IReportServerRepository.WriteDataSource
-            reportServerRepositoryMock.Setup(r => r.WriteDataSource(null, It.IsAny<DataSourceItem>()))
+            reportServerRepositoryMock.Setup(r => r.WriteDataSource(null, It.IsAny<DataSourceItem>(), It.IsAny<bool>()))
                 .Throws(new ArgumentException("dataSourcePath"));
 
-            reportServerRepositoryMock.Setup(r => r.WriteDataSource("", It.IsAny<DataSourceItem>()))
+            reportServerRepositoryMock.Setup(r => r.WriteDataSource("", It.IsAny<DataSourceItem>(), It.IsAny<bool>()))
                 .Throws(new ArgumentException("dataSourcePath"));
 
-            reportServerRepositoryMock.Setup(r => r.WriteDataSource(It.IsAny<string>(), null))
+            reportServerRepositoryMock.Setup(r => r.WriteDataSource(It.IsAny<string>(), null, It.IsAny<bool>()))
                 .Throws(new ArgumentException("dataSource"));
 
-            reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(dataSourceItem), dataSourceItem))
+            reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(dataSourceItem), dataSourceItem, It.IsAny<bool>()))
                 .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(dataSourceTwoItem), dataSourceTwoItem))
+            reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(dataSourceTwoItem), dataSourceTwoItem, It.IsAny<bool>()))
                 .Returns(() => null);
 
+            reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(errorDataSourceItem), errorDataSourceItem, It.IsAny<bool>()))
+                .Returns(() => string.Format("Error writing data source '{0}': Error!", errorDataSourceItem.Path));
 
+            reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(alreadyExistsDataSourceItem), alreadyExistsDataSourceItem, true))
+                .Returns(() => null);
+
+            // Setup IReportServerRepository.ItemExists Mocks
             reportServerRepositoryMock.Setup(r => r.ItemExists(alreadyExistsDataSourceItem.Path, "DataSource"))
                 .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.WriteDataSource(TesterUtility.GetParentPath(errorDataSourceItem), errorDataSourceItem))
-                .Returns(() => string.Format("Error writing data source '{0}': Error!", errorDataSourceItem.Path));
 
             // Setup IReportServerRepository.ValidatePath Mocks
             reportServerRepositoryMock.Setup(r => r.ValidatePath(dataSourceItem.Path))
@@ -231,6 +234,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             writer = null;
         }
 
+        [SetUp]
+        public void SetUp()
+        {
+            writer.Overwrite = false; // Reset overwrite property
+        }
+
         #region WriteDataSource Tests
         [Test]
         public void WriteDataSource()
@@ -241,7 +250,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         }
 
         [Test]
-        public void WriteDataSource_AlreadyExists()
+        public void WriteDataSource_AlreadyExists_OverwriteDisallowed()
         {
             ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
@@ -250,6 +259,16 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 });
 
             Assert.That(ex.Message, Is.EqualTo(string.Format("The data source '{0}' already exists.", alreadyExistsDataSourceItem.Path)));
+        }
+
+        [Test]
+        public void WriteDataSource_AlreadyExists_OverwriteAllowed()
+        {
+            writer.Overwrite = true; // Allow overwriting of data source
+
+            string actual = writer.WriteDataSource(alreadyExistsDataSourceItem);
+
+            Assert.Null(actual);
         }
 
         [Test]

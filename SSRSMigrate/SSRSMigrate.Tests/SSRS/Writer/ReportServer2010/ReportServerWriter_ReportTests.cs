@@ -142,32 +142,36 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
             var reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
             // Setup IReportServerRepository.WriteReport Mocks
-            reportServerRepositoryMock.Setup(r => r.WriteReport(null, It.IsAny<ReportItem>()))
+            reportServerRepositoryMock.Setup(r => r.WriteReport(null, It.IsAny<ReportItem>(), It.IsAny<bool>()))
                 .Throws(new ArgumentException("reportPath"));
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport("", It.IsAny<ReportItem>()))
+            reportServerRepositoryMock.Setup(r => r.WriteReport("", It.IsAny<ReportItem>(), It.IsAny<bool>()))
                 .Throws(new ArgumentException("reportPath"));
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(It.IsAny<string>(), null))
+            reportServerRepositoryMock.Setup(r => r.WriteReport(It.IsAny<string>(), null, It.IsAny<bool>()))
                 .Throws(new ArgumentException("reportItem"));
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_CompanySales), reportItem_CompanySales))
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_NullDefinition), reportItem_NullDefinition, It.IsAny<bool>()))
+                .Throws(new InvalidReportDefinitionException(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition)));
+
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_CompanySales), reportItem_CompanySales, It.IsAny<bool>()))
                 .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_SalesOrderDetail), reportItem_SalesOrderDetail))
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_SalesOrderDetail), reportItem_SalesOrderDetail, It.IsAny<bool>()))
                 .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_StoreContacts), reportItem_StoreContacts))
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_StoreContacts), reportItem_StoreContacts, It.IsAny<bool>()))
                 .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_Error), reportItem_Error))
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_Error), reportItem_Error, It.IsAny<bool>()))
                 .Returns(() => new string[] { string.Format("Error writing report '{0}': Error!", reportItem_Error.Path) });
 
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_AlreadyExists), reportItem_AlreadyExists, true))
+                .Returns(() => null);
+
+            // Setup IReportServerRepository.ItemExists Mocks
             reportServerRepositoryMock.Setup(r => r.ItemExists(reportItem_AlreadyExists.Path, "Report"))
                 .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_NullDefinition), reportItem_NullDefinition))
-                .Throws(new InvalidReportDefinitionException(string.Format("Invalid report definition for report '{0}'.", reportItem_NullDefinition)));
 
             // Setup IReportServerRepository.ValidatePath Mocks
             reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_CompanySales.Path))
@@ -209,6 +213,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
             writer = null;
         }
 
+        [SetUp]
+        public void SetUp()
+        {
+            writer.Overwrite = false; // Reset overwrite property
+        }
+
         #region WriteReport Tests
         [Test]
         public void WriteReport()
@@ -219,7 +229,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         }
 
         [Test]
-        public void WriteReport_AlreadyExists()
+        public void WriteReport_AlreadyExists_OverwriteDisallowed()
         {
             ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
@@ -228,6 +238,15 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
                 });
 
             Assert.That(ex.Message, Is.EqualTo(string.Format("The report '{0}' already exists.", reportItem_AlreadyExists.Path)));
+        }
+
+        [Test]
+        public void WriteReport_AlreadyExists_OverwriteAllowed()
+        {
+            writer.Overwrite = true; // Allow for overwriting of report
+
+            string[] actual = writer.WriteReport(reportItem_AlreadyExists);
+            Assert.Null(actual);
         }
 
         [Test]
@@ -376,7 +395,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         }
 
         [Test]
-        public void WriteReports_OneOrMoreAlreadyExists()
+        public void WriteReports_OneOrMoreAlreadyExists_OverwriteDisallowed()
         {
             List<ReportItem> items = new List<ReportItem>()
             {
@@ -392,6 +411,23 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
                 });
 
             Assert.That(ex.Message, Is.EqualTo(string.Format("The report '{0}' already exists.", reportItem_AlreadyExists.Path)));
+        }
+
+        [Test]
+        public void WriteReports_OneOrMoreAlreadyExists_OverwriteAllowed()
+        {
+            List<ReportItem> items = new List<ReportItem>()
+            {
+                reportItem_AlreadyExists
+            };
+
+            items.AddRange(reportItems);
+
+            writer.Overwrite = true; // Allow for overwriting of report
+
+            string[] actual = writer.WriteReports(items.ToArray());
+
+            Assert.AreEqual(0, actual.Count());
         }
 
         [Test]
