@@ -7,6 +7,7 @@ using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.Utility;
 using System.Xml;
 using SSRSMigrate.DataMapper;
+using System.Web.Services.Protocols;
 
 namespace SSRSMigrate.SSRS.Repository
 {
@@ -98,7 +99,22 @@ namespace SSRSMigrate.SSRS.Repository
 
         public string CreateFolder(string name, string parentPath)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentException("name");
+
+            if (string.IsNullOrEmpty(parentPath))
+                throw new ArgumentException("parentPath");
+
+            try
+            {
+                this.mReportingService.CreateFolder(name, parentPath, null);
+            }
+            catch (SoapException er)
+            {
+                return er.Message;
+            }
+
+            return null;
         }
         #endregion
 
@@ -299,7 +315,61 @@ namespace SSRSMigrate.SSRS.Repository
 
         public string WriteDataSource(string dataSourcePath, DataSourceItem dataSource)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(dataSourcePath))
+                throw new ArgumentException("dataSourcePath");
+
+            if (dataSource == null)
+                throw new ArgumentNullException("dataSource");
+
+            //TODO Should IDataMapper map DataSourceItem to an SSRS DataSource?
+            DataSourceDefinition def = new DataSourceDefinition();
+
+            def.ConnectString = dataSource.ConnectString;
+            def.Enabled = dataSource.Enabled;
+            def.EnabledSpecified = dataSource.EnabledSpecified;
+            def.Extension = dataSource.Extension;
+            def.ImpersonateUser = dataSource.ImpersonateUser;
+            def.ImpersonateUserSpecified = dataSource.ImpersonateUserSpecified;
+            def.OriginalConnectStringExpressionBased = dataSource.OriginalConnectStringExpressionBased;
+            def.Password = dataSource.Password;
+            def.Prompt = dataSource.Prompt;
+            def.UseOriginalConnectString = dataSource.UseOriginalConnectString;
+            def.UserName = dataSource.UserName;
+            def.WindowsCredentials = dataSource.WindowsCredentials;
+
+            switch (dataSource.CredentialsRetrieval)
+            {
+                case "Integrated":
+                    def.CredentialRetrieval = CredentialRetrievalEnum.Integrated;
+                    break;
+                case "None":
+                    def.CredentialRetrieval = CredentialRetrievalEnum.None;
+                    break;
+                case "Prompt":
+                    def.CredentialRetrieval = CredentialRetrievalEnum.Prompt;
+                    break;
+                case "Store":
+                    def.CredentialRetrieval = CredentialRetrievalEnum.Store;
+                    break;
+                default:
+                    def.CredentialRetrieval = CredentialRetrievalEnum.None;
+                    break;
+            }
+
+            try
+            {
+                this.mReportingService.CreateDataSource(dataSource.Name,
+                    dataSourcePath,
+                    true, //TODO Should probably have a method parameter to specify this
+                    def,
+                    null);
+            }
+            catch (SoapException er)
+            {
+                return er.Message;
+            }
+
+            return null;
         }
         #endregion
 
