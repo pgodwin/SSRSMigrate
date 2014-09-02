@@ -257,7 +257,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2005
                     reader.GetReport(invalidPath);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
         }
 
         [Test]
@@ -328,7 +328,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2005
                     reader.GetReports(invalidPath);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
         }
         #endregion
 
@@ -396,7 +396,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2005
                     reader.GetReports(invalidPath, GetReports_Reporter);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
         }
 
         private void GetReports_Reporter(ReportItem reportItem)

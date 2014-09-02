@@ -229,7 +229,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                     reader.GetDataSource(invalidPath);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
         }
         #endregion
 
@@ -287,7 +287,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                     reader.GetDataSources(invalidPath);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
         }
         #endregion
 
@@ -357,7 +357,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                     reader.GetDataSources(invalidPath, GetDataSources_Reporter);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
         }
 
         private void GetDataSources_Reporter(DataSourceItem dataSourceItem)

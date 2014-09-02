@@ -255,8 +255,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
                     reader.GetReport(invalidPath);
                 });
 
-            //TODO Should change this to verify the entire path from invalidPath
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
         }
 
         [Test]
@@ -327,7 +326,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
                     reader.GetReports(invalidPath);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
         }
         #endregion
 
@@ -395,7 +394,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
                     reader.GetReports(invalidPath, GetReports_Reporter);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
         }
 
         private void GetReports_Reporter(ReportItem reportItem)

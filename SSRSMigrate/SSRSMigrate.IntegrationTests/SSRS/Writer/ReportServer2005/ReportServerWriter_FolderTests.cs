@@ -176,7 +176,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                     writer.WriteFolder(invalidPathFolderItem);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPathFolderItem.Path)));
         }
 
         [Test]
@@ -230,7 +230,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                     writer.WriteFolder(folderItem);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", folderItem.Path)));
         }
 
         [Test]
@@ -304,7 +304,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                     writer.WriteFolders(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.StringContaining(string.Format("Invalid path '{0}'", invalidPathFolderItem.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPathFolderItem.Path)));
         }
 
         [Test]
@@ -352,14 +352,18 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         [Test]
         public void WriteFolders_OneOrMoreNullPaths()
         {
-            List<FolderItem> items = new List<FolderItem>();
-
-            items.AddRange(folderItems);
-            items.Add(new FolderItem()
+            FolderItem folderItem = new FolderItem()
             {
                 Name = "SSRSMigrate_AW_Tests",
                 Path = null,
-            });
+            };
+
+            List<FolderItem> items = new List<FolderItem>()
+            {
+                folderItem
+            };
+
+            items.AddRange(folderItems);
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
@@ -367,20 +371,24 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                     writer.WriteFolders(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path ''."));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", folderItem.Path)));
         }
 
         [Test]
         public void WriteFolders_OneOrMoreEmptyPaths()
         {
-            List<FolderItem> items = new List<FolderItem>();
-
-            items.AddRange(folderItems);
-            items.Add(new FolderItem()
+            FolderItem folderItem = new FolderItem()
             {
                 Name = "SSRSMigrate_AW_Tests",
                 Path = "",
-            });
+            };
+
+            List<FolderItem> items = new List<FolderItem>()
+            {
+                folderItem
+            };
+
+            items.AddRange(folderItems);
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
@@ -388,7 +396,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                     writer.WriteFolders(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path ''."));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", folderItem.Path)));
         }
         #endregion
     }

@@ -301,7 +301,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                     writer.WriteDataSource(invalidPathDataSourceItem);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining(string.Format("Invalid path '{0}'.", invalidPathDataSourceItem.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPathDataSourceItem.Path)));
         }
 
         [Test]
@@ -355,7 +355,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                     writer.WriteDataSource(dataSource);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", dataSource.Path)));
         }
 
         [Test]
@@ -442,7 +442,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                     writer.WriteDataSources(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.StringContaining(string.Format("Invalid path '{0}'.", invalidPathDataSourceItem.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPathDataSourceItem.Path)));
         }
 
         [Test]
@@ -499,7 +499,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                     writer.WriteDataSources(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", nullPathDataSourceItem.Path)));
         }
 
         [Test]

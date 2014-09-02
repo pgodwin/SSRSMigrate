@@ -234,7 +234,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
                     writer.WriteReport(reportItem_InvalidPath);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining(string.Format("Invalid path '{0}'.", reportItem_InvalidPath.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", reportItem_InvalidPath.Path)));
         }
 
         [Test]
@@ -300,7 +300,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
                     writer.WriteReport(report);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path ''."));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", report.Path)));
         }
 
         [Test]
@@ -322,7 +322,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
                     writer.WriteReport(report);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path ''."));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", report.Path)));
         }
 
         [Test]
@@ -412,7 +412,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
                     writer.WriteReports(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.StringContaining(string.Format("Invalid path '{0}'.", reportItem_InvalidPath.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", reportItem_InvalidPath.Path)));
         }
 
         [Test]
@@ -499,7 +499,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
                     writer.WriteReports(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path ''."));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", report.Path)));
         }
 
         [Test]
@@ -528,7 +528,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
                     writer.WriteReports(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path ''."));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", report.Path)));
         }
 
         [Test]

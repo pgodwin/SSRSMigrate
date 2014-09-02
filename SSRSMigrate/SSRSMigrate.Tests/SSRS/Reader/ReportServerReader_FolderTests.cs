@@ -175,7 +175,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                     reader.GetFolders(invalidPath);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
         }
         #endregion
 
@@ -243,7 +243,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                     reader.GetFolders(invalidPath, GetFolders_Reporter);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
         }
 
         private void GetFolders_Reporter(FolderItem folderItem)

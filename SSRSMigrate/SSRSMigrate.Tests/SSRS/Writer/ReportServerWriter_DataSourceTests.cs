@@ -292,7 +292,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                     writer.WriteDataSource(invalidDataSourcePathItem);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining(string.Format("Invalid path '{0}'.", invalidDataSourcePathItem.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidDataSourcePathItem.Path)));
         }
 
         [Test]
@@ -346,7 +346,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                     writer.WriteDataSource(dataSource);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", dataSource.Path)));
         }
 
         [Test]
@@ -427,7 +427,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                     writer.WriteDataSources(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.StringContaining(string.Format("Invalid path '{0}'.", invalidDataSourcePathItem.Path)));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidDataSourcePathItem.Path)));
         
         }
 
@@ -476,14 +476,18 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteDataSources_OneOrMoreDataSourceItemNullPath()
         {
-            List<DataSourceItem> items = new List<DataSourceItem>();
-
-            items.AddRange(dataSourceItems);
-            items.Add(new DataSourceItem()
+            DataSourceItem dataSource = new DataSourceItem()
             {
                 Name = "Test Data Source",
                 Path = null,
-            });
+            };
+
+            List<DataSourceItem> items = new List<DataSourceItem>()
+            {
+                dataSource
+            };
+
+            items.AddRange(dataSourceItems);
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
@@ -491,20 +495,24 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                     writer.WriteDataSources(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", dataSource.Path)));
         }
 
         [Test]
         public void WriteDataSources_OneOrMoreDataSourceItemEmptyPath()
         {
-            List<DataSourceItem> items = new List<DataSourceItem>();
-
-            items.AddRange(dataSourceItems);
-            items.Add(new DataSourceItem()
+            DataSourceItem dataSource = new DataSourceItem()
             {
                 Name = "Test Data Source",
                 Path = "",
-            });
+            };
+
+            List<DataSourceItem> items = new List<DataSourceItem>()
+            {
+                dataSource
+            };
+
+            items.AddRange(dataSourceItems);
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
@@ -512,7 +520,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                     writer.WriteDataSources(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", dataSource.Path)));
         }
 
         [Test]
