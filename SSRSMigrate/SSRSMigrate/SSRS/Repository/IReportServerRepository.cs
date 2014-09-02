@@ -22,13 +22,13 @@ namespace SSRSMigrate.SSRS.Repository
         List<ReportItem> GetReports(string path);
         IEnumerable<ReportItem> GetReportsList(string path);
         List<ReportItem> GetSubReports(string reportDefinition);
-        string[] WriteReport(string reportPath, ReportItem reportItem);
+        string[] WriteReport(string reportPath, ReportItem reportItem, bool overwrite);
 
         // Data Source
         DataSourceItem GetDataSource(string dataSourcePath);
         List<DataSourceItem> GetDataSources(string path);
         IEnumerable<DataSourceItem> GetDataSourcesList(string path);
-        string WriteDataSource(string dataSourcePath, DataSourceItem dataSource);
+        string WriteDataSource(string dataSourcePath, DataSourceItem dataSource, bool overwrite);
 
         // Misc.
         bool ValidatePath(string path);

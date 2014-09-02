@@ -252,7 +252,7 @@ namespace SSRSMigrate.SSRS.Repository
             return subReports;
         }
 
-        public string[] WriteReport(string reportPath, ReportItem reportItem)
+        public string[] WriteReport(string reportPath, ReportItem reportItem, bool overwrite)
         {
             if (string.IsNullOrEmpty(reportPath))
                 throw new ArgumentException("reportPath");
@@ -265,7 +265,7 @@ namespace SSRSMigrate.SSRS.Repository
 
             Warning[] warnings = this.mReportingService.CreateReport(reportItem.Name,
                 reportPath,
-                true,
+                overwrite,
                 reportItem.Definition,
                 null);
 
@@ -334,7 +334,7 @@ namespace SSRSMigrate.SSRS.Repository
                     yield return item;
         }
 
-        public string WriteDataSource(string dataSourcePath, DataSourceItem dataSource)
+        public string WriteDataSource(string dataSourcePath, DataSourceItem dataSource, bool overwrite)
         {
             if (string.IsNullOrEmpty(dataSourcePath))
                 throw new ArgumentException("dataSourcePath");
@@ -381,7 +381,7 @@ namespace SSRSMigrate.SSRS.Repository
             {
                 this.mReportingService.CreateDataSource(dataSource.Name,
                     dataSourcePath,
-                    true, //TODO Should probably have a method parameter to specify this
+                    overwrite,
                     def,
                     null);
             }

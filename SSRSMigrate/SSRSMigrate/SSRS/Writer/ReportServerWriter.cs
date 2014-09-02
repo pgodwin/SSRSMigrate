@@ -12,6 +12,13 @@ namespace SSRSMigrate.SSRS.Writer
     public class ReportServerWriter : IReportServerWriter
     {
         private readonly IReportServerRepository mReportRepository;
+        private bool mOverwrite = false;
+
+        public bool Overwrite
+        {
+            get { return this.mOverwrite; }
+            set { this.mOverwrite = value; }
+        }
 
         public ReportServerWriter(IReportServerRepository repository)
         {
@@ -64,7 +71,8 @@ namespace SSRSMigrate.SSRS.Writer
                 string parentPath = SSRSUtil.GetParentPath(folderItems[i]);
 
                 // Check if a folder already exists at the specified path
-                if (this.mReportRepository.ItemExists(folderItems[i].Path, "Folder"))
+                if (!this.mOverwrite)
+                    if (this.mReportRepository.ItemExists(folderItems[i].Path, "Folder"))
                     throw new ItemAlreadyExistsException(string.Format("The folder '{0}' already exists.", folderItems[i].Path));
 
                 string warning = this.mReportRepository.CreateFolder(name, parentPath);
@@ -92,11 +100,12 @@ namespace SSRSMigrate.SSRS.Writer
             string parentPath = SSRSUtil.GetParentPath(reportItem);
 
             // Check if a report already exists at the specified path
-            if (this.mReportRepository.ItemExists(reportItem.Path, "Report"))
-                throw new ItemAlreadyExistsException(string.Format("The report '{0}' already exists.", reportItem.Path));
+            if (!this.mOverwrite)
+                if (this.mReportRepository.ItemExists(reportItem.Path, "Report"))
+                    throw new ItemAlreadyExistsException(string.Format("The report '{0}' already exists.", reportItem.Path));
 
             // Create the report at parentPath and return any warnings
-            return this.mReportRepository.WriteReport(parentPath, reportItem);
+            return this.mReportRepository.WriteReport(parentPath, reportItem, this.mOverwrite);
         }
 
         public string[] WriteReports(ReportItem[] reportItems)
@@ -120,7 +129,7 @@ namespace SSRSMigrate.SSRS.Writer
                 if (this.mReportRepository.ItemExists(reportItems[i].Path, "Report"))
                     throw new ItemAlreadyExistsException(string.Format("The report '{0}' already exists.", reportItems[i].Path));
 
-                string[] report_warnings = this.mReportRepository.WriteReport(parentPath, reportItems[i]);
+                string[] report_warnings = this.mReportRepository.WriteReport(parentPath, reportItems[i], this.mOverwrite);
 
                 if (report_warnings != null)
                     warnings.AddRange(report_warnings);
@@ -146,7 +155,7 @@ namespace SSRSMigrate.SSRS.Writer
             if (this.mReportRepository.ItemExists(dataSourceItem.Path, "DataSource"))
                 throw new ItemAlreadyExistsException(string.Format("The data source '{0}' already exists.", dataSourceItem.Path));
 
-            return this.mReportRepository.WriteDataSource(parentPath, dataSourceItem);
+            return this.mReportRepository.WriteDataSource(parentPath, dataSourceItem, this.mOverwrite);
         }
 
         public string[] WriteDataSources(DataSourceItem[] dataSourceItems)
@@ -167,7 +176,7 @@ namespace SSRSMigrate.SSRS.Writer
                 if (this.mReportRepository.ItemExists(dataSourceItems[i].Path, "DataSource"))
                     throw new ItemAlreadyExistsException(string.Format("The data source '{0}' already exists.", dataSourceItems[i].Path));
 
-                string warning = this.mReportRepository.WriteDataSource(parentPath, dataSourceItems[i]);
+                string warning = this.mReportRepository.WriteDataSource(parentPath, dataSourceItems[i], this.mOverwrite);
                 
                 if (!string.IsNullOrEmpty(warning))
                     warnings.Add(warning);
