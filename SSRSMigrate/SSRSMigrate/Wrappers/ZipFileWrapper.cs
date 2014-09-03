@@ -15,9 +15,20 @@ namespace SSRSMigrate.Wrappers
             this.mZipFile = new ZipFile();
         }
 
+        public ZipFileWrapper(string comment)
+        {
+            this.mZipFile = new ZipFile();
+            this.mZipFile.Comment = comment;
+        }
+
         public void AddEntry(string entryName, string content)
         {
             this.mZipFile.AddEntry(entryName, content);
+        }
+
+        public void AddFile(string fileName)
+        {
+            this.mZipFile.AddFile(fileName);
         }
 
         public void AddFile(string fileName, string directoryPathInArchive)
@@ -28,6 +39,11 @@ namespace SSRSMigrate.Wrappers
         public void AddDirectory(string directoryName)
         {
             this.mZipFile.AddDirectory(directoryName);
+        }
+
+        public void AddDirectory(string directoryName, string directoryPathInArchive)
+        {
+            this.mZipFile.AddDirectory(directoryName, directoryPathInArchive);
         }
 
         public void Save(string fileName)
