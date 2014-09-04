@@ -5,8 +5,9 @@ using System.Text;
 
 namespace SSRSMigrate.Exporter
 {
-    public interface IZipBundler
+    public class BundleSummaryEntry
     {
-
+        public string Path { get; set; }
+        public string CheckSum { get; set; }
     }
 }

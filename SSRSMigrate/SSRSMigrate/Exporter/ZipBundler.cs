@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using Ionic.Zip;
 using SSRSMigrate.Wrappers;
+using System.Security.Cryptography;
+using System.IO;
+using SSRSMigrate.SSRS.Item;
 
 namespace SSRSMigrate.Exporter
 {
@@ -72,21 +75,63 @@ namespace SSRSMigrate.Exporter
     //    ]
     //}
 
-    public class ZipBundler : IZipBundler
+    public class ZipBundler : IBundler
     {
         private readonly IZipFileWrapper mZipFileWrapper = null;
+        private readonly ICheckSumGenerator mCheckSumGenerator = null;
+        private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
 
-        public ZipBundler(IZipFileWrapper zipFileWrapper)
+        public ZipBundler(IZipFileWrapper zipFileWrapper, ICheckSumGenerator checkSumGenerator)
         {
             if (zipFileWrapper == null)
                 throw new ArgumentException("zipFileWrapper");
 
+            if (checkSumGenerator == null)
+                throw new ArgumentException("checkSumGenerator");
+
             this.mZipFileWrapper = zipFileWrapper;
+            this.mCheckSumGenerator = checkSumGenerator;
+            this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>();
         }
 
         ~ZipBundler()
         {
             this.mZipFileWrapper.Dispose();
+        }
+
+        public BundleSummaryEntry CreateEntrySummary(string item)
+        {
+            if (string.IsNullOrEmpty(item))
+                throw new ArgumentException("item");
+
+            throw new NotImplementedException();
+        }
+
+        public void AddItem(string key, string itemFileName, string itemPath)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentException("key");
+
+            if (string.IsNullOrEmpty(itemFileName))
+                throw new ArgumentException("fileName");
+
+            if (string.IsNullOrEmpty(itemPath))
+                throw new ArgumentException("itemPath");
+
+            //TODO Take itemFileName and convert it to a path like this "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json"
+        }
+
+        public string CreateSummary()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Save(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentException("fileName");
+
+            throw new NotImplementedException();
         }
     }
 }

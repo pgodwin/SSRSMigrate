@@ -94,9 +94,12 @@
     <Compile Include="DataMapper\ReportingService2010DataMapper.cs" />
     <Compile Include="DependencyModule.cs" />
     <Compile Include="Enum\SSRSEnumerations.cs" />
+    <Compile Include="Exporter\BundleSummaryEntry.cs" />
     <Compile Include="Exporter\DataSourceItemExporter.cs" />
     <Compile Include="Exporter\ExportStatus.cs" />
-    <Compile Include="Exporter\IZipBundler.cs" />
+    <Compile Include="Exporter\IBundler.cs" />
+    <Compile Include="Exporter\ICheckSumGenerator.cs" />
+    <Compile Include="Exporter\MD5CheckSumGenerator.cs" />
     <Compile Include="Exporter\Writer\FileExportWriter.cs" />
     <Compile Include="Exporter\FolderItemExporter.cs" />
     <Compile Include="Exporter\Writer\FolderExportWriter.cs" />
