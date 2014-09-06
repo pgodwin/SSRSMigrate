@@ -7,6 +7,7 @@ using SSRSMigrate.Wrappers;
 using System.Security.Cryptography;
 using System.IO;
 using SSRSMigrate.SSRS.Item;
+using Newtonsoft.Json;
 
 namespace SSRSMigrate.Exporter
 {
@@ -81,6 +82,18 @@ namespace SSRSMigrate.Exporter
         private readonly ICheckSumGenerator mCheckSumGenerator = null;
         private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
 
+        private string mExportSummaryFilename = "ExportSummary.json";
+
+        public string ExportSummaryFilename
+        {
+            get { return this.mExportSummaryFilename; }
+        }
+
+        public Dictionary<string, List<BundleSummaryEntry>> Entries
+        {
+            get { return this.mEntries; }
+        }
+
         public ZipBundler(IZipFileWrapper zipFileWrapper, ICheckSumGenerator checkSumGenerator)
         {
             if (zipFileWrapper == null)
@@ -91,7 +104,14 @@ namespace SSRSMigrate.Exporter
 
             this.mZipFileWrapper = zipFileWrapper;
             this.mCheckSumGenerator = checkSumGenerator;
-            this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>();
+
+            // Create entries Dictionary with default keys
+            this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>()
+		    {
+			    { "DataSources", new List<BundleSummaryEntry>() },
+			    { "Reports", new List<BundleSummaryEntry>() },
+			    { "Folders", new List<BundleSummaryEntry>() }
+		    };
         }
 
         ~ZipBundler()
@@ -99,15 +119,58 @@ namespace SSRSMigrate.Exporter
             this.mZipFileWrapper.Dispose();
         }
 
-        public BundleSummaryEntry CreateEntrySummary(string item)
+        /// <summary>
+        /// Gets the path to the file/folder as it will be stored in the zip archive.
+        /// </summary>
+        /// <param name="itemFileName">Name of the item file.</param>
+        /// <param name="itemPath">The item path.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentException">
+        /// itemFileName
+        /// or
+        /// itemPath
+        /// </exception>
+        public string GetZipPath(string itemFileName, string itemPath)
         {
-            if (string.IsNullOrEmpty(item))
-                throw new ArgumentException("item");
+            if (string.IsNullOrEmpty(itemFileName))
+                throw new ArgumentException("itemFileName");
 
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(itemPath))
+                throw new ArgumentException("itemPath");
+
+            // Replace / with \ in the item's path so we can get the path for the file in the summary
+            string summaryPathPart = itemPath.Replace("/", "\\");
+
+            // If the itemFileName does not contain the itemPath, throw an exception
+            //  because we can't parse the path for the summary
+            if (!itemFileName.Contains(summaryPathPart))
+                throw new Exception(string.Format("Item path '{0}' is invalid.", itemPath));
+
+            summaryPathPart = itemFileName.Substring(itemFileName.LastIndexOf(summaryPathPart));
+
+            string summaryFullPath = string.Format("Export{0}", summaryPathPart);
+
+            return summaryFullPath;
         }
 
-        public void AddItem(string key, string itemFileName, string itemPath)
+        public BundleSummaryEntry CreateEntrySummary(string itemFileName, string zipPath)
+        {
+            if (string.IsNullOrEmpty(itemFileName))
+                throw new ArgumentException("itemFileName");
+
+            if (string.IsNullOrEmpty(zipPath))
+                throw new ArgumentException("zipPath");
+
+            BundleSummaryEntry entry = new BundleSummaryEntry()
+            {
+                CheckSum = this.mCheckSumGenerator.CreateCheckSum(itemFileName),
+                Path = zipPath
+            };
+
+            return entry;
+        }
+
+        public void AddItem(string key, string itemFileName, string itemPath, bool isFolder)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentException("key");
@@ -118,11 +181,30 @@ namespace SSRSMigrate.Exporter
             if (string.IsNullOrEmpty(itemPath))
                 throw new ArgumentException("itemPath");
 
-            //TODO Take itemFileName and convert it to a path like this "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json"
+            //BundleSummaryEntry entry = this.CreateEntrySummary(itemFileName, itemPath);
+
+            //this.mEntries[key].Add(entry);
+
+            //if (isFolder)
+            //    this.mZipFileWrapper.AddDirectory(itemFileName, entry.Path);
+            //else
+            //{
+            //    string zipPath = entry.Path.Substring(0, entry.Path.LastIndexOf("\\"));
+
+            //    this.mZipFileWrapper.AddFile(itemFileName, zipPath);
+            //}
+
+            throw new NotImplementedException();
         }
 
         public string CreateSummary()
         {
+            //string summary = JsonConvert.SerializeObject(this.mEntries, Formatting.Indented);
+
+            //this.mZipFileWrapper.AddEntry(this.mExportSummaryFilename, summary);
+
+            //return summary;
+
             throw new NotImplementedException();
         }
 
@@ -131,7 +213,9 @@ namespace SSRSMigrate.Exporter
             if (string.IsNullOrEmpty(fileName))
                 throw new ArgumentException("fileName");
 
-            throw new NotImplementedException();
+            this.mZipFileWrapper.Save(fileName, true);
+
+            return fileName;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Ionic.Zip;
+using System.IO;
 
 namespace SSRSMigrate.Wrappers
 {
@@ -38,16 +39,27 @@ namespace SSRSMigrate.Wrappers
 
         public void AddDirectory(string directoryName)
         {
-            this.mZipFile.AddDirectory(directoryName);
+            if (!this.mZipFile.Any(entry => entry.FileName.Contains(directoryName.Replace("\\", "/"))))
+                this.mZipFile.AddDirectory(directoryName);
         }
 
         public void AddDirectory(string directoryName, string directoryPathInArchive)
         {
-            this.mZipFile.AddDirectory(directoryName, directoryPathInArchive);
+            if (!this.mZipFile.Any(entry => entry.FileName.Contains(directoryPathInArchive.Replace("\\", "/"))))
+                this.mZipFile.AddDirectory(directoryName, directoryPathInArchive);
         }
 
         public void Save(string fileName)
         {
+            this.Save(fileName, false);
+        }
+
+        public void Save(string fileName, bool overwrite)
+        {
+            if (overwrite)
+                if (File.Exists(fileName))
+                    File.Delete(fileName);
+
             this.mZipFile.Save(fileName);
         }
 

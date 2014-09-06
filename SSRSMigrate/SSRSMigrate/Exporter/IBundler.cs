@@ -8,10 +8,11 @@ namespace SSRSMigrate.Exporter
 {
     public interface IBundler
     {
-        BundleSummaryEntry CreateEntrySummary(string item);
-
-        void AddItem(string key, string itemFileName, string itemPath);
-
+        string ExportSummaryFilename { get; }
+        Dictionary<string, List<BundleSummaryEntry>> Entries { get; }
+        string GetZipPath(string itemFileName, string itemPath);
+        BundleSummaryEntry CreateEntrySummary(string itemFileName, string zipPath);
+        void AddItem(string key, string itemFileName, string itemPath, bool isFolder);
         string CreateSummary();
         string Save(string fileName);
     }
