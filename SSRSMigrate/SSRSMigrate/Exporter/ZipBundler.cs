@@ -100,10 +100,10 @@ namespace SSRSMigrate.Exporter
         public ZipBundler(IZipFileWrapper zipFileWrapper, ICheckSumGenerator checkSumGenerator)
         {
             if (zipFileWrapper == null)
-                throw new ArgumentException("zipFileWrapper");
+                throw new ArgumentNullException("zipFileWrapper");
 
             if (checkSumGenerator == null)
-                throw new ArgumentException("checkSumGenerator");
+                throw new ArgumentNullException("checkSumGenerator");
 
             this.mZipFileWrapper = zipFileWrapper;
             this.mCheckSumGenerator = checkSumGenerator;

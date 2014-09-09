@@ -184,6 +184,30 @@ namespace SSRSMigrate.Tests.Exporter
 
             Assert.NotNull(actual);
         }
+
+        [Test]
+        public void Constructor_Null_ZipFile()
+        {
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    new ZipBundler(null, checkSumGenMock.Object);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: zipFileWrapper"));
+        }
+
+        [Test]
+        public void Constructor_Null_CheckSumGenFile()
+        {
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    new ZipBundler(zipFileMock.Object, null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: checkSumGenerator"));
+        }
         #endregion
 
         #region GetZipPath Tests
