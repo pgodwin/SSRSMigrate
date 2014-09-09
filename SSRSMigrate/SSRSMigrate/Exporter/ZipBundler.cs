@@ -185,20 +185,18 @@ namespace SSRSMigrate.Exporter
             if (string.IsNullOrEmpty(itemPath))
                 throw new ArgumentException("itemPath");
 
-            //BundleSummaryEntry entry = this.CreateEntrySummary(itemFileName, itemPath);
+            // Get the path for inside the zip archive
+            string zipPath = this.GetZipPath(itemFileName, itemPath);
 
-            //this.mEntries[key].Add(entry);
+            // If it is a folder, add the folder to the archive, otherwise add file
+            if (isFolder)
+                this.mZipFileWrapper.AddDirectory(itemFileName, zipPath);
+            else
+                this.mZipFileWrapper.AddFile(itemFileName, zipPath);
 
-            //if (isFolder)
-            //    this.mZipFileWrapper.AddDirectory(itemFileName, entry.Path);
-            //else
-            //{
-            //    string zipPath = entry.Path.Substring(0, entry.Path.LastIndexOf("\\"));
+            BundleSummaryEntry entry = this.CreateEntrySummary(itemFileName, zipPath);
 
-            //    this.mZipFileWrapper.AddFile(itemFileName, zipPath);
-            //}
-
-            throw new NotImplementedException();
+            this.mEntries[key].Add(entry);
         }
 
         public string CreateSummary()

@@ -109,6 +109,14 @@ namespace SSRSMigrate.Tests.Exporter
             CheckSum = "",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports\\File Doesnt Exist.rdl"
         };
+
+        TestData folderDesNotExistReport = new TestData()
+        {
+            FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist",
+            Path = "/SSRSMigrate_AW_Tests/Folder Doesnt Exist",
+            CheckSum = "",
+            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist"
+        };
         #endregion
 
         [TestFixtureSetUp]
@@ -120,10 +128,22 @@ namespace SSRSMigrate.Tests.Exporter
             // IZipFileWrapper Mocks
             zipFileMock.Setup(z => z.AddDirectory(It.IsAny<string>()));
             zipFileMock.Setup(z => z.AddDirectory(It.IsAny<string>(), It.IsAny<string>()));
+            zipFileMock.Setup(z => z.AddDirectory(folderDesNotExistReport.FileName, folderDesNotExistReport.ZipPath))
+                .Throws(new DirectoryNotFoundException(folderDesNotExistReport.FileName));
+            zipFileMock.Setup(z => z.AddDirectory(doesNotExistReport.FileName, doesNotExistReport.ZipPath))
+                .Throws(new DirectoryNotFoundException(doesNotExistReport.FileName));
+
             zipFileMock.Setup(z => z.AddEntry(It.IsAny<string>(), It.IsAny<string>()));
+
             zipFileMock.Setup(z => z.AddFile(It.IsAny<string>()));
             zipFileMock.Setup(z => z.AddFile(It.IsAny<string>(), It.IsAny<string>()));
+            zipFileMock.Setup(z => z.AddFile(doesNotExistReport.FileName, doesNotExistReport.ZipPath))
+                .Throws(new FileNotFoundException(doesNotExistReport.FileName));
+            zipFileMock.Setup(z => z.AddDirectory(folderDesNotExistReport.FileName, folderDesNotExistReport.ZipPath))
+                .Throws(new FileNotFoundException(folderDesNotExistReport.FileName));
+
             zipFileMock.Setup(z => z.Dispose());
+
             zipFileMock.Setup(z => z.Save(It.IsAny<string>()));
 
             // ICheckSumGenerator Mocks
@@ -405,10 +425,40 @@ namespace SSRSMigrate.Tests.Exporter
         }
         #endregion
 
-        //TODO AddItem Tests that verifies entries property
+        #region AddItem DataSource Tests
+        [Test]
+        public void AddItem_DataSource()
+        {
+            zipBundler.AddItem("DataSources",
+                awDataSource.FileName,
+                awDataSource.Path,
+                false);
+
+            // Verify that the file was added to the zip
+            zipFileMock.Verify(z => z.AddFile(awDataSource.FileName, awDataSource.ZipPath));
+        }
+
+        //TODO AddItem_DataSource_NullKey
+        //TODO AddItem_DataSource_EmptyKey
+        //TODO AddItem_DataSource_NullItemFileName
+        //TODO AddItem_DataSource_EmptyItemFileName
+        //TODO AddItem_DataSource_NullItemPath
+        //TODO AddItem_DataSource_EmptyItemPath
+        //TODO AddItem_DataSource_InvalidItemPath
+        //TODO AddItem_DataSource_DirectoryTrue (Throws DirectoryNotFoundException)
+        //TODO AddItem_DataSource_FileNotFound (Throws FileNotFoundException)
+        #endregion
+
+        //TODO AddItem Folder Tests
+
+        //TODO AddItem Report Tests
 
         //TODO CreateSummary Tests
+        #region CreateSummary Tests
+        #endregion
 
         //TODO Save Tests
+        #region Save Tests
+        #endregion
     }
 }
