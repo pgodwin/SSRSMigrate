@@ -76,6 +76,9 @@ namespace SSRSMigrate.Exporter
     //    ]
     //}
 
+    /// <summary>
+    /// Bundles exported Report Server data in a zip archive that can be imported later.
+    /// </summary>
     public class ZipBundler : IBundler
     {
         private readonly IZipFileWrapper mZipFileWrapper = null;
