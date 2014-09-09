@@ -39,12 +39,18 @@ namespace SSRSMigrate.Wrappers
 
         public void AddDirectory(string directoryName)
         {
+            if (!Directory.Exists(directoryName))
+                throw new DirectoryNotFoundException(directoryName);
+
             if (!this.mZipFile.Any(entry => entry.FileName.Contains(directoryName.Replace("\\", "/"))))
                 this.mZipFile.AddDirectory(directoryName);
         }
 
         public void AddDirectory(string directoryName, string directoryPathInArchive)
         {
+            if (!Directory.Exists(directoryName))
+                throw new DirectoryNotFoundException(directoryName);
+
             if (!this.mZipFile.Any(entry => entry.FileName.Contains(directoryPathInArchive.Replace("\\", "/"))))
                 this.mZipFile.AddDirectory(directoryName, directoryPathInArchive);
         }
