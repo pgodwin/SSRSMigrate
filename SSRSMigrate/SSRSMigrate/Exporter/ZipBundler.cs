@@ -119,7 +119,8 @@ namespace SSRSMigrate.Exporter
 
         ~ZipBundler()
         {
-            this.mZipFileWrapper.Dispose();
+            if (this.mZipFileWrapper != null)
+                this.mZipFileWrapper.Dispose();
         }
 
         /// <summary>
