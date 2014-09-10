@@ -125,13 +125,17 @@ namespace SSRSMigrate.Tests.Exporter
             zipFileMock = new Mock<IZipFileWrapper>();
             checkSumGenMock = new Mock<ICheckSumGenerator>();
 
-            // IZipFileWrapper Mocks
+            // IZipFileWrapper.AddDirectory Mocks
             zipFileMock.Setup(z => z.AddDirectory(It.IsAny<string>()));
+            
             zipFileMock.Setup(z => z.AddDirectory(It.IsAny<string>(), It.IsAny<string>()));
+            
             zipFileMock.Setup(z => z.AddDirectory(folderDesNotExistReport.FileName, folderDesNotExistReport.ZipPath))
                 .Throws(new DirectoryNotFoundException(folderDesNotExistReport.FileName));
+            
             zipFileMock.Setup(z => z.AddDirectory(doesNotExistReport.FileName, doesNotExistReport.ZipPath))
                 .Throws(new DirectoryNotFoundException(doesNotExistReport.FileName));
+            
             zipFileMock.Setup(z => z.AddDirectory(folderDesNotExistReport.FileName, folderDesNotExistReport.ZipPath))
                 .Throws(new FileNotFoundException(folderDesNotExistReport.FileName));
             
@@ -139,22 +143,28 @@ namespace SSRSMigrate.Tests.Exporter
             zipFileMock.Setup(z => z.AddDirectory(awDataSource.FileName, awDataSource.ZipPath))
                 .Throws(new DirectoryNotFoundException(awDataSource.FileName));
 
+            // IZipFileWrapper.AddEntry Mocks
             zipFileMock.Setup(z => z.AddEntry(It.IsAny<string>(), It.IsAny<string>()));
 
+            // IZipFileWrapper.AddFile Mocks
             zipFileMock.Setup(z => z.AddFile(It.IsAny<string>()));
+            
             zipFileMock.Setup(z => z.AddFile(It.IsAny<string>(), It.IsAny<string>()));
+            
             zipFileMock.Setup(z => z.AddFile(doesNotExistReport.FileName, doesNotExistReport.ZipPath))
                 .Throws(new FileNotFoundException(doesNotExistReport.FileName));
 
             // Mock passing a directory to AddFile
             zipFileMock.Setup(z => z.AddFile(rootFolder.FileName, rootFolder.ZipPath))
                 .Throws(new FileNotFoundException(rootFolder.FileName));
-            
+
+            // IZipFileWrapper.Dispose Mocks
             zipFileMock.Setup(z => z.Dispose());
 
+            // IZipFileWrapper.Save Mocks
             zipFileMock.Setup(z => z.Save(It.IsAny<string>()));
 
-            // ICheckSumGenerator Mocks
+            // ICheckSumGenerator.CreateCheckSum Mocks
             checkSumGenMock.Setup(c => c.CreateCheckSum(
                 awDataSource.FileName))
                 .Returns(() => awDataSource.CheckSum);
