@@ -616,8 +616,178 @@ namespace SSRSMigrate.Tests.Exporter
         }
         #endregion
 
-        //TODO AddItem Folder Tests
+        #region AddItem Folder Tests
+        [Test]
+        public void AddItem_Folder()
+        {
+            zipBundler.AddItem("Folders",
+                rootFolder.FileName,
+                rootFolder.Path,
+                true);
 
+            // Verify that the folder was added to the zip
+            zipFileMock.Verify(z => z.AddDirectory(rootFolder.FileName, rootFolder.ZipPath));
+        }
+
+        [Test]
+        public void AddItem_Folder_KeyDoesntExist()
+        {
+            KeyNotFoundException ex = Assert.Throws<KeyNotFoundException>(
+                delegate
+                {
+                    zipBundler.AddItem("DoesntExist",
+                        rootFolder.FileName,
+                        rootFolder.Path,
+                        true);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("DoesntExist"));
+        }
+
+        [Test]
+        public void AddItem_Folder_NullKey()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem(null,
+                        rootFolder.FileName,
+                        rootFolder.Path,
+                        true);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("key"));
+        }
+
+        [Test]
+        public void AddItem_Folder_EmptyKey()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("",
+                        rootFolder.FileName,
+                        rootFolder.Path,
+                        true);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("key"));
+        }
+
+        [Test]
+        public void AddItem_Folder_NullItemFileName()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("Folders",
+                        null,
+                        rootFolder.Path,
+                        true);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemFileName"));
+        }
+
+        [Test]
+        public void AddItem_Folder_EmptyItemFileName()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("Folders",
+                        "",
+                        rootFolder.Path,
+                        true);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemFileName"));
+        }
+
+        [Test]
+        public void AddItem_Folder_NullItemPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("Folders",
+                        rootFolder.FileName,
+                        null,
+                        true);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemPath"));
+        }
+
+        [Test]
+        public void AddItem_Folder_EmptyItemPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("Folders",
+                        rootFolder.FileName,
+                        "",
+                        true);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemPath"));
+        }
+
+        [Test]
+        public void AddItem_Folder_InvalidItemPath()
+        {
+            string itemFileName = rootFolder.FileName;
+            string itemPath = "/SSRSMigrate_INVALID"; // This path is not contained within rootFolder.FileName, so it is invalid
+
+            Exception ex = Assert.Throws<Exception>(
+                delegate
+                {
+                    zipBundler.AddItem("Folders",
+                        itemFileName,
+                        itemPath,
+                        true);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Item path '{0}' is invalid.", itemPath)));
+        }
+
+        /// <summary>
+        /// Tests AddItem by passing it a file but with the isFolder boolean value of True
+        /// </summary>
+        [Test]
+        public void AddItem_Folder_DirectoryTrue()
+        {
+            DirectoryNotFoundException ex = Assert.Throws<DirectoryNotFoundException>(
+                delegate
+                {
+                    zipBundler.AddItem("Folders",
+                        awDataSource.FileName,
+                        awDataSource.Path,
+                        true); // Add to zip as directory
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(awDataSource.FileName));
+        }
+
+        /// <summary>
+        /// Tests AddItem by passing it a directory but with isFolder boolean value of False
+        /// </summary>
+        [Test]
+        public void AddItem_Folder_FileNotFound()
+        {
+            FileNotFoundException ex = Assert.Throws<FileNotFoundException>(
+                delegate
+                {
+                    zipBundler.AddItem("Folders",
+                        rootFolder.FileName,
+                        rootFolder.Path,
+                        false); // Add to zip as file
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(rootFolder.FileName));
+        }
+        #endregion
         //TODO AddItem Report Tests
 
         //TODO CreateSummary Tests
