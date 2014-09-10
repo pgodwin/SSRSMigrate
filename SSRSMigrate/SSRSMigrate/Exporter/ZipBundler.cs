@@ -202,15 +202,19 @@ namespace SSRSMigrate.Exporter
             this.mEntries[key].Add(entry);
         }
 
+        /// <summary>
+        /// Creates a JSON string that contains a summary of the data created by the ZipBundler.
+        /// </summary>
+        /// <returns>String in JSON format containing the summary of data contained in the zip archive.</returns>
         public string CreateSummary()
         {
-            //string summary = JsonConvert.SerializeObject(this.mEntries, Formatting.Indented);
+            // Serialize mEntries Dictionary to JSON format
+            string summary = JsonConvert.SerializeObject(this.mEntries, Formatting.Indented);
 
-            //this.mZipFileWrapper.AddEntry(this.mExportSummaryFilename, summary);
+            // Add JSON serialized summary string as an entry to the zip using the value from mExportSummaryFilename 
+            this.mZipFileWrapper.AddEntry(this.mExportSummaryFilename, summary);
 
-            //return summary;
-
-            throw new NotImplementedException();
+            return summary;
         }
 
         public string Save(string fileName)

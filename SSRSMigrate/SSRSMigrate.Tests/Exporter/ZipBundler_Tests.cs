@@ -119,6 +119,43 @@ namespace SSRSMigrate.Tests.Exporter
         };
         #endregion
 
+        #region Expected Values
+        string expectedSummary = @"{
+  ""DataSources"": [
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json"",
+      ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
+    }
+  ],
+  ""Reports"": [
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl"",
+      ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl"",
+      ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl"",
+      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+    }
+  ],
+  ""Folders"": [
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
+      ""CheckSum"": """"
+    }
+  ]
+}";
+        string expectedSummaryNoData = @"{
+  ""DataSources"": [],
+  ""Reports"": [],
+  ""Folders"": []
+}";
+
+        #endregion
+
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
@@ -207,12 +244,23 @@ namespace SSRSMigrate.Tests.Exporter
             checkSumGenMock.Setup(c => c.CreateCheckSum(
                 doesNotExistReport.FileName))
                 .Returns(() => doesNotExistReport.CheckSum);
-
-            zipBundler = new ZipBundler(zipFileMock.Object, checkSumGenMock.Object);
         }
 
         [TestFixtureTearDown]
         public void TestFixtureTearDown()
+        {
+            zipBundler = null;
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            // Recreate ZipBundler for each test, so the CreateSummary tests have fresh data
+            zipBundler = new ZipBundler(zipFileMock.Object, checkSumGenMock.Object);
+        }
+
+        [TearDown]
+        public void TearDown()
         {
             zipBundler = null;
         }
@@ -255,6 +303,14 @@ namespace SSRSMigrate.Tests.Exporter
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: checkSumGenerator"));
         }
+        #endregion
+
+        #region Entries Property Tests
+        //TODO Test ZipBundler.Entries property
+        #endregion
+
+        #region ExportSummaryFilename Tests
+        //TODO Test ZipBundler.ExportSummaryFilename property
         #endregion
 
         #region GetZipPath Tests
@@ -933,10 +989,79 @@ namespace SSRSMigrate.Tests.Exporter
 
         //TODO CreateSummary Tests
         #region CreateSummary Tests
+        [Test]
+        public void CreateSummary()
+        {
+            // Add test data to ZipBundler
+            // Add Data Source item to ZipBundler
+            zipBundler.AddItem("DataSources",
+                awDataSource.FileName,
+                awDataSource.Path,
+                false);
+
+            // Verify that the data source file was added to the zip
+            zipFileMock.Verify(z => z.AddFile(awDataSource.FileName, awDataSource.ZipPath));
+
+            // Add Folder item to ZipBundler
+            zipBundler.AddItem("Folders",
+                rootFolder.FileName,
+                rootFolder.Path,
+                true);
+
+            // Verify that the folder was added to the zip
+            zipFileMock.Verify(z => z.AddDirectory(rootFolder.FileName, rootFolder.ZipPath));
+
+            // Add Report items to ZipBundler
+            // Add Comapny Sales report
+            zipBundler.AddItem("Reports",
+                companySalesReport.FileName,
+                companySalesReport.Path,
+                false);
+
+            // Verify that the file was added to the zip
+            zipFileMock.Verify(z => z.AddFile(companySalesReport.FileName, companySalesReport.ZipPath));
+
+            // Add Sales Order Detail report
+            zipBundler.AddItem("Reports",
+                salesOrderDetailReport.FileName,
+                salesOrderDetailReport.Path,
+                false);
+
+            // Verify that the file was added to the zip
+            zipFileMock.Verify(z => z.AddFile(salesOrderDetailReport.FileName, salesOrderDetailReport.ZipPath));
+
+            // Add Store Contacts [sub] report
+            zipBundler.AddItem("Reports",
+               storeContactsReport.FileName,
+               storeContactsReport.Path,
+               false);
+
+            // Verify that the file was added to the zip
+            zipFileMock.Verify(z => z.AddFile(storeContactsReport.FileName, storeContactsReport.ZipPath));
+
+            string actual = zipBundler.CreateSummary();
+
+            // Verify that the summary was added as an entry to the zip
+            zipFileMock.Verify(z => z.AddEntry("ExportSummary.json", expectedSummary));
+
+            Assert.AreEqual(expectedSummary, actual);
+        }
+
+        [Test]
+        public void CreateSummary_NoData()
+        {
+            string actual = zipBundler.CreateSummary();
+
+            // Verify that the summary was added as an entry to the zip
+            zipFileMock.Verify(z => z.AddEntry("ExportSummary.json", expectedSummaryNoData));
+
+            Assert.AreEqual(expectedSummaryNoData, actual);
+        }
         #endregion
 
-        //TODO Save Tests
+        
         #region Save Tests
+        //TODO Save Tests
         #endregion
     }
 }
