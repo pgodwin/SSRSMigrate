@@ -180,10 +180,13 @@ namespace SSRSMigrate.Exporter
                 throw new ArgumentException("key");
 
             if (string.IsNullOrEmpty(itemFileName))
-                throw new ArgumentException("fileName");
+                throw new ArgumentException("itemFileName");
 
             if (string.IsNullOrEmpty(itemPath))
                 throw new ArgumentException("itemPath");
+
+            if (!this.mEntries.ContainsKey(key))
+                throw new KeyNotFoundException(key);
 
             // Get the path for inside the zip archive
             string zipPath = this.GetZipPath(itemFileName, itemPath);
