@@ -143,6 +143,9 @@ namespace SSRSMigrate.Tests.Exporter
             zipFileMock.Setup(z => z.AddDirectory(awDataSource.FileName, awDataSource.ZipPath))
                 .Throws(new DirectoryNotFoundException(awDataSource.FileName));
 
+            zipFileMock.Setup(z => z.AddDirectory(companySalesReport.FileName, companySalesReport.ZipPath))
+                .Throws(new DirectoryNotFoundException(companySalesReport.FileName));
+
             // IZipFileWrapper.AddEntry Mocks
             zipFileMock.Setup(z => z.AddEntry(It.IsAny<string>(), It.IsAny<string>()));
 
@@ -788,7 +791,179 @@ namespace SSRSMigrate.Tests.Exporter
             Assert.That(ex.Message, Is.EqualTo(rootFolder.FileName));
         }
         #endregion
-        //TODO AddItem Report Tests
+
+        #region AddItem Report Tests
+        [Test]
+        public void AddItem_Report()
+        {
+            zipBundler.AddItem("Reports",
+                companySalesReport.FileName,
+                companySalesReport.Path,
+                false);
+
+            // Verify that the file was added to the zip
+            zipFileMock.Verify(z => z.AddFile(companySalesReport.FileName, companySalesReport.ZipPath));
+        }
+
+        [Test]
+        public void AddItem_Report_KeyDoesntExist()
+        {
+            KeyNotFoundException ex = Assert.Throws<KeyNotFoundException>(
+                delegate
+                {
+                    zipBundler.AddItem("DoesntExist",
+                        companySalesReport.FileName,
+                        companySalesReport.Path,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("DoesntExist"));
+        }
+
+        [Test]
+        public void AddItem_Report_NullKey()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem(null,
+                        companySalesReport.FileName,
+                        companySalesReport.Path,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("key"));
+        }
+
+        [Test]
+        public void AddItem_Report_EmptyKey()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("",
+                        companySalesReport.FileName,
+                        companySalesReport.Path,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("key"));
+        }
+
+        [Test]
+        public void AddItem_Report_NullItemFileName()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("Reports",
+                        null,
+                        companySalesReport.Path,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemFileName"));
+        }
+
+        [Test]
+        public void AddItem_Report_EmptyItemFileName()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("Reports",
+                        "",
+                        companySalesReport.Path,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemFileName"));
+        }
+
+        [Test]
+        public void AddItem_Report_NullItemPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("Reports",
+                        companySalesReport.FileName,
+                        null,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemPath"));
+        }
+
+        [Test]
+        public void AddItem_Report_EmptyItemPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("Reports",
+                        companySalesReport.FileName,
+                        "",
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemPath"));
+        }
+
+        [Test]
+        public void AddItem_Report_InvalidItemPath()
+        {
+            string itemFileName = companySalesReport.FileName;
+            string itemPath = "/SSRSMigrate/Reports/Company Sales"; // This path is not contained within companySalesReport.FileName, so it is invalid
+
+            Exception ex = Assert.Throws<Exception>(
+                delegate
+                {
+                    zipBundler.AddItem("Reports",
+                        itemFileName,
+                        itemPath,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Item path '{0}' is invalid.", itemPath)));
+        }
+
+        /// <summary>
+        /// Tests AddItem by passing it a file but with the isFolder boolean value of True
+        /// </summary>
+        [Test]
+        public void AddItem_Report_DirectoryTrue()
+        {
+            DirectoryNotFoundException ex = Assert.Throws<DirectoryNotFoundException>(
+                delegate
+                {
+                    zipBundler.AddItem("Reports",
+                        companySalesReport.FileName,
+                        companySalesReport.Path,
+                        true); // Add to zip as directory
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(companySalesReport.FileName));
+        }
+
+        /// <summary>
+        /// Tests AddItem by passing it a directory but with isFolder boolean value of False
+        /// </summary>
+        [Test]
+        public void AddItem_Report_FileNotFound()
+        {
+            FileNotFoundException ex = Assert.Throws<FileNotFoundException>(
+                delegate
+                {
+                    zipBundler.AddItem("Reports",
+                        rootFolder.FileName,
+                        rootFolder.Path,
+                        false); // Add to zip as file
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(rootFolder.FileName));
+        }
+        #endregion
 
         //TODO CreateSummary Tests
         #region CreateSummary Tests
