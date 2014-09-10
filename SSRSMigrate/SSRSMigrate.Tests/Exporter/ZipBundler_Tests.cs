@@ -599,24 +599,6 @@ namespace SSRSMigrate.Tests.Exporter
 
             Assert.That(ex.Message, Is.EqualTo(awDataSource.FileName));
         }
-
-        /// <summary>
-        /// Tests AddItem by passing it a directory but with isFolder boolean value of False
-        /// </summary>
-        [Test]
-        public void AddItem_DataSource_FileNotFound()
-        {
-            FileNotFoundException ex = Assert.Throws<FileNotFoundException>(
-                delegate
-                {
-                    zipBundler.AddItem("DataSources",
-                        rootFolder.FileName,
-                        rootFolder.Path,
-                        false); // Add to zip as file
-                });
-
-            Assert.That(ex.Message, Is.EqualTo(rootFolder.FileName));
-        }
         #endregion
 
         #region AddItem Folder Tests
@@ -771,24 +753,6 @@ namespace SSRSMigrate.Tests.Exporter
                 });
 
             Assert.That(ex.Message, Is.EqualTo(awDataSource.FileName));
-        }
-
-        /// <summary>
-        /// Tests AddItem by passing it a directory but with isFolder boolean value of False
-        /// </summary>
-        [Test]
-        public void AddItem_Folder_FileNotFound()
-        {
-            FileNotFoundException ex = Assert.Throws<FileNotFoundException>(
-                delegate
-                {
-                    zipBundler.AddItem("Folders",
-                        rootFolder.FileName,
-                        rootFolder.Path,
-                        false); // Add to zip as file
-                });
-
-            Assert.That(ex.Message, Is.EqualTo(rootFolder.FileName));
         }
         #endregion
 
@@ -945,12 +909,14 @@ namespace SSRSMigrate.Tests.Exporter
 
             Assert.That(ex.Message, Is.EqualTo(companySalesReport.FileName));
         }
+        #endregion
 
+        #region AddItem Directory as File
         /// <summary>
         /// Tests AddItem by passing it a directory but with isFolder boolean value of False
         /// </summary>
         [Test]
-        public void AddItem_Report_FileNotFound()
+        public void AddItem_DirectoryAsFile()
         {
             FileNotFoundException ex = Assert.Throws<FileNotFoundException>(
                 delegate
