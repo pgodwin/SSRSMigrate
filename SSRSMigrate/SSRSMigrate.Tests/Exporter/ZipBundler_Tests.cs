@@ -132,6 +132,12 @@ namespace SSRSMigrate.Tests.Exporter
                 .Throws(new DirectoryNotFoundException(folderDesNotExistReport.FileName));
             zipFileMock.Setup(z => z.AddDirectory(doesNotExistReport.FileName, doesNotExistReport.ZipPath))
                 .Throws(new DirectoryNotFoundException(doesNotExistReport.FileName));
+            zipFileMock.Setup(z => z.AddDirectory(folderDesNotExistReport.FileName, folderDesNotExistReport.ZipPath))
+                .Throws(new FileNotFoundException(folderDesNotExistReport.FileName));
+            
+            // Mock passing a file to AddDirectory
+            zipFileMock.Setup(z => z.AddDirectory(awDataSource.FileName, awDataSource.ZipPath))
+                .Throws(new DirectoryNotFoundException(awDataSource.FileName));
 
             zipFileMock.Setup(z => z.AddEntry(It.IsAny<string>(), It.IsAny<string>()));
 
@@ -139,9 +145,11 @@ namespace SSRSMigrate.Tests.Exporter
             zipFileMock.Setup(z => z.AddFile(It.IsAny<string>(), It.IsAny<string>()));
             zipFileMock.Setup(z => z.AddFile(doesNotExistReport.FileName, doesNotExistReport.ZipPath))
                 .Throws(new FileNotFoundException(doesNotExistReport.FileName));
-            zipFileMock.Setup(z => z.AddDirectory(folderDesNotExistReport.FileName, folderDesNotExistReport.ZipPath))
-                .Throws(new FileNotFoundException(folderDesNotExistReport.FileName));
 
+            // Mock passing a directory to AddFile
+            zipFileMock.Setup(z => z.AddFile(rootFolder.FileName, rootFolder.ZipPath))
+                .Throws(new FileNotFoundException(rootFolder.FileName));
+            
             zipFileMock.Setup(z => z.Dispose());
 
             zipFileMock.Setup(z => z.Save(It.IsAny<string>()));
@@ -438,15 +446,164 @@ namespace SSRSMigrate.Tests.Exporter
             zipFileMock.Verify(z => z.AddFile(awDataSource.FileName, awDataSource.ZipPath));
         }
 
-        //TODO AddItem_DataSource_NullKey
-        //TODO AddItem_DataSource_EmptyKey
-        //TODO AddItem_DataSource_NullItemFileName
-        //TODO AddItem_DataSource_EmptyItemFileName
-        //TODO AddItem_DataSource_NullItemPath
-        //TODO AddItem_DataSource_EmptyItemPath
-        //TODO AddItem_DataSource_InvalidItemPath
-        //TODO AddItem_DataSource_DirectoryTrue (Throws DirectoryNotFoundException)
-        //TODO AddItem_DataSource_FileNotFound (Throws FileNotFoundException)
+        [Test]
+        public void AddItem_DataSource_KeyDoesntExist()
+        {
+            KeyNotFoundException ex = Assert.Throws<KeyNotFoundException>(
+                delegate
+                {
+                    zipBundler.AddItem("DoesntExist",
+                        awDataSource.FileName,
+                        awDataSource.Path,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("DoesntExist"));
+        }
+
+        [Test]
+        public void AddItem_DataSource_NullKey()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem(null,
+                        awDataSource.FileName,
+                        awDataSource.Path,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("key"));
+        }
+
+        [Test]
+        public void AddItem_DataSource_EmptyKey()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("",
+                        awDataSource.FileName,
+                        awDataSource.Path,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("key"));
+        }
+
+        [Test]
+        public void AddItem_DataSource_NullItemFileName()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("DataSources",
+                        null,
+                        awDataSource.Path,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemFileName"));
+        }
+
+        [Test]
+        public void AddItem_DataSource_EmptyItemFileName()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("DataSources",
+                        "",
+                        awDataSource.Path,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemFileName"));
+        }
+
+        [Test]
+        public void AddItem_DataSource_NullItemPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("DataSources",
+                        awDataSource.FileName,
+                        null,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemPath"));
+        }
+
+        [Test]
+        public void AddItem_DataSource_EmptyItemPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.AddItem("DataSources",
+                        awDataSource.FileName,
+                        "",
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemPath"));
+        }
+
+        [Test]
+        public void AddItem_DataSource_InvalidItemPath()
+        {
+            string itemFileName = awDataSource.FileName;
+            string itemPath = "/SSRSMigrate/Data Sources/AWDataSource"; // This path is not contained within awDataSource.FileName, so it is invalid
+
+            Exception ex = Assert.Throws<Exception>(
+                delegate
+                {
+                    zipBundler.AddItem("DataSources",
+                        itemFileName,
+                        itemPath,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Item path '{0}' is invalid.", itemPath)));
+        }
+
+        /// <summary>
+        /// Tests AddItem by passing it a file but with the isFolder boolean value of True
+        /// </summary>
+        [Test]
+        public void AddItem_DataSource_DirectoryTrue()
+        {
+            DirectoryNotFoundException ex = Assert.Throws<DirectoryNotFoundException>(
+                delegate
+                {
+                    zipBundler.AddItem("DataSources",
+                        awDataSource.FileName,
+                        awDataSource.Path,
+                        true); // Add to zip as directory
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(awDataSource.FileName));
+        }
+
+        /// <summary>
+        /// Tests AddItem by passing it a directory but with isFolder boolean value of False
+        /// </summary>
+        [Test]
+        public void AddItem_DataSource_FileNotFound()
+        {
+            FileNotFoundException ex = Assert.Throws<FileNotFoundException>(
+                delegate
+                {
+                    zipBundler.AddItem("DataSources",
+                        rootFolder.FileName,
+                        rootFolder.Path,
+                        false); // Add to zip as file
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(rootFolder.FileName));
+        }
         #endregion
 
         //TODO AddItem Folder Tests
