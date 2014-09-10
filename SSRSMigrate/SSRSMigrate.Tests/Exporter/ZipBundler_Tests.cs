@@ -586,7 +586,7 @@ namespace SSRSMigrate.Tests.Exporter
         /// Tests AddItem by passing it a file but with the isFolder boolean value of True
         /// </summary>
         [Test]
-        public void AddItem_DataSource_DirectoryTrue()
+        public void AddItem_DataSource_FileAsDirectory()
         {
             DirectoryNotFoundException ex = Assert.Throws<DirectoryNotFoundException>(
                 delegate
@@ -741,7 +741,7 @@ namespace SSRSMigrate.Tests.Exporter
         /// Tests AddItem by passing it a file but with the isFolder boolean value of True
         /// </summary>
         [Test]
-        public void AddItem_Folder_DirectoryTrue()
+        public void AddItem_Folder_FileAsDirectory()
         {
             DirectoryNotFoundException ex = Assert.Throws<DirectoryNotFoundException>(
                 delegate
@@ -896,7 +896,7 @@ namespace SSRSMigrate.Tests.Exporter
         /// Tests AddItem by passing it a file but with the isFolder boolean value of True
         /// </summary>
         [Test]
-        public void AddItem_Report_DirectoryTrue()
+        public void AddItem_Report_FileAsDirectory()
         {
             DirectoryNotFoundException ex = Assert.Throws<DirectoryNotFoundException>(
                 delegate
