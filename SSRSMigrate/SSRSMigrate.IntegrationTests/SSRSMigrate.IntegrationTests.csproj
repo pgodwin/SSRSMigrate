@@ -96,6 +96,7 @@
     <Compile Include="SSRS\Writer\ReportServer2010\ReportServerWriter_DataSourceTests.cs" />
     <Compile Include="SSRS\Writer\ReportServer2010\ReportServerWriter_FolderTests.cs" />
     <Compile Include="SSRS\Writer\ReportServer2010\ReportServerWriter_ReportTests.cs" />
+    <Compile Include="Export_ZipBundler\ZipBundler_Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -107,6 +108,21 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Test AW Data\ZipBundler\SSRSMigrate_AW_Tests\Data Sources\AWDataSource.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test AW Data\ZipBundler\SSRSMigrate_AW_Tests\Data Sources\Test Data Source.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test AW Data\ZipBundler\SSRSMigrate_AW_Tests\Reports\Company Sales.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test AW Data\ZipBundler\SSRSMigrate_AW_Tests\Reports\Sales Order Detail.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test AW Data\ZipBundler\SSRSMigrate_AW_Tests\Reports\Store Contacts.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Test Data\Exports\2005\SSRSMigrate_Tests\Reports\Inquiry.rdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -180,6 +196,9 @@
   <ItemGroup>
     <Content Include="Test AW Data\Exports\2005\SSRSMigrate_AW_Tests\Reports\Sub Folder\EmptyPlaceHolder.txt" />
     <Content Include="Test AW Data\Exports\2010\SSRSMigrate_AW_Tests\Reports\Sub Folder\EmptyPlaceHolder.txt" />
+    <Content Include="Test AW Data\ZipBundler\SSRSMigrate_AW_Tests\Sub Folder\EmptyPlaceHolder.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Test Data\Exports\2005\SSRSMigrate_Tests\Reports\Sub Folder\EmptyPlaceHolder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -197,6 +216,9 @@
   <PropertyGroup>
     <PreBuildEvent>echo d | xcopy "$(SolutionDir)SSRSMigrate.Tests\Test Reports" "$(ProjectDir)$(OutDir)Test Reports" /f /j /s /z /r /y
 echo d | xcopy "$(SolutionDir)SSRSMigrate.Tests\Test AW Reports" "$(ProjectDir)$(OutDir)Test AW Reports" /f /j /s /z /r /y</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>del /F /Q "$(ProjectDir)$(OutDir)Test AW Data\ZipBundler\SSRSMigrate_AW_Tests\Sub Folder\EmptyPlaceHolder.txt"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
