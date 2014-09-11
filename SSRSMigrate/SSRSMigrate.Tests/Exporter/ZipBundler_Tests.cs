@@ -306,11 +306,24 @@ namespace SSRSMigrate.Tests.Exporter
         #endregion
 
         #region Entries Property Tests
-        //TODO Test ZipBundler.Entries property
+        [Test]
+        public void Entries_ContainsKeys()
+        {
+            Assert.NotNull(zipBundler.Entries);
+            Assert.True(zipBundler.Entries.ContainsKey("Reports"));
+            Assert.True(zipBundler.Entries.ContainsKey("DataSources"));
+            Assert.True(zipBundler.Entries.ContainsKey("Folders"));
+        }
         #endregion
 
         #region ExportSummaryFilename Tests
-        //TODO Test ZipBundler.ExportSummaryFilename property
+        [Test]
+        public void ExportSummaryFilename()
+        {
+            string actual = zipBundler.ExportSummaryFilename;
+
+            Assert.AreEqual("ExportSummary.json", actual);
+        }
         #endregion
 
         #region GetZipPath Tests
@@ -987,7 +1000,6 @@ namespace SSRSMigrate.Tests.Exporter
         }
         #endregion
 
-        //TODO CreateSummary Tests
         #region CreateSummary Tests
         [Test]
         public void CreateSummary()
@@ -1062,6 +1074,39 @@ namespace SSRSMigrate.Tests.Exporter
         
         #region Save Tests
         //TODO Save Tests
+        [Test]
+        public void Save()
+        {
+            string filename = "C:\\temp\\SSRSMigrate_AW_Tests.zip";
+
+            zipBundler.Save(filename);
+
+            zipFileMock.Verify(z => z.Save(filename, true));
+        }
+
+        [Test]
+        public void Save_NullFileName()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.Save(null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("fileName"));
+        }
+
+        [Test]
+        public void Save_EmptyFileName()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.Save("");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("fileName"));
+        }
         #endregion
     }
 }
