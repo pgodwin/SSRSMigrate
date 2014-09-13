@@ -116,6 +116,22 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
 
             return Path.Combine(dir, "Test AW Data\\ZipBundler");
         }
+
+        private void SetUpEnvironment()
+        {
+            if (Directory.Exists(GetOutPutPath()))
+                this.TearDownEnvironment();
+
+            // Create output directory
+            Directory.CreateDirectory(GetOutPutPath());
+        }
+
+        private void TearDownEnvironment()
+        {
+            // Delete output directory if it exists
+            if (Directory.Exists(GetOutPutPath()))
+                Directory.Delete(GetOutPutPath());
+        }
         #endregion
 
         [TestFixtureSetUp]
@@ -136,12 +152,16 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
             zipFileWrapper = new ZipFileWrapper();
             checkSumGenerator = new MD5CheckSumGenerator();
             zipBundler = new ZipBundler(zipFileWrapper, checkSumGenerator);
+
+            this.SetUpEnvironment();
         }
 
         [TearDown]
         public void TearDown()
         {
             zipBundler = null;
+
+            this.TearDownEnvironment();
         }
 
         #region GetZipPath Tests
