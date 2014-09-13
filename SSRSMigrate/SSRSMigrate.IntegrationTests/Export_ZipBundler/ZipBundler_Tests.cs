@@ -101,13 +101,19 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         // Static so they can be used in field initializers
         private static string GetOutPutPath()
         {
-            string outputPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            // Use the test assembly's directory instead of where nunit runs the test
+            string outputPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+            outputPath = outputPath.Replace("file:\\", "");
+
             return Path.Combine(outputPath, "ZipBundler_Output");
         }
 
         private static string GetInputPath()
         {
-            string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            // Use the test assembly's directory instead of where nunit runs the test
+            string dir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+            dir = dir.Replace("file:\\", "");
+
             return Path.Combine(dir, "Test AW Data\\ZipBundler");
         }
         #endregion
@@ -238,7 +244,7 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
             BundleSummaryEntry actual = zipBundler.CreateEntrySummary(itemFileName, expectedZipPath);
 
             Assert.NotNull(actual);
-            Assert.AreEqual(expectedCheckSum, actual.CheckSum);
+            Assert.AreEqual(expectedCheckSum, actual.CheckSum, itemFileName);
             Assert.AreEqual(expectedZipPath, actual.Path);
         }
 
@@ -328,6 +334,24 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         #endregion
 
         #region AddItem DataSource Tests
+        //[Test]
+        //public void AddItem_DataSource()
+        //{
+        //    zipBundler.AddItem("DataSources",
+        //        awDataSource.FileName,
+        //        awDataSource.Path,
+        //        false);
+
+        //    Assert.NotNull(zipBundler.Entries["DataSources"][0]);
+
+        //    Assert.AreEqual(
+        //        "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json",
+        //        zipBundler.Entries["DataSources"][0].Path);
+
+        //    Assert.AreEqual(
+        //        "7b4e44d94590f501ba24cd3904a925c3",
+        //        zipBundler.Entries["DataSources"][0].CheckSum);
+        //}
         #endregion
 
         #region AddItem Folder Tests
