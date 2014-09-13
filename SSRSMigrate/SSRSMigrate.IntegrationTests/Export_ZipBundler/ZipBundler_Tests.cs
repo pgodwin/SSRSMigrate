@@ -137,5 +137,212 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         {
             zipBundler = null;
         }
+
+        #region GetZipPath Tests
+        [Test]
+        public void GetZipPath_File()
+        {
+            string itemFileName = awDataSource.FileName;
+            string itemPath = awDataSource.Path;
+
+            string expectedZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json";
+
+            string actual = zipBundler.GetZipPath(itemFileName, itemPath);
+            Assert.AreEqual(expectedZipPath, actual);
+        }
+
+        [Test]
+        public void GetZipPath_File_NullFileName()
+        {
+            string itemPath = awDataSource.Path;
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.GetZipPath(null, itemPath);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemFileName"));
+        }
+
+        [Test]
+        public void GetZipPath_File_EmptyFileName()
+        {
+            string itemPath = awDataSource.Path;
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.GetZipPath("", itemPath);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemFileName"));
+        }
+
+        [Test]
+        public void GetZipPath_File_NullPath()
+        {
+            string itemFileName = awDataSource.FileName;
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.GetZipPath(itemFileName, null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemPath"));
+        }
+
+        [Test]
+        public void GetZipPath_File_EmptyPath()
+        {
+            string itemFileName = awDataSource.FileName;
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.GetZipPath(itemFileName, "");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemPath"));
+        }
+
+        [Test]
+        public void GetZipPath_File_InvalidPath()
+        {
+            string itemFileName = awDataSource.FileName;
+            string itemPath = "/SSRSMigrate/Data Sources/AWDataSource"; // This path is not contained within awDataSource.FileName, so it is invalid
+
+            Exception ex = Assert.Throws<Exception>(
+                delegate
+                {
+                    zipBundler.GetZipPath(itemFileName, itemPath);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Item path '{0}' is invalid.", itemPath)));
+
+        }
+        #endregion
+
+        #region CreateEntrySummary Tests
+        /// <summary>
+        /// Test CreateEntrySummary for a file by passing in valid values.
+        /// </summary>
+        [Test]
+        public void CreateEntrySummary_File()
+        {
+            string itemFileName = awDataSource.FileName;
+            string expectedZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json";
+            string expectedCheckSum = "7b4e44d94590f501ba24cd3904a925c3";
+
+            BundleSummaryEntry actual = zipBundler.CreateEntrySummary(itemFileName, expectedZipPath);
+
+            Assert.NotNull(actual);
+            Assert.AreEqual(expectedCheckSum, actual.CheckSum);
+            Assert.AreEqual(expectedZipPath, actual.Path);
+        }
+
+        /// <summary>
+        /// Test CreateEntrySummary for a file by passing in null value for itemFileName
+        /// </summary>
+        [Test]
+        public void CreateEntrySummary_File_NullFileName()
+        {
+            string zipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json";
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.CreateEntrySummary(null, zipPath);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemFileName"));
+        }
+
+        /// <summary>
+        /// Test CreateEntrySummary for a file by passing in an empty string for itemFileName
+        /// </summary>
+        [Test]
+        public void CreateEntrySummary_File_EmptyFileName()
+        {
+            string zipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json";
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.CreateEntrySummary("", zipPath);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("itemFileName"));
+        }
+
+        /// <summary>
+        /// Test CreateEntrySummary for a file by passing in null value for zipPath
+        /// </summary>
+        [Test]
+        public void CreateEntrySummary_File_NullPath()
+        {
+            string itemFileName = awDataSource.FileName;
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.CreateEntrySummary(itemFileName, null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("zipPath"));
+        }
+
+        /// <summary>
+        /// Test CreateEntrySummary for a file by passing in an empty string for zipPath
+        /// </summary>
+        [Test]
+        public void CreateEntrySummary_File_EmptyPath()
+        {
+            string itemFileName = awDataSource.FileName;
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.CreateEntrySummary(itemFileName, "");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("zipPath"));
+        }
+
+        /// <summary>
+        /// Test CreateEntrySummary for a file that does not exist
+        /// </summary>
+        [Test]
+        public void CreateEntrySummary_File_DoesntExist()
+        {
+            string itemFileName = doesNotExistReport.FileName;
+            string zipPath = "Export\\SSRSMigrate_AW_Tests\\Reports\\File Doesnt Exist.rdl";
+
+            BundleSummaryEntry actual = zipBundler.CreateEntrySummary(itemFileName, zipPath);
+
+            Assert.NotNull(actual);
+            Assert.AreEqual("", actual.CheckSum);
+            Assert.AreEqual(zipPath, actual.Path);
+        }
+        #endregion
+
+        #region AddItem DataSource Tests
+        #endregion
+
+        #region AddItem Folder Tests
+        #endregion
+
+        #region AddItem Report Tests
+        #endregion
+
+        #region AddItem Directory as File
+        #endregion
+
+        #region CreateSummary Tests
+        #endregion
+
+        #region Save Tests
+        #endregion
     }
 }

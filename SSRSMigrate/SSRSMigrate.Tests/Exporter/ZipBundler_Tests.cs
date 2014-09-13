@@ -1070,7 +1070,6 @@ namespace SSRSMigrate.Tests.Exporter
             Assert.AreEqual(expectedSummaryNoData, actual);
         }
         #endregion
-
         
         #region Save Tests
         [Test]
