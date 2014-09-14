@@ -149,6 +149,9 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         [SetUp]
         public void SetUp()
         {
+            // Each test will add files to ZipFileWrapper using ZipBundler,
+            //  so they need to get recreated for each test so the zip is in a clean state
+            //  for each test.
             zipFileWrapper = new ZipFileWrapper();
             checkSumGenerator = new MD5CheckSumGenerator();
             zipBundler = new ZipBundler(zipFileWrapper, checkSumGenerator);
@@ -171,7 +174,7 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
             string itemFileName = awDataSource.FileName;
             string itemPath = awDataSource.Path;
 
-            string expectedZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json";
+            string expectedZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources";
 
             string actual = zipBundler.GetZipPath(itemFileName, itemPath);
             Assert.AreEqual(expectedZipPath, actual);
@@ -258,7 +261,8 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         public void CreateEntrySummary_File()
         {
             string itemFileName = awDataSource.FileName;
-            string expectedZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json";
+            string expectedZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources";
+            string expectedFileName = "AWDataSource.json";
             string expectedCheckSum = "7b4e44d94590f501ba24cd3904a925c3";
 
             BundleSummaryEntry actual = zipBundler.CreateEntrySummary(itemFileName, expectedZipPath);
@@ -266,6 +270,7 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
             Assert.NotNull(actual);
             Assert.AreEqual(expectedCheckSum, actual.CheckSum, itemFileName);
             Assert.AreEqual(expectedZipPath, actual.Path);
+            Assert.AreEqual(expectedFileName, actual.FileName);
         }
 
         /// <summary>
@@ -274,7 +279,7 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         [Test]
         public void CreateEntrySummary_File_NullFileName()
         {
-            string zipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json";
+            string zipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources";
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
                 delegate
@@ -291,7 +296,7 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         [Test]
         public void CreateEntrySummary_File_EmptyFileName()
         {
-            string zipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json";
+            string zipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources";
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
                 delegate
@@ -343,35 +348,48 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         public void CreateEntrySummary_File_DoesntExist()
         {
             string itemFileName = doesNotExistReport.FileName;
-            string zipPath = "Export\\SSRSMigrate_AW_Tests\\Reports\\File Doesnt Exist.rdl";
+            string zipPath = "Export\\SSRSMigrate_AW_Tests\\Reports";
+            string expectedFileName = "File Doesnt Exist.rdl";
 
             BundleSummaryEntry actual = zipBundler.CreateEntrySummary(itemFileName, zipPath);
 
             Assert.NotNull(actual);
             Assert.AreEqual("", actual.CheckSum);
             Assert.AreEqual(zipPath, actual.Path);
+            Assert.AreEqual(expectedFileName, actual.FileName);
         }
         #endregion
 
         #region AddItem DataSource Tests
-        //[Test]
-        //public void AddItem_DataSource()
-        //{
-        //    zipBundler.AddItem("DataSources",
-        //        awDataSource.FileName,
-        //        awDataSource.Path,
-        //        false);
+        [Test]
+        public void AddItem_DataSource()
+        {
+            zipBundler.AddItem("DataSources",
+                awDataSource.FileName,
+                awDataSource.Path,
+                false);
 
-        //    Assert.NotNull(zipBundler.Entries["DataSources"][0]);
+            // Check that the ZipBundler has the entry we added to DataSources
+            Assert.NotNull(zipBundler.Entries["DataSources"][0]);
 
-        //    Assert.AreEqual(
-        //        "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json",
-        //        zipBundler.Entries["DataSources"][0].Path);
+            // Check that the proper ZipPath exists in the DataSource entry we added
+            Assert.AreEqual(
+                "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                zipBundler.Entries["DataSources"][0].Path);
 
-        //    Assert.AreEqual(
-        //        "7b4e44d94590f501ba24cd3904a925c3",
-        //        zipBundler.Entries["DataSources"][0].CheckSum);
-        //}
+            // Check that the checksum is correct for the DataSource entry we added
+            Assert.AreEqual(
+                "7b4e44d94590f501ba24cd3904a925c3",
+                zipBundler.Entries["DataSources"][0].CheckSum);
+
+            // Check that the filename is correct for the DataSource entry we added
+            Assert.AreEqual(
+                "AWDataSource.json",
+                zipBundler.Entries["DataSources"][0].FileName);
+
+            // Check that the DataSource file exists in ZipFileWrapper
+            Assert.True(zipFileWrapper.FileExists("Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json"));
+        }
         #endregion
 
         #region AddItem Folder Tests
