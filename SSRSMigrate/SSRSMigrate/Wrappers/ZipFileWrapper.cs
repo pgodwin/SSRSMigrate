@@ -22,6 +22,15 @@ namespace SSRSMigrate.Wrappers
             this.mZipFile.Comment = comment;
         }
 
+        public bool FileExists(string zipFileName)
+        {
+            foreach (string e in this.mZipFile.EntryFileNames)
+			    if (e.Replace("/","\\") == zipFileName)
+				    return true;
+
+		    return false;
+        }
+
         public void AddEntry(string entryName, string content)
         {
             this.mZipFile.AddEntry(entryName, content);

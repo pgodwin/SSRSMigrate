@@ -7,6 +7,8 @@ namespace SSRSMigrate.Wrappers
 {
     public interface IZipFileWrapper : IDisposable
     {
+        bool FileExists(string zipFileName);
+
         void AddEntry(string entryName, string content);
         void AddFile(string fileName);
         void AddFile(string fileName, string directoryPathInArchive);
