@@ -32,48 +32,37 @@ namespace SSRSMigrate.Exporter
     //ExportSummary.json will contain a list of everything exported and the MD5 checksum of that file:
     //
     //{
-    //    "DataSources": [
+    //  "DataSources": [
     //    {
-    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json",
-    //        "CheckSum": "7b4e44d94590f501ba24cd3904a925c3"
-    //    },
-    //    {
-    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json",
-    //        "CheckSum": "c0815114c3ce9dde35eca314bbfe4bc9"
+    //      "Path": "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+    //      "FileName": "AWDataSource.json",
+    //      "CheckSum": "7b4e44d94590f501ba24cd3904a925c3"
     //    }
-    //    ],
-    //    "Folders": [
+    //  ],
+    //  "Reports": [
     //    {
-    //        "Path": "Export\\SSRSMigrate_AW_Tests",
-    //        "CheckSum": ""
+    //      "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
+    //      "FileName": "Company Sales.rdl",
+    //      "CheckSum": "1adde7720ca2f0af49550fc676f70804"
     //    },
     //    {
-    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Data Sources",
-    //        "CheckSum": ""
+    //      "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
+    //      "FileName": "Sales Order Detail.rdl",
+    //      "CheckSum": "640a2f60207f03779fdedfed71d8101d"
     //    },
     //    {
-    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
-    //        "CheckSum": ""
-    //    },
-    //    {
-    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Sub Folder",
-    //        "CheckSum": ""
+    //      "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
+    //      "FileName": "Store Contacts.rdl",
+    //      "CheckSum": "a225b92ed8475e6bc5b59f5b2cc396fa"
     //    }
-    //    ],
-    //    "Reports": [
+    //  ],
+    //  "Folders": [
     //    {
-    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl",
-    //        "CheckSum": "1adde7720ca2f0af49550fc676f70804"
-    //    },
-    //    {
-    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl",
-    //        "CheckSum": "640a2f60207f03779fdedfed71d8101d"
-    //    },
-    //    {
-    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl",
-    //        "CheckSum": "a225b92ed8475e6bc5b59f5b2cc396fa"
+    //      "Path": "Export\\SSRSMigrate_AW_Tests",
+    //      "FileName": "",
+    //      "CheckSum": ""
     //    }
-    //    ]
+    //  ]
     //}
 
     /// <summary>
@@ -124,7 +113,7 @@ namespace SSRSMigrate.Exporter
         }
 
         /// <summary>
-        /// Gets the path to the file/folder as it will be stored in the zip archive.
+        /// Gets the path to the file/folder as it will be stored in the zip archive, without filename.
         /// </summary>
         /// <param name="itemFileName">Name of the item file.</param>
         /// <param name="itemPath">The item path.</param>
@@ -134,7 +123,7 @@ namespace SSRSMigrate.Exporter
         /// or
         /// itemPath
         /// </exception>
-        public string GetZipPath(string itemFileName, string itemPath)
+        public string GetZipPath(string itemFileName, string itemPath, bool isFolder = false)
         {
             if (string.IsNullOrEmpty(itemFileName))
                 throw new ArgumentException("itemFileName");
@@ -152,12 +141,16 @@ namespace SSRSMigrate.Exporter
 
             summaryPathPart = itemFileName.Substring(itemFileName.LastIndexOf(summaryPathPart));
 
+            // If the item is not a folder, parse up until the last \ in order to get the full path
+            if (!isFolder)
+                summaryPathPart = summaryPathPart.Substring(0, summaryPathPart.LastIndexOf("\\"));
+
             string summaryFullPath = string.Format("Export{0}", summaryPathPart);
 
             return summaryFullPath;
         }
 
-        public BundleSummaryEntry CreateEntrySummary(string itemFileName, string zipPath)
+        public BundleSummaryEntry CreateEntrySummary(string itemFileName, string zipPath, bool isFolder = false)
         {
             if (string.IsNullOrEmpty(itemFileName))
                 throw new ArgumentException("itemFileName");
@@ -165,9 +158,16 @@ namespace SSRSMigrate.Exporter
             if (string.IsNullOrEmpty(zipPath))
                 throw new ArgumentException("zipPath");
 
+            string fileName = "";
+
+            // If the item is not a Folder, parse the fileName for the BundleSummaryEntry
+            if (!isFolder)
+                fileName = itemFileName.Substring(itemFileName.LastIndexOf("\\") + 1);
+
             BundleSummaryEntry entry = new BundleSummaryEntry()
             {
                 CheckSum = this.mCheckSumGenerator.CreateCheckSum(itemFileName),
+                FileName = fileName,
                 Path = zipPath
             };
 
@@ -189,7 +189,7 @@ namespace SSRSMigrate.Exporter
                 throw new KeyNotFoundException(key);
 
             // Get the path for inside the zip archive
-            string zipPath = this.GetZipPath(itemFileName, itemPath);
+            string zipPath = this.GetZipPath(itemFileName, itemPath, isFolder);
 
             // If it is a folder, add the folder to the archive, otherwise add file
             if (isFolder)
@@ -197,7 +197,7 @@ namespace SSRSMigrate.Exporter
             else
                 this.mZipFileWrapper.AddFile(itemFileName, zipPath);
 
-            BundleSummaryEntry entry = this.CreateEntrySummary(itemFileName, zipPath);
+            BundleSummaryEntry entry = this.CreateEntrySummary(itemFileName, zipPath, isFolder);
 
             this.mEntries[key].Add(entry);
         }

@@ -35,7 +35,7 @@ namespace SSRSMigrate.Tests.Exporter
             FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json",
             Path = "/SSRSMigrate_AW_Tests/Data Sources/AWDataSource",
             CheckSum = "7b4e44d94590f501ba24cd3904a925c3",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json"
+            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources"
         };
 
         TestData testDataSource = new TestData()
@@ -43,7 +43,7 @@ namespace SSRSMigrate.Tests.Exporter
             FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json",
             Path = "/SSRSMigrate_AW_Tests/Data Sources/Test Data Source",
             CheckSum = "c0815114c3ce9dde35eca314bbfe4bc9",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json"
+            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources"
         };
 
         TestData rootFolder = new TestData()
@@ -83,7 +83,7 @@ namespace SSRSMigrate.Tests.Exporter
             FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl",
             Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
             CheckSum = "1adde7720ca2f0af49550fc676f70804",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl"
+            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
         };
 
         TestData salesOrderDetailReport = new TestData()
@@ -91,7 +91,7 @@ namespace SSRSMigrate.Tests.Exporter
             FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl",
             Path = "/SSRSMigrate_AW_Tests/Reports/Sales Order Detail",
             CheckSum = "640a2f60207f03779fdedfed71d8101d",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl"
+            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
         };
 
         TestData storeContactsReport = new TestData()
@@ -99,7 +99,7 @@ namespace SSRSMigrate.Tests.Exporter
             FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl",
             Path = "/SSRSMigrate_AW_Tests/Reports/Store Contacts",
             CheckSum = "a225b92ed8475e6bc5b59f5b2cc396fa",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl"
+            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
         };
 
         TestData doesNotExistReport = new TestData()
@@ -107,7 +107,7 @@ namespace SSRSMigrate.Tests.Exporter
             FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\File Doesnt Exist.rdl",
             Path = "/SSRSMigrate_AW_Tests/Reports/File Doesnt Exist",
             CheckSum = "",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports\\File Doesnt Exist.rdl"
+            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
         };
 
         TestData folderDesNotExistReport = new TestData()
@@ -123,27 +123,32 @@ namespace SSRSMigrate.Tests.Exporter
         string expectedSummary = @"{
   ""DataSources"": [
     {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json"",
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+      ""FileName"": ""AWDataSource.json"",
       ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
     }
   ],
   ""Reports"": [
     {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl"",
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": ""Company Sales.rdl"",
       ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
     },
     {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl"",
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": ""Sales Order Detail.rdl"",
       ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
     },
     {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl"",
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": ""Store Contacts.rdl"",
       ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
     }
   ],
   ""Folders"": [
     {
       ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
+      ""FileName"": """",
       ""CheckSum"": """"
     }
   ]
@@ -177,10 +182,10 @@ namespace SSRSMigrate.Tests.Exporter
                 .Throws(new FileNotFoundException(folderDesNotExistReport.FileName));
             
             // Mock passing a file to AddDirectory
-            zipFileMock.Setup(z => z.AddDirectory(awDataSource.FileName, awDataSource.ZipPath))
+            zipFileMock.Setup(z => z.AddDirectory(awDataSource.FileName, "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json"))
                 .Throws(new DirectoryNotFoundException(awDataSource.FileName));
 
-            zipFileMock.Setup(z => z.AddDirectory(companySalesReport.FileName, companySalesReport.ZipPath))
+            zipFileMock.Setup(z => z.AddDirectory(companySalesReport.FileName, "Export\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl"))
                 .Throws(new DirectoryNotFoundException(companySalesReport.FileName));
 
             // IZipFileWrapper.AddEntry Mocks
@@ -195,7 +200,7 @@ namespace SSRSMigrate.Tests.Exporter
                 .Throws(new FileNotFoundException(doesNotExistReport.FileName));
 
             // Mock passing a directory to AddFile
-            zipFileMock.Setup(z => z.AddFile(rootFolder.FileName, rootFolder.ZipPath))
+            zipFileMock.Setup(z => z.AddFile(rootFolder.FileName, "Export"))
                 .Throws(new FileNotFoundException(rootFolder.FileName));
 
             // IZipFileWrapper.Dispose Mocks
@@ -420,7 +425,8 @@ namespace SSRSMigrate.Tests.Exporter
         public void CreateEntrySummary_File()
         {
             string itemFileName = awDataSource.FileName;
-            string expectedZipPath = awDataSource.ZipPath;
+            string expectedZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources";
+            string expectedFileName = "AWDataSource.json";
             string expectedCheckSum = awDataSource.CheckSum;
 
             BundleSummaryEntry actual = zipBundler.CreateEntrySummary(itemFileName, expectedZipPath);
@@ -428,6 +434,7 @@ namespace SSRSMigrate.Tests.Exporter
             Assert.NotNull(actual);
             Assert.AreEqual(expectedCheckSum, actual.CheckSum);
             Assert.AreEqual(expectedZipPath, actual.Path);
+            Assert.AreEqual(expectedFileName, actual.FileName);
         }
 
         /// <summary>
