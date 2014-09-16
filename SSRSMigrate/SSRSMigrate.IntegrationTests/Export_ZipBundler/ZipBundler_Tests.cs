@@ -390,9 +390,90 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
             // Check that the DataSource file exists in ZipFileWrapper
             Assert.True(zipFileWrapper.FileExists("Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json"));
         }
+
+        [Test]
+        public void AddItem_DataSource_InvalidItemPath()
+        {
+            string itemFileName = awDataSource.FileName;
+            string itemPath = "/SSRSMigrate/Data Sources/AWDataSource"; // This path is not contained within awDataSource.FileName, so it is invalid
+
+            Exception ex = Assert.Throws<Exception>(
+                delegate
+                {
+                    zipBundler.AddItem("DataSources",
+                        itemFileName,
+                        itemPath,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Item path '{0}' is invalid.", itemPath)));
+        }
+
+        [Test]
+        public void AddItem_DataSource_FileAsDirectory()
+        {
+            DirectoryNotFoundException ex = Assert.Throws<DirectoryNotFoundException>(
+                delegate
+                {
+                    zipBundler.AddItem("DataSources",
+                        awDataSource.FileName,
+                        awDataSource.Path,
+                        true); // Add to zip as directory
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(awDataSource.FileName));
+        }
         #endregion
 
         #region AddItem Folder Tests
+        [Test]
+        public void AddItem_Folder()
+        {
+            zipBundler.AddItem("Folders",
+                reportsFolder.FileName,
+                reportsFolder.Path,
+                true);
+
+            // Check that the ZipBunlder has the entry we added to Folders
+            Assert.NotNull(zipBundler.Entries["Folders"][0]);
+
+            // Check that the proper ZipPath exists in the Folder entry we added
+            Assert.AreEqual(
+                "Export\\SSRSMigrate_AW_Tests\\Reports",
+                zipBundler.Entries["Folders"][0].Path);
+
+            // Check that the checksum is correct for the Folder entry we added
+            Assert.AreEqual(
+                "",
+                zipBundler.Entries["Folders"][0].CheckSum);
+
+            // Check that the filename is correct for the Folder entry we added
+            Assert.AreEqual(
+                "",
+                zipBundler.Entries["Folders"][0].FileName);
+
+            // Check that the Folder exists in ZipFileWrapper
+            Assert.True(zipFileWrapper.FileExists("Export\\SSRSMigrate_AW_Tests\\Reports"));
+        }
+
+        [Test]
+        public void AddItem_Folder_InvalidItemPath()
+        {
+            string itemFileName = reportsFolder.FileName;
+            string itemPath = "/SSRSMigrate/Reports"; // This path is not contained within reportsFolder.FileName, so it is invalid
+
+            Exception ex = Assert.Throws<Exception>(
+                delegate
+                {
+                    zipBundler.AddItem("Folders",
+                        itemFileName,
+                        itemPath,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Item path '{0}' is invalid.", itemPath)));
+        
+        }
         #endregion
 
         #region AddItem Report Tests
