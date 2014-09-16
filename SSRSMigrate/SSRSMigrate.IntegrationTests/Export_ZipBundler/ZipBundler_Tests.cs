@@ -468,7 +468,7 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
                     zipBundler.AddItem("Folders",
                         itemFileName,
                         itemPath,
-                        false);
+                        true);
                 });
 
             Assert.That(ex.Message, Is.EqualTo(string.Format("Item path '{0}' is invalid.", itemPath)));
