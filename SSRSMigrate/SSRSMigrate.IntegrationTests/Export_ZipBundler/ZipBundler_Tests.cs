@@ -476,6 +476,54 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         #endregion
 
         #region AddItem Report Tests
+        [Test]
+        public void AddItem_Report()
+        {
+            zipBundler.AddItem("Reports",
+                companySalesReport.FileName,
+                companySalesReport.Path,
+                false);
+
+            // Check that ZipBundler has the entry we added to Reports
+            Assert.NotNull(zipBundler.Entries["Reports"][0]);
+
+            // Check that the proper ZipPath exists in the Reports entry we added
+            Assert.AreEqual(
+                "Export\\SSRSMigrate_AW_Tests\\Reports",
+                zipBundler.Entries["Reports"][0].Path);
+
+            // Check that the checksum is correct fot the Report entry we added
+            Assert.AreEqual(
+                "1adde7720ca2f0af49550fc676f70804",
+                zipBundler.Entries["Reports"][0].CheckSum);
+
+            // Check that the filename is correct for the Report entry we added
+            Assert.AreEqual(
+                "Company Sales.rdl",
+                zipBundler.Entries["Reports"][0].FileName);
+
+            // Check that the Report exists in ZipFileWrapper
+            Assert.True(zipFileWrapper.FileExists("Export\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl"));
+        }
+
+        [Test]
+        public void AddItem_Report_InvalidItemPath()
+        {
+            string itemFileName = companySalesReport.FileName;
+            string itemPath = "/SSRSMigrate/Reports/Company Sales"; // This path is not contained within companySalesReport.FileName, so it is invalid
+
+            Exception ex = Assert.Throws<Exception>(
+                delegate
+                {
+                    zipBundler.AddItem("Reports",
+                        itemFileName,
+                        itemPath,
+                        false);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Item path '{0}' is invalid.", itemPath)));
+        
+        }
         #endregion
 
         #region AddItem Directory as File
