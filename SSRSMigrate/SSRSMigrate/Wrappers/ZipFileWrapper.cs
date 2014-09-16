@@ -24,9 +24,22 @@ namespace SSRSMigrate.Wrappers
 
         public bool FileExists(string zipFileName)
         {
+            if (string.IsNullOrEmpty(zipFileName))
+                throw new ArgumentException("zipFileName");
+
+            if (zipFileName.EndsWith("/"))
+                zipFileName = zipFileName.Remove(zipFileName.Length - 1);
+
             foreach (string e in this.mZipFile.EntryFileNames)
-			    if (e.Replace("/","\\") == zipFileName)
-				    return true;
+            {
+                string entry = e;
+
+                if (entry.EndsWith("/"))
+                    entry = entry.Remove(entry.Length - 1);
+
+                if (entry.Replace("/", "\\") == zipFileName)
+                    return true;
+            }
 
 		    return false;
         }
