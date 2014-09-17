@@ -97,6 +97,47 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         };
         #endregion
 
+        #region Expected Values
+        string expectedSummary = @"{
+  ""DataSources"": [
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+      ""FileName"": ""AWDataSource.json"",
+      ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
+    }
+  ],
+  ""Reports"": [
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": ""Company Sales.rdl"",
+      ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": ""Sales Order Detail.rdl"",
+      ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": ""Store Contacts.rdl"",
+      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+    }
+  ],
+  ""Folders"": [
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
+      ""FileName"": """",
+      ""CheckSum"": """"
+    }
+  ]
+}";
+        string expectedSummaryNoData = @"{
+  ""DataSources"": [],
+  ""Reports"": [],
+  ""Folders"": []
+}";
+        #endregion
+
         #region Environment Methods
         // Static so they can be used in field initializers
         private static string GetOutPutPath()
@@ -547,6 +588,53 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         #endregion
 
         #region CreateSummary Tests
+        [Test]
+        public void CreateSummary()
+        {
+            // Add test data to ZipBundler
+            // Add Data Source item to ZipBundler
+            zipBundler.AddItem("DataSources",
+                awDataSource.FileName,
+                awDataSource.Path,
+                false);
+
+            // Add Folder item to ZipBundler
+            zipBundler.AddItem("Folders",
+                rootFolder.FileName,
+                rootFolder.Path,
+                true);
+
+            // Add Report items to ZipBundler
+            // Add Company Sales report
+            zipBundler.AddItem("Reports",
+                companySalesReport.FileName,
+                companySalesReport.Path,
+                false);
+
+            // Add Sales Order Detail report
+            zipBundler.AddItem("Reports",
+                salesOrderDetailReport.FileName,
+                salesOrderDetailReport.Path,
+                false);
+
+            // Add Store Cotnacts [sub] report
+            zipBundler.AddItem("Reports",
+               storeContactsReport.FileName,
+               storeContactsReport.Path,
+               false);
+
+            string actual = zipBundler.CreateSummary();
+
+            Assert.AreEqual(expectedSummary, actual);
+        }
+
+        [Test]
+        public void CreateSummary_NoData()
+        {
+            string actual = zipBundler.CreateSummary();
+
+            Assert.AreEqual(expectedSummaryNoData, actual);
+        }
         #endregion
 
         #region Save Tests
