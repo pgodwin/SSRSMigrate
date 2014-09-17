@@ -527,6 +527,23 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         #endregion
 
         #region AddItem Directory as File
+        /// <summary>
+        /// Tests AddItem by passing it a directory but with isFolder boolean value of False
+        /// </summary>
+        [Test]
+        public void AddItem_DirectoryAsFile()
+        {
+            FileNotFoundException ex = Assert.Throws<FileNotFoundException>(
+                delegate
+                {
+                    zipBundler.AddItem("Reports",
+                        subFolder.FileName,
+                        subFolder.Path,
+                        false); // Add to zip as file
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(subFolder.FileName));
+        }
         #endregion
 
         #region CreateSummary Tests
