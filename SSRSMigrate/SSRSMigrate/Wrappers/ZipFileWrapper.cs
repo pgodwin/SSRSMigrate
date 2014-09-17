@@ -51,11 +51,17 @@ namespace SSRSMigrate.Wrappers
 
         public void AddFile(string fileName)
         {
+            if (!File.Exists(fileName))
+                throw new FileNotFoundException(fileName);
+
             this.mZipFile.AddFile(fileName);
         }
 
         public void AddFile(string fileName, string directoryPathInArchive)
         {
+            if (!File.Exists(fileName))
+                throw new FileNotFoundException(fileName);
+
             this.mZipFile.AddFile(fileName, directoryPathInArchive);
         }
 
