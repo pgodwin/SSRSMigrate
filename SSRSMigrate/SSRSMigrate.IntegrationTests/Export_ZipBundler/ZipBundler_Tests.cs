@@ -171,7 +171,10 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         {
             // Delete output directory if it exists
             if (Directory.Exists(GetOutPutPath()))
-                Directory.Delete(GetOutPutPath());
+                Directory.Delete(GetOutPutPath(), true);
+
+            if (File.Exists(zipArchiveFilename))
+                File.Delete(zipArchiveFilename);
         }
         #endregion
 
@@ -638,6 +641,87 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         #endregion
 
         #region Save Tests
+        [Test]
+        public void Save()
+        {
+            string filename = zipArchiveFilename;
+
+            zipBundler.Save(filename);
+
+            Assert.True(File.Exists(filename));
+        }
+
+        [Test]
+        public void Save_NullFileName()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.Save(null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("fileName"));
+        }
+
+        [Test]
+        public void Save_EmptyFileName()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    zipBundler.Save("");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("fileName"));
+        }
+        #endregion
+
+        #region Save Bundle Tests
+        [Test]
+        public void Save_CompleteBundle()
+        {
+            // Add test data to ZipBundler
+            // Add Data Source item to ZipBundler
+            zipBundler.AddItem("DataSources",
+                awDataSource.FileName,
+                awDataSource.Path,
+                false);
+
+            // Add Folder item to ZipBundler
+            zipBundler.AddItem("Folders",
+                rootFolder.FileName,
+                rootFolder.Path,
+                true);
+
+            // Add Report items to ZipBundler
+            // Add Company Sales report
+            zipBundler.AddItem("Reports",
+                companySalesReport.FileName,
+                companySalesReport.Path,
+                false);
+
+            // Add Sales Order Detail report
+            zipBundler.AddItem("Reports",
+                salesOrderDetailReport.FileName,
+                salesOrderDetailReport.Path,
+                false);
+
+            // Add Store Cotnacts [sub] report
+            zipBundler.AddItem("Reports",
+               storeContactsReport.FileName,
+               storeContactsReport.Path,
+               false);
+
+            // Create and add summary to ZipBundler
+            zipBundler.CreateSummary();
+            
+            // Save archive to disk
+            string filename = zipArchiveFilename;
+
+            zipBundler.Save(filename);
+
+            Assert.True(File.Exists(filename));
+        }
         #endregion
     }
 }
