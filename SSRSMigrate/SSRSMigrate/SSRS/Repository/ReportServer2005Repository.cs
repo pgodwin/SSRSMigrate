@@ -68,6 +68,24 @@ namespace SSRSMigrate.SSRS.Repository
         #endregion
 
         #region Folder Methods
+        public FolderItem GetFolder(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            string folderName = path.Substring(path.LastIndexOf('/') + 1);
+
+            CatalogItem item = this.GetItem(
+                folderName,
+                path,
+                ItemTypeEnum.Folder);
+
+            if (item != null)
+                return this.mDataMapper.GetFolder(item);
+
+            return null;
+        }
+
         public List<FolderItem> GetFolders(string path)
         {
             if (string.IsNullOrEmpty(path))
@@ -457,6 +475,7 @@ namespace SSRSMigrate.SSRS.Repository
                 return false;
         }
 
+        //TODO Need to decide if this should always FindItems in '/' or the root path
         public CatalogItem GetItem(string itemName, string itemPath, ItemTypeEnum itemType)
         {
             if (string.IsNullOrEmpty(itemName))

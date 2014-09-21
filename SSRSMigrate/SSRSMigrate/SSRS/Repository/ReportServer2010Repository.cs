@@ -68,6 +68,25 @@ namespace SSRSMigrate.SSRS.Repository
         #endregion
 
         #region Folder Methods
+
+        public FolderItem GetFolder(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            string folderName = path.Substring(path.LastIndexOf('/') + 1);
+
+            CatalogItem item = this.GetItem(
+                folderName,
+                path,
+                "Folder");
+
+            if (item != null)
+                return this.mDataMapper.GetFolder(item);
+
+            return null;
+        }
+
         public List<FolderItem> GetFolders(string path)
         {
             if (string.IsNullOrEmpty(path))

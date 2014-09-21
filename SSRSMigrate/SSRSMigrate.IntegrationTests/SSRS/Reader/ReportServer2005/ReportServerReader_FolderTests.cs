@@ -7,6 +7,7 @@ using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
 using Ninject;
 using SSRSMigrate.Factory;
+using SSRSMigrate.SSRS.Errors;
 
 public class CoverageExcludeAttribute : System.Attribute { }
 
@@ -20,6 +21,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         ReportServerReader reader = null;
 
         #region GetFolders - Expected FolderItems
+        FolderItem expectedFolderItem = null;
         List<FolderItem> expectedFolderItems = null;
         #endregion
 
@@ -33,13 +35,15 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
             kernel = new StandardKernel(new DependencyModule());
 
             // Setup expected FolderItems
+            expectedFolderItem = new FolderItem()
+            {
+                Name = "Reports",
+                Path = "/SSRSMigrate_AW_Tests/Reports",
+            };
+
             expectedFolderItems = new List<FolderItem>()
             {
-                new FolderItem()
-                {
-                    Name = "Reports",
-                    Path = "/SSRSMigrate_AW_Tests/Reports",
-                },
+                expectedFolderItem,
                 new FolderItem()
                 {
                     Name = "Sub Folder",
@@ -72,6 +76,65 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         {
             actualFolderItems = null;
         }
+
+        #region GetFolder Tests
+        [Test]
+        public void GetFolder()
+        {
+            FolderItem actual = reader.GetFolder("/SSRSMigrate_AW_Tests/Reports");
+
+            Assert.NotNull(actual);
+            Assert.AreEqual(expectedFolderItem.Path, actual.Path);
+            Assert.AreEqual(expectedFolderItem.Name, actual.Name);
+        }
+
+        [Test]
+        public void GetFolder_NullPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetFolder(null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetFolder_EmptyPath()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+                delegate
+                {
+                    reader.GetFolder("");
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("path"));
+        }
+
+        [Test]
+        public void GetFolder_PathDoesntExist()
+        {
+            FolderItem actual = reader.GetFolder("/SSRSMigrate_AW_Tests/Doesnt Exist");
+
+            Assert.Null(actual);
+        }
+
+        [Test]
+        public void GetFolder_InvalidPath()
+        {
+            string invalidPath = "/SSRSMigrate_AW.Tests";
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    reader.GetFolder(invalidPath);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
+        
+        }
+        #endregion
 
         #region GetFolders Tests
         [Test]
@@ -114,6 +177,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         {
             List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_AW_Tests Doesnt Exist");
         }
+
+        //TODO GetFolders invalid path tests
         #endregion
 
         #region GetFolders Using Action<FolderItem> Tests
@@ -171,6 +236,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
 
             Assert.AreEqual(expectedFolderItems.Count(), actualFolderItems.Count());
         }
+
+        //TODO GetFolders invalid path tests
 
         private void GetFolders_Reporter(FolderItem folderItem)
         {

@@ -10,7 +10,7 @@ namespace SSRSMigrate.SSRS.Reader
     public interface IReportServerReader
     {
         // Folders
-        //TODO Add FolderItem GetFolder(string path);
+        FolderItem GetFolder(string path);
         List<FolderItem> GetFolders(string path);
         void GetFolders(string path, Action<FolderItem> progressReporter);
 

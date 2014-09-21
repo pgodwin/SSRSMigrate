@@ -12,6 +12,7 @@ namespace SSRSMigrate.SSRS.Repository
         string InvalidPathChars { get; }
 
         // Folders
+        FolderItem GetFolder(string path);
         List<FolderItem> GetFolders(string path);
         IEnumerable<FolderItem> GetFolderList(string path);
         string CreateFolder(string name, string parentPath);

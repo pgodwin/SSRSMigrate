@@ -21,6 +21,19 @@ namespace SSRSMigrate.SSRS.Reader
         }
 
         #region Folder Methods
+        public FolderItem GetFolder(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("path");
+
+            if (!this.mReportRepository.ValidatePath(path))
+                throw new InvalidPathException(path);
+
+            FolderItem folder = this.mReportRepository.GetFolder(path);
+
+            return folder;
+        }
+
         public List<FolderItem> GetFolders(string path)
         {
             if (string.IsNullOrEmpty(path))
