@@ -178,6 +178,20 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         {
             List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_AW_Tests Doesnt Exist");
         }
+
+        [Test]
+        public void GetFolders_InvalidPath()
+        {
+            string invalidPath = "/SSRSMigrate_AW.Tests";
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    reader.GetFolders(invalidPath);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
+        }
         #endregion
 
         #region GetFolders Using Action<FolderItem> Tests
@@ -234,6 +248,20 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
             reader.GetFolders("/SSRSMigrate_AW_Tests Doesnt Exist", GetFolders_Reporter);
 
             Assert.AreEqual(expectedFolderItems.Count(), actualFolderItems.Count());
+        }
+
+        [Test]
+        public void GetFolders_UsingDelegate_InvalidPath()
+        {
+            string invalidPath = "/SSRSMigrate_AW.Tests";
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    reader.GetFolders(invalidPath, GetFolders_Reporter);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
         }
 
         private void GetFolders_Reporter(FolderItem folderItem)
