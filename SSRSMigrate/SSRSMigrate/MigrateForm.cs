@@ -72,23 +72,19 @@ namespace SSRSMigrate
             }
         }
 
-        private void ReportsReaderReporter(ReportItem item)
-        {
-            ListViewItem oItem = new ListViewItem(item.Name);
-            oItem.Checked = true;
-            oItem.Tag = item;
-            oItem.SubItems.Add(item.Path);
-
-            this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
-            this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
-        }
-
         public void SourceRefreshReportsWorker(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
             string path = (string)e.Argument;
 
-            this.mReportServerReader.GetReports(path, ReportsReaderReporter);
+            // Get folders from the specified path and add them to the Reports ListView control
+            this.mReportServerReader.GetFolders(path, ReportsReader_Reporter);
+
+            // Get data sources from the specified path and add them to the Reports ListView control
+            this.mReportServerReader.GetDataSources(path, ReportsReader_Reporter);
+
+            // Get reports from the specified path and add them to the Reports ListView control
+            this.mReportServerReader.GetReports(path, ReportsReader_Reporter);
         }
 
         private void bw_SourceRefreshReportsCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -105,7 +101,7 @@ namespace SSRSMigrate
             }
             else
             {
-                msg = string.Format("Completed. {0}", e.Result);
+                msg = string.Format("Completed.");
             }
 
             this.btnSrcRefreshReports.Enabled = true;
@@ -126,6 +122,68 @@ namespace SSRSMigrate
             progressBar.Maximum = 100;
             progressBar.ToolTipText = report.Name;
         }
+
+        // Reporters
+        private void ReportsReader_Reporter(ReportServerItem item)
+        {
+            ListViewItem oItem = new ListViewItem(item.Name);
+            oItem.Checked = true;
+            oItem.Tag = item;
+            oItem.SubItems.Add(item.Path);
+
+            // Assign to proper ListViewGroup
+            if (item.GetType() == typeof(FolderItem))
+                oItem.Group = this.lstSrcReports.Groups["foldersGroup"];
+            else if (item.GetType() == typeof(DataSourceItem))
+                oItem.Group = this.lstSrcReports.Groups["dataSourcesGroup"];
+            else if (item.GetType() == typeof(ReportItem))
+                oItem.Group = this.lstSrcReports.Groups["reportsGroup"];
+
+            this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
+            this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
+
+            this.lblStatus.Text = string.Format("Refreshing item '{0}'...", item.Path);
+        }
+
+        // Commented out because we can do these in a single method above.
+        //private void ReportsReader_Report_Reporter(ReportItem item)
+        //{
+        //    ListViewItem oItem = new ListViewItem(item.Name);
+        //    oItem.Checked = true;
+        //    oItem.Tag = item;
+        //    oItem.SubItems.Add(item.Path);
+
+        //    this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
+        //    this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
+
+        //    this.lblStatus.Text = string.Format("Refreshing report '{0}'...", item.Path);
+        //}
+
+        //private void ReportsReader_DataSource_Reporter(DataSourceItem item)
+        //{
+        //    ListViewItem oItem = new ListViewItem(item.Name);
+        //    oItem.Checked = true;
+        //    oItem.Tag = item;
+        //    oItem.SubItems.Add(item.Path);
+
+        //    this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
+        //    this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
+
+        //    this.lblStatus.Text = string.Format("Refreshing data source '{0}'...", item.Path);
+        //}
+
+        //private void ReportsReader_Folder_Reporter(FolderItem item)
+        //{
+        //    ListViewItem oItem = new ListViewItem(item.Name);
+        //    oItem.Checked = true;
+        //    oItem.Tag = item;
+        //    oItem.SubItems.Add(item.Path);
+
+        //    this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
+        //    this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
+
+        //    this.lblStatus.Text = string.Format("Refreshing folder '{0}'...", item.Path);
+        //}
         #endregion
     }
 }

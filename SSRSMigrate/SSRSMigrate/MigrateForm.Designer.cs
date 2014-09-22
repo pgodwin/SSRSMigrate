@@ -28,6 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Folders", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Data Sources", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Reports", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Folders", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup("Data Sources", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup6 = new System.Windows.Forms.ListViewGroup("Reports", System.Windows.Forms.HorizontalAlignment.Left);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
@@ -50,16 +56,16 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus,
             this.progressBar});
-            this.statusStrip.Location = new System.Drawing.Point(0, 562);
+            this.statusStrip.Location = new System.Drawing.Point(0, 547);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(917, 22);
+            this.statusStrip.Size = new System.Drawing.Size(1216, 22);
             this.statusStrip.TabIndex = 0;
             this.statusStrip.Text = "statusStrip1";
             // 
             // lblStatus
             // 
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(800, 17);
+            this.lblStatus.Size = new System.Drawing.Size(1099, 17);
             this.lblStatus.Spring = true;
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -74,14 +80,15 @@
             this.grpSource.Controls.Add(this.lstSrcReports);
             this.grpSource.Location = new System.Drawing.Point(12, 12);
             this.grpSource.Name = "grpSource";
-            this.grpSource.Size = new System.Drawing.Size(441, 513);
+            this.grpSource.Size = new System.Drawing.Size(592, 513);
             this.grpSource.TabIndex = 1;
             this.grpSource.TabStop = false;
             this.grpSource.Text = "Source Server";
             // 
             // btnSrcRefreshReports
             // 
-            this.btnSrcRefreshReports.Location = new System.Drawing.Point(284, 478);
+            this.btnSrcRefreshReports.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSrcRefreshReports.Location = new System.Drawing.Point(435, 478);
             this.btnSrcRefreshReports.Name = "btnSrcRefreshReports";
             this.btnSrcRefreshReports.Size = new System.Drawing.Size(138, 23);
             this.btnSrcRefreshReports.TabIndex = 15;
@@ -91,15 +98,29 @@
             // 
             // lstSrcReports
             // 
+            this.lstSrcReports.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstSrcReports.CheckBoxes = true;
             this.lstSrcReports.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colSrcName,
             this.colSrcPath});
             this.lstSrcReports.FullRowSelect = true;
             this.lstSrcReports.GridLines = true;
+            listViewGroup1.Header = "Folders";
+            listViewGroup1.Name = "foldersGroup";
+            listViewGroup2.Header = "Data Sources";
+            listViewGroup2.Name = "dataSourcesGroup";
+            listViewGroup3.Header = "Reports";
+            listViewGroup3.Name = "reportsGroup";
+            this.lstSrcReports.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup1,
+            listViewGroup2,
+            listViewGroup3});
             this.lstSrcReports.Location = new System.Drawing.Point(21, 19);
             this.lstSrcReports.MultiSelect = false;
             this.lstSrcReports.Name = "lstSrcReports";
-            this.lstSrcReports.Size = new System.Drawing.Size(401, 453);
+            this.lstSrcReports.Size = new System.Drawing.Size(552, 453);
             this.lstSrcReports.TabIndex = 14;
             this.lstSrcReports.UseCompatibleStateImageBehavior = false;
             this.lstSrcReports.View = System.Windows.Forms.View.Details;
@@ -112,29 +133,42 @@
             // colSrcPath
             // 
             this.colSrcPath.Text = "Path";
-            this.colSrcPath.Width = 234;
+            this.colSrcPath.Width = 387;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.lstDestReports);
-            this.groupBox1.Location = new System.Drawing.Point(459, 12);
+            this.groupBox1.Location = new System.Drawing.Point(610, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(441, 513);
+            this.groupBox1.Size = new System.Drawing.Size(592, 513);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Destination Server";
             // 
             // lstDestReports
             // 
+            this.lstDestReports.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lstDestReports.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
             this.lstDestReports.FullRowSelect = true;
             this.lstDestReports.GridLines = true;
+            listViewGroup4.Header = "Folders";
+            listViewGroup4.Name = "foldersGroup";
+            listViewGroup5.Header = "Data Sources";
+            listViewGroup5.Name = "dataSourcesGroup";
+            listViewGroup6.Header = "Reports";
+            listViewGroup6.Name = "reportsGroup";
+            this.lstDestReports.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup4,
+            listViewGroup5,
+            listViewGroup6});
             this.lstDestReports.Location = new System.Drawing.Point(18, 19);
             this.lstDestReports.MultiSelect = false;
             this.lstDestReports.Name = "lstDestReports";
-            this.lstDestReports.Size = new System.Drawing.Size(401, 453);
+            this.lstDestReports.Size = new System.Drawing.Size(552, 453);
             this.lstDestReports.TabIndex = 15;
             this.lstDestReports.UseCompatibleStateImageBehavior = false;
             this.lstDestReports.View = System.Windows.Forms.View.Details;
@@ -153,10 +187,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(917, 584);
+            this.ClientSize = new System.Drawing.Size(1216, 569);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grpSource);
             this.Controls.Add(this.statusStrip);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "MigrateForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
