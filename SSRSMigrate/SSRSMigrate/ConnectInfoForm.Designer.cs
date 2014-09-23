@@ -66,8 +66,10 @@
             this.lblDestUrl = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
             this.grpExportZip = new System.Windows.Forms.GroupBox();
-            this.lblExportZipFilename = new System.Windows.Forms.Label();
             this.txtExportZipFilename = new System.Windows.Forms.TextBox();
+            this.lblExportZipFilename = new System.Windows.Forms.Label();
+            this.rdoMethodExportDisk = new System.Windows.Forms.RadioButton();
+            this.btnExportZipFileBrowse = new System.Windows.Forms.Button();
             this.grpMigrateMethod.SuspendLayout();
             this.grpSrcServer.SuspendLayout();
             this.grpDestServer.SuspendLayout();
@@ -76,6 +78,7 @@
             // 
             // grpMigrateMethod
             // 
+            this.grpMigrateMethod.Controls.Add(this.rdoMethodExportDisk);
             this.grpMigrateMethod.Controls.Add(this.lblMethodInfo);
             this.grpMigrateMethod.Controls.Add(this.rdoMethodImportZip);
             this.grpMigrateMethod.Controls.Add(this.rdoMethodExportZip);
@@ -98,7 +101,7 @@
             // 
             this.rdoMethodImportZip.AutoSize = true;
             this.rdoMethodImportZip.Enabled = false;
-            this.rdoMethodImportZip.Location = new System.Drawing.Point(19, 68);
+            this.rdoMethodImportZip.Location = new System.Drawing.Point(19, 74);
             this.rdoMethodImportZip.Name = "rdoMethodImportZip";
             this.rdoMethodImportZip.Size = new System.Drawing.Size(135, 17);
             this.rdoMethodImportZip.TabIndex = 2;
@@ -111,7 +114,7 @@
             // rdoMethodExportZip
             // 
             this.rdoMethodExportZip.AutoSize = true;
-            this.rdoMethodExportZip.Location = new System.Drawing.Point(19, 45);
+            this.rdoMethodExportZip.Location = new System.Drawing.Point(19, 56);
             this.rdoMethodExportZip.Name = "rdoMethodExportZip";
             this.rdoMethodExportZip.Size = new System.Drawing.Size(125, 17);
             this.rdoMethodExportZip.TabIndex = 1;
@@ -445,7 +448,7 @@
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(796, 245);
+            this.btnConnect.Location = new System.Drawing.Point(799, 250);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(117, 31);
             this.btnConnect.TabIndex = 3;
@@ -455,6 +458,7 @@
             // 
             // grpExportZip
             // 
+            this.grpExportZip.Controls.Add(this.btnExportZipFileBrowse);
             this.grpExportZip.Controls.Add(this.txtExportZipFilename);
             this.grpExportZip.Controls.Add(this.lblExportZipFilename);
             this.grpExportZip.Location = new System.Drawing.Point(566, 14);
@@ -465,6 +469,13 @@
             this.grpExportZip.Text = "Export to ZIP Archive";
             this.grpExportZip.Visible = false;
             // 
+            // txtExportZipFilename
+            // 
+            this.txtExportZipFilename.Location = new System.Drawing.Point(76, 26);
+            this.txtExportZipFilename.Name = "txtExportZipFilename";
+            this.txtExportZipFilename.Size = new System.Drawing.Size(221, 20);
+            this.txtExportZipFilename.TabIndex = 1;
+            // 
             // lblExportZipFilename
             // 
             this.lblExportZipFilename.AutoSize = true;
@@ -474,12 +485,28 @@
             this.lblExportZipFilename.TabIndex = 0;
             this.lblExportZipFilename.Text = "Filename:";
             // 
-            // txtExportZipFilename
+            // rdoMethodExportDisk
             // 
-            this.txtExportZipFilename.Location = new System.Drawing.Point(76, 26);
-            this.txtExportZipFilename.Name = "txtExportZipFilename";
-            this.txtExportZipFilename.Size = new System.Drawing.Size(221, 20);
-            this.txtExportZipFilename.TabIndex = 1;
+            this.rdoMethodExportDisk.AutoSize = true;
+            this.rdoMethodExportDisk.Location = new System.Drawing.Point(19, 38);
+            this.rdoMethodExportDisk.Name = "rdoMethodExportDisk";
+            this.rdoMethodExportDisk.Size = new System.Drawing.Size(89, 17);
+            this.rdoMethodExportDisk.TabIndex = 4;
+            this.rdoMethodExportDisk.Text = "Export to disk";
+            this.rdoMethodExportDisk.UseVisualStyleBackColor = true;
+            this.rdoMethodExportDisk.CheckedChanged += new System.EventHandler(this.rdoMethodExportDisk_CheckedChanged);
+            this.rdoMethodExportDisk.MouseLeave += new System.EventHandler(this.rdoMethodExportDisk_MouseLeave);
+            this.rdoMethodExportDisk.MouseHover += new System.EventHandler(this.rdoMethodExportDisk_MouseHover);
+            // 
+            // btnExportZipFileBrowse
+            // 
+            this.btnExportZipFileBrowse.Location = new System.Drawing.Point(303, 23);
+            this.btnExportZipFileBrowse.Name = "btnExportZipFileBrowse";
+            this.btnExportZipFileBrowse.Size = new System.Drawing.Size(24, 23);
+            this.btnExportZipFileBrowse.TabIndex = 2;
+            this.btnExportZipFileBrowse.Text = "...";
+            this.btnExportZipFileBrowse.UseVisualStyleBackColor = true;
+            this.btnExportZipFileBrowse.Click += new System.EventHandler(this.btnExportZipFileBrowse_Click);
             // 
             // ConnectInfoForm
             // 
@@ -552,5 +579,7 @@
         private System.Windows.Forms.GroupBox grpExportZip;
         private System.Windows.Forms.TextBox txtExportZipFilename;
         private System.Windows.Forms.Label lblExportZipFilename;
+        private System.Windows.Forms.RadioButton rdoMethodExportDisk;
+        private System.Windows.Forms.Button btnExportZipFileBrowse;
     }
 }

@@ -45,6 +45,16 @@ namespace SSRSMigrate
             this.lblMethodInfo.Text = "";
         }
 
+        private void rdoMethodExportDisk_MouseHover(object sender, EventArgs e)
+        {
+            this.lblMethodInfo.Text = "Export all items to a directory on disk.";
+        }
+
+        private void rdoMethodExportDisk_MouseLeave(object sender, EventArgs e)
+        {
+            this.lblMethodInfo.Text = "";
+        }
+
         private void rdoMethodImportZip_MouseHover(object sender, EventArgs e)
         {
             this.lblMethodInfo.Text = "Import previously exported items from a specified ZIP archive.";
@@ -64,6 +74,18 @@ namespace SSRSMigrate
             else
             {
                 grpDestServer.Visible = false;
+            }
+        }
+
+        private void rdoMethodExportDisk_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdoMethodExportDisk.Checked)
+            {
+
+            }
+            else
+            {
+                
             }
         }
 
@@ -130,20 +152,14 @@ namespace SSRSMigrate
         {
             try
             {
-                this.UICheck();
-                this.SaveUIToConfig();
+                this.UI_FieldsCheck();
 
-                ReportServerReader reader = null;
-                string version = "2005-SRC";
-
-                if (cboSrcVersion.SelectedIndex == 0) 
-                    version = "2005-SRC";
-                else
-                    version = "2010-SRC";
-
-                reader = new ReportServerReader(this.mKernel.Get<IReportServerRepositoryFactory>().GetRepository(version));
-
-                this.PerformDirectMigrate(txtSrcPath.Text, txtDestPath.Text, reader);
+                if (rdoMethodDirect.Checked)
+                    this.DirectMigration_Connection();
+                else if (rdoMethodExportDisk.Checked)
+                    this.ExportToDisk_Connection();
+                else if (rdoMethodExportZip.Checked)
+                    this.ExportToZip_Connection();
             }
             catch (Exception er)
             {
@@ -156,16 +172,131 @@ namespace SSRSMigrate
             }
         }
 
-        private void UICheck()
+        #region Connection Methods
+        private void DirectMigration_Connection()
+        {
+            // Save configuration
+            this.Save_SourceConfiguration();
+            this.Save_DestinationConfiguration();
+
+            ReportServerReader reader = null;
+            //TODO ReportServerWriter writer = null;
+            string version = "2005-SRC";
+
+            if (cboSrcVersion.SelectedIndex == 0)
+                version = "2005-SRC";
+            else
+                version = "2010-SRC";
+
+            reader = new ReportServerReader(this.mKernel.Get<IReportServerRepositoryFactory>().GetRepository(version));
+            //TODO Create ReportServerWriter
+
+            //TODO Pass ReportServerWriter to PerformDirectMigrate
+            this.PerformDirectMigrate(txtSrcPath.Text, txtDestPath.Text, reader);
+        }
+
+        private void ExportToDisk_Connection()
+        {
+            // Save configuration
+            this.Save_SourceConfiguration();
+
+            ReportServerReader reader = null;
+            //TODO DataSourceItemExporter dataSourceExporter = null;
+            //TODO FolderItemExporter folderExporter = null;
+            //TODO ReportItemExporter reportExporter = null;
+            string version = "2005-SRC";
+
+            if (cboSrcVersion.SelectedIndex == 0)
+                version = "2005-SRC";
+            else
+                version = "2010-SRC";
+
+            reader = new ReportServerReader(this.mKernel.Get<IReportServerRepositoryFactory>().GetRepository(version));
+            //TODO Create ItemExporters
+
+            //this.PerformExportToDisk(txtSrcPath.Text, exportPath, reader, dataSourceExporter, folderExporter, reportExporter);
+        }
+
+        private void ExportToZip_Connection()
+        {
+            
+        }
+        #endregion
+
+        #region UI Input Check Methods
+        private void UI_FieldsCheck()
         {
             if (rdoMethodDirect.Checked)
             {
-                UISourceCheck();
-                UIDestinationCheck();
+                UI_SourceCheck();
+                UI_DirectMigration_DestinationCheck();
+            }
+            else if (rdoMethodExportDisk.Checked)
+            {
+                //TODO UI_SourceCheck();
+                //TODO UI_ExportDisk_DestinationCheck();
+            }
+            else if (rdoMethodExportZip.Checked)
+            {
+                //TODO UI_SourceCheck();
+                //TODO UI_ExportZip_DestinationCheck();
+            }
+            else if (rdoMethodImportZip.Checked)
+            {
+                //TODO UI_ImportZip_SourceCheck();
+                //TODO UI_ImportZip_DestinationCheck();
             }
         }
+        #endregion
 
-        private void UISourceCheck()
+        #region Save connection information from UI to App.config
+        private void Save_SourceConfiguration()
+        {
+            if (cboSrcDefaultCred.SelectedIndex == 0)
+                Properties.Settings.Default.SrcDefaultCred = true;
+            else
+                Properties.Settings.Default.SrcDefaultCred = false;
+
+            Properties.Settings.Default.SrcDomain = txtSrcDomain.Text;
+            Properties.Settings.Default.SrcPassword = txtSrcPassword.Text;
+            Properties.Settings.Default.SrcPath = txtSrcPath.Text;
+            Properties.Settings.Default.SrcUsername = txtSrcUsername.Text;
+
+            if (cboSrcVersion.SelectedIndex == 0)
+                Properties.Settings.Default.SrcVersion = "2005";
+            else
+                Properties.Settings.Default.SrcVersion = "2010";
+
+            Properties.Settings.Default.SrcWebServiceUrl = txtSrcUrl.Text;
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void Save_DestinationConfiguration()
+        {
+            if (cboDestDefaultCred.SelectedIndex == 0)
+                Properties.Settings.Default.DestDefaultCred = true;
+            else
+                Properties.Settings.Default.DestDefaultCred = false;
+
+            Properties.Settings.Default.DestDomain = txtDestDomain.Text;
+            Properties.Settings.Default.DestPassword = txtDestPassword.Text;
+            Properties.Settings.Default.DestPath = txtDestPath.Text;
+            Properties.Settings.Default.DestUsername = txtDestUsername.Text;
+
+            if (cboDestVersion.SelectedIndex == 0)
+                Properties.Settings.Default.DestVersion = "2005";
+            else
+                Properties.Settings.Default.DestVersion = "2010";
+
+            Properties.Settings.Default.DestWebServiceUrl = txtDestUrl.Text;
+
+            Properties.Settings.Default.Save();
+        }
+        #endregion
+
+        #region Direct Export Group
+        private void UI_SourceCheck()
         {
             if (string.IsNullOrEmpty(this.txtSrcUrl.Text))
                 throw new Exception("source url");
@@ -186,7 +317,7 @@ namespace SSRSMigrate
                 this.txtSrcPath.Text = "/";
         }
 
-        private void UIDestinationCheck()
+        private void UI_DirectMigration_DestinationCheck()
         {
             if (string.IsNullOrEmpty(this.txtDestUrl.Text))
                 throw new Exception("destination url");
@@ -207,50 +338,30 @@ namespace SSRSMigrate
                 this.txtDestPath.Text = "/";
         }
 
-        private void SaveUIToConfig()
-        {
-            if (cboSrcDefaultCred.SelectedIndex == 0)
-                Properties.Settings.Default.SrcDefaultCred = true;
-            else
-                Properties.Settings.Default.SrcDefaultCred = false;
-
-            Properties.Settings.Default.SrcDomain = txtSrcDomain.Text;
-            Properties.Settings.Default.SrcPassword = txtSrcPassword.Text;
-            Properties.Settings.Default.SrcPath = txtSrcPath.Text;
-            Properties.Settings.Default.SrcUsername = txtSrcUsername.Text;
-
-            if (cboSrcVersion.SelectedIndex == 0)
-                Properties.Settings.Default.SrcVersion = "2005";
-            else
-                Properties.Settings.Default.SrcVersion = "2010";
-
-            Properties.Settings.Default.SrcWebServiceUrl = txtSrcUrl.Text;
-
-            if (cboDestDefaultCred.SelectedIndex == 0)
-                Properties.Settings.Default.DestDefaultCred = true;
-            else
-                Properties.Settings.Default.DestDefaultCred = false;
-
-            Properties.Settings.Default.DestDomain = txtDestDomain.Text;
-            Properties.Settings.Default.DestPassword = txtDestPassword.Text;
-            Properties.Settings.Default.DestPath = txtDestPath.Text;
-            Properties.Settings.Default.DestUsername = txtDestUsername.Text;
-
-            if (cboDestVersion.SelectedIndex == 0)
-                Properties.Settings.Default.DestVersion = "2005";
-            else
-                Properties.Settings.Default.DestVersion = "2010";
-
-            Properties.Settings.Default.DestWebServiceUrl = txtDestUrl.Text;
-
-            Properties.Settings.Default.Save();
-        }
-
         private void PerformDirectMigrate(string sourceRootPath, string destinationRootPath, ReportServerReader reader)
         {
             MigrateForm migrateForm = new MigrateForm(sourceRootPath, destinationRootPath, reader);
 
             migrateForm.ShowDialog();
         }
+        #endregion
+
+        #region Export to disk Group
+        #endregion
+
+        #region Export to Zip Archive Group
+        private void btnExportZipFileBrowse_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "Zip files (*.zip)|*.zip|All files (*.*)|*.*";
+            saveDialog.FilterIndex = 2;
+            saveDialog.RestoreDirectory = true;
+
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                this.txtExportZipFilename.Text = saveDialog.FileName;
+            }
+        }
+        #endregion
     }
 }
