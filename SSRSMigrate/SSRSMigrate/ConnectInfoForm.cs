@@ -10,6 +10,7 @@ using SSRSMigrate.SSRS.Reader;
 using Ninject;
 using SSRSMigrate.Factory;
 using SSRSMigrate.SSRS.Repository;
+using SSRSMigrate.Exporter;
 
 namespace SSRSMigrate
 {
@@ -201,9 +202,10 @@ namespace SSRSMigrate
             this.Save_SourceConfiguration();
 
             ReportServerReader reader = null;
-            //TODO DataSourceItemExporter dataSourceExporter = null;
-            //TODO FolderItemExporter folderExporter = null;
-            //TODO ReportItemExporter reportExporter = null;
+            DataSourceItemExporter dataSourceExporter = null;
+            FolderItemExporter folderExporter = null;
+            ReportItemExporter reportExporter = null;
+
             string version = "2005-SRC";
 
             if (this.cboSrcVersion.SelectedIndex == 0)
@@ -213,8 +215,16 @@ namespace SSRSMigrate
 
             reader = new ReportServerReader(this.mKernel.Get<IReportServerRepositoryFactory>().GetRepository(version));
             //TODO Create ItemExporters
+            dataSourceExporter = this.mKernel.Get<DataSourceItemExporter>();
+            folderExporter = this.mKernel.Get<FolderItemExporter>();
+            reportExporter = this.mKernel.Get<ReportItemExporter>();
 
-            //this.PerformExportToDisk(this.txtSrcPath.Text, exportPath, reader, dataSourceExporter, folderExporter, reportExporter);
+           this.PerformExportToDisk(this.txtSrcPath.Text,
+                this.txtExportDiskFolderName.Text,
+                reader,
+                folderExporter,
+                reportExporter,
+                dataSourceExporter);
         }
 
         private void ExportToZip_Connection()
@@ -233,8 +243,8 @@ namespace SSRSMigrate
             }
             else if (this.rdoMethodExportDisk.Checked)
             {
-                //TODO UI_SourceCheck();
-                //TODO UI_ExportDisk_DestinationCheck();
+                this.UI_SourceCheck();
+                this.UI_ExportDisk_DestinationCheck();
             }
             else if (this.rdoMethodExportZip.Checked)
             {
@@ -347,6 +357,12 @@ namespace SSRSMigrate
         #endregion
 
         #region Export to disk Group
+        private void UI_ExportDisk_DestinationCheck()
+        {
+            if (string.IsNullOrEmpty(this.txtExportDiskFolderName.Text))
+                throw new Exception("folder name");
+        }
+
         private void btnExportDiskFolderBrowse_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog folderDialog = new FolderBrowserDialog();
@@ -358,6 +374,23 @@ namespace SSRSMigrate
                 this.txtExportDiskFolderName.Text = folderDialog.SelectedPath;
             }
 
+        }
+
+        private void PerformExportToDisk(string sourceRootPath,
+            string destinationPath,
+            ReportServerReader reader,
+            FolderItemExporter folderExporter,
+            ReportItemExporter reportExporter,
+            DataSourceItemExporter dataSourceExporter)
+        {
+            ExportDiskForm exportDiskForm = new ExportDiskForm(sourceRootPath,
+                destinationPath,
+                reader,
+                folderExporter,
+                reportExporter,
+                dataSourceExporter);
+
+            exportDiskForm.ShowDialog();
         }
         #endregion
 

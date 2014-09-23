@@ -24,6 +24,8 @@ namespace SSRSMigrate
 
         public MigrateForm(string sourceRootPath, string destinationRootPath, ReportServerReader reader)
         {
+            //TODO Check for NULL arguments
+
             InitializeComponent();
 
             this.mSourceRootPath = sourceRootPath;

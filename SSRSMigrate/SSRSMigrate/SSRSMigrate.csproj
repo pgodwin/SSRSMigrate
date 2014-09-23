@@ -94,6 +94,12 @@
     <Compile Include="DataMapper\ReportingService2010DataMapper.cs" />
     <Compile Include="DependencyModule.cs" />
     <Compile Include="Enum\SSRSEnumerations.cs" />
+    <Compile Include="ExportDiskForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExportDiskForm.Designer.cs">
+      <DependentUpon>ExportDiskForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Exporter\BundleSummaryEntry.cs" />
     <Compile Include="Exporter\DataSourceItemExporter.cs" />
     <Compile Include="Exporter\ExportStatus.cs" />
@@ -148,6 +154,9 @@
     <Compile Include="Wrappers\ZipFileWrapper.cs" />
     <EmbeddedResource Include="ConnectInfoForm.resx">
       <DependentUpon>ConnectInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExportDiskForm.resx">
+      <DependentUpon>ExportDiskForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MigrateForm.resx">
       <DependentUpon>MigrateForm.cs</DependentUpon>
