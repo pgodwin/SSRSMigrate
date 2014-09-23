@@ -67,37 +67,37 @@ namespace SSRSMigrate
 
         private void rdoMethodDirect_CheckedChanged(object sender, EventArgs e)
         {
-            if (rdoMethodDirect.Checked)
+            if (this.rdoMethodDirect.Checked)
             {
-                grpDestServer.Visible = true;
+                this.grpDestServer.Visible = true;
             }
             else
             {
-                grpDestServer.Visible = false;
+                this.grpDestServer.Visible = false;
             }
         }
 
         private void rdoMethodExportDisk_CheckedChanged(object sender, EventArgs e)
         {
-            if (rdoMethodExportDisk.Checked)
+            if (this.rdoMethodExportDisk.Checked)
             {
-
+                this.grpExportDisk.Visible = true;
             }
             else
             {
-                
+                this.grpExportDisk.Visible = false;
             }
         }
 
         private void rdoMethodExportZip_CheckedChanged(object sender, EventArgs e)
         {
-            if (rdoMethodExportZip.Checked)
+            if (this.rdoMethodExportZip.Checked)
             {
-                grpExportZip.Visible = true;
+                this.grpExportZip.Visible = true;
             }
             else
             {
-                grpExportZip.Visible = false;
+                this.grpExportZip.Visible = false;
             }
         }
 
@@ -154,11 +154,11 @@ namespace SSRSMigrate
             {
                 this.UI_FieldsCheck();
 
-                if (rdoMethodDirect.Checked)
+                if (this.rdoMethodDirect.Checked)
                     this.DirectMigration_Connection();
-                else if (rdoMethodExportDisk.Checked)
+                else if (this.rdoMethodExportDisk.Checked)
                     this.ExportToDisk_Connection();
-                else if (rdoMethodExportZip.Checked)
+                else if (this.rdoMethodExportZip.Checked)
                     this.ExportToZip_Connection();
             }
             catch (Exception er)
@@ -183,7 +183,7 @@ namespace SSRSMigrate
             //TODO ReportServerWriter writer = null;
             string version = "2005-SRC";
 
-            if (cboSrcVersion.SelectedIndex == 0)
+            if (this.cboSrcVersion.SelectedIndex == 0)
                 version = "2005-SRC";
             else
                 version = "2010-SRC";
@@ -192,7 +192,7 @@ namespace SSRSMigrate
             //TODO Create ReportServerWriter
 
             //TODO Pass ReportServerWriter to PerformDirectMigrate
-            this.PerformDirectMigrate(txtSrcPath.Text, txtDestPath.Text, reader);
+            this.PerformDirectMigrate(this.txtSrcPath.Text, this.txtDestPath.Text, reader);
         }
 
         private void ExportToDisk_Connection()
@@ -206,7 +206,7 @@ namespace SSRSMigrate
             //TODO ReportItemExporter reportExporter = null;
             string version = "2005-SRC";
 
-            if (cboSrcVersion.SelectedIndex == 0)
+            if (this.cboSrcVersion.SelectedIndex == 0)
                 version = "2005-SRC";
             else
                 version = "2010-SRC";
@@ -214,7 +214,7 @@ namespace SSRSMigrate
             reader = new ReportServerReader(this.mKernel.Get<IReportServerRepositoryFactory>().GetRepository(version));
             //TODO Create ItemExporters
 
-            //this.PerformExportToDisk(txtSrcPath.Text, exportPath, reader, dataSourceExporter, folderExporter, reportExporter);
+            //this.PerformExportToDisk(this.txtSrcPath.Text, exportPath, reader, dataSourceExporter, folderExporter, reportExporter);
         }
 
         private void ExportToZip_Connection()
@@ -226,22 +226,22 @@ namespace SSRSMigrate
         #region UI Input Check Methods
         private void UI_FieldsCheck()
         {
-            if (rdoMethodDirect.Checked)
+            if (this.rdoMethodDirect.Checked)
             {
-                UI_SourceCheck();
-                UI_DirectMigration_DestinationCheck();
+                this.UI_SourceCheck();
+                this.UI_DirectMigration_DestinationCheck();
             }
-            else if (rdoMethodExportDisk.Checked)
+            else if (this.rdoMethodExportDisk.Checked)
             {
                 //TODO UI_SourceCheck();
                 //TODO UI_ExportDisk_DestinationCheck();
             }
-            else if (rdoMethodExportZip.Checked)
+            else if (this.rdoMethodExportZip.Checked)
             {
                 //TODO UI_SourceCheck();
                 //TODO UI_ExportZip_DestinationCheck();
             }
-            else if (rdoMethodImportZip.Checked)
+            else if (this.rdoMethodImportZip.Checked)
             {
                 //TODO UI_ImportZip_SourceCheck();
                 //TODO UI_ImportZip_DestinationCheck();
@@ -252,44 +252,44 @@ namespace SSRSMigrate
         #region Save connection information from UI to App.config
         private void Save_SourceConfiguration()
         {
-            if (cboSrcDefaultCred.SelectedIndex == 0)
+            if (this.cboSrcDefaultCred.SelectedIndex == 0)
                 Properties.Settings.Default.SrcDefaultCred = true;
             else
                 Properties.Settings.Default.SrcDefaultCred = false;
 
-            Properties.Settings.Default.SrcDomain = txtSrcDomain.Text;
-            Properties.Settings.Default.SrcPassword = txtSrcPassword.Text;
-            Properties.Settings.Default.SrcPath = txtSrcPath.Text;
-            Properties.Settings.Default.SrcUsername = txtSrcUsername.Text;
+            Properties.Settings.Default.SrcDomain = this.txtSrcDomain.Text;
+            Properties.Settings.Default.SrcPassword = this.txtSrcPassword.Text;
+            Properties.Settings.Default.SrcPath = this.txtSrcPath.Text;
+            Properties.Settings.Default.SrcUsername = this.txtSrcUsername.Text;
 
-            if (cboSrcVersion.SelectedIndex == 0)
+            if (this.cboSrcVersion.SelectedIndex == 0)
                 Properties.Settings.Default.SrcVersion = "2005";
             else
                 Properties.Settings.Default.SrcVersion = "2010";
 
-            Properties.Settings.Default.SrcWebServiceUrl = txtSrcUrl.Text;
+            Properties.Settings.Default.SrcWebServiceUrl = this.txtSrcUrl.Text;
 
             Properties.Settings.Default.Save();
         }
 
         private void Save_DestinationConfiguration()
         {
-            if (cboDestDefaultCred.SelectedIndex == 0)
+            if (this.cboDestDefaultCred.SelectedIndex == 0)
                 Properties.Settings.Default.DestDefaultCred = true;
             else
                 Properties.Settings.Default.DestDefaultCred = false;
 
-            Properties.Settings.Default.DestDomain = txtDestDomain.Text;
-            Properties.Settings.Default.DestPassword = txtDestPassword.Text;
-            Properties.Settings.Default.DestPath = txtDestPath.Text;
-            Properties.Settings.Default.DestUsername = txtDestUsername.Text;
+            Properties.Settings.Default.DestDomain = this.txtDestDomain.Text;
+            Properties.Settings.Default.DestPassword = this.txtDestPassword.Text;
+            Properties.Settings.Default.DestPath = this.txtDestPath.Text;
+            Properties.Settings.Default.DestUsername = this.txtDestUsername.Text;
 
-            if (cboDestVersion.SelectedIndex == 0)
+            if (this.cboDestVersion.SelectedIndex == 0)
                 Properties.Settings.Default.DestVersion = "2005";
             else
                 Properties.Settings.Default.DestVersion = "2010";
 
-            Properties.Settings.Default.DestWebServiceUrl = txtDestUrl.Text;
+            Properties.Settings.Default.DestWebServiceUrl = this.txtDestUrl.Text;
 
             Properties.Settings.Default.Save();
         }
@@ -347,6 +347,18 @@ namespace SSRSMigrate
         #endregion
 
         #region Export to disk Group
+        private void btnExportDiskFolderBrowse_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderDialog = new FolderBrowserDialog();
+            folderDialog.RootFolder = Environment.SpecialFolder.Desktop;
+            folderDialog.Description = "Select directory to export to...";
+
+            if (folderDialog.ShowDialog() == DialogResult.OK)
+            {
+                this.txtExportDiskFolderName.Text = folderDialog.SelectedPath;
+            }
+
+        }
         #endregion
 
         #region Export to Zip Archive Group
@@ -363,5 +375,6 @@ namespace SSRSMigrate
             }
         }
         #endregion
+        
     }
 }
