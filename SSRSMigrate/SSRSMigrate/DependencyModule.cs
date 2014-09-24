@@ -31,16 +31,14 @@ namespace SSRSMigrate
                .ToProvider<SourceReportServer2010RepositoryProvider>()
                .Named("2010-SRC");
 
-            //TODO Bind destination IReportServerRepository
-            //this.Bind<IReportServerRepository>()
-            //    .ToProvider<DestinationReportServer2005RepositoryProvider>()
-            //    .InSingletonScope()
-            //    .Named("2005-DEST");
+            // Bind destination IReportServerRepository
+            this.Bind<IReportServerRepository>()
+               .ToProvider<DestinationReportServer2005RepositoryProvider>()
+               .Named("2005-DEST");
 
-            //this.Bind<IReportServerRepository>()
-            //    .ToProvider<DestinationReportServer2010RepositoryProvider>()
-            //    .InSingletonScope()
-            //    .Named("2010-DEST");
+            this.Bind<IReportServerRepository>()
+               .ToProvider<DestinationReportServer2010RepositoryProvider>()
+               .Named("2010-DEST");
 
             // Bind IReportServerRepositoryFactory
             this.Bind<IReportServerRepositoryFactory>().To<ReportServerRepositoryFactory>();
@@ -206,6 +204,86 @@ namespace SSRSMigrate
         }
     }
 
-    //TODO DestinationReportServer2005RepositoryProvider
-    //TODO DestinationReportServer2010RepositoryProvider
+    public class DestinationReportServer2005RepositoryProvider : Provider<IReportServerRepository>
+    {
+        protected override IReportServerRepository CreateInstance(IContext context)
+        {
+            string url = Properties.Settings.Default.DestWebServiceUrl;
+            string version = Properties.Settings.Default.DestVersion;
+            bool defaultCred = Properties.Settings.Default.DestDefaultCred;
+            string username = Properties.Settings.Default.DestUsername;
+            string password = Properties.Settings.Default.DestPassword;
+            string domain = Properties.Settings.Default.DestDomain;
+            string path = Properties.Settings.Default.DestPath;
+
+            if (!url.EndsWith("reportservice2005.asmx"))
+                if (url.EndsWith("/"))
+                    url = url.Substring(0, url.Length - 1);
+
+            url = string.Format("{0}/reportservice2005.asmx", url);
+
+            ReportingService2005 service = new ReportingService2005();
+            service.Url = url;
+
+            if (defaultCred)
+            {
+                service.Credentials = CredentialCache.DefaultNetworkCredentials;
+                service.PreAuthenticate = true;
+                service.UseDefaultCredentials = true;
+            }
+            else
+            {
+                service.Credentials = new NetworkCredential(
+                    username,
+                    password,
+                    domain);
+
+                service.UseDefaultCredentials = false;
+            }
+
+            return new ReportServer2005Repository(path, service, new ReportingService2005DataMapper());
+        }
+    }
+
+    public class DestinationReportServer2010RepositoryProvider : Provider<IReportServerRepository>
+    {
+        protected override IReportServerRepository CreateInstance(IContext context)
+        {
+            string url = Properties.Settings.Default.DestWebServiceUrl;
+            string version = Properties.Settings.Default.DestVersion;
+            bool defaultCred = Properties.Settings.Default.DestDefaultCred;
+            string username = Properties.Settings.Default.DestUsername;
+            string password = Properties.Settings.Default.DestPassword;
+            string domain = Properties.Settings.Default.DestDomain;
+            string path = Properties.Settings.Default.DestPath;
+
+            if (!url.EndsWith("reportservice2010.asmx"))
+                if (url.EndsWith("/"))
+                    url = url.Substring(0, url.Length - 1);
+
+            url = string.Format("{0}/reportservice2010.asmx", url);
+
+            ReportingService2010 service = new ReportingService2010();
+            service.Url = url;
+
+            if (defaultCred)
+            {
+                service.Credentials = CredentialCache.DefaultNetworkCredentials;
+                service.PreAuthenticate = true;
+                service.UseDefaultCredentials = true;
+            }
+            else
+            {
+                service.Credentials = new NetworkCredential(
+                    username,
+                    password,
+                    domain);
+
+                service.UseDefaultCredentials = false;
+            }
+
+            return new ReportServer2010Repository(path, service, new ReportingService2010DataMapper());
+        }
+    }
+
 }
