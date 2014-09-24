@@ -10,6 +10,7 @@ using Moq;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.SSRS.Errors;
 using System.Text.RegularExpressions;
+using SSRSMigrate.TestHelper.Logging;
 
 namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
 {
@@ -177,7 +178,9 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
             reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
                .Returns(() => false);
 
-            reader = new ReportServerReader(reportServerRepositoryMock.Object);
+            MockLogger logger = new MockLogger();
+
+            reader = new ReportServerReader(reportServerRepositoryMock.Object, logger);
         }
 
         [TestFixtureTearDown]

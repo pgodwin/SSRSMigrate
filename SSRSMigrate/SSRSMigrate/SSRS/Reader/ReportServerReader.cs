@@ -5,19 +5,25 @@ using System.Text;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.SSRS.Errors;
+using Ninject.Extensions.Logging;
 
 namespace SSRSMigrate.SSRS.Reader
 {
     public class ReportServerReader : IReportServerReader
     {
         private readonly IReportServerRepository mReportRepository;
+        private readonly ILogger mLogger = null;
 
-        public ReportServerReader(IReportServerRepository repository)
+        public ReportServerReader(IReportServerRepository repository, ILogger logger)
         {
             if (repository == null)
                 throw new ArgumentNullException("repository");
 
+            if (logger == null)
+                throw new ArgumentNullException("logger");
+
             this.mReportRepository = repository;
+            this.mLogger = logger;
         }
 
         #region Folder Methods
