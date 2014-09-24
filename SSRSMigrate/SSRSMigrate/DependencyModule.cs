@@ -83,43 +83,6 @@ namespace SSRSMigrate
             this.Bind(typeof(IItemExporter<>)).To(typeof(FolderItemExporter));
             this.Bind(typeof(IItemExporter<>)).To(typeof(DataSourceItemExporter));
         }
-
-        private ReportingService2010 GetDestReportingService2010()
-        {
-            string url = Properties.Settings.Default.DestWebServiceUrl;
-            string version = Properties.Settings.Default.DestVersion;
-            bool defaultCred = Properties.Settings.Default.DestDefaultCred;
-            string username = Properties.Settings.Default.DestUsername;
-            string password = Properties.Settings.Default.DestPassword;
-            string domain = Properties.Settings.Default.DestDomain;
-
-            if (!url.EndsWith("reportservice2010.asmx"))
-                if (url.EndsWith("/"))
-                    url = url.Substring(0, url.Length - 1);
-
-            url = string.Format("{0}/reportservice2010.asmx", url);
-
-            ReportingService2010 service = new ReportingService2010();
-            service.Url = url;
-
-            if (defaultCred)
-            {
-                service.Credentials = CredentialCache.DefaultNetworkCredentials;
-                service.PreAuthenticate = true;
-                service.UseDefaultCredentials = true;
-            }
-            else
-            {
-                service.Credentials = new NetworkCredential(
-                    username,
-                    password,
-                    domain);
-
-                service.UseDefaultCredentials = false;
-            }
-
-            return service;
-        }
     }
 
     public class SourceReportServer2005RepositoryProvider : Provider<IReportServerRepository>
