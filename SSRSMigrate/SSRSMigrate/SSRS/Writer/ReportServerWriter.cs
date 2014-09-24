@@ -6,6 +6,7 @@ using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.SSRS.Errors;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.Utility;
+using Ninject.Extensions.Logging;
 
 namespace SSRSMigrate.SSRS.Writer
 {
@@ -13,6 +14,7 @@ namespace SSRSMigrate.SSRS.Writer
     {
         private readonly IReportServerRepository mReportRepository;
         private bool mOverwrite = false;
+        private readonly ILogger mLogger = null;
 
         public bool Overwrite
         {
@@ -20,12 +22,16 @@ namespace SSRSMigrate.SSRS.Writer
             set { this.mOverwrite = value; }
         }
 
-        public ReportServerWriter(IReportServerRepository repository)
+        public ReportServerWriter(IReportServerRepository repository, ILogger logger)
         {
             if (repository == null)
                 throw new ArgumentNullException("repository");
 
+            if (logger == null)
+                throw new ArgumentNullException("logger");
+
             this.mReportRepository = repository;
+            this.mLogger = logger;
         }
 
         #region Folder Methods
