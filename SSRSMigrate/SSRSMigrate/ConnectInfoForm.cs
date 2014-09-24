@@ -201,7 +201,8 @@ namespace SSRSMigrate
             else
                 version = "2010-SRC";
 
-            reader = new ReportServerReader(this.mKernel.Get<IReportServerRepositoryFactory>().GetRepository(version));
+            reader = this.mKernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>(version);
+
             //TODO Create ReportServerWriter
 
             //TODO Pass ReportServerWriter to PerformDirectMigrate
@@ -225,7 +226,8 @@ namespace SSRSMigrate
             else
                 version = "2010-SRC";
 
-            reader = new ReportServerReader(this.mKernel.Get<IReportServerRepositoryFactory>().GetRepository(version));
+            reader = this.mKernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>(version);
+
             //TODO Create ItemExporters
             dataSourceExporter = this.mKernel.Get<DataSourceItemExporter>();
             folderExporter = this.mKernel.Get<FolderItemExporter>();
