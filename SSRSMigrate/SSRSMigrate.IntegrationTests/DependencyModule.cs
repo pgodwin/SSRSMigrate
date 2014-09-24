@@ -14,6 +14,8 @@ using SSRSMigrate.Exporter.Writer;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.Factory;
 using SSRSMigrate.DataMapper;
+using SSRSMigrate.TestHelper.Logging;
+using Ninject.Extensions.Logging;
 
 namespace SSRSMigrate.IntegrationTests
 {

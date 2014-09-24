@@ -10,6 +10,7 @@ using SSRSMigrate.TestHelper;
 using System.Net;
 using SSRSMigrate.Factory;
 using SSRSMigrate.SSRS.Errors;
+using Ninject.Extensions.Logging.Log4net;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
 {
@@ -129,7 +130,15 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
         {
             outputPath = Properties.Settings.Default.DestinationPath;
 
-            kernel = new StandardKernel(new DependencyModule());
+            var settings = new NinjectSettings()
+            {
+                LoadExtensions = false
+            };
+
+            kernel = new StandardKernel(
+                settings,
+                new Log4NetModule(),
+                new DependencyModule());
 
             SetupReportItems();
 

@@ -10,6 +10,7 @@ using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.Utility;
 using SSRSMigrate.Exporter.Writer;
 using Ninject;
+using Ninject.Extensions.Logging.Log4net;
 
 namespace SSRSMigrate.IntegrationTests.Exporter
 {
@@ -57,7 +58,15 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         {
             EnvironmentSetup();
 
-            kernel = new StandardKernel(new DependencyModule());
+            var settings = new NinjectSettings()
+            {
+                LoadExtensions = false
+            };
+
+            kernel = new StandardKernel(
+                settings,
+                new Log4NetModule(),
+                new DependencyModule());
 
             exporter = kernel.Get<DataSourceItemExporter>();
 

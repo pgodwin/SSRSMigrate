@@ -94,6 +94,7 @@
     <Compile Include="Utilities\SSRSUtil_Tests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Test AW Reports\2005\AWDataSource.rds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -8,6 +8,7 @@ using SSRSMigrate.SSRS.Item;
 using Ninject;
 using SSRSMigrate.Factory;
 using SSRSMigrate.SSRS.Errors;
+using Ninject.Extensions.Logging.Log4net;
 
 public class CoverageExcludeAttribute : System.Attribute { }
 
@@ -32,7 +33,15 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            kernel = new StandardKernel(new DependencyModule());
+            var settings = new NinjectSettings()
+            {
+                LoadExtensions = false
+            };
+
+            kernel = new StandardKernel(
+                settings,
+                new Log4NetModule(),
+                new DependencyModule());
 
             // Setup expected FolderItems
             expectedFolderItem = new FolderItem()

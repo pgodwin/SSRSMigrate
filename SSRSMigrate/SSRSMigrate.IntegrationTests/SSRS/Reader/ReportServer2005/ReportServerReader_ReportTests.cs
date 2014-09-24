@@ -8,6 +8,7 @@ using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
 using Ninject;
 using SSRSMigrate.Factory;
+using Ninject.Extensions.Logging.Log4net;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
 {
@@ -78,7 +79,15 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            kernel = new StandardKernel(new DependencyModule());
+            var settings = new NinjectSettings()
+            {
+                LoadExtensions = false
+            };
+
+            kernel = new StandardKernel(
+                settings,
+                new Log4NetModule(),
+                new DependencyModule());
 
             SetupExpectedResults();
 

@@ -11,6 +11,7 @@ using Ninject;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.Factory;
 using SSRSMigrate.SSRS.Errors;
+using Ninject.Extensions.Logging.Log4net;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
 {
@@ -33,7 +34,15 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            kernel = new StandardKernel(new DependencyModule());
+            var settings = new NinjectSettings()
+            {
+                LoadExtensions = false
+            };
+
+            kernel = new StandardKernel(
+                settings,
+                new Log4NetModule(),
+                new DependencyModule());
 
             // Setup expected FolderItems
             expectedFolderItem = new FolderItem()

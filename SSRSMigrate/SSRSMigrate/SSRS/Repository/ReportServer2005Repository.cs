@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Ninject.Extensions.Logging;
 using SSRSMigrate.ReportServer2005;
 using SSRSMigrate.Utility;
 using System.Xml;
@@ -9,6 +10,7 @@ using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.DataMapper;
 using System.Web.Services.Protocols;
 using SSRSMigrate.SSRS.Errors;
+using Ninject;
 
 namespace SSRSMigrate.SSRS.Repository
 {
@@ -16,6 +18,7 @@ namespace SSRSMigrate.SSRS.Repository
     {
         private readonly ReportingService2005 mReportingService;
         private readonly ReportingService2005DataMapper mDataMapper;
+        private ILogger mLogger = null;
         private string mRootPath = null;
         private string mInvalidPathChars = ":?;@&=+$,\\*><|.\"";
         private int mPathMaxLength = 260;
@@ -64,6 +67,13 @@ namespace SSRSMigrate.SSRS.Repository
         public string InvalidPathChars
         {
             get { return this.mInvalidPathChars; }
+        }
+
+        [Inject]
+        public ILogger Logger
+        {
+            get { return this.mLogger; }
+            set { this.mLogger = value; }
         }
         #endregion
 

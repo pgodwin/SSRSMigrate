@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SSRSMigrate.SSRS.Item;
+using Ninject.Extensions.Logging;
 
 namespace SSRSMigrate.SSRS.Repository
 {
@@ -10,6 +11,7 @@ namespace SSRSMigrate.SSRS.Repository
     {
         // Properties
         string InvalidPathChars { get; }
+        ILogger Logger { get; set; }
 
         // Folders
         FolderItem GetFolder(string path);

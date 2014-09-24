@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Ninject.Extensions.Logging.Log4net;
 using NUnit.Framework;
 using System.Web.Services.Protocols;
 using SSRSMigrate.ReportServer2005;
@@ -30,7 +31,15 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            kernel = new StandardKernel(new DependencyModule());
+            var settings = new NinjectSettings()
+            {
+                LoadExtensions = false
+            };
+
+            kernel = new StandardKernel(
+                settings, 
+                new Log4NetModule(),
+                new DependencyModule());
 
             // Setup expected DataSourceItems
             expectedDataSourceItems = new List<DataSourceItem>()

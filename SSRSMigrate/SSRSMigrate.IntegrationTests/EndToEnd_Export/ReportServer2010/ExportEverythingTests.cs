@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using SSRSMigrate.TestHelper;
 using SSRSMigrate.Utility;
 using SSRSMigrate.Factory;
+using Ninject.Extensions.Logging.Log4net;
 
 namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2010
 {
@@ -61,7 +62,15 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2010
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            kernel = new StandardKernel(new DependencyModule());
+            var settings = new NinjectSettings()
+            {
+                LoadExtensions = false
+            };
+
+            kernel = new StandardKernel(
+                settings,
+                new Log4NetModule(),
+                new DependencyModule());
 
             EnvironmentSetup();
             outputPath = GetOutPutPath();

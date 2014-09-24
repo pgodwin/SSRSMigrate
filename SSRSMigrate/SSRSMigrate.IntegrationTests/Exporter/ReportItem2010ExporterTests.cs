@@ -10,6 +10,7 @@ using SSRSMigrate.Utility;
 using System.IO;
 using SSRSMigrate.TestHelper;
 using System.Reflection;
+using Ninject.Extensions.Logging.Log4net;
 
 namespace SSRSMigrate.IntegrationTests.Exporter
 {
@@ -39,7 +40,16 @@ namespace SSRSMigrate.IntegrationTests.Exporter
         {
             EnvironmentSetup();
 
-            kernel = new StandardKernel(new DependencyModule());
+            var settings = new NinjectSettings()
+            {
+                LoadExtensions = false
+            };
+
+            kernel = new StandardKernel(
+                settings,
+                new Log4NetModule(),
+                new DependencyModule());
+
             exporter = kernel.Get<ReportItemExporter>();
 
             reportItem_CompanySales = new ReportItem()

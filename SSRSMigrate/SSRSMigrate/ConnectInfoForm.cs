@@ -11,6 +11,8 @@ using Ninject;
 using SSRSMigrate.Factory;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.Exporter;
+using Ninject.Extensions.Logging.Log4net;
+using log4net.Config;
 
 namespace SSRSMigrate
 {
@@ -20,7 +22,17 @@ namespace SSRSMigrate
 
         public ConnectInfoForm()
         {
-            this.mKernel = new StandardKernel(new ReportServerRepositoryModule());
+            XmlConfigurator.Configure();
+
+            var settings = new NinjectSettings()
+            {
+                LoadExtensions = false
+            };
+
+            this.mKernel = new StandardKernel(
+                settings,
+                new Log4NetModule(),
+                new ReportServerRepositoryModule());
 
             InitializeComponent();
         }
