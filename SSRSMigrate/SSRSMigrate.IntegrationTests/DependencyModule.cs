@@ -16,6 +16,7 @@ using SSRSMigrate.Factory;
 using SSRSMigrate.DataMapper;
 using SSRSMigrate.TestHelper.Logging;
 using Ninject.Extensions.Logging;
+using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate.IntegrationTests
 {
@@ -89,6 +90,15 @@ namespace SSRSMigrate.IntegrationTests
             this.Bind(typeof(IItemExporter<>)).To(typeof(ReportItemExporter));
             this.Bind(typeof(IItemExporter<>)).To(typeof(FolderItemExporter));
             this.Bind(typeof(IItemExporter<>)).To(typeof(DataSourceItemExporter));
+
+            // Bind IBundler
+            this.Bind<IBundler>().To<ZipBundler>();
+
+            // Bind IZipFileWrapper
+            this.Bind<IZipFileWrapper>().To<ZipFileWrapper>();
+
+            // Bind ICheckSumGenerator
+            this.Bind<ICheckSumGenerator>().To<MD5CheckSumGenerator>();
         }
     }
 

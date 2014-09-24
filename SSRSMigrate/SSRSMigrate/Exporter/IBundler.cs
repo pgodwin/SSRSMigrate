@@ -15,5 +15,6 @@ namespace SSRSMigrate.Exporter
         void AddItem(string key, string itemFileName, string itemPath, bool isFolder);
         string CreateSummary();
         string Save(string fileName);
+        //TODO Add Exists method that checks if a file or entry exists in the underlying IZipFileWrapper
     }
 }

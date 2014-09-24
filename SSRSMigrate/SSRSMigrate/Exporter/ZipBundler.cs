@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Ionic.Zip;
+using Ninject.Extensions.Logging;
 using SSRSMigrate.Wrappers;
 using System.Security.Cryptography;
 using System.IO;
@@ -73,6 +74,7 @@ namespace SSRSMigrate.Exporter
         private readonly IZipFileWrapper mZipFileWrapper = null;
         private readonly ICheckSumGenerator mCheckSumGenerator = null;
         private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
+        private readonly ILogger mLogger = null;
 
         private string mExportSummaryFilename = "ExportSummary.json";
 
@@ -86,7 +88,7 @@ namespace SSRSMigrate.Exporter
             get { return this.mEntries; }
         }
 
-        public ZipBundler(IZipFileWrapper zipFileWrapper, ICheckSumGenerator checkSumGenerator)
+        public ZipBundler(IZipFileWrapper zipFileWrapper, ICheckSumGenerator checkSumGenerator, ILogger logger)
         {
             if (zipFileWrapper == null)
                 throw new ArgumentNullException("zipFileWrapper");
@@ -94,8 +96,12 @@ namespace SSRSMigrate.Exporter
             if (checkSumGenerator == null)
                 throw new ArgumentNullException("checkSumGenerator");
 
+            if (logger == null)
+                throw new ArgumentNullException("logger");
+
             this.mZipFileWrapper = zipFileWrapper;
             this.mCheckSumGenerator = checkSumGenerator;
+            this.mLogger = logger;
 
             // Create entries Dictionary with default keys
             this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>()

@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.Exporter;
 using Moq;
+using SSRSMigrate.TestHelper.Logging;
 using SSRSMigrate.Wrappers;
 using System.IO;
 
@@ -261,7 +262,9 @@ namespace SSRSMigrate.Tests.Exporter
         public void SetUp()
         {
             // Recreate ZipBundler for each test, so the CreateSummary tests have fresh data
-            zipBundler = new ZipBundler(zipFileMock.Object, checkSumGenMock.Object);
+            MockLogger logger = new MockLogger();
+
+            zipBundler = new ZipBundler(zipFileMock.Object, checkSumGenMock.Object, logger);
         }
 
         [TearDown]
@@ -274,7 +277,9 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void Constructor()
         {
-            ZipBundler actual = new ZipBundler(zipFileMock.Object, checkSumGenMock.Object);
+            MockLogger logger = new MockLogger();
+
+            ZipBundler actual = new ZipBundler(zipFileMock.Object, checkSumGenMock.Object, logger);
 
             Assert.NotNull(actual);
         }
@@ -282,13 +287,14 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void Constructor_Null_ZipFile()
         {
+            MockLogger logger = new MockLogger();
             Mock<ICheckSumGenerator> checkSumMock = null;
             checkSumMock = new Mock<ICheckSumGenerator>();
 
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    new ZipBundler(null, checkSumMock.Object);
+                    new ZipBundler(null, checkSumMock.Object, logger);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: zipFileWrapper"));
@@ -297,13 +303,14 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void Constructor_Null_CheckSumGenFile()
         {
+            MockLogger logger = new MockLogger();
             Mock<IZipFileWrapper> zipMock = null;
             zipMock = new Mock<IZipFileWrapper>();
 
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    new ZipBundler(zipMock.Object, null);
+                    new ZipBundler(zipMock.Object, null, logger);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: checkSumGenerator"));

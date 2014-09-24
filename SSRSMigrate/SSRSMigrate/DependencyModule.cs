@@ -15,6 +15,7 @@ using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Exporter.Writer;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.DataMapper;
+using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate
 {
@@ -82,6 +83,15 @@ namespace SSRSMigrate
             this.Bind(typeof(IItemExporter<>)).To(typeof(ReportItemExporter));
             this.Bind(typeof(IItemExporter<>)).To(typeof(FolderItemExporter));
             this.Bind(typeof(IItemExporter<>)).To(typeof(DataSourceItemExporter));
+
+            // Bind IBundler
+            this.Bind<IBundler>().To<ZipBundler>();
+
+            // Bind IZipFileWrapper
+            this.Bind<IZipFileWrapper>().To<ZipFileWrapper>();
+
+            // Bind ICheckSumGenerator
+            this.Bind<ICheckSumGenerator>().To<MD5CheckSumGenerator>();
         }
     }
 
