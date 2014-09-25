@@ -84,7 +84,11 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
 
+            this.mLogger.Debug("GetFolder - path = {0}", path);
+
             string folderName = path.Substring(path.LastIndexOf('/') + 1);
+
+            this.mLogger.Debug("GetFolder - folderName = {0}", folderName);
 
             CatalogItem item = this.GetItem(
                 folderName,
@@ -92,7 +96,13 @@ namespace SSRSMigrate.SSRS.Repository
                 "Folder");
 
             if (item != null)
+            {
+                this.mLogger.Trace("GetFolder - Found item = {0}", item.Path);
+
                 return this.mDataMapper.GetFolder(item);
+            }
+
+            this.mLogger.Debug("GetFolder - No item found.");
 
             return null;
         }
@@ -102,16 +112,24 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
 
+            this.mLogger.Debug("GetFolders - path = {0}", path);
+
             List<FolderItem> folderItems = new List<FolderItem>();
             List<CatalogItem> items = this.GetItems(path, "Folder");
 
             if (items.Any())
             {
                 foreach (CatalogItem item in items)
+                {
+                    this.mLogger.Trace("GetFolders - Found Item = {0}", item.Path);
+
                     folderItems.Add(this.mDataMapper.GetFolder(item));
+                }
 
                 return folderItems;
             }
+
+            this.mLogger.Debug("GetFolders - No item found.");
 
             return null;
         }
@@ -121,7 +139,15 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
 
-            var items = this.GetItemsList<FolderItem>(path, "Folder", folder => this.mDataMapper.GetFolder(folder));
+            this.mLogger.Debug("GetFoldersList - path = {0}", path);
+
+            var items = this.GetItemsList<FolderItem>(path, "Folder", folder =>
+            {
+                this.mLogger.Trace("GetFoldersList - Found item = {0}", folder.Path);
+
+                return this.mDataMapper.GetFolder(folder);
+            });
+
             if (items.Any())
                 foreach (FolderItem item in items)
                     yield return item;
@@ -135,12 +161,16 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(parentPath))
                 throw new ArgumentException("parentPath");
 
+            this.mLogger.Debug("CreateFolder - name = {0}; parentPath = {1}", name, parentPath);
+
             try
             {
                 this.mReportingService.CreateFolder(name, parentPath, null);
             }
             catch (SoapException er)
             {
+                this.mLogger.Error(er, "CreateFolder - Error creating folder '{0}' in '{1}'", name, parentPath);
+
                 return er.Message;
             }
 
@@ -154,6 +184,8 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(reportPath))
                 throw new ArgumentException("reportPath");
 
+            this.mLogger.Debug("GetReportDefinition - reportPath = {0}", reportPath);
+
             byte[] def = this.mReportingService.GetItemDefinition(reportPath);
 
             string reportDefinition = SSRSUtil.ByteArrayToString(def);
@@ -161,6 +193,8 @@ namespace SSRSMigrate.SSRS.Repository
                 reportDefinition = reportDefinition.Substring(1, reportDefinition.Length - 1);
 
             def = SSRSUtil.StringToByteArray(reportDefinition);
+
+            this.mLogger.Trace("GetReportDefinition - Definition = {0}", reportDefinition);
 
             return def;
         }
@@ -170,7 +204,11 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(reportPath))
                 throw new ArgumentException("reportPath");
 
+            this.mLogger.Debug("GetReport - reportPath = {0}", reportPath);
+
             string reportName = reportPath.Substring(reportPath.LastIndexOf('/') + 1);
+
+            this.mLogger.Debug("GetReport - reportName = {0}", reportName);
 
             CatalogItem item = this.GetItem(
                 reportName,
@@ -179,9 +217,14 @@ namespace SSRSMigrate.SSRS.Repository
 
             if (item != null)
             {
+                this.mLogger.Trace("GetReport - Found item = {0}", item.Path);
+
                 byte[] def = this.GetReportDefinition(item.Path);
                 return this.mDataMapper.GetReport(item, def);
             }
+
+            this.mLogger.Debug("GetReport - No item found.");
+
             return null;
         }
 
@@ -190,6 +233,8 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
 
+            this.mLogger.Debug("GetReports - path = {0}", path);
+
             List<ReportItem> reportItems = new List<ReportItem>();
             List<CatalogItem> items = this.GetItems(path, "Report");
 
@@ -197,12 +242,16 @@ namespace SSRSMigrate.SSRS.Repository
             {
                 foreach (CatalogItem item in items)
                 {
+                    this.mLogger.Trace("GetReports - Found item = {0}", item.Path);
+
                     byte[] def = this.GetReportDefinition(item.Path);
                     reportItems.Add(this.mDataMapper.GetReport(item, def));
                 }
 
                 return reportItems;
             }
+
+            this.mLogger.Debug("GetReports - No item found.");
 
             return null;
         }
@@ -212,8 +261,12 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
 
+            this.mLogger.Debug("GetReports2 - path = {0}", path);
+
             var items = this.GetItemsList<ReportItem>(path, "Report", r => 
                 {
+                    this.mLogger.Trace("GetReports2 - Found item = {0}", r.Path);
+
                     byte[] def = this.GetReportDefinition(r.Path);
                     return this.mDataMapper.GetReport(r, def);
                 });
@@ -291,6 +344,10 @@ namespace SSRSMigrate.SSRS.Repository
             if (reportItem.Definition == null)
                 throw new InvalidReportDefinitionException(reportItem.Path);
 
+            this.mLogger.Debug("WriteReport - reportPath = {0}; overwrite = {1}",
+                reportPath,
+                overwrite);
+
             Warning[] warnings;
 
             this.mReportingService.CreateCatalogItem("Report",
@@ -303,7 +360,17 @@ namespace SSRSMigrate.SSRS.Repository
 
             if (warnings != null)
                 if (warnings.Any())
+                {
+                    for (int i = 0; i < warnings.Count(); i++)
+                        this.mLogger.Warn("WriteReport - Code: {0}; Name: {1}; Type: {2}; Severity: {3}; Msg: {4}",
+                            warnings[i].Code,
+                            warnings[i].ObjectName,
+                            warnings[i].ObjectType,
+                            warnings[i].Severity,
+                            warnings[i].Message);
+
                     return warnings.Select(s => string.Format("{0}: {1}", s.Code, s.Message)).ToArray<string>();
+                }
 
             return null;
         }
@@ -315,15 +382,23 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(dataSourcePath))
                 throw new ArgumentException("dataSourcePath");
 
+            this.mLogger.Debug("GetDataSource - dataSourcePath = {0}", dataSourcePath);
+
             string dsName = dataSourcePath.Substring(dataSourcePath.LastIndexOf('/') + 1);
+
+            this.mLogger.Debug("GetDataSource - Name = {0}", dsName);
 
             CatalogItem item = this.GetItem(dsName, dataSourcePath, "DataSource");
 
             if (item != null)
             {
+                this.mLogger.Trace("GetDataSource - Found item = {0}", item.Path);
+
                 DataSourceDefinition def = this.mReportingService.GetDataSourceContents(item.Path);
                 return this.mDataMapper.GetDataSource(item, def);
             }
+
+            this.mLogger.Debug("GetDataSource - No item found.");
 
             return null;
         }
@@ -333,6 +408,8 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
+            this.mLogger.Debug("GetDataSources - path = {0}", path);
+
             List<DataSourceItem> dataSourceItems = new List<DataSourceItem>();
             List<CatalogItem> items = this.GetItems(path, "DataSource");
 
@@ -340,12 +417,16 @@ namespace SSRSMigrate.SSRS.Repository
             {
                 foreach (CatalogItem item in items)
                 {
+                    this.mLogger.Trace("GetDataSources - Found item = {0}", item.Path);
+
                     DataSourceDefinition def = this.mReportingService.GetDataSourceContents(item.Path);
                     dataSourceItems.Add(this.mDataMapper.GetDataSource(item, def));
                 }
 
                 return dataSourceItems;
             }
+
+            this.mLogger.Debug("GetDataSources - No item found.");
 
             return null;
         }
@@ -355,8 +436,12 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
+            this.mLogger.Debug("GetDataSourcesList - path = {0}", path);
+
             var items = this.GetItemsList<DataSourceItem>(path,"DataSource", ds => 
                 {
+                    this.mLogger.Trace("GetDataSourcesList - Found item = {0}", ds.Path);
+
                     DataSourceDefinition def = this.mReportingService.GetDataSourceContents(ds.Path);
                     return this.mDataMapper.GetDataSource(ds, def);
                 });
@@ -373,6 +458,11 @@ namespace SSRSMigrate.SSRS.Repository
 
             if (dataSource == null)
                 throw new ArgumentNullException("dataSource");
+
+            this.mLogger.Debug("WriteDataSource - dataSourcePath = {0}; overwrite = {1}; connectString = {2}",
+                dataSourcePath,
+                overwrite,
+                dataSource.ConnectString);
 
             //TODO Should IDataMapper map DataSourceItem to an SSRS DataSource?
             DataSourceDefinition def = new DataSourceDefinition();
@@ -419,6 +509,8 @@ namespace SSRSMigrate.SSRS.Repository
             }
             catch (SoapException er)
             {
+                this.mLogger.Error(er, "WriteDataSource - Error writing Data Source '{0}'", dataSourcePath);
+
                 return er.Message;
             }
 
@@ -429,19 +521,22 @@ namespace SSRSMigrate.SSRS.Repository
         #region Misc.
         public bool ValidatePath(string path)
         {
-            //if (string.IsNullOrEmpty(path))
-            //    throw new ArgumentException("path");
+            bool isValidPath = true;
 
-            //return path.IndexOfAny(this.mInvalidPathChars.ToCharArray()) < 0;
+            this.mLogger.Debug("ValidatePath - path = {0}", path);
 
             if (string.IsNullOrEmpty(path))
-                return false;
+                isValidPath = false;
             else if (path.IndexOfAny(this.mInvalidPathChars.ToCharArray()) >= 0)
-                return false;
+                isValidPath = false;
             else if (path.Length > this.mPathMaxLength)
-                return false;
+                isValidPath = false;
             else
-                return true;
+                isValidPath = true;
+
+            this.mLogger.Debug("ValidatePath - isValidPath = {0}", isValidPath);
+
+            return isValidPath;
         }
         #endregion
 
@@ -473,6 +568,12 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(itemType))
                 throw new ArgumentNullException("itemType");
 
+            this.mLogger.Debug("GetItem - itemName = {0}; itemPath = {1}; itemType = {2}; rootPath = {3}",
+                itemName,
+                itemPath,
+                itemType,
+                this.mRootPath);
+
             SearchCondition nameCondition = new SearchCondition();
             nameCondition.Condition = ConditionEnum.Equals;
             nameCondition.ConditionSpecified = true;
@@ -493,10 +594,14 @@ namespace SSRSMigrate.SSRS.Repository
 
             if (items.Any())
             {
+                this.mLogger.Debug("GetItem - Items found = {0}", items.Count());
+
                 foreach (CatalogItem item in items)
                         if (item.Path == itemPath)
                             return item;
             }
+
+            this.mLogger.Debug("GetItem - No items found");
 
             return null;
         }
@@ -509,6 +614,10 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(itemType))
                 throw new ArgumentNullException("itemType");
 
+            this.mLogger.Debug("GetItems - path = {0}; itemType = {1}",
+                path,
+                itemType);
+
             SearchCondition typeCondition = new SearchCondition();
             typeCondition.Condition = ConditionEnum.Equals;
             typeCondition.ConditionSpecified = true;
@@ -521,9 +630,17 @@ namespace SSRSMigrate.SSRS.Repository
             CatalogItem[] items = this.mReportingService.FindItems(path, BooleanOperatorEnum.Or, null, conditions);
 
             if (items.Any())
+            {
+                this.mLogger.Debug("GetItems - Items found = {0}", items.Count());
+
                 return items.Select(item => item).ToList<CatalogItem>();
+            }
             else
+            {
+                this.mLogger.Debug("GetItems - No items found");
+
                 return null;
+            }
         }
 
         public IEnumerable<CatalogItem> GetItemsList(string path, string itemType)
@@ -534,6 +651,10 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(itemType))
                 throw new ArgumentNullException("itemType");
 
+            this.mLogger.Debug("GetItemsList - path = {0}; itemType = {1}",
+               path,
+               itemType);
+
             SearchCondition typeCondition = new SearchCondition();
             typeCondition.Condition = ConditionEnum.Equals;
             typeCondition.ConditionSpecified = true;
@@ -546,9 +667,17 @@ namespace SSRSMigrate.SSRS.Repository
             CatalogItem[] items = this.mReportingService.FindItems(path, BooleanOperatorEnum.Or, null, conditions);
 
             if (items.Any())
+            {
+                this.mLogger.Debug("GetItemsList - Items found = {0}", items.Count());
+
                 return items.Select(item => item);
+            }
             else
+            {
+                this.mLogger.Debug("GetItemsList - No items found");
+
                 return null;
+            }
         }
 
         public IEnumerable<T> GetItemsList<T>(string path, string itemType, Func<CatalogItem, T> itemConverter)
@@ -559,6 +688,10 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(itemType))
                 throw new ArgumentNullException("itemType");
 
+            this.mLogger.Debug("GetItemsList2 - path = {0}; itemType = {0}",
+               path,
+               itemType);
+
             SearchCondition typeCondition = new SearchCondition();
             typeCondition.Condition = ConditionEnum.Equals;
             typeCondition.ConditionSpecified = true;
@@ -571,9 +704,17 @@ namespace SSRSMigrate.SSRS.Repository
             CatalogItem[] items = this.mReportingService.FindItems(path, BooleanOperatorEnum.Or, null, conditions);
 
             if (items.Any())
+            {
+                this.mLogger.Debug("GetItemsList2 - Items found = {0}", items.Count());
+
                 return items.Select(item => itemConverter(item));
+            }
             else
+            {
+                this.mLogger.Debug("GetItemsList2 - No items found");
+
                 return null;
+            }
         }
         #endregion
     }
