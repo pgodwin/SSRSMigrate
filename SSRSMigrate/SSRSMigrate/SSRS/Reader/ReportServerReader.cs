@@ -32,6 +32,8 @@ namespace SSRSMigrate.SSRS.Reader
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
 
+            this.mLogger.Debug("GetFolder - path = {0}", path);
+
             if (!this.mReportRepository.ValidatePath(path))
                 throw new InvalidPathException(path);
 
@@ -44,6 +46,8 @@ namespace SSRSMigrate.SSRS.Reader
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
+
+            this.mLogger.Debug("GetFolders - path = {0}", path);
 
             if (!this.mReportRepository.ValidatePath(path))
                 throw new InvalidPathException(path);
@@ -61,13 +65,19 @@ namespace SSRSMigrate.SSRS.Reader
             if (progressReporter == null)
                 throw new ArgumentNullException("progressReporter");
 
+            this.mLogger.Debug("GetFolders2 - path = {0}", path);
+
             if (!this.mReportRepository.ValidatePath(path))
                 throw new InvalidPathException(path);
 
             var folders = this.mReportRepository.GetFolderList(path);
 
             foreach (FolderItem folder in folders)
+            {
+                this.mLogger.Trace("GetFolders2 - Calling reporter delegate for '{0}'...", folder.Path);
+
                 progressReporter(folder);
+            }
         }
         #endregion
 
@@ -76,6 +86,8 @@ namespace SSRSMigrate.SSRS.Reader
         {
             if (string.IsNullOrEmpty(reportPath))
                 throw new ArgumentException("reportPath");
+
+            this.mLogger.Debug("GetReport - reportPath = {0}", reportPath);
 
             if (!this.mReportRepository.ValidatePath(reportPath))
                 throw new InvalidPathException(reportPath);
@@ -89,6 +101,8 @@ namespace SSRSMigrate.SSRS.Reader
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
+
+            this.mLogger.Debug("GetReports - path = {0}", path);
 
             if (!this.mReportRepository.ValidatePath(path))
                 throw new InvalidPathException(path);
@@ -104,13 +118,19 @@ namespace SSRSMigrate.SSRS.Reader
             if (progressReporter == null)
                 throw new ArgumentNullException("progressReporter");
 
+            this.mLogger.Debug("GetReports2 - path = {0}", path);
+
             if (!this.mReportRepository.ValidatePath(path))
                 throw new InvalidPathException(path);
 
             var reports = this.mReportRepository.GetReportsList(path);
 
             foreach (ReportItem report in reports)
+            {
+                this.mLogger.Trace("GetReports2 - Calling reporter delegate for '{0}'...", report.Path);
+
                 progressReporter(report);
+            }
         }
         #endregion
 
@@ -119,6 +139,8 @@ namespace SSRSMigrate.SSRS.Reader
         {
             if (string.IsNullOrEmpty(dataSourcePath))
                 throw new ArgumentException("dataSourcePath");
+
+            this.mLogger.Debug("GetDataSource - dataSourcePath = {0}", dataSourcePath);
 
             if (!this.mReportRepository.ValidatePath(dataSourcePath))
                 throw new InvalidPathException(dataSourcePath);
@@ -132,6 +154,8 @@ namespace SSRSMigrate.SSRS.Reader
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
+
+            this.mLogger.Debug("GetDataSources - path = {0}", path);
 
             if (!this.mReportRepository.ValidatePath(path))
                 throw new InvalidPathException(path);
@@ -147,13 +171,19 @@ namespace SSRSMigrate.SSRS.Reader
             if (progressReporter == null)
                 throw new ArgumentNullException("progressReporter");
 
+            this.mLogger.Debug("GetDataSources2 - path = {0}", path);
+
             if (!this.mReportRepository.ValidatePath(path))
                 throw new InvalidPathException(path);
 
             var dataSources = this.mReportRepository.GetDataSourcesList(path);
 
             foreach (DataSourceItem dataSource in dataSources)
+            {
+                this.mLogger.Trace("GetDataSources2 - Calling reporter delegate for '{0}'...", dataSource.Path);
+
                 progressReporter(dataSource);
+            }
         }
         #endregion
     }
