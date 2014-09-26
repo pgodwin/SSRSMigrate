@@ -339,6 +339,12 @@ namespace SSRSMigrate
                 throw new Exception("folder name");
         }
 
+        private void UI_ExportZip_DestinationCheck()
+        {
+            if (string.IsNullOrEmpty(this.txtExportZipFilename.Text))
+                throw new Exception("filename");
+        }
+
         private string GetSourceServerVersion()
         {
             string version = "2005-SRC";
@@ -452,12 +458,6 @@ namespace SSRSMigrate
         #endregion
 
         #region Export to Zip Archive Group
-        private void UI_ExportZip_DestinationCheck()
-        {
-            if (string.IsNullOrEmpty(this.txtExportZipFilename.Text))
-                throw new Exception("filename");
-        }
-
         private void btnExportZipFileBrowse_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
