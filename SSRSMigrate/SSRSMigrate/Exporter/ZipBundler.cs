@@ -241,6 +241,7 @@ namespace SSRSMigrate.Exporter
             string summary = JsonConvert.SerializeObject(this.mEntries, Formatting.Indented);
 
             this.mLogger.Trace("CreateSummary - JSON = {0}", summary);
+            this.mLogger.Trace("CreateSummary - Saving summary as '{0}'...", this.mExportSummaryFilename);
 
             // Add JSON serialized summary string as an entry to the zip using the value from mExportSummaryFilename 
             this.mZipFileWrapper.AddEntry(this.mExportSummaryFilename, summary);
