@@ -219,16 +219,10 @@ namespace SSRSMigrate
             FolderItemExporter folderExporter = null;
             ReportItemExporter reportExporter = null;
 
-            string version = "2005-SRC";
-
-            if (this.cboSrcVersion.SelectedIndex == 0)
-                version = "2005-SRC";
-            else
-                version = "2010-SRC";
+            string version = this.GetSourceServerVersion();
 
             reader = this.mKernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>(version);
 
-            //TODO Create ItemExporters
             dataSourceExporter = this.mKernel.Get<DataSourceItemExporter>();
             folderExporter = this.mKernel.Get<FolderItemExporter>();
             reportExporter = this.mKernel.Get<ReportItemExporter>();
@@ -243,7 +237,32 @@ namespace SSRSMigrate
 
         private void ExportToZip_Connection()
         {
-            
+            // Save configuration
+            this.Save_SourceConfiguration();
+
+            ReportServerReader reader = null;
+            DataSourceItemExporter dataSourceExporter = null;
+            FolderItemExporter folderExporter = null;
+            ReportItemExporter reportExporter = null;
+            IBundler zipBundler = null;
+
+            string version = this.GetSourceServerVersion();
+
+            reader = this.mKernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>(version);
+
+            dataSourceExporter = this.mKernel.Get<DataSourceItemExporter>();
+            folderExporter = this.mKernel.Get<FolderItemExporter>();
+            reportExporter = this.mKernel.Get<ReportItemExporter>();
+
+            zipBundler = this.mKernel.Get<IBundler>();
+
+            this.PerformExportToZip(this.txtSrcPath.Text,
+                this.txtExportZipFilename.Text,
+                reader,
+                folderExporter,
+                reportExporter,
+                dataSourceExporter,
+                zipBundler);
         }
         #endregion
 
@@ -270,6 +289,78 @@ namespace SSRSMigrate
                 //TODO UI_ImportZip_SourceCheck();
                 //TODO UI_ImportZip_DestinationCheck();
             }
+        }
+
+        private void UI_SourceCheck()
+        {
+            if (string.IsNullOrEmpty(this.txtSrcUrl.Text))
+                throw new Exception("source url");
+
+            if (this.cboSrcDefaultCred.SelectedIndex == 1)
+            {
+                if (string.IsNullOrEmpty(this.txtSrcUsername.Text))
+                    throw new Exception("source username");
+
+                if (string.IsNullOrEmpty(this.txtSrcPassword.Text))
+                    throw new Exception("source password");
+
+                if (string.IsNullOrEmpty(this.txtSrcDomain.Text))
+                    throw new Exception("source domain");
+            }
+
+            if (string.IsNullOrEmpty(this.txtSrcPath.Text))
+                this.txtSrcPath.Text = "/";
+        }
+
+        private void UI_DirectMigration_DestinationCheck()
+        {
+            if (string.IsNullOrEmpty(this.txtDestUrl.Text))
+                throw new Exception("destination url");
+
+            if (this.cboDestDefaultCred.SelectedIndex == 1)
+            {
+                if (string.IsNullOrEmpty(this.txtDestUsername.Text))
+                    throw new Exception("destination username");
+
+                if (string.IsNullOrEmpty(this.txtDestPassword.Text))
+                    throw new Exception("destination password");
+
+                if (string.IsNullOrEmpty(this.txtDestDomain.Text))
+                    throw new Exception("destination domain");
+            }
+
+            if (string.IsNullOrEmpty(this.txtDestPath.Text))
+                this.txtDestPath.Text = "/";
+        }
+
+        private void UI_ExportDisk_DestinationCheck()
+        {
+            if (string.IsNullOrEmpty(this.txtExportDiskFolderName.Text))
+                throw new Exception("folder name");
+        }
+
+        private string GetSourceServerVersion()
+        {
+            string version = "2005-SRC";
+
+            if (this.cboSrcVersion.SelectedIndex == 0)
+                version = "2005-SRC";
+            else
+                version = "2010-SRC";
+
+            return version;
+        }
+
+        private string GetDestinationServerVersion()
+        {
+            string version = "2005-DEST";
+
+            if (this.cboDestVersion.SelectedIndex == 0)
+                version = "2005-DEST";
+            else
+                version = "2010-DEST";
+
+            return version;
         }
         #endregion
 
@@ -320,48 +411,6 @@ namespace SSRSMigrate
         #endregion
 
         #region Direct Export Group
-        private void UI_SourceCheck()
-        {
-            if (string.IsNullOrEmpty(this.txtSrcUrl.Text))
-                throw new Exception("source url");
-
-            if (this.cboSrcDefaultCred.SelectedIndex == 1)
-            {
-                if (string.IsNullOrEmpty(this.txtSrcUsername.Text))
-                    throw new Exception("source username");
-
-                if (string.IsNullOrEmpty(this.txtSrcPassword.Text))
-                    throw new Exception("source password");
-
-                if (string.IsNullOrEmpty(this.txtSrcDomain.Text))
-                    throw new Exception("source domain");
-            }
-
-            if (string.IsNullOrEmpty(this.txtSrcPath.Text))
-                this.txtSrcPath.Text = "/";
-        }
-
-        private void UI_DirectMigration_DestinationCheck()
-        {
-            if (string.IsNullOrEmpty(this.txtDestUrl.Text))
-                throw new Exception("destination url");
-
-            if (this.cboDestDefaultCred.SelectedIndex == 1)
-            {
-                if (string.IsNullOrEmpty(this.txtDestUsername.Text))
-                    throw new Exception("destination username");
-
-                if (string.IsNullOrEmpty(this.txtDestPassword.Text))
-                    throw new Exception("destination password");
-
-                if (string.IsNullOrEmpty(this.txtDestDomain.Text))
-                    throw new Exception("destination domain");
-            }
-
-            if (string.IsNullOrEmpty(this.txtDestPath.Text))
-                this.txtDestPath.Text = "/";
-        }
-
         private void PerformDirectMigrate(string sourceRootPath, string destinationRootPath, ReportServerReader reader)
         {
             MigrateForm migrateForm = new MigrateForm(sourceRootPath, destinationRootPath, reader);
@@ -371,12 +420,6 @@ namespace SSRSMigrate
         #endregion
 
         #region Export to disk Group
-        private void UI_ExportDisk_DestinationCheck()
-        {
-            if (string.IsNullOrEmpty(this.txtExportDiskFolderName.Text))
-                throw new Exception("folder name");
-        }
-
         private void btnExportDiskFolderBrowse_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog folderDialog = new FolderBrowserDialog();
@@ -409,6 +452,12 @@ namespace SSRSMigrate
         #endregion
 
         #region Export to Zip Archive Group
+        private void UI_ExportZip_DestinationCheck()
+        {
+            if (string.IsNullOrEmpty(this.txtExportZipFilename.Text))
+                throw new Exception("filename");
+        }
+
         private void btnExportZipFileBrowse_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
@@ -421,7 +470,26 @@ namespace SSRSMigrate
                 this.txtExportZipFilename.Text = saveDialog.FileName;
             }
         }
+
+        private void PerformExportToZip(string sourceRootPath,
+            string destinationFilename,
+            ReportServerReader reader,
+            FolderItemExporter folderExporter,
+            ReportItemExporter reportExporter,
+            DataSourceItemExporter dataSourceExporter,
+            IBundler zipBunder)
+        {
+            ExportZipForm exportZipForm = new ExportZipForm(
+                sourceRootPath,
+                destinationFilename,
+                reader,
+                folderExporter,
+                reportExporter,
+                dataSourceExporter,
+                zipBunder);
+
+            exportZipForm.ShowDialog();
+        }
         #endregion
-        
     }
 }

@@ -1,46 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Ninject.Extensions.Logging;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.Utility;
-using System.IO;
 
 namespace SSRSMigrate
 {
     [CoverageExcludeAttribute]
-    public partial class ExportDiskForm : Form
+    public partial class ExportZipForm : Form
     {
         private readonly IReportServerReader mReportServerReader = null;
         private readonly FolderItemExporter mFolderExporter = null;
         private readonly ReportItemExporter mReportExporter = null;
         private readonly DataSourceItemExporter mDataSourceExporter = null;
+        private readonly IBundler mZipBundler = null;
 
         private readonly string mSourceRootPath = null;
-        private readonly string mExportDestinationPath = null;
+        private readonly string mExportDestinationFilename = null;
+        private readonly string mExportOutputTempDirectory = null;
 
         private BackgroundWorker mSourceRefreshWorker = null;
         private BackgroundWorker mExportWorker = null;
 
-        public ExportDiskForm(string sourceRootPath,
-            string destinationPath,
+        public ExportZipForm(string sourceRootPath,
+            string destinationFilename,
             IReportServerReader reader,
             FolderItemExporter folderExporter,
             ReportItemExporter reportExporter,
-            DataSourceItemExporter dataSourceExporter)
+            DataSourceItemExporter dataSourceExporter,
+            IBundler zipBundler)
         {
             if (string.IsNullOrEmpty(sourceRootPath))
                 throw new ArgumentException("sourceRootPath");
 
-            if (string.IsNullOrEmpty(destinationPath))
-                throw new ArgumentException("destinationPath");
+            if (string.IsNullOrEmpty(destinationFilename))
+                throw new ArgumentException("destinationFilename");
 
             if (reader == null)
                 throw new ArgumentNullException("reader");
@@ -54,14 +53,42 @@ namespace SSRSMigrate
             if (dataSourceExporter == null)
                 throw new ArgumentNullException("dataSourceExporter");
 
+            if (zipBundler == null)
+                throw new ArgumentNullException("zipBundler");
+
             InitializeComponent();
 
             this.mSourceRootPath = sourceRootPath;
-            this.mExportDestinationPath = destinationPath;
+            this.mExportDestinationFilename = destinationFilename;
             this.mReportServerReader = reader;
             this.mFolderExporter = folderExporter;
             this.mReportExporter = reportExporter;
             this.mDataSourceExporter = dataSourceExporter;
+            this.mZipBundler = zipBundler;
+
+            this.mExportOutputTempDirectory = this.GetTemporaryExportOutputFolder("SSRSMigrate_ExportZip");
+            this.CreateExportOutputFolder(this.mExportOutputTempDirectory);
+        }
+
+        private string GetTemporaryExportOutputFolder(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+
+            return Path.Combine(Path.GetTempPath(), name);
+        }
+
+        private void CreateExportOutputFolder(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
+
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+
+            Directory.CreateDirectory(path);
         }
 
         #region UI Events
@@ -224,11 +251,15 @@ namespace SSRSMigrate
             {
                 this.btnExport.Enabled = false;
                 this.btnSrcRefreshReports.Enabled = false;
-                this.mExportWorker.RunWorkerAsync(this.mExportDestinationPath);
+                this.mExportWorker.RunWorkerAsync(this.mExportOutputTempDirectory);
             }
             catch (Exception er)
             {
-
+                MessageBox.Show(
+                    string.Format("Error exporting items to '{0}':\n\r{1}", this.mExportDestinationFilename, er.Message),
+                    "Export Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -284,7 +315,17 @@ namespace SSRSMigrate
 
                         status = this.mFolderExporter.SaveItem(folderItem,
                             saveFilePath,
-                            true);                       
+                            true);
+
+                        // If the save to the temporary path was successful, add folder to the ZipBundler
+                        if (status.Success)
+                        {
+                            this.mZipBundler.AddItem(
+                                "Folders",
+                                status.ToPath,
+                                status.FromPath,
+                                true);
+                        }
                     }
                 }
 
@@ -315,6 +356,16 @@ namespace SSRSMigrate
                         status = this.mDataSourceExporter.SaveItem(dataSourceItem,
                             saveFilePath,
                             true);
+
+                        // If the save to the temporary path was successful, add file to the ZipBundler
+                        if (status.Success)
+                        {
+                            this.mZipBundler.AddItem(
+                                "DataSources",
+                                status.ToPath,
+                                status.FromPath,
+                                false);
+                        }
                     }
                 }
 
@@ -345,6 +396,16 @@ namespace SSRSMigrate
                         status = this.mReportExporter.SaveItem(reportItem,
                             saveFilePath,
                             true);
+
+                        // If the save to the temporary path was successful, add file to the ZipBundler
+                        if (status.Success)
+                        {
+                            this.mZipBundler.AddItem(
+                                "Reports",
+                                status.ToPath,
+                                status.FromPath,
+                                false);
+                        }
                     }
                 }
 
@@ -375,7 +436,11 @@ namespace SSRSMigrate
             }
             else
             {
-                msg = string.Format("Completed. {0} items exported.", e.Result);                    
+                msg = string.Format("Completed. {0} items exported.", e.Result);   
+                
+                // If the export completed, create the summary and save the ZipBundler
+                this.mZipBundler.CreateSummary();
+                this.mZipBundler.Save(this.mExportDestinationFilename);
             }
 
             this.btnSrcRefreshReports.Enabled = true;
