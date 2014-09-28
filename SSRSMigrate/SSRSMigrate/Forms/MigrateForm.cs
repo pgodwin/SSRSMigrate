@@ -335,6 +335,7 @@ namespace SSRSMigrate.Forms
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
+                //TODO Should pass some MigrationStatus object to ReportProgress
                 worker.ReportProgress(((++itemCounter * 100) / totalItems), folderItem);
             }
 
@@ -423,11 +424,11 @@ namespace SSRSMigrate.Forms
 
                 // Assign to proper ListViewGroup
                 if (item.GetType() == typeof(FolderItem))
-                    oItem.Group = this.lstSrcReports.Groups["foldersGroup"];
+                    oItem.Group = this.lstDestReports.Groups["foldersGroup"];
                 else if (item.GetType() == typeof(DataSourceItem))
-                    oItem.Group = this.lstSrcReports.Groups["dataSourcesGroup"];
+                    oItem.Group = this.lstDestReports.Groups["dataSourcesGroup"];
                 else if (item.GetType() == typeof(ReportItem))
-                    oItem.Group = this.lstSrcReports.Groups["reportsGroup"];
+                    oItem.Group = this.lstDestReports.Groups["reportsGroup"];
 
                 this.lstDestReports.Items.Add(oItem);
 
