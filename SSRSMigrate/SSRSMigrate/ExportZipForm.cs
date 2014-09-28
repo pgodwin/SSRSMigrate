@@ -15,6 +15,7 @@ namespace SSRSMigrate
     public partial class ExportZipForm : Form
     {
         private readonly IReportServerReader mReportServerReader = null;
+        //TODO These should be interfaces
         private readonly FolderItemExporter mFolderExporter = null;
         private readonly ReportItemExporter mReportExporter = null;
         private readonly DataSourceItemExporter mDataSourceExporter = null;
@@ -109,7 +110,6 @@ namespace SSRSMigrate
             this.mExportWorker.DoWork += new DoWorkEventHandler(this.ExportItemsWorker);
             this.mExportWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.bw_ExportItems_Completed);
             this.mExportWorker.ProgressChanged += new ProgressChangedEventHandler(this.bw_ExportItems_ProgressChanged);
-        
         }
 
         private void ExportDiskForm_FormClosing(object sender, FormClosingEventArgs e)
