@@ -243,6 +243,20 @@ namespace SSRSMigrate.Tests.Utilities
         }
 
         [Test]
+        public void GetFullDestinationPathForItem_SourceItemPathToDestinationItemPath()
+        {
+            string expected = "/SSRSMigrate_AW_Destination/Reports/Test Report";
+
+            string actual = SSRSUtil.GetFullDestinationPathForItem(
+                "/SSRSMigrate_AW_Tests", // The source root folder
+                "/SSRSMigrate_AW_Destination", // The destination root folder
+                "/SSRSMigrate_AW_Tests/Reports/Test Report" // Complete path to source item
+                );
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void GetFullDestinationPathForItem_NullSoucePath()
         {
             ArgumentException ex = Assert.Throws<ArgumentException>(

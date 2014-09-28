@@ -309,13 +309,13 @@ namespace SSRSMigrate.Forms
 
                     if (folderItem != null)
                     {
-                        //TODO Need to get the full source path to the item (e.g. http://localhost/ReportServer/SSRSMigrate_AW_Tests/Reports/Test Report)
+                        // Get the destination path for this item (e.g. '/SSRSMigrate_AW_Tests/Data Sources' to '/SSRSMigrate_AW_Destination/Data Sources'
                         string destItemPath = SSRSUtil.GetFullDestinationPathForItem(
-                            this.mSourceFullPath,
-                            this.mDestinationFullPath,
+                            this.mSourceRootPath,
+                            this.mDestinationRootPath,
                             folderItem.Path);
 
-                        folderItem.Path = destinationRootPath;
+                        folderItem.Path = destItemPath;
 
                         this.mReportServerWriter.WriteFolder(folderItem);
                     }

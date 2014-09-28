@@ -90,8 +90,8 @@ namespace SSRSMigrate.Utility
         /// Gets the full destination path for an item by taking the path to the item on the source server and
         /// replacing the root path on the server server with the root path on the destination server.
         /// </summary>
-        /// <param name="sourcePath">The path on the source server, including server url.</param>
-        /// <param name="destinationPath">The path on the destination server, including server url.</param>
+        /// <param name="sourcePath">The path on the source server.</param>
+        /// <param name="destinationPath">The path on the destination server.</param>
         /// <param name="itemPath">The complete item path on the source server.</param>
         /// <returns>Returns the path to the item as it would be on the destination server, using the same folder structure.</returns>
         /// <exception cref="System.ArgumentException">
