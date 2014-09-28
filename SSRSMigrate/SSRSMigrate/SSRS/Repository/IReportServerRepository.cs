@@ -38,5 +38,6 @@ namespace SSRSMigrate.SSRS.Repository
 
         // Items
         bool ItemExists(string itemPath, string itemType);
+        void DeleteItem(string itemPath);
     }
 }

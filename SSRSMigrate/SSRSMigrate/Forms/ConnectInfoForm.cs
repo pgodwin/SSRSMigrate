@@ -221,6 +221,8 @@ namespace SSRSMigrate.Forms
             reader = this.mKernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>(srcVersion);
             writer = this.mKernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>(destVersion);
 
+            writer.Overwrite = this.cbkDestOverwrite.Checked; //TODO Should include this in the IoC container somehow
+
             this.PerformDirectMigrate(this.txtSrcPath.Text, this.txtDestPath.Text, reader, writer);
         }
 

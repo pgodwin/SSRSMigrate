@@ -8,6 +8,7 @@ using Ninject.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using SSRSMigrate.Utility;
+using SSRSMigrate.SSRS.Errors;
 
 namespace SSRSMigrate.Forms
 {
@@ -319,7 +320,16 @@ namespace SSRSMigrate.Forms
 
                         folderItem.Path = destItemPath;
 
-                        this.mReportServerWriter.WriteFolder(folderItem);
+                        try
+                        {
+                            this.mReportServerWriter.WriteFolder(folderItem);
+                        }
+                        catch (ItemAlreadyExistsException er)
+                        {
+                            this.mLogger.Error(er, "Folder item already exists.");
+
+                            //TODO Should have some sort of event that ConnectInfoForm subscribes to in order to report errors to a debug window?
+                        }
                     }
                 }
 

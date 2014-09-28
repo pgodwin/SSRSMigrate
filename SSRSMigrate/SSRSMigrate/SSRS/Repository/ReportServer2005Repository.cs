@@ -609,6 +609,14 @@ namespace SSRSMigrate.SSRS.Repository
                 return false;
         }
 
+        public void DeleteItem(string itemPath)
+        {
+            if (string.IsNullOrEmpty(itemPath))
+                throw new ArgumentException("itemPath");
+
+            this.mReportingService.DeleteItem(itemPath);
+        }
+
         //TODO Need to decide if this should always FindItems in '/' or the root path
         public CatalogItem GetItem(string itemName, string itemPath, ItemTypeEnum itemType)
         {

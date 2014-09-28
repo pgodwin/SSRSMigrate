@@ -53,9 +53,15 @@ namespace SSRSMigrate.SSRS.Writer
             string parentPath = SSRSUtil.GetParentPath(folderItem);
 
             // Check if a folder already exists at the specified path
-            if (!this.mOverwrite)
-                if (this.mReportRepository.ItemExists(folderItem.Path, "Folder"))
+            if (this.mReportRepository.ItemExists(folderItem.Path, "Folder"))
+                // If allow overwrite is False, throw ItemAlreadyExistsException, otherwise delete the folder
+                if (!this.mOverwrite)
                     throw new ItemAlreadyExistsException(folderItem.Path);
+                else
+                {
+                    //TODO Add tests for ReportServerWriter.WriteFolder where the folder exists and overwrite is True
+                    this.mReportRepository.DeleteItem(folderItem.Path);
+                }
 
             return this.mReportRepository.CreateFolder(name, parentPath);
         }
@@ -78,9 +84,16 @@ namespace SSRSMigrate.SSRS.Writer
                 string parentPath = SSRSUtil.GetParentPath(folderItems[i]);
 
                 // Check if a folder already exists at the specified path
-                if (!this.mOverwrite)
-                    if (this.mReportRepository.ItemExists(folderItems[i].Path, "Folder"))
-                    throw new ItemAlreadyExistsException(folderItems[i].Path);
+                if (this.mReportRepository.ItemExists(folderItems[i].Path, "Folder"))
+                    // If allow overwrite is False, throw ItemAlreadyExistsException, otherwise delete the folder
+                    if (!this.mOverwrite)
+                        throw new ItemAlreadyExistsException(folderItems[i].Path);
+                    else
+                    {
+                        //TODO Add tests for ReportServerWriter.WriteFolders where the folder exists and overwrite is True
+                        this.mReportRepository.DeleteItem(folderItems[i].Path);
+                    }
+                
 
                 string warning = this.mReportRepository.CreateFolder(name, parentPath);
 

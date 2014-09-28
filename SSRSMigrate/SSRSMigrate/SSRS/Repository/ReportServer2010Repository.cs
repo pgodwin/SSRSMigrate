@@ -586,6 +586,14 @@ namespace SSRSMigrate.SSRS.Repository
                 return false;
         }
 
+        public void DeleteItem(string itemPath)
+        {
+            if (string.IsNullOrEmpty(itemPath))
+                throw new ArgumentException("itemPath");
+
+            this.mReportingService.DeleteItem(itemPath);
+        }
+
         public CatalogItem GetItem(string itemName, string itemPath, string itemType)
         {
             if (string.IsNullOrEmpty(itemName))
