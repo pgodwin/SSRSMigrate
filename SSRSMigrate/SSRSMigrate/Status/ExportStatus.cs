@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace SSRSMigrate.Exporter
+namespace SSRSMigrate.Status
 {
     public class ExportStatus
     {

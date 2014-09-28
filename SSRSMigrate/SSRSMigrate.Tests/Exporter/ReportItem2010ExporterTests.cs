@@ -7,6 +7,7 @@ using SSRSMigrate.Exporter;
 using SSRSMigrate.Exporter.Writer;
 using Moq;
 using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.Status;
 using SSRSMigrate.TestHelper;
 using System.IO;
 

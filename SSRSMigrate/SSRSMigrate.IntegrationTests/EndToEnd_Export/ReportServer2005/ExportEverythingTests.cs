@@ -9,6 +9,7 @@ using SSRSMigrate.Exporter;
 using System.IO;
 using System.Reflection;
 using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.Status;
 using SSRSMigrate.TestHelper;
 using Newtonsoft.Json;
 using SSRSMigrate.Utility;

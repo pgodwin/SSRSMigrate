@@ -97,7 +97,6 @@
     <Compile Include="Enum\SSRSEnumerations.cs" />
     <Compile Include="Exporter\BundleSummaryEntry.cs" />
     <Compile Include="Exporter\DataSourceItemExporter.cs" />
-    <Compile Include="Exporter\ExportStatus.cs" />
     <Compile Include="Exporter\IBundler.cs" />
     <Compile Include="Exporter\ICheckSumGenerator.cs" />
     <Compile Include="Exporter\MD5CheckSumGenerator.cs" />
@@ -152,6 +151,8 @@
     <Compile Include="SSRS\Repository\ReportServer2005Repository.cs" />
     <Compile Include="SSRS\Writer\IReportServerWriter.cs" />
     <Compile Include="SSRS\Writer\ReportServerWriter.cs" />
+    <Compile Include="Status\ExportStatus.cs" />
+    <Compile Include="Status\MigrationStatus.cs" />
     <Compile Include="Utility\SSRSUtil.cs" />
     <Compile Include="Web References\ReportServer2005\Reference.cs">
       <AutoGen>True</AutoGen>

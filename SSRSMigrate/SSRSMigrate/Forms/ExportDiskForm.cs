@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Reader;
+using SSRSMigrate.Status;
 using SSRSMigrate.Utility;
 using Ninject.Extensions.Logging;
 

@@ -7,6 +7,7 @@ using System.IO;
 using System.Reflection;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.Status;
 using SSRSMigrate.TestHelper;
 using SSRSMigrate.Utility;
 using SSRSMigrate.Exporter.Writer;

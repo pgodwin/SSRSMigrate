@@ -6,6 +6,7 @@ using SSRSMigrate.SSRS.Item;
 using Newtonsoft.Json;
 using System.IO;
 using SSRSMigrate.Exporter.Writer;
+using SSRSMigrate.Status;
 
 namespace SSRSMigrate.Exporter
 {

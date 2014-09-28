@@ -9,6 +9,7 @@ using Moq;
 using SSRSMigrate.Exporter.Writer;
 using Newtonsoft.Json;
 using System.IO;
+using SSRSMigrate.Status;
 
 namespace SSRSMigrate.Tests.Exporter
 {

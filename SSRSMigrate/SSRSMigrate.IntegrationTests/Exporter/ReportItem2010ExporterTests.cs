@@ -6,6 +6,7 @@ using NUnit.Framework;
 using SSRSMigrate.Exporter;
 using Ninject;
 using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.Status;
 using SSRSMigrate.Utility;
 using System.IO;
 using SSRSMigrate.TestHelper;

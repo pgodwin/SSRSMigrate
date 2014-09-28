@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Reader;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SSRSMigrate.Utility;
 using SSRSMigrate.SSRS.Errors;
+using SSRSMigrate.Status;
 
 namespace SSRSMigrate.Forms
 {
@@ -305,6 +307,10 @@ namespace SSRSMigrate.Forms
             foreach (string folderPath in folderPaths)
             {
                 FolderItem folderItem = null;
+                MigrationStatus status = new MigrationStatus()
+                {
+                    Success = false
+                };
 
                 if (!string.IsNullOrEmpty(folderPath))
                 {
@@ -312,6 +318,9 @@ namespace SSRSMigrate.Forms
 
                     if (folderItem != null)
                     {
+                        status.Item = folderItem;
+                        status.FromPath = folderItem.Path;
+
                         // Get the destination path for this item (e.g. '/SSRSMigrate_AW_Tests/Data Sources' to '/SSRSMigrate_AW_Destination/Data Sources'
                         string destItemPath = SSRSUtil.GetFullDestinationPathForItem(
                             this.mSourceRootPath,
@@ -319,14 +328,20 @@ namespace SSRSMigrate.Forms
                             folderItem.Path);
 
                         folderItem.Path = destItemPath;
+                        status.ToPath = destItemPath;
 
                         try
                         {
                             this.mReportServerWriter.WriteFolder(folderItem);
+
+                            status.Success = true;
                         }
                         catch (ItemAlreadyExistsException er)
                         {
                             this.mLogger.Error(er, "Folder item already exists.");
+
+                            status.Success = false;
+                            status.Error = er;
 
                             //TODO Should have some sort of event that ConnectInfoForm subscribes to in order to report errors to a debug window?
                         }
@@ -336,7 +351,7 @@ namespace SSRSMigrate.Forms
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
                 //TODO Should pass some MigrationStatus object to ReportProgress
-                worker.ReportProgress(((++itemCounter * 100) / totalItems), folderItem);
+                worker.ReportProgress(((++itemCounter * 100) / totalItems), status);
             }
 
             // Export data sources
@@ -348,6 +363,10 @@ namespace SSRSMigrate.Forms
             foreach (string dataSourcePath in dataSourcePaths)
             {
                 DataSourceItem dataSourceItem = null;
+                MigrationStatus status = new MigrationStatus()
+                {
+                    Success = false
+                };
 
                 if (!string.IsNullOrEmpty(dataSourcePath))
                 {
@@ -355,13 +374,14 @@ namespace SSRSMigrate.Forms
 
                     if (dataSourceItem != null)
                     {
-                        
+                        status.Item = dataSourceItem;
+                        status.FromPath = dataSourceItem.Path;
                     }
                 }
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
-                worker.ReportProgress(((++itemCounter * 100) / totalItems), dataSourceItem);
+                worker.ReportProgress(((++itemCounter * 100) / totalItems), status);
             }
 
             // Export reports
@@ -373,6 +393,10 @@ namespace SSRSMigrate.Forms
             foreach (string reportPath in reportPaths)
             {
                 ReportItem reportItem = null;
+                MigrationStatus status = new MigrationStatus()
+                {
+                    Success = false
+                };
 
                 if (!string.IsNullOrEmpty(reportPath))
                 {
@@ -380,13 +404,14 @@ namespace SSRSMigrate.Forms
 
                     if (reportItem != null)
                     {
-                        
+                        status.Item = reportItem;
+                        status.FromPath = reportItem.Path;
                     }
                 }
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
-                worker.ReportProgress(((++itemCounter * 100) / totalItems), reportItem);
+                worker.ReportProgress(((++itemCounter * 100) / totalItems), status);
             }
         }
 
@@ -415,24 +440,35 @@ namespace SSRSMigrate.Forms
         {
             if (e.UserState != null)
             {
-                ReportServerItem item = (ReportServerItem)e.UserState;
+                MigrationStatus status = (MigrationStatus) e.UserState;
 
-                ListViewItem oItem = new ListViewItem(item.Name);
-                oItem.Checked = true;
-                oItem.Tag = item.Path;
-                oItem.SubItems.Add(item.Path);
+                if (status.Item != null)
+                {
+                    ReportServerItem item = (ReportServerItem) status.Item;
 
-                // Assign to proper ListViewGroup
-                if (item.GetType() == typeof(FolderItem))
-                    oItem.Group = this.lstDestReports.Groups["foldersGroup"];
-                else if (item.GetType() == typeof(DataSourceItem))
-                    oItem.Group = this.lstDestReports.Groups["dataSourcesGroup"];
-                else if (item.GetType() == typeof(ReportItem))
-                    oItem.Group = this.lstDestReports.Groups["reportsGroup"];
+                    ListViewItem oItem = new ListViewItem(item.Name);
+                    oItem.Checked = true;
+                    oItem.Tag = item.Path;
+                    oItem.SubItems.Add(item.Path);
 
-                this.lstDestReports.Items.Add(oItem);
+                    if (!status.Success)
+                    {
+                        oItem.SubItems.Add(status.Error.Message);
+                        oItem.ForeColor = Color.Red;
+                    }
 
-                progressBar.ToolTipText = item.Name;
+                    // Assign to proper ListViewGroup
+                    if (item.GetType() == typeof (FolderItem))
+                        oItem.Group = this.lstDestReports.Groups["foldersGroup"];
+                    else if (item.GetType() == typeof (DataSourceItem))
+                        oItem.Group = this.lstDestReports.Groups["dataSourcesGroup"];
+                    else if (item.GetType() == typeof (ReportItem))
+                        oItem.Group = this.lstDestReports.Groups["reportsGroup"];
+
+                    this.lstDestReports.Items.Add(oItem);
+
+                    progressBar.ToolTipText = item.Name;
+                }
             }
 
             progressBar.Value = e.ProgressPercentage;

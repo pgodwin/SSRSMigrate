@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.Exporter;
+using SSRSMigrate.Status;
 
 namespace SSRSMigrate.Tests.Exporter
 {

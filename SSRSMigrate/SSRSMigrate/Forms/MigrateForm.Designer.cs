@@ -43,10 +43,11 @@
             this.colSrcName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colSrcPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnPerformMigration = new System.Windows.Forms.Button();
             this.lstDestReports = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnPerformMigration = new System.Windows.Forms.Button();
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.statusStrip.SuspendLayout();
             this.grpSource.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -147,6 +148,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Destination Server";
             // 
+            // btnPerformMigration
+            // 
+            this.btnPerformMigration.Enabled = false;
+            this.btnPerformMigration.Location = new System.Drawing.Point(432, 484);
+            this.btnPerformMigration.Name = "btnPerformMigration";
+            this.btnPerformMigration.Size = new System.Drawing.Size(138, 23);
+            this.btnPerformMigration.TabIndex = 16;
+            this.btnPerformMigration.Text = "Perform Migration";
+            this.btnPerformMigration.UseVisualStyleBackColor = true;
+            this.btnPerformMigration.Click += new System.EventHandler(this.btnPerformMigration_Click);
+            // 
             // lstDestReports
             // 
             this.lstDestReports.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -154,7 +166,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstDestReports.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
-            this.columnHeader2});
+            this.columnHeader2,
+            this.columnHeader3});
             this.lstDestReports.FullRowSelect = true;
             this.lstDestReports.GridLines = true;
             listViewGroup4.Header = "Folders";
@@ -185,16 +198,9 @@
             this.columnHeader2.Text = "Path";
             this.columnHeader2.Width = 234;
             // 
-            // btnPerformMigration
+            // columnHeader3
             // 
-            this.btnPerformMigration.Enabled = false;
-            this.btnPerformMigration.Location = new System.Drawing.Point(432, 484);
-            this.btnPerformMigration.Name = "btnPerformMigration";
-            this.btnPerformMigration.Size = new System.Drawing.Size(138, 23);
-            this.btnPerformMigration.TabIndex = 16;
-            this.btnPerformMigration.Text = "Perform Migration";
-            this.btnPerformMigration.UseVisualStyleBackColor = true;
-            this.btnPerformMigration.Click += new System.EventHandler(this.btnPerformMigration_Click);
+            this.columnHeader3.Text = "Status";
             // 
             // MigrateForm
             // 
@@ -235,6 +241,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Button btnPerformMigration;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
     }
 }
 

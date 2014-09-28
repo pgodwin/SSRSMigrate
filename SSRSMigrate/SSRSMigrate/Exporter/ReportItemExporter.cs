@@ -6,6 +6,7 @@ using SSRSMigrate.SSRS.Item;
 using System.IO;
 using System.Xml;
 using SSRSMigrate.Exporter.Writer;
+using SSRSMigrate.Status;
 
 namespace SSRSMigrate.Exporter
 {

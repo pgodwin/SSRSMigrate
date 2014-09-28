@@ -8,6 +8,7 @@ using SSRSMigrate.Exporter.Writer;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.SSRS.Item;
 using System.IO;
+using SSRSMigrate.Status;
 
 namespace SSRSMigrate.Tests.Exporter
 {
