@@ -157,7 +157,7 @@ namespace SSRSMigrate.Forms
 
         private void bw_SourceRefreshReportsProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            ReportItem report = (ReportItem)e.UserState;
+            ReportServerItem report = (ReportServerItem)e.UserState;
 
             ListViewItem oItem = new ListViewItem(report.Name);
             oItem.Checked = true;
@@ -282,11 +282,11 @@ namespace SSRSMigrate.Forms
             }
         }
 
+        //TODO Exception handling in MigrationWorker
         public void MigrationWorker(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
             string destinationRootPath = (string)e.Argument;
-
 
             IEnumerable<ListViewItem> lvItems = GetListViewItems(this.lstSrcReports).Cast<ListViewItem>();
 
@@ -303,9 +303,11 @@ namespace SSRSMigrate.Forms
 
             foreach (string folderPath in folderPaths)
             {
+                FolderItem folderItem = null;
+
                 if (!string.IsNullOrEmpty(folderPath))
                 {
-                    FolderItem folderItem = this.mReportServerReader.GetFolder(folderPath);
+                    folderItem = this.mReportServerReader.GetFolder(folderPath);
 
                     if (folderItem != null)
                     {
@@ -323,7 +325,7 @@ namespace SSRSMigrate.Forms
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
-                worker.ReportProgress(((++itemCounter * 100) / totalItems), null);
+                worker.ReportProgress(((++itemCounter * 100) / totalItems), folderItem);
             }
 
             // Export data sources
@@ -334,9 +336,11 @@ namespace SSRSMigrate.Forms
 
             foreach (string dataSourcePath in dataSourcePaths)
             {
+                DataSourceItem dataSourceItem = null;
+
                 if (!string.IsNullOrEmpty(dataSourcePath))
                 {
-                    DataSourceItem dataSourceItem = this.mReportServerReader.GetDataSource(dataSourcePath);
+                    dataSourceItem = this.mReportServerReader.GetDataSource(dataSourcePath);
 
                     if (dataSourceItem != null)
                     {
@@ -346,7 +350,7 @@ namespace SSRSMigrate.Forms
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
-                worker.ReportProgress(((++itemCounter * 100) / totalItems), null);
+                worker.ReportProgress(((++itemCounter * 100) / totalItems), dataSourceItem);
             }
 
             // Export reports
@@ -357,9 +361,11 @@ namespace SSRSMigrate.Forms
 
             foreach (string reportPath in reportPaths)
             {
+                ReportItem reportItem = null;
+
                 if (!string.IsNullOrEmpty(reportPath))
                 {
-                    ReportItem reportItem = this.mReportServerReader.GetReport(reportPath);
+                    reportItem = this.mReportServerReader.GetReport(reportPath);
 
                     if (reportItem != null)
                     {
@@ -369,7 +375,7 @@ namespace SSRSMigrate.Forms
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
-                worker.ReportProgress(((++itemCounter * 100) / totalItems), null);
+                worker.ReportProgress(((++itemCounter * 100) / totalItems), reportItem);
             }
         }
 
@@ -396,20 +402,31 @@ namespace SSRSMigrate.Forms
 
         private void bw_MigrationProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            ReportItem report = (ReportItem)e.UserState;
+            if (e.UserState != null)
+            {
+                ReportServerItem item = (ReportServerItem)e.UserState;
 
-            ListViewItem oItem = new ListViewItem(report.Name);
-            oItem.Checked = true;
-            oItem.Tag = report.Path;
-            oItem.SubItems.Add(report.Path);
+                ListViewItem oItem = new ListViewItem(item.Name);
+                oItem.Checked = true;
+                oItem.Tag = item.Path;
+                oItem.SubItems.Add(item.Path);
 
-            this.lstDestReports.Items.Add(oItem);
+                // Assign to proper ListViewGroup
+                if (item.GetType() == typeof(FolderItem))
+                    oItem.Group = this.lstSrcReports.Groups["foldersGroup"];
+                else if (item.GetType() == typeof(DataSourceItem))
+                    oItem.Group = this.lstSrcReports.Groups["dataSourcesGroup"];
+                else if (item.GetType() == typeof(ReportItem))
+                    oItem.Group = this.lstSrcReports.Groups["reportsGroup"];
+
+                this.lstDestReports.Items.Add(oItem);
+
+                progressBar.ToolTipText = item.Name;
+            }
 
             progressBar.Value = e.ProgressPercentage;
             progressBar.Maximum = 100;
-            progressBar.ToolTipText = report.Name;
         }
-
         #endregion
     }
 }
