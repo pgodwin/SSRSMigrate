@@ -8,12 +8,14 @@ using SSRSMigrate.Exporter;
 using SSRSMigrate.Factory;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Writer;
+using Ninject.Extensions.Logging;
 
 namespace SSRSMigrate.Forms
 {
     public partial class ConnectInfoForm : Form
     {
         private StandardKernel mKernel = null;
+        private ILoggerFactory mLoggerFactory = null;
 
         public ConnectInfoForm()
         {
@@ -28,6 +30,8 @@ namespace SSRSMigrate.Forms
                 settings,
                 new Log4NetModule(),
                 new ReportServerRepositoryModule());
+
+            this.mLoggerFactory = mKernel.Get<ILoggerFactory>();
 
             InitializeComponent();
         }
@@ -434,7 +438,7 @@ namespace SSRSMigrate.Forms
             IReportServerReader reader,
             IReportServerWriter writer)
         {
-            MigrateForm migrateForm = new MigrateForm(sourceRootPath, destinationRootPath, reader, writer);
+            MigrateForm migrateForm = new MigrateForm(sourceRootPath, destinationRootPath, reader, writer, this.mLoggerFactory);
 
             migrateForm.ShowDialog();
         }
@@ -466,7 +470,8 @@ namespace SSRSMigrate.Forms
                 reader,
                 folderExporter,
                 reportExporter,
-                dataSourceExporter);
+                dataSourceExporter,
+                this.mLoggerFactory);
 
             exportDiskForm.ShowDialog();
         }
@@ -501,7 +506,8 @@ namespace SSRSMigrate.Forms
                 folderExporter,
                 reportExporter,
                 dataSourceExporter,
-                zipBunder);
+                zipBunder,
+                this.mLoggerFactory);
 
             exportZipForm.ShowDialog();
         }

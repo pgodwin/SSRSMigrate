@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Writer;
+using Ninject.Extensions.Logging;
 
 namespace SSRSMigrate.Forms
 {
@@ -12,16 +13,19 @@ namespace SSRSMigrate.Forms
     {
         private readonly IReportServerReader mReportServerReader = null;
         private readonly IReportServerWriter mReportServerWriter = null;
+        private readonly ILoggerFactory mLoggerFactory = null;
         private readonly string mSourceRootPath = null;
         private readonly string mDestinationRootPath = null;
 
         private BackgroundWorker mSourceRefreshWorker = null;
+        private ILogger mLogger = null;
 
         public MigrateForm(
             string sourceRootPath, 
             string destinationRootPath,
             IReportServerReader reader,
-            IReportServerWriter writer)
+            IReportServerWriter writer,
+            ILoggerFactory loggerFactory)
         {
             if (string.IsNullOrEmpty(sourceRootPath))
                 throw new ArgumentException("sourceRootPath");
@@ -35,11 +39,18 @@ namespace SSRSMigrate.Forms
             if (writer == null)
                 throw new ArgumentNullException("writer");
 
+            if (loggerFactory == null)
+                throw new ArgumentNullException("loggerFactory");
+
             InitializeComponent();
 
             this.mSourceRootPath = sourceRootPath;
             this.mDestinationRootPath = destinationRootPath;
             this.mReportServerReader = reader;
+            this.mReportServerWriter = writer;
+            this.mLoggerFactory = loggerFactory;
+
+            this.mLogger = mLoggerFactory.GetCurrentClassLogger();
         }
 
         #region UI Events

@@ -7,6 +7,7 @@ using SSRSMigrate.Exporter;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Utility;
+using Ninject.Extensions.Logging;
 
 namespace SSRSMigrate.Forms
 {
@@ -18,19 +19,22 @@ namespace SSRSMigrate.Forms
         private readonly FolderItemExporter mFolderExporter = null;
         private readonly ReportItemExporter mReportExporter = null;
         private readonly DataSourceItemExporter mDataSourceExporter = null;
+        private readonly ILoggerFactory mLoggerFactory = null;
 
         private readonly string mSourceRootPath = null;
         private readonly string mExportDestinationPath = null;
 
         private BackgroundWorker mSourceRefreshWorker = null;
         private BackgroundWorker mExportWorker = null;
+        private ILogger mLogger = null;
 
         public ExportDiskForm(string sourceRootPath,
             string destinationPath,
             IReportServerReader reader,
             FolderItemExporter folderExporter,
             ReportItemExporter reportExporter,
-            DataSourceItemExporter dataSourceExporter)
+            DataSourceItemExporter dataSourceExporter,
+            ILoggerFactory loggerFactory)
         {
             if (string.IsNullOrEmpty(sourceRootPath))
                 throw new ArgumentException("sourceRootPath");
@@ -50,6 +54,9 @@ namespace SSRSMigrate.Forms
             if (dataSourceExporter == null)
                 throw new ArgumentNullException("dataSourceExporter");
 
+            if (loggerFactory == null)
+                throw new ArgumentNullException("loggerFactory");
+
             InitializeComponent();
 
             this.mSourceRootPath = sourceRootPath;
@@ -58,6 +65,9 @@ namespace SSRSMigrate.Forms
             this.mFolderExporter = folderExporter;
             this.mReportExporter = reportExporter;
             this.mDataSourceExporter = dataSourceExporter;
+            this.mLoggerFactory = loggerFactory;
+
+            this.mLogger = mLoggerFactory.GetCurrentClassLogger();
         }
 
         #region UI Events

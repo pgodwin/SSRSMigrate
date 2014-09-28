@@ -8,6 +8,7 @@ using SSRSMigrate.Exporter;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Utility;
+using Ninject.Extensions.Logging;
 
 namespace SSRSMigrate.Forms
 {
@@ -20,6 +21,7 @@ namespace SSRSMigrate.Forms
         private readonly ReportItemExporter mReportExporter = null;
         private readonly DataSourceItemExporter mDataSourceExporter = null;
         private readonly IBundler mZipBundler = null;
+        private readonly ILoggerFactory mLoggerFactory = null;
 
         private readonly string mSourceRootPath = null;
         private readonly string mExportDestinationFilename = null;
@@ -27,6 +29,7 @@ namespace SSRSMigrate.Forms
 
         private BackgroundWorker mSourceRefreshWorker = null;
         private BackgroundWorker mExportWorker = null;
+        private ILogger mLogger = null;
 
         public ExportZipForm(string sourceRootPath,
             string destinationFilename,
@@ -34,7 +37,8 @@ namespace SSRSMigrate.Forms
             FolderItemExporter folderExporter,
             ReportItemExporter reportExporter,
             DataSourceItemExporter dataSourceExporter,
-            IBundler zipBundler)
+            IBundler zipBundler,
+            ILoggerFactory loggerFactory)
         {
             if (string.IsNullOrEmpty(sourceRootPath))
                 throw new ArgumentException("sourceRootPath");
@@ -57,6 +61,9 @@ namespace SSRSMigrate.Forms
             if (zipBundler == null)
                 throw new ArgumentNullException("zipBundler");
 
+            if (loggerFactory == null)
+                throw new ArgumentNullException("loggerFactory");
+
             InitializeComponent();
 
             this.mSourceRootPath = sourceRootPath;
@@ -66,6 +73,9 @@ namespace SSRSMigrate.Forms
             this.mReportExporter = reportExporter;
             this.mDataSourceExporter = dataSourceExporter;
             this.mZipBundler = zipBundler;
+            this.mLoggerFactory = loggerFactory;
+
+            this.mLogger = mLoggerFactory.GetCurrentClassLogger();
 
             this.mExportOutputTempDirectory = this.GetTemporaryExportOutputFolder("SSRSMigrate_ExportZip");
             this.CreateExportOutputFolder(this.mExportOutputTempDirectory);
