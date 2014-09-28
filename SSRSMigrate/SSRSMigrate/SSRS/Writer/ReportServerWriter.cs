@@ -53,8 +53,9 @@ namespace SSRSMigrate.SSRS.Writer
             string parentPath = SSRSUtil.GetParentPath(folderItem);
 
             // Check if a folder already exists at the specified path
-            if (this.mReportRepository.ItemExists(folderItem.Path, "Folder"))
-                throw new ItemAlreadyExistsException(folderItem.Path);
+            if (!this.mOverwrite)
+                if (this.mReportRepository.ItemExists(folderItem.Path, "Folder"))
+                    throw new ItemAlreadyExistsException(folderItem.Path);
 
             return this.mReportRepository.CreateFolder(name, parentPath);
         }
