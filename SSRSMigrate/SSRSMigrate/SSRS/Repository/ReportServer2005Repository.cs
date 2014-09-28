@@ -165,6 +165,35 @@ namespace SSRSMigrate.SSRS.Repository
 
             try
             {
+                // Go through every folder in the parentPath and create it if it does not exist
+                string[] folders = parentPath.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                string parent = "/";
+
+                foreach (string folder in folders)
+                {
+                    string sFolder;
+
+                    if (parent != "/" && parent.EndsWith("/"))
+                        parent = parent.Substring(0, parent.LastIndexOf("/"));
+
+                    if (parent == "/")
+                        sFolder = parent + folder;
+                    else
+                        sFolder = parent + "/" + folder;
+
+                    if (!this.ItemExists(sFolder, "Folder"))
+                    {
+                        this.mLogger.Debug("Creating folder structure for '{0}' in '{1}'...", folder, parent);
+
+                        this.mReportingService.CreateFolder(folder, parent, null);
+                    }
+
+                    if (parent != "/")
+                        parent += "/" + folder;
+                    else
+                        parent += folder;
+                }
+
                 this.mReportingService.CreateFolder(name, parentPath, null);
             }
             catch (SoapException er)

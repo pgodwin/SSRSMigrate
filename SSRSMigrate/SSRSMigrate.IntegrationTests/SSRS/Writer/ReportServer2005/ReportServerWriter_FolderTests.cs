@@ -153,6 +153,14 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         }
 
         [Test]
+        public void WriteFolder_SubFolderParentDoesntExist()
+        {
+            string actual = writer.WriteFolder(reportsFolderItem);
+
+            Assert.Null(actual);
+        }
+
+        [Test]
         public void WriteFolder_AlreadyExists()
         {
             ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
