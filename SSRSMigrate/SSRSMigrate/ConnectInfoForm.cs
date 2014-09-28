@@ -13,6 +13,8 @@ using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.Exporter;
 using Ninject.Extensions.Logging.Log4net;
 using log4net.Config;
+using SSRSMigrate.SSRS.Writer;
+using SSRSMigrate.Errors;
 
 namespace SSRSMigrate
 {
@@ -174,10 +176,19 @@ namespace SSRSMigrate
                 else if (this.rdoMethodExportZip.Checked)
                     this.ExportToZip_Connection();
             }
+            catch (UserInterfaceInvalidFieldException er)
+            {
+                MessageBox.Show(er.Message,
+                    "Invalid Field",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                return;
+            }
             catch (Exception er)
             {
-                MessageBox.Show(string.Format("Please populate: {0}", er.Message),
-                    "Missing Information",
+                MessageBox.Show(er.Message,
+                    "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
@@ -192,21 +203,28 @@ namespace SSRSMigrate
             this.Save_SourceConfiguration();
             this.Save_DestinationConfiguration();
 
-            ReportServerReader reader = null;
-            //TODO ReportServerWriter writer = null;
-            string version = "2005-SRC";
+            IReportServerReader reader = null;
+            IReportServerWriter writer = null;
+            string srcVersion = "2005-SRC";
+            string destVersion = "2005-SRC";
+
+            if (this.cboSrcVersion.SelectedIndex > this.cboDestVersion.SelectedIndex)
+                throw new Exception("Source server is newer than destination server.");
 
             if (this.cboSrcVersion.SelectedIndex == 0)
-                version = "2005-SRC";
+                srcVersion = "2005-SRC";
             else
-                version = "2010-SRC";
+                srcVersion = "2010-SRC";
 
-            reader = this.mKernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>(version);
+            if (this.cboDestVersion.SelectedIndex == 0)
+                destVersion = "2005-DEST";
+            else
+                destVersion = "2010-DEST";
 
-            //TODO Create ReportServerWriter
+            reader = this.mKernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>(srcVersion);
+            writer = this.mKernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>(destVersion);
 
-            //TODO Pass ReportServerWriter to PerformDirectMigrate
-            this.PerformDirectMigrate(this.txtSrcPath.Text, this.txtDestPath.Text, reader);
+            this.PerformDirectMigrate(this.txtSrcPath.Text, this.txtDestPath.Text, reader, writer);
         }
 
         private void ExportToDisk_Connection()
@@ -294,18 +312,18 @@ namespace SSRSMigrate
         private void UI_SourceCheck()
         {
             if (string.IsNullOrEmpty(this.txtSrcUrl.Text))
-                throw new Exception("source url");
+                throw new UserInterfaceInvalidFieldException("source url");
 
             if (this.cboSrcDefaultCred.SelectedIndex == 1)
             {
                 if (string.IsNullOrEmpty(this.txtSrcUsername.Text))
-                    throw new Exception("source username");
+                    throw new UserInterfaceInvalidFieldException("source username");
 
                 if (string.IsNullOrEmpty(this.txtSrcPassword.Text))
-                    throw new Exception("source password");
+                    throw new UserInterfaceInvalidFieldException("source password");
 
                 if (string.IsNullOrEmpty(this.txtSrcDomain.Text))
-                    throw new Exception("source domain");
+                    throw new UserInterfaceInvalidFieldException("source domain");
             }
 
             if (string.IsNullOrEmpty(this.txtSrcPath.Text))
@@ -315,18 +333,18 @@ namespace SSRSMigrate
         private void UI_DirectMigration_DestinationCheck()
         {
             if (string.IsNullOrEmpty(this.txtDestUrl.Text))
-                throw new Exception("destination url");
+                throw new UserInterfaceInvalidFieldException("destination url");
 
             if (this.cboDestDefaultCred.SelectedIndex == 1)
             {
                 if (string.IsNullOrEmpty(this.txtDestUsername.Text))
-                    throw new Exception("destination username");
+                    throw new UserInterfaceInvalidFieldException("destination username");
 
                 if (string.IsNullOrEmpty(this.txtDestPassword.Text))
-                    throw new Exception("destination password");
+                    throw new UserInterfaceInvalidFieldException("destination password");
 
                 if (string.IsNullOrEmpty(this.txtDestDomain.Text))
-                    throw new Exception("destination domain");
+                    throw new UserInterfaceInvalidFieldException("destination domain");
             }
 
             if (string.IsNullOrEmpty(this.txtDestPath.Text))
@@ -336,13 +354,13 @@ namespace SSRSMigrate
         private void UI_ExportDisk_DestinationCheck()
         {
             if (string.IsNullOrEmpty(this.txtExportDiskFolderName.Text))
-                throw new Exception("folder name");
+                throw new UserInterfaceInvalidFieldException("folder name");
         }
 
         private void UI_ExportZip_DestinationCheck()
         {
             if (string.IsNullOrEmpty(this.txtExportZipFilename.Text))
-                throw new Exception("filename");
+                throw new UserInterfaceInvalidFieldException("filename");
         }
 
         private string GetSourceServerVersion()
@@ -417,9 +435,13 @@ namespace SSRSMigrate
         #endregion
 
         #region Direct Export Group
-        private void PerformDirectMigrate(string sourceRootPath, string destinationRootPath, ReportServerReader reader)
+        private void PerformDirectMigrate(
+            string sourceRootPath, 
+            string destinationRootPath, 
+            IReportServerReader reader,
+            IReportServerWriter writer)
         {
-            MigrateForm migrateForm = new MigrateForm(sourceRootPath, destinationRootPath, reader);
+            MigrateForm migrateForm = new MigrateForm(sourceRootPath, destinationRootPath, reader, writer);
 
             migrateForm.ShowDialog();
         }

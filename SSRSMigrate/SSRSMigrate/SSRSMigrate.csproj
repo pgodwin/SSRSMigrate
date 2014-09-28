@@ -95,6 +95,7 @@
     <Compile Include="ConnectInfoForm.Designer.cs">
       <DependentUpon>ConnectInfoForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Errors\UserInterfaceInvalidFieldException.cs" />
     <Compile Include="ExportZipForm.cs">
       <SubType>Form</SubType>
     </Compile>

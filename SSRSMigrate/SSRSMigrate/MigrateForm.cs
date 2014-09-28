@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
 using log4net.Core;
+using SSRSMigrate.SSRS.Writer;
 
 namespace SSRSMigrate
 {
@@ -16,7 +17,7 @@ namespace SSRSMigrate
     public partial class MigrateForm : Form
     {
         private readonly IReportServerReader mReportServerReader = null;
-        //private readonly ReportServerWriter mReportServerWriter = null;
+        private readonly IReportServerWriter mReportServerWriter = null;
         private readonly string mSourceRootPath = null;
         private readonly string mDestinationRootPath = null;
 
@@ -25,9 +26,9 @@ namespace SSRSMigrate
         public MigrateForm(
             string sourceRootPath, 
             string destinationRootPath,
-            IReportServerReader reader)
+            IReportServerReader reader,
+            IReportServerWriter writer)
         {
-            //TODO Check for NULL arguments
             if (string.IsNullOrEmpty(sourceRootPath))
                 throw new ArgumentException("sourceRootPath");
 
@@ -36,6 +37,9 @@ namespace SSRSMigrate
 
             if (reader == null)
                 throw new ArgumentNullException("reader");
+
+            if (writer == null)
+                throw new ArgumentNullException("writer");
 
             InitializeComponent();
 
