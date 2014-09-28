@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup7 = new System.Windows.Forms.ListViewGroup("Folders", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup8 = new System.Windows.Forms.ListViewGroup("Data Sources", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup9 = new System.Windows.Forms.ListViewGroup("Reports", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup10 = new System.Windows.Forms.ListViewGroup("Folders", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup11 = new System.Windows.Forms.ListViewGroup("Data Sources", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup12 = new System.Windows.Forms.ListViewGroup("Reports", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Folders", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Data Sources", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Reports", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Folders", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup("Data Sources", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup6 = new System.Windows.Forms.ListViewGroup("Reports", System.Windows.Forms.HorizontalAlignment.Left);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
@@ -46,6 +46,7 @@
             this.lstDestReports = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnPerformMigration = new System.Windows.Forms.Button();
             this.statusStrip.SuspendLayout();
             this.grpSource.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -107,16 +108,16 @@
             this.colSrcPath});
             this.lstSrcReports.FullRowSelect = true;
             this.lstSrcReports.GridLines = true;
-            listViewGroup7.Header = "Folders";
-            listViewGroup7.Name = "foldersGroup";
-            listViewGroup8.Header = "Data Sources";
-            listViewGroup8.Name = "dataSourcesGroup";
-            listViewGroup9.Header = "Reports";
-            listViewGroup9.Name = "reportsGroup";
+            listViewGroup1.Header = "Folders";
+            listViewGroup1.Name = "foldersGroup";
+            listViewGroup2.Header = "Data Sources";
+            listViewGroup2.Name = "dataSourcesGroup";
+            listViewGroup3.Header = "Reports";
+            listViewGroup3.Name = "reportsGroup";
             this.lstSrcReports.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup7,
-            listViewGroup8,
-            listViewGroup9});
+            listViewGroup1,
+            listViewGroup2,
+            listViewGroup3});
             this.lstSrcReports.Location = new System.Drawing.Point(21, 19);
             this.lstSrcReports.MultiSelect = false;
             this.lstSrcReports.Name = "lstSrcReports";
@@ -137,6 +138,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnPerformMigration);
             this.groupBox1.Controls.Add(this.lstDestReports);
             this.groupBox1.Location = new System.Drawing.Point(610, 12);
             this.groupBox1.Name = "groupBox1";
@@ -155,16 +157,16 @@
             this.columnHeader2});
             this.lstDestReports.FullRowSelect = true;
             this.lstDestReports.GridLines = true;
-            listViewGroup10.Header = "Folders";
-            listViewGroup10.Name = "foldersGroup";
-            listViewGroup11.Header = "Data Sources";
-            listViewGroup11.Name = "dataSourcesGroup";
-            listViewGroup12.Header = "Reports";
-            listViewGroup12.Name = "reportsGroup";
+            listViewGroup4.Header = "Folders";
+            listViewGroup4.Name = "foldersGroup";
+            listViewGroup5.Header = "Data Sources";
+            listViewGroup5.Name = "dataSourcesGroup";
+            listViewGroup6.Header = "Reports";
+            listViewGroup6.Name = "reportsGroup";
             this.lstDestReports.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup10,
-            listViewGroup11,
-            listViewGroup12});
+            listViewGroup4,
+            listViewGroup5,
+            listViewGroup6});
             this.lstDestReports.Location = new System.Drawing.Point(18, 19);
             this.lstDestReports.MultiSelect = false;
             this.lstDestReports.Name = "lstDestReports";
@@ -182,6 +184,17 @@
             // 
             this.columnHeader2.Text = "Path";
             this.columnHeader2.Width = 234;
+            // 
+            // btnPerformMigration
+            // 
+            this.btnPerformMigration.Enabled = false;
+            this.btnPerformMigration.Location = new System.Drawing.Point(432, 484);
+            this.btnPerformMigration.Name = "btnPerformMigration";
+            this.btnPerformMigration.Size = new System.Drawing.Size(138, 23);
+            this.btnPerformMigration.TabIndex = 16;
+            this.btnPerformMigration.Text = "Perform Migration";
+            this.btnPerformMigration.UseVisualStyleBackColor = true;
+            this.btnPerformMigration.Click += new System.EventHandler(this.btnPerformMigration_Click);
             // 
             // MigrateForm
             // 
@@ -221,6 +234,7 @@
         private System.Windows.Forms.ListView lstDestReports;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.Button btnPerformMigration;
     }
 }
 

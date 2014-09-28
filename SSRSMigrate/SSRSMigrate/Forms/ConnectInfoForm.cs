@@ -438,7 +438,27 @@ namespace SSRSMigrate.Forms
             IReportServerReader reader,
             IReportServerWriter writer)
         {
-            MigrateForm migrateForm = new MigrateForm(sourceRootPath, destinationRootPath, reader, writer, this.mLoggerFactory);
+            string sourceFullPath = null;
+            string destinationFullPath = null;
+
+            if (this.txtSrcUrl.Text.EndsWith("/"))
+                sourceFullPath = this.txtSrcUrl.Text.Substring(0, txtSrcUrl.Text.LastIndexOf("/")) + sourceRootPath;
+            else
+                sourceFullPath = this.txtSrcUrl.Text + sourceRootPath;
+
+            if (this.txtDestUrl.Text.EndsWith("/"))
+                destinationFullPath = this.txtDestUrl.Text.Substring(0, txtDestUrl.Text.LastIndexOf("/")) + destinationRootPath;
+            else
+                destinationFullPath = this.txtDestUrl.Text + destinationRootPath;
+
+            MigrateForm migrateForm = new MigrateForm(
+                sourceRootPath, 
+                sourceFullPath,
+                destinationRootPath, 
+                destinationFullPath,
+                reader, 
+                writer, 
+                this.mLoggerFactory);
 
             migrateForm.ShowDialog();
         }
