@@ -15,16 +15,27 @@ namespace SSRSMigrate
     [CoverageExcludeAttribute]
     public partial class MigrateForm : Form
     {
-        private readonly ReportServerReader mReportServerReader = null;
+        private readonly IReportServerReader mReportServerReader = null;
         //private readonly ReportServerWriter mReportServerWriter = null;
         private readonly string mSourceRootPath = null;
         private readonly string mDestinationRootPath = null;
 
         private BackgroundWorker mSourceRefreshWorker = null;
 
-        public MigrateForm(string sourceRootPath, string destinationRootPath, ReportServerReader reader)
+        public MigrateForm(
+            string sourceRootPath, 
+            string destinationRootPath,
+            IReportServerReader reader)
         {
             //TODO Check for NULL arguments
+            if (string.IsNullOrEmpty(sourceRootPath))
+                throw new ArgumentException("sourceRootPath");
+
+            if (string.IsNullOrEmpty(destinationRootPath))
+                throw new ArgumentException("destinationRootPath");
+
+            if (reader == null)
+                throw new ArgumentNullException("reader");
 
             InitializeComponent();
 
