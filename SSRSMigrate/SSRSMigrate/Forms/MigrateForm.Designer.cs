@@ -1,4 +1,4 @@
-﻿namespace SSRSMigrate
+﻿namespace SSRSMigrate.Forms
 {
     partial class MigrateForm
     {

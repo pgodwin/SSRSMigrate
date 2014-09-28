@@ -89,30 +89,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectInfoForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConnectInfoForm.Designer.cs">
-      <DependentUpon>ConnectInfoForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Errors\UserInterfaceInvalidFieldException.cs" />
-    <Compile Include="ExportZipForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ExportZipForm.Designer.cs">
-      <DependentUpon>ExportZipForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="DataMapper\IDataMapper.cs" />
     <Compile Include="DataMapper\ReportingService2005DataMapper.cs" />
     <Compile Include="DataMapper\ReportingService2010DataMapper.cs" />
     <Compile Include="DependencyModule.cs" />
     <Compile Include="Enum\SSRSEnumerations.cs" />
-    <Compile Include="ExportDiskForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ExportDiskForm.Designer.cs">
-      <DependentUpon>ExportDiskForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Exporter\BundleSummaryEntry.cs" />
     <Compile Include="Exporter\DataSourceItemExporter.cs" />
     <Compile Include="Exporter\ExportStatus.cs" />
@@ -132,10 +114,28 @@
     <Compile Include="Factory\ReportServerReaderFactory.cs" />
     <Compile Include="Factory\ReportServerRepositoryFactory.cs" />
     <Compile Include="Factory\ReportServerWriterFactory.cs" />
-    <Compile Include="MigrateForm.cs">
+    <Compile Include="Forms\ConnectInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MigrateForm.Designer.cs">
+    <Compile Include="Forms\ConnectInfoForm.Designer.cs">
+      <DependentUpon>ConnectInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ExportDiskForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ExportDiskForm.Designer.cs">
+      <DependentUpon>ExportDiskForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ExportZipForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ExportZipForm.Designer.cs">
+      <DependentUpon>ExportZipForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MigrateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MigrateForm.Designer.cs">
       <DependentUpon>MigrateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -165,16 +165,16 @@
     </Compile>
     <Compile Include="Wrappers\IZipFileWrapper.cs" />
     <Compile Include="Wrappers\ZipFileWrapper.cs" />
-    <EmbeddedResource Include="ConnectInfoForm.resx">
+    <EmbeddedResource Include="Forms\ConnectInfoForm.resx">
       <DependentUpon>ConnectInfoForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ExportZipForm.resx">
-      <DependentUpon>ExportZipForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ExportDiskForm.resx">
+    <EmbeddedResource Include="Forms\ExportDiskForm.resx">
       <DependentUpon>ExportDiskForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MigrateForm.resx">
+    <EmbeddedResource Include="Forms\ExportZipForm.resx">
+      <DependentUpon>ExportZipForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MigrateForm.resx">
       <DependentUpon>MigrateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -440,6 +440,7 @@
   <ItemGroup>
     <None Include="Resources\table_save.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

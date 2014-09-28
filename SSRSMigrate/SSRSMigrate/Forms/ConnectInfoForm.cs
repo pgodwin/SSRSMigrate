@@ -1,22 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using SSRSMigrate.SSRS.Reader;
-using Ninject;
-using SSRSMigrate.Factory;
-using SSRSMigrate.SSRS.Repository;
-using SSRSMigrate.Exporter;
-using Ninject.Extensions.Logging.Log4net;
 using log4net.Config;
-using SSRSMigrate.SSRS.Writer;
+using Ninject;
+using Ninject.Extensions.Logging.Log4net;
 using SSRSMigrate.Errors;
+using SSRSMigrate.Exporter;
+using SSRSMigrate.Factory;
+using SSRSMigrate.SSRS.Reader;
+using SSRSMigrate.SSRS.Writer;
 
-namespace SSRSMigrate
+namespace SSRSMigrate.Forms
 {
     public partial class ConnectInfoForm : Form
     {

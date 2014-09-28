@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Ninject.Extensions.Logging;
-using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Utility;
-using System.IO;
 
-namespace SSRSMigrate
+namespace SSRSMigrate.Forms
 {
-    [CoverageExcludeAttribute]
+    [CoverageExclude]
     public partial class ExportDiskForm : Form
     {
         private readonly IReportServerReader mReportServerReader = null;

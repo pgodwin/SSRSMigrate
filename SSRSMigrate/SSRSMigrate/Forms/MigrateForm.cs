@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
-using log4net.Core;
+using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Writer;
 
-namespace SSRSMigrate
+namespace SSRSMigrate.Forms
 {
-    [CoverageExcludeAttribute]
+    [CoverageExclude]
     public partial class MigrateForm : Form
     {
         private readonly IReportServerReader mReportServerReader = null;

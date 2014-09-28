@@ -4,14 +4,14 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Utility;
 
-namespace SSRSMigrate
+namespace SSRSMigrate.Forms
 {
-    [CoverageExcludeAttribute]
+    [CoverageExclude]
     public partial class ExportZipForm : Form
     {
         private readonly IReportServerReader mReportServerReader = null;
