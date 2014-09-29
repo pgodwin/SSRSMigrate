@@ -21,9 +21,9 @@ namespace SSRSMigrate.Forms
         private readonly IReportServerWriter mReportServerWriter = null;
         private readonly ILoggerFactory mLoggerFactory = null;
         private readonly string mSourceRootPath = null;
-        private readonly string mSourceFullPath = null;
+        private readonly string mSourceServerUrl = null;
         private readonly string mDestinationRootPath = null;
-        private readonly string mDestinationFullPath = null;
+        private readonly string destinationServerUrl = null;
 
         private BackgroundWorker mSourceRefreshWorker = null;
         private BackgroundWorker mMigrationWorker = null;
@@ -31,9 +31,9 @@ namespace SSRSMigrate.Forms
 
         public MigrateForm(
             string sourceRootPath, 
-            string sourceFullPath,
+            string sourceServerUrl,
             string destinationRootPath,
-            string destinationFullPath,
+            string destinationServerUrl,
             IReportServerReader reader,
             IReportServerWriter writer,
             ILoggerFactory loggerFactory)
@@ -41,14 +41,14 @@ namespace SSRSMigrate.Forms
             if (string.IsNullOrEmpty(sourceRootPath))
                 throw new ArgumentException("sourceRootPath");
 
-            if (string.IsNullOrEmpty(sourceFullPath))
-                throw new ArgumentException("sourceFullPath");
+            if (string.IsNullOrEmpty(sourceServerUrl))
+                throw new ArgumentException("sourceServerUrl");
 
-            if (string.IsNullOrEmpty(destinationFullPath))
-                throw new ArgumentException("destinationFullPath");
+            if (string.IsNullOrEmpty(destinationServerUrl))
+                throw new ArgumentException("destinationServerUrl");
 
-            if (string.IsNullOrEmpty(sourceFullPath))
-                throw new ArgumentException("sourceFullPath");
+            if (string.IsNullOrEmpty(sourceServerUrl))
+                throw new ArgumentException("sourceServerUrl");
 
             if (reader == null)
                 throw new ArgumentNullException("reader");
@@ -62,9 +62,9 @@ namespace SSRSMigrate.Forms
             InitializeComponent();
 
             this.mSourceRootPath = sourceRootPath;
-            this.mSourceFullPath = sourceFullPath;
+            this.mSourceServerUrl = sourceServerUrl;
             this.mDestinationRootPath = destinationRootPath;
-            this.mDestinationFullPath = destinationFullPath;
+            this.destinationServerUrl = destinationServerUrl;
             this.mReportServerReader = reader;
             this.mReportServerWriter = writer;
             this.mLoggerFactory = loggerFactory;
@@ -295,7 +295,7 @@ namespace SSRSMigrate.Forms
 
             // Get total count of items in ListView that are checked
             int totalItems = lvItems.Where(lv => lv.Checked == true).Count();
-            int itemCounter = 0;
+            int progressCounter = 0;
 
             // Export folders
             // Get path of ListView items in the folder group that are checked.
@@ -350,8 +350,7 @@ namespace SSRSMigrate.Forms
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
-                //TODO Should pass some MigrationStatus object to ReportProgress
-                worker.ReportProgress(((++itemCounter * 100) / totalItems), status);
+                worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
             }
 
             // Export data sources
@@ -376,12 +375,37 @@ namespace SSRSMigrate.Forms
                     {
                         status.Item = dataSourceItem;
                         status.FromPath = dataSourceItem.Path;
+
+                        // Get the destination path for this item (e.g. '/SSRSMigrate_AW_Tests/Data Sources/AWDataSource' to '/SSRSMigrate_AW_Destination/Data Sources/AWDataSource'
+                        string destItemPath = SSRSUtil.GetFullDestinationPathForItem(
+                            this.mSourceRootPath,
+                            this.mDestinationRootPath,
+                            dataSourceItem.Path);
+
+                        dataSourceItem.Path = destItemPath;
+                        status.ToPath = destItemPath;
+
+                        try
+                        {
+                            this.mReportServerWriter.WriteDataSource(dataSourceItem);
+
+                            status.Success = true;
+                        }
+                        catch (ItemAlreadyExistsException er)
+                        {
+                            this.mLogger.Error(er, "Data Source item already exists.");
+
+                            status.Success = false;
+                            status.Error = er;
+
+                            //TODO Should have some sort of event that ConnectInfoForm subscribes to in order to report errors to a debug window?
+                        }
                     }
                 }
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
-                worker.ReportProgress(((++itemCounter * 100) / totalItems), status);
+                worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
             }
 
             // Export reports
@@ -406,12 +430,43 @@ namespace SSRSMigrate.Forms
                     {
                         status.Item = reportItem;
                         status.FromPath = reportItem.Path;
+
+                        // Get the destination path for this item (e.g. '/SSRSMigrate_AW_Tests/Reports/Company Sales' to '/SSRSMigrate_AW_Destination/Reports/Company Sales'
+                        string destItemPath = SSRSUtil.GetFullDestinationPathForItem(
+                            this.mSourceRootPath,
+                            this.mDestinationRootPath,
+                            reportItem.Path);
+
+                        reportItem.Path = destItemPath;
+                        status.ToPath = destItemPath;
+
+                        reportItem.Definition = SSRSUtil.UpdateReportDefinition(
+                            this.destinationServerUrl,
+                            this.mSourceRootPath,
+                            this.mDestinationRootPath,
+                            reportItem.Definition);
+
+                        try
+                        {
+                            this.mReportServerWriter.WriteReport(reportItem);
+
+                            status.Success = true;
+                        }
+                        catch (ItemAlreadyExistsException er)
+                        {
+                            this.mLogger.Error(er, "Report item already exists.");
+
+                            status.Success = false;
+                            status.Error = er;
+
+                            //TODO Should have some sort of event that ConnectInfoForm subscribes to in order to report errors to a debug window?
+                        }
                     }
                 }
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
-                worker.ReportProgress(((++itemCounter * 100) / totalItems), status);
+                worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
             }
         }
 

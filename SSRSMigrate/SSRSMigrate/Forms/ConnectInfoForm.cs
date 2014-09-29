@@ -223,7 +223,13 @@ namespace SSRSMigrate.Forms
 
             writer.Overwrite = this.cbkDestOverwrite.Checked; //TODO Should include this in the IoC container somehow
 
-            this.PerformDirectMigrate(this.txtSrcPath.Text, this.txtDestPath.Text, reader, writer);
+            this.PerformDirectMigrate(
+                this.txtSrcUrl.Text,
+                this.txtSrcPath.Text,
+                this.txtDestUrl.Text,
+                this.txtDestPath.Text, 
+                reader, 
+                writer);
         }
 
         private void ExportToDisk_Connection()
@@ -435,29 +441,18 @@ namespace SSRSMigrate.Forms
 
         #region Direct Export Group
         private void PerformDirectMigrate(
+            string sourceServerUrl,
             string sourceRootPath, 
+            string destinationServerUrl,
             string destinationRootPath, 
             IReportServerReader reader,
             IReportServerWriter writer)
         {
-            string sourceFullPath = null;
-            string destinationFullPath = null;
-
-            if (this.txtSrcUrl.Text.EndsWith("/"))
-                sourceFullPath = this.txtSrcUrl.Text.Substring(0, txtSrcUrl.Text.LastIndexOf("/")) + sourceRootPath;
-            else
-                sourceFullPath = this.txtSrcUrl.Text + sourceRootPath;
-
-            if (this.txtDestUrl.Text.EndsWith("/"))
-                destinationFullPath = this.txtDestUrl.Text.Substring(0, txtDestUrl.Text.LastIndexOf("/")) + destinationRootPath;
-            else
-                destinationFullPath = this.txtDestUrl.Text + destinationRootPath;
-
             MigrateForm migrateForm = new MigrateForm(
-                sourceRootPath, 
-                sourceFullPath,
-                destinationRootPath, 
-                destinationFullPath,
+                sourceRootPath,
+                sourceServerUrl,
+                destinationRootPath,
+                destinationServerUrl,
                 reader, 
                 writer, 
                 this.mLoggerFactory);
