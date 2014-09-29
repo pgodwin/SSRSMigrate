@@ -120,8 +120,15 @@ namespace SSRSMigrate.Utility
                 if (destinationPath.EndsWith("/"))
                     destinationPath = destinationPath.Substring(0, destinationPath.LastIndexOf("/"));
 
+            // Get the item's path, up until the item name, which would be the current parent path of the item
+            string path = itemPath.Substring(0, itemPath.LastIndexOf("/"));
+            string name = itemPath.Substring(itemPath.LastIndexOf("/"));
+
+            // Replace the source path with the destination path, in the current path of the item to get the destination path
             System.Text.RegularExpressions.Regex re = new System.Text.RegularExpressions.Regex(sourcePath);
-            string itemDestPath = re.Replace(itemPath, destinationPath, 1);
+            string itemDestPath = re.Replace(path, destinationPath, 1);
+
+            itemDestPath += name;
 
             return itemDestPath;
         }
@@ -244,7 +251,8 @@ namespace SSRSMigrate.Utility
                 parentPath = path;
             else
             {
-                parentPath = path.Replace(name, "");
+                //parentPath = path.Replace(name, "");
+                parentPath = path.Substring(0, path.LastIndexOf(name));
 
                 if (parentPath.EndsWith("/"))
                 {

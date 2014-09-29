@@ -257,6 +257,20 @@ namespace SSRSMigrate.Tests.Utilities
         }
 
         [Test]
+        public void GetFullDestinationPathForItem_SoucePathIsInItemName()
+        {
+            string expected = "/SSRSMigrate_AW_Destination/Data Sources/SSRSMigrate_AW_Tests";
+
+            string actual = SSRSUtil.GetFullDestinationPathForItem(
+                "/SSRSMigrate_AW_Tests", // The source root folder
+                "/SSRSMigrate_AW_Destination", // The destination root folder
+                "/SSRSMigrate_AW_Tests/Data Sources/SSRSMigrate_AW_Tests" // Complete path to source item
+                );
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void GetFullDestinationPathForItem_NullSoucePath()
         {
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -545,6 +559,22 @@ namespace SSRSMigrate.Tests.Utilities
             {
                 Name = "Sub Folder",
                 Path = "/SSRSMigrate/Reports/Sub Folder"
+            };
+
+            string expected = "/SSRSMigrate/Reports";
+
+            string actual = SSRSUtil.GetParentPath(item);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetParentPath_ParentContainsName()
+        {
+            ReportServerItem item = new ReportServerItem()
+            {
+                Name = "Reports",
+                Path = "/SSRSMigrate/Reports/Reports"
             };
 
             string expected = "/SSRSMigrate/Reports";
