@@ -148,7 +148,7 @@ namespace SSRSMigrate.SSRS.Writer
                 // Check if a report already exists at the specified path
                 if (!this.mOverwrite)
                     if (this.mReportRepository.ItemExists(reportItems[i].Path, "Report"))
-                    throw new ItemAlreadyExistsException(reportItems[i].Path);
+                        throw new ItemAlreadyExistsException(reportItems[i].Path);
 
                 string[] report_warnings = this.mReportRepository.WriteReport(parentPath, reportItems[i], this.mOverwrite);
 
@@ -175,7 +175,7 @@ namespace SSRSMigrate.SSRS.Writer
 
             if (!this.mOverwrite)
                 if (this.mReportRepository.ItemExists(dataSourceItem.Path, "DataSource"))
-                throw new ItemAlreadyExistsException(dataSourceItem.Path);
+                    throw new ItemAlreadyExistsException(dataSourceItem.Path);
 
             return this.mReportRepository.WriteDataSource(parentPath, dataSourceItem, this.mOverwrite);
         }
@@ -197,7 +197,7 @@ namespace SSRSMigrate.SSRS.Writer
 
                 if (!this.mOverwrite)
                     if (this.mReportRepository.ItemExists(dataSourceItems[i].Path, "DataSource"))
-                    throw new ItemAlreadyExistsException(dataSourceItems[i].Path);
+                        throw new ItemAlreadyExistsException(dataSourceItems[i].Path);
 
                 string warning = this.mReportRepository.WriteDataSource(parentPath, dataSourceItems[i], this.mOverwrite);
                 
