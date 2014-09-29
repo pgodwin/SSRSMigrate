@@ -157,7 +157,14 @@ namespace SSRSMigrate.Forms
             }
             else if ((e.Error != null))
             {
-                msg = string.Format("Reporting listing error.", e.Error);
+                msg = string.Format("{0}", e.Error.Message);
+
+                this.mLogger.Error(e.Error, "Error during item refresh");
+
+                MessageBox.Show(msg,
+                    "Refresh Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             else
             {
@@ -166,6 +173,8 @@ namespace SSRSMigrate.Forms
                 this.btnPerformMigration.Enabled = true;
             }
 
+            this.mLogger.Info("Item refresh completed: {0}", msg);
+            this.lblStatus.Text = msg;
             this.btnSrcRefreshReports.Enabled = true;
         }
 
@@ -205,47 +214,9 @@ namespace SSRSMigrate.Forms
             this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
 
             this.lblStatus.Text = string.Format("Refreshing item '{0}'...", item.Path);
+
+            this.mLogger.Debug("Refreshing item '{0}' on server '{1}'...", item.Path, this.mSourceServerUrl);
         }
-
-        // Commented out because we can do these in a single method above.
-        //private void ReportsReader_Report_Reporter(ReportItem item)
-        //{
-        //    ListViewItem oItem = new ListViewItem(item.Name);
-        //    oItem.Checked = true;
-        //    oItem.Tag = item;
-        //    oItem.SubItems.Add(item.Path);
-
-        //    this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
-        //    this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
-
-        //    this.lblStatus.Text = string.Format("Refreshing report '{0}'...", item.Path);
-        //}
-
-        //private void ReportsReader_DataSource_Reporter(DataSourceItem item)
-        //{
-        //    ListViewItem oItem = new ListViewItem(item.Name);
-        //    oItem.Checked = true;
-        //    oItem.Tag = item;
-        //    oItem.SubItems.Add(item.Path);
-
-        //    this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
-        //    this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
-
-        //    this.lblStatus.Text = string.Format("Refreshing data source '{0}'...", item.Path);
-        //}
-
-        //private void ReportsReader_Folder_Reporter(FolderItem item)
-        //{
-        //    ListViewItem oItem = new ListViewItem(item.Name);
-        //    oItem.Checked = true;
-        //    oItem.Tag = item;
-        //    oItem.SubItems.Add(item.Path);
-
-        //    this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
-        //    this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
-
-        //    this.lblStatus.Text = string.Format("Refreshing folder '{0}'...", item.Path);
-        //}
         #endregion
 
         #region Migration Methods
@@ -343,6 +314,8 @@ namespace SSRSMigrate.Forms
                         folderItem.Path = destItemPath;
                         status.ToPath = destItemPath;
 
+                        this.mLogger.Trace("MigrationWorker - FolderItem.FromPath = {0}; ToPath = {1}", status.FromPath, status.ToPath);
+
                         try
                         {
                             this.mReportServerWriter.WriteFolder(folderItem);
@@ -359,6 +332,8 @@ namespace SSRSMigrate.Forms
                             //TODO Should have some sort of event that ConnectInfoForm subscribes to in order to report errors to a debug window?
                         }
                     }
+                    else
+                        this.mLogger.Warn("MigrationWorker - FolderItem for path '{0}' returned NULL.", folderPath);
                 }
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
@@ -398,6 +373,8 @@ namespace SSRSMigrate.Forms
                         dataSourceItem.Path = destItemPath;
                         status.ToPath = destItemPath;
 
+                        this.mLogger.Trace("MigrationWorker - DataSourceItem.FromPath = {0}; ToPath = {1}", status.FromPath, status.ToPath);
+
                         try
                         {
                             this.mReportServerWriter.WriteDataSource(dataSourceItem);
@@ -414,6 +391,8 @@ namespace SSRSMigrate.Forms
                             //TODO Should have some sort of event that ConnectInfoForm subscribes to in order to report errors to a debug window?
                         }
                     }
+                    else
+                        this.mLogger.Warn("MigrationWorker - DataSourceItem for path '{0}' returned NULL.", dataSourcePath);
                 }
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
@@ -453,11 +432,19 @@ namespace SSRSMigrate.Forms
                         reportItem.Path = destItemPath;
                         status.ToPath = destItemPath;
 
+                        this.mLogger.Trace("MigrationWorker - ReportItem.FromPath = {0}; ToPath = {1}", status.FromPath, status.ToPath);
+
+                        if (reportItem.Definition != null)
+                            this.mLogger.Trace("MigrationWorker - ReportItem.Definition Before = {0}", SSRSUtil.ByteArrayToString(reportItem.Definition));
+
                         reportItem.Definition = SSRSUtil.UpdateReportDefinition(
                             this.destinationServerUrl,
                             this.mSourceRootPath,
                             this.mDestinationRootPath,
                             reportItem.Definition);
+
+                        if (reportItem.Definition != null)
+                            this.mLogger.Trace("MigrationWorker - ReportItem.Definition After = {0}", SSRSUtil.ByteArrayToString(reportItem.Definition));
 
                         try
                         {
@@ -475,6 +462,8 @@ namespace SSRSMigrate.Forms
                             //TODO Should have some sort of event that ConnectInfoForm subscribes to in order to report errors to a debug window?
                         }
                     }
+                    else
+                        this.mLogger.Warn("MigrationWorker - ReportItem for path '{0}' returned NULL.", reportPath);
                 }
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
