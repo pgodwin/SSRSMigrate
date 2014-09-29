@@ -18,6 +18,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
     class ReportServerWriter_FolderTests
     {
         ReportServerWriter writer = null;
+        Mock<IReportServerRepository> reportServerRepositoryMock = null;
 
         #region Folder Items
         FolderItem rootFolderItem = null;
@@ -85,7 +86,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             };
 
             // Setup IReportServerRepository Mock
-            var reportServerRepositoryMock = new Mock<IReportServerRepository>();
+            reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
             // IReportServerRepository.CreateFolder Mocks
             reportServerRepositoryMock.Setup(r => r.CreateFolder(null, It.IsAny<string>()))
@@ -110,6 +111,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 .Returns(() => null);
 
             reportServerRepositoryMock.Setup(r => r.CreateFolder(rootSubFolderItem.Name, TesterUtility.GetParentPath(rootSubFolderItem)))
+               .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(alreadyExistsFolderItem.Name, TesterUtility.GetParentPath(alreadyExistsFolderItem)))
                .Returns(() => null);
 
             reportServerRepositoryMock.Setup(r => r.CreateFolder(errorFolderItem.Name, TesterUtility.GetParentPath(errorFolderItem)))
@@ -164,6 +168,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [SetUp]
         public void SetUp()
         {
+            writer.Overwrite = false; // Reset allow overwrite before each test
         }
 
         [TearDown]
@@ -190,6 +195,18 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 });
 
             Assert.That(ex.Message, Is.EqualTo(string.Format("An item at '{0}' already exists.", alreadyExistsFolderItem.Path)));
+        }
+
+        [Test]
+        public void WriteFolder_AlreadyExists_AllowOverwrite()
+        {
+            writer.Overwrite = true;
+
+            string actual = writer.WriteFolder(alreadyExistsFolderItem);
+
+            Assert.Null(actual);
+
+            reportServerRepositoryMock.Verify(r => r.DeleteItem(alreadyExistsFolderItem.Path));
         }
 
         [Test]
@@ -304,7 +321,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         {
             string[] actual = writer.WriteFolders(folderItems.ToArray());
 
-            Assert.AreEqual(0, actual.Length);
+            Assert.IsEmpty(actual);
         }
 
         [Test]
@@ -322,6 +339,23 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 });
 
             Assert.That(ex.Message, Is.EqualTo(string.Format("An item at '{0}' already exists.", alreadyExistsFolderItem.Path)));
+        }
+
+        [Test]
+        public void WriteFolders_OneOrMoreAlreadyExists_AllowOverwrite()
+        {
+            List<FolderItem> items = new List<FolderItem>();
+
+            items.AddRange(folderItems);
+            items.Add(alreadyExistsFolderItem);
+
+            writer.Overwrite = true;
+
+            string[] actual = writer.WriteFolders(items.ToArray());
+
+            Assert.IsEmpty(actual);
+
+            reportServerRepositoryMock.Verify(r => r.DeleteItem(alreadyExistsFolderItem.Path));
         }
 
         [Test]

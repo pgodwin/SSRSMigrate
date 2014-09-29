@@ -258,7 +258,6 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
             Assert.AreEqual(expectedFolderItems.Count(), actualFolderItems.Count());
         }
 
-        //TODO GetFolders invalid path tests
         [Test]
         public void GetFolders_UsingDelegate_InvalidPath()
         {
