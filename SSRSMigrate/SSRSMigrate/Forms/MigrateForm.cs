@@ -535,6 +535,8 @@ namespace SSRSMigrate.Forms
 
                     progressBar.ToolTipText = item.Name;
                 }
+                else
+                    this.mLogger.Warn("MigrationProgressChanged - MigrationStatus.Item is NULL for item migrated from '{0}' to '{1}'.", status.FromPath, status.ToPath);
             }
 
             progressBar.Value = e.ProgressPercentage;
