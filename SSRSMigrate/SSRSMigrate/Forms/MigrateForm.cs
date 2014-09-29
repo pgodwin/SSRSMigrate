@@ -117,7 +117,18 @@ namespace SSRSMigrate.Forms
             }
             catch (Exception er)
             {
+                this.mLogger.Error(er, "Error getting list of items from '{0}' on server '{1}'.}",
+                    this.mSourceRootPath,
+                    this.mSourceServerUrl);
 
+                MessageBox.Show(
+                   string.Format("Error getting list of items from '{0}' on server '{1}'.\n\r\n\r{2}", 
+                        this.mSourceRootPath,
+                        this.mSourceServerUrl,
+                        er.Message),
+                   "Migration Error",
+                   MessageBoxButtons.OK,
+                   MessageBoxIcon.Error);
             }
         }
 
@@ -196,15 +207,6 @@ namespace SSRSMigrate.Forms
             this.lblStatus.Text = string.Format("Refreshing item '{0}'...", item.Path);
         }
 
-        private void btnPerformMigration_Click(object sender, EventArgs e)
-        {
-            // If there are no items in the list, there is nothing to migrate
-            if (this.lstSrcReports.Items.Count <= 0)
-                return;
-
-            this.DirectMigration();
-        }
-
         // Commented out because we can do these in a single method above.
         //private void ReportsReader_Report_Reporter(ReportItem item)
         //{
@@ -247,6 +249,15 @@ namespace SSRSMigrate.Forms
         #endregion
 
         #region Migration Methods
+        private void btnPerformMigration_Click(object sender, EventArgs e)
+        {
+            // If there are no items in the list, there is nothing to migrate
+            if (this.lstSrcReports.Items.Count <= 0)
+                return;
+
+            this.DirectMigration();
+        }
+
         // Used for getting the ListView items from within the BackgroundWorker thread.
         private delegate ListView.ListViewItemCollection GetItems(ListView listView);
 
@@ -268,6 +279,8 @@ namespace SSRSMigrate.Forms
 
         private void DirectMigration()
         {
+            this.lstDestReports.Items.Clear();
+
             try
             {
                 this.btnPerformMigration.Enabled = false;
@@ -480,13 +493,22 @@ namespace SSRSMigrate.Forms
             }
             else if ((e.Error != null))
             {
-                msg = string.Format("Migration error.", e.Error);
+                msg = string.Format("{0}", e.Error.Message);
+                
+                this.mLogger.Error(e.Error, "Error during migration");
+
+                MessageBox.Show(msg,
+                    "Migration Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             else
             {
                 msg = string.Format("Completed.");
             }
 
+            this.mLogger.Info("Migration completed: {0}", msg);
+            this.lblStatus.Text = msg;
             this.btnSrcRefreshReports.Enabled = true;
             this.btnPerformMigration.Enabled = false;
         }
