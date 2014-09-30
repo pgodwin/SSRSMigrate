@@ -304,8 +304,8 @@ namespace SSRSMigrate.Forms
             }
             else if (this.rdoMethodExportZip.Checked)
             {
-                //TODO UI_SourceCheck();
-                //TODO UI_ExportZip_DestinationCheck();
+                this.UI_SourceCheck();
+                this.UI_ExportZip_DestinationCheck();
             }
             else if (this.rdoMethodImportZip.Checked)
             {
