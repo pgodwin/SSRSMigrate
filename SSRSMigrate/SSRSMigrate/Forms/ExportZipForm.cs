@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -298,11 +299,24 @@ namespace SSRSMigrate.Forms
             BackgroundWorker worker = sender as BackgroundWorker;
             string exportPath = (string)e.Argument;
 
+            // Stopwatch to track how long the export takes
+            Stopwatch watch = new Stopwatch();
+
+            // Start stopwatch to get how long it takes to get the total number of checked items
+            watch.Start();
+
             IEnumerable<ListViewItem> lvItems = GetListViewItems(this.lstSrcReports).Cast<ListViewItem>();
 
             // Get total count of items in ListView that are checked
             int totalItems = lvItems.Where(lv => lv.Checked == true).Count();
-            int itemCounter = 0;
+            int progressCounter = 0;
+
+            // Stop stopwatch after getting the total number of checked items, and log how long it took
+            watch.Stop();
+            this.mLogger.Trace("ExportItemsWorker - Took {0} seconds to get checked ListView items", watch.Elapsed.TotalSeconds);
+
+            // Start stopwatch to get how long it takes to export everything
+            watch.Start();
 
             // Export folders
             // Get path of ListView items in the folder group that are checked.
@@ -342,7 +356,7 @@ namespace SSRSMigrate.Forms
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
-                worker.ReportProgress(((++itemCounter * 100) / totalItems), status);
+                worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
             }
 
             // Export data sources
@@ -382,7 +396,7 @@ namespace SSRSMigrate.Forms
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
-                worker.ReportProgress(((++itemCounter * 100) / totalItems), status);
+                worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
             }
 
             // Export reports
@@ -422,8 +436,23 @@ namespace SSRSMigrate.Forms
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
-                worker.ReportProgress(((++itemCounter * 100) / totalItems), status);
+                worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
             }
+
+            // Stop stopwatch and get how long it took for the export to complete successfully
+            watch.Stop();
+            double average_item = watch.Elapsed.TotalSeconds / progressCounter;
+
+            string result = string.Format("{0} items exported in {1}h {2}m {3}s (@ {4:0.00} items/s)",
+                progressCounter,
+                watch.Elapsed.Hours,
+                watch.Elapsed.Minutes,
+                watch.Elapsed.Seconds,
+                average_item);
+
+            this.mLogger.Trace("ExportItemsworker - {0}", result);
+
+            e.Result = result;
         }
 
         private void bw_ExportItems_Completed(object sender, RunWorkerCompletedEventArgs e)
@@ -438,6 +467,8 @@ namespace SSRSMigrate.Forms
             {
                 msg = string.Format("Error exporting items:\n\r{0}", e.Error);
 
+                this.mLogger.Error(e.Error, "Error during export");
+
                 MessageBox.Show(msg,
                     "Error",
                     MessageBoxButtons.OK,
@@ -447,13 +478,15 @@ namespace SSRSMigrate.Forms
             }
             else
             {
-                msg = string.Format("Completed. {0} items exported.", e.Result);   
+                msg = string.Format("Completed. {0}", e.Result);   
                 
                 // If the export completed, create the summary and save the ZipBundler
                 this.mZipBundler.CreateSummary();
                 this.mZipBundler.Save(this.mExportDestinationFilename);
             }
 
+            this.mLogger.Info("Export completed: {0}", msg);
+            this.lblStatus.Text = msg;
             this.btnSrcRefreshReports.Enabled = true;
             this.btnExport.Enabled = false;
             this.lblStatus.Text = msg;
