@@ -67,7 +67,7 @@
             // lblStatus
             // 
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(1099, 17);
+            this.lblStatus.Size = new System.Drawing.Size(1068, 17);
             this.lblStatus.Spring = true;
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -183,6 +183,7 @@
             this.lstDestReports.Location = new System.Drawing.Point(18, 19);
             this.lstDestReports.MultiSelect = false;
             this.lstDestReports.Name = "lstDestReports";
+            this.lstDestReports.ShowItemToolTips = true;
             this.lstDestReports.Size = new System.Drawing.Size(552, 453);
             this.lstDestReports.TabIndex = 15;
             this.lstDestReports.UseCompatibleStateImageBehavior = false;

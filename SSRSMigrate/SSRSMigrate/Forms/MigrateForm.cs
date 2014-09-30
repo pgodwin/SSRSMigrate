@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using SSRSMigrate.SSRS.Item;
@@ -280,10 +281,23 @@ namespace SSRSMigrate.Forms
             BackgroundWorker worker = sender as BackgroundWorker;
             string destinationRootPath = (string)e.Argument;
 
+            // Stopwatch to track how long the migration takes
+            Stopwatch watch = new Stopwatch();
+
+            // Start stopwatch to get how long it takes to get the total number of checked items
+            watch.Start();
+
             IEnumerable<ListViewItem> lvItems = GetListViewItems(this.lstSrcReports).Cast<ListViewItem>();
 
             // Get total count of items in ListView that are checked
             int totalItems = lvItems.Where(lv => lv.Checked == true).Count();
+            
+            // Stop stopwatch after getting the total number of checked items, and log how long it took
+            watch.Stop();
+            this.mLogger.Trace("MigrationWorker - Took {0} seconds to get checked ListView items", watch.Elapsed.TotalSeconds);
+
+            // Start stopwatch to get how long it takes to migrate everything
+            watch.Start();
             int progressCounter = 0;
 
             // Export folders
@@ -485,6 +499,21 @@ namespace SSRSMigrate.Forms
                 // This will keep the progress bar value from suddenly jumping up several values.
                 worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
             }
+
+            // Stop stopwatch and get how long it took for the migration to complete successfully
+            watch.Stop();
+            double average_item = watch.Elapsed.TotalSeconds/progressCounter;
+
+            string result = string.Format("{0} items migrated in {1}h {2}m {3}s (@ {4:0.00} items/s)", 
+                progressCounter,
+                watch.Elapsed.Hours,
+                watch.Elapsed.Minutes,
+                watch.Elapsed.Seconds,
+                average_item);
+
+            this.mLogger.Trace("MigrationWorker - {0}", result);
+
+            e.Result = result;
         }
 
         private void bw_MigrationCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -493,7 +522,7 @@ namespace SSRSMigrate.Forms
 
             if ((e.Cancelled == true))
             {
-                msg = string.Format("Cancelled. {0}", e.Result);
+                msg = string.Format("Cancelled.");
             }
             else if ((e.Error != null))
             {
@@ -508,7 +537,7 @@ namespace SSRSMigrate.Forms
             }
             else
             {
-                msg = string.Format("Completed.");
+                msg = string.Format("Completed. {0}", e.Result);
             }
 
             this.mLogger.Info("Migration completed: {0}", msg);
@@ -536,6 +565,8 @@ namespace SSRSMigrate.Forms
                     {
                         oItem.SubItems.Add(status.Error.Message);
                         oItem.ForeColor = Color.Red;
+
+                        oItem.ToolTipText = status.Error.Message;
                     }
 
                     if (status.Warnings.Length > 0)
@@ -544,6 +575,8 @@ namespace SSRSMigrate.Forms
 
                         oItem.SubItems.Add(warnings);
                         oItem.ForeColor = Color.OrangeRed;
+
+                        oItem.ToolTipText = string.Join("\n\r", status.Warnings);  
                     }
 
                     // Assign to proper ListViewGroup
@@ -555,8 +588,11 @@ namespace SSRSMigrate.Forms
                         oItem.Group = this.lstDestReports.Groups["reportsGroup"];
 
                     this.lstDestReports.Items.Add(oItem);
+                    oItem.EnsureVisible();
 
                     progressBar.ToolTipText = item.Name;
+
+                    this.lblStatus.Text = string.Format("Migrated item at '{0}'...", item.Path);
                 }
                 else
                     this.mLogger.Warn("MigrationProgressChanged - MigrationStatus.Item is NULL for item migrated from '{0}' to '{1}'.", status.FromPath, status.ToPath);
