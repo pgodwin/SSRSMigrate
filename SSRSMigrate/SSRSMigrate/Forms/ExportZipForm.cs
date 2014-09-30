@@ -482,5 +482,15 @@ namespace SSRSMigrate.Forms
             }
         }
         #endregion
+
+        private void checkAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.lstSrcReports.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = true);
+        }
+
+        private void uncheckAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.lstSrcReports.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = false);
+        }
     }
 }
