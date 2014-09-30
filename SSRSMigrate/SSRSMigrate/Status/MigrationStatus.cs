@@ -13,5 +13,11 @@ namespace SSRSMigrate.Status
         public string ToPath { get; set; }
         public bool Success { get; set; }
         public Exception Error { get; set; }
+        public string[] Warnings { get; set; }
+
+        public MigrationStatus()
+        {
+            this.Warnings = new string[] {};
+        }
     }
 }

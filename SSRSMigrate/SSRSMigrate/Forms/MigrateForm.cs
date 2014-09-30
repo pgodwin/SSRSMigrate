@@ -96,6 +96,11 @@ namespace SSRSMigrate.Forms
             if (this.mSourceRefreshWorker != null)
                 if (this.mSourceRefreshWorker.IsBusy)
                     e.Cancel = true;
+
+            // If the migration is in progress, don't allow the form to close
+            if (this.mMigrationWorker != null)
+                if (this.mMigrationWorker.IsBusy)
+                    e.Cancel = true;
         }
 
         private void btnSrcRefreshReports_Click(object sender, EventArgs e)
@@ -318,7 +323,10 @@ namespace SSRSMigrate.Forms
 
                         try
                         {
-                            this.mReportServerWriter.WriteFolder(folderItem);
+                            string warning = this.mReportServerWriter.WriteFolder(folderItem);
+
+                            if (!string.IsNullOrEmpty(warning))
+                                status.Warnings = new string[] { warning };
 
                             status.Success = true;
                         }
@@ -377,7 +385,10 @@ namespace SSRSMigrate.Forms
 
                         try
                         {
-                            this.mReportServerWriter.WriteDataSource(dataSourceItem);
+                            string warning = this.mReportServerWriter.WriteDataSource(dataSourceItem);
+
+                            if (!string.IsNullOrEmpty(warning))
+                                status.Warnings = new string[] { warning };
 
                             status.Success = true;
                         }
@@ -448,7 +459,11 @@ namespace SSRSMigrate.Forms
 
                         try
                         {
-                            this.mReportServerWriter.WriteReport(reportItem);
+                            string[] warnings = this.mReportServerWriter.WriteReport(reportItem);
+
+                            if (warnings != null)
+                                if (warnings.Length > 0)
+                                    status.Warnings = warnings;
 
                             status.Success = true;
                         }
@@ -521,6 +536,14 @@ namespace SSRSMigrate.Forms
                     {
                         oItem.SubItems.Add(status.Error.Message);
                         oItem.ForeColor = Color.Red;
+                    }
+
+                    if (status.Warnings.Length > 0)
+                    {
+                        string warnings = string.Join("; ", status.Warnings);
+
+                        oItem.SubItems.Add(warnings);
+                        oItem.ForeColor = Color.OrangeRed;
                     }
 
                     // Assign to proper ListViewGroup
