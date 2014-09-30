@@ -223,6 +223,8 @@ namespace SSRSMigrate.Forms
 
             writer.Overwrite = this.cbkDestOverwrite.Checked; //TODO Should include this in the IoC container somehow
 
+            //TODO Check source and destination server versions through the reader and writer
+
             this.PerformDirectMigrate(
                 this.txtSrcUrl.Text,
                 this.txtSrcPath.Text,
