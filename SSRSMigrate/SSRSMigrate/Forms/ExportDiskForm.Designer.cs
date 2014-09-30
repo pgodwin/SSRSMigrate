@@ -37,16 +37,16 @@
             this.lstSrcReports = new System.Windows.Forms.ListView();
             this.colSrcName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colSrcPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.mnuSourceItems = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.checkAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uncheckAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.btnExport = new System.Windows.Forms.Button();
-            this.mnuSourceItems = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.checkAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.uncheckAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.grpSource.SuspendLayout();
-            this.statusStrip.SuspendLayout();
             this.mnuSourceItems.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpSource
@@ -111,6 +111,28 @@
             this.colSrcPath.Text = "Path";
             this.colSrcPath.Width = 387;
             // 
+            // mnuSourceItems
+            // 
+            this.mnuSourceItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkAllToolStripMenuItem,
+            this.uncheckAllToolStripMenuItem});
+            this.mnuSourceItems.Name = "mnuSourceItems";
+            this.mnuSourceItems.Size = new System.Drawing.Size(138, 48);
+            // 
+            // checkAllToolStripMenuItem
+            // 
+            this.checkAllToolStripMenuItem.Name = "checkAllToolStripMenuItem";
+            this.checkAllToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.checkAllToolStripMenuItem.Text = "Check All";
+            this.checkAllToolStripMenuItem.Click += new System.EventHandler(this.checkAllToolStripMenuItem_Click);
+            // 
+            // uncheckAllToolStripMenuItem
+            // 
+            this.uncheckAllToolStripMenuItem.Name = "uncheckAllToolStripMenuItem";
+            this.uncheckAllToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.uncheckAllToolStripMenuItem.Text = "Uncheck All";
+            this.uncheckAllToolStripMenuItem.Click += new System.EventHandler(this.uncheckAllToolStripMenuItem_Click);
+            // 
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -136,6 +158,7 @@
             // 
             // btnExport
             // 
+            this.btnExport.Enabled = false;
             this.btnExport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnExport.Location = new System.Drawing.Point(517, 531);
             this.btnExport.Name = "btnExport";
@@ -144,28 +167,6 @@
             this.btnExport.Text = "Export";
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
-            // 
-            // mnuSourceItems
-            // 
-            this.mnuSourceItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.checkAllToolStripMenuItem,
-            this.uncheckAllToolStripMenuItem});
-            this.mnuSourceItems.Name = "mnuSourceItems";
-            this.mnuSourceItems.Size = new System.Drawing.Size(153, 70);
-            // 
-            // checkAllToolStripMenuItem
-            // 
-            this.checkAllToolStripMenuItem.Name = "checkAllToolStripMenuItem";
-            this.checkAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.checkAllToolStripMenuItem.Text = "Check All";
-            this.checkAllToolStripMenuItem.Click += new System.EventHandler(this.checkAllToolStripMenuItem_Click);
-            // 
-            // uncheckAllToolStripMenuItem
-            // 
-            this.uncheckAllToolStripMenuItem.Name = "uncheckAllToolStripMenuItem";
-            this.uncheckAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.uncheckAllToolStripMenuItem.Text = "Uncheck All";
-            this.uncheckAllToolStripMenuItem.Click += new System.EventHandler(this.uncheckAllToolStripMenuItem_Click);
             // 
             // ExportDiskForm
             // 
@@ -183,9 +184,9 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExportDiskForm_FormClosing);
             this.Load += new System.EventHandler(this.ExportDiskForm_Load);
             this.grpSource.ResumeLayout(false);
+            this.mnuSourceItems.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.mnuSourceItems.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
