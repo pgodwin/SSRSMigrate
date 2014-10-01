@@ -299,6 +299,7 @@ namespace SSRSMigrate.Forms
             // Start stopwatch to get how long it takes to migrate everything
             watch.Start();
             int progressCounter = 0;
+            int itemsMigratedCounter = 0;
 
             // Export folders
             // Get path of ListView items in the folder group that are checked.
@@ -343,6 +344,8 @@ namespace SSRSMigrate.Forms
                                 status.Warnings = new string[] { warning };
 
                             status.Success = true;
+
+                            ++itemsMigratedCounter;
                         }
                         catch (ItemAlreadyExistsException er)
                         {
@@ -405,6 +408,8 @@ namespace SSRSMigrate.Forms
                                 status.Warnings = new string[] { warning };
 
                             status.Success = true;
+
+                            ++itemsMigratedCounter;
                         }
                         catch (ItemAlreadyExistsException er)
                         {
@@ -480,6 +485,8 @@ namespace SSRSMigrate.Forms
                                     status.Warnings = warnings;
 
                             status.Success = true;
+
+                            ++itemsMigratedCounter;
                         }
                         catch (ItemAlreadyExistsException er)
                         {
@@ -504,8 +511,8 @@ namespace SSRSMigrate.Forms
             watch.Stop();
             double average_item = watch.Elapsed.TotalSeconds/progressCounter;
 
-            string result = string.Format("{0} items migrated in {1}h {2}m {3}s (@ {4:0.00} items/s)", 
-                progressCounter,
+            string result = string.Format("{0} items migrated in {1}h {2}m {3}s (@ {4:0.00} items/s)",
+                itemsMigratedCounter,
                 watch.Elapsed.Hours,
                 watch.Elapsed.Minutes,
                 watch.Elapsed.Seconds,

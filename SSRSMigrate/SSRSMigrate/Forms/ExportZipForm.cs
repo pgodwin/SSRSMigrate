@@ -310,6 +310,7 @@ namespace SSRSMigrate.Forms
             // Get total count of items in ListView that are checked
             int totalItems = lvItems.Where(lv => lv.Checked == true).Count();
             int progressCounter = 0;
+            int itemsExportedCounter = 0;
 
             // Stop stopwatch after getting the total number of checked items, and log how long it took
             watch.Stop();
@@ -350,6 +351,8 @@ namespace SSRSMigrate.Forms
                                 status.ToPath,
                                 status.FromPath,
                                 true);
+
+                            ++itemsExportedCounter;
                         }
                     }
                 }
@@ -390,6 +393,8 @@ namespace SSRSMigrate.Forms
                                 status.ToPath,
                                 status.FromPath,
                                 false);
+
+                            ++itemsExportedCounter;
                         }
                     }
                 }
@@ -430,6 +435,8 @@ namespace SSRSMigrate.Forms
                                 status.ToPath,
                                 status.FromPath,
                                 false);
+
+                            ++itemsExportedCounter;
                         }
                     }
                 }
@@ -444,7 +451,7 @@ namespace SSRSMigrate.Forms
             double average_item = watch.Elapsed.TotalSeconds / progressCounter;
 
             string result = string.Format("{0} items exported in {1}h {2}m {3}s (@ {4:0.00} items/s)",
-                progressCounter,
+                itemsExportedCounter,
                 watch.Elapsed.Hours,
                 watch.Elapsed.Minutes,
                 watch.Elapsed.Seconds,
