@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SSRSMigrate.Enum;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.SSRS.Errors;
@@ -184,6 +185,13 @@ namespace SSRSMigrate.SSRS.Reader
 
                 progressReporter(dataSource);
             }
+        }
+        #endregion
+
+        #region Misc
+        public SSRSVersion GetSqlServerVersion()
+        {
+            return this.mReportRepository.GetSqlServerVersion();
         }
         #endregion
     }

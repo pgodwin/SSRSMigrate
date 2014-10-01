@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using log4net.Config;
 using Ninject;
 using Ninject.Extensions.Logging.Log4net;
+using SSRSMigrate.Enum;
 using SSRSMigrate.Errors;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.Factory;
@@ -220,6 +221,12 @@ namespace SSRSMigrate.Forms
 
             reader = this.mKernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>(srcVersion);
             writer = this.mKernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>(destVersion);
+
+            SSRSVersion sourceVersion = reader.GetSqlServerVersion();
+            SSRSVersion destinationVersion = writer.GetSqlServerVersion();
+
+            if ((int)destinationVersion < (int)sourceVersion)
+                throw new Exception("Destination server is using a version older than source server.");
 
             writer.Overwrite = this.cbkDestOverwrite.Checked; //TODO Should include this in the IoC container somehow
 

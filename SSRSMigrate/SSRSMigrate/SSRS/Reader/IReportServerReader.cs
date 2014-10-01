@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SSRSMigrate.Enum;
 using SSRSMigrate.ReportServer2005;
 using SSRSMigrate.SSRS.Item;
 
@@ -23,6 +24,9 @@ namespace SSRSMigrate.SSRS.Reader
         DataSourceItem GetDataSource(string dataSourcePath);
         List<DataSourceItem> GetDataSources(string path);
         void GetDataSources(string path, Action<DataSourceItem> progressReporter);
+
+        // Misc
+        SSRSVersion GetSqlServerVersion();
 
     }
 }

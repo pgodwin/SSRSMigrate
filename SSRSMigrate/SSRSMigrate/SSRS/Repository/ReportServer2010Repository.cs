@@ -11,6 +11,7 @@ using System.Web.Services.Protocols;
 using SSRSMigrate.SSRS.Errors;
 using Ninject;
 using Ninject.Extensions.Logging;
+using SSRSMigrate.Enum;
 
 namespace SSRSMigrate.SSRS.Repository
 {
@@ -566,6 +567,16 @@ namespace SSRSMigrate.SSRS.Repository
             this.mLogger.Debug("ValidatePath - isValidPath = {0}", isValidPath);
 
             return isValidPath;
+        }
+
+        public SSRSVersion GetSqlServerVersion()
+        {
+            this.mReportingService.ServerInfoHeaderValue  = new ServerInfoHeader();
+
+            // Make call to ReportingService2010 endpoint otherwise ServerInfoHeaderValue will be NULL.
+            this.mReportingService.ListChildren("/", false);
+            
+            return SSRSUtil.GetSqlServerVersion(this.mReportingService.ServerInfoHeaderValue.ReportServerVersion);
         }
         #endregion
 

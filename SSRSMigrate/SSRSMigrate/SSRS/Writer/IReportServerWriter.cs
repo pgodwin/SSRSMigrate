@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SSRSMigrate.Enum;
 using SSRSMigrate.SSRS.Item;
 
 namespace SSRSMigrate.SSRS.Writer
@@ -25,5 +26,8 @@ namespace SSRSMigrate.SSRS.Writer
         // Items
         string DeleteItem(string itemPath);
         string DeleteItem(ReportServerItem item);
+
+        // Misc
+        SSRSVersion GetSqlServerVersion();
     }
 }

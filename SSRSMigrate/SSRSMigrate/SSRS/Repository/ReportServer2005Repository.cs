@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Ninject.Extensions.Logging;
+using SSRSMigrate.Enum;
 using SSRSMigrate.ReportServer2005;
 using SSRSMigrate.Utility;
 using System.Xml;
@@ -562,6 +563,13 @@ namespace SSRSMigrate.SSRS.Repository
             this.mLogger.Debug("ValidatePath - isValidPath = {0}", isValidPath);
 
             return isValidPath;
+        }
+
+        public SSRSVersion GetSqlServerVersion()
+        {
+            this.mReportingService.ListSecureMethods();
+
+            return SSRSUtil.GetSqlServerVersion(this.mReportingService.ServerInfoHeaderValue.ReportServerVersion);
         }
         #endregion
 

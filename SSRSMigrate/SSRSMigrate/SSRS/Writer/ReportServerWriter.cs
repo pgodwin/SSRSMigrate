@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SSRSMigrate.Enum;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.SSRS.Errors;
 using SSRSMigrate.SSRS.Item;
@@ -216,6 +217,13 @@ namespace SSRSMigrate.SSRS.Writer
         public string DeleteItem(ReportServerItem item)
         {
             throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Misc
+        public SSRSVersion GetSqlServerVersion()
+        {
+            return this.mReportRepository.GetSqlServerVersion();
         }
         #endregion
     }
