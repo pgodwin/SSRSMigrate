@@ -172,6 +172,7 @@ namespace SSRSMigrate.Utility
                         return SSRSVersion.SqlServer2008;
                     case "10.50":
                         return SSRSVersion.SqlServer2008R2;
+                    case "11.0":
                     case "11.00":
                         return SSRSVersion.SqlServer2012;
                     default:
