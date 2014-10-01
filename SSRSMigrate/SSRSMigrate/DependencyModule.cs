@@ -55,23 +55,19 @@ namespace SSRSMigrate
             // Bind IReportServerReader
             this.Bind<IReportServerReader>()
                 .To<ReportServerReader>()
-                .InSingletonScope()
                 .Named("2005-SRC");
 
             this.Bind<IReportServerReader>()
                 .To<ReportServerReader>()
-                .InSingletonScope()
                 .Named("2010-SRC");
 
             // Bind IReportServerWriter
             this.Bind<IReportServerWriter>()
                 .To<ReportServerWriter>()
-                .InSingletonScope()
                 .Named("2005-DEST");
 
             this.Bind<IReportServerWriter>()
                 .To<ReportServerWriter>()
-                .InSingletonScope()
                 .Named("2010-DEST");
 
             // Bind IExportWriter
