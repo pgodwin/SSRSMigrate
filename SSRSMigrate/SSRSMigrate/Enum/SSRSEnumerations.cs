@@ -16,6 +16,7 @@ namespace SSRSMigrate.Enum
         SqlServer2005,
         SqlServer2008,
         SqlServer2008R2,
-        SqlServer2012
+        SqlServer2012,
+        SqlServer2014
     }
 }
