@@ -189,7 +189,7 @@
             "SQL Server 2008 R2"});
             this.cboSrcVersion.Location = new System.Drawing.Point(113, 46);
             this.cboSrcVersion.Name = "cboSrcVersion";
-            this.cboSrcVersion.Size = new System.Drawing.Size(121, 21);
+            this.cboSrcVersion.Size = new System.Drawing.Size(146, 21);
             this.cboSrcVersion.TabIndex = 27;
             // 
             // txtSrcPath
@@ -348,7 +348,7 @@
             "SQL Server 2008 R2"});
             this.cboDestVersion.Location = new System.Drawing.Point(113, 46);
             this.cboDestVersion.Name = "cboDestVersion";
-            this.cboDestVersion.Size = new System.Drawing.Size(121, 21);
+            this.cboDestVersion.Size = new System.Drawing.Size(146, 21);
             this.cboDestVersion.TabIndex = 27;
             // 
             // txtDestPath
