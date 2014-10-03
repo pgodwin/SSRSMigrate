@@ -393,7 +393,7 @@ namespace SSRSMigrate.Tests.Utilities
         {
             SSRSVersion expected = SSRSVersion.Unknown;
 
-            SSRSVersion actual = SSRSUtil.GetSqlServerVersion("Microsoft SQL Server Reporting Services Version 12.00.200.8");
+            SSRSVersion actual = SSRSUtil.GetSqlServerVersion("Microsoft SQL Server Reporting Services Version 16.00.200.8");
 
             Assert.AreEqual(expected, actual);
         }
@@ -403,7 +403,7 @@ namespace SSRSMigrate.Tests.Utilities
         {
             SSRSVersion expected = SSRSVersion.Unknown;
 
-            SSRSVersion actual = SSRSUtil.GetSqlServerVersion("Microsoft SQL Serverr Reporting Services Version 12.00.200.8");
+            SSRSVersion actual = SSRSUtil.GetSqlServerVersion("Microsoft SQL Serverr Reporting Services Version 16.00.200.8");
 
             Assert.AreEqual(expected, actual);
         }
