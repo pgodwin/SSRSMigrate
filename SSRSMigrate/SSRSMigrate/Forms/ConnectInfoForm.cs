@@ -222,15 +222,15 @@ namespace SSRSMigrate.Forms
             reader = this.mKernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>(srcVersion);
             writer = this.mKernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>(destVersion);
 
+            // Check source and destination server versions through the reader and writer
             SSRSVersion sourceVersion = reader.GetSqlServerVersion();
             SSRSVersion destinationVersion = writer.GetSqlServerVersion();
 
+            // If the destination version is older than the source version, prevent migration.
             if ((int)destinationVersion < (int)sourceVersion)
-                throw new Exception("Destination server is using a version older than source server.");
-
+                throw new Exception("Destination server is using an older version of SQL Server than the source server.");
+        
             writer.Overwrite = this.cbkDestOverwrite.Checked; //TODO Should include this in the IoC container somehow
-
-            //TODO Check source and destination server versions through the reader and writer
 
             this.PerformDirectMigrate(
                 this.txtSrcUrl.Text,
