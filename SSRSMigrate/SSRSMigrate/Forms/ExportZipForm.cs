@@ -33,6 +33,15 @@ namespace SSRSMigrate.Forms
         private BackgroundWorker mExportWorker = null;
         private ILogger mLogger = null;
 
+        private DebugForm mDebugForm = null;
+
+        #region Properties
+        public DebugForm DebugForm
+        {
+            set { this.mDebugForm = value; }
+        }
+        #endregion
+
         public ExportZipForm(string sourceRootPath,
             string destinationFilename,
             IReportServerReader reader,

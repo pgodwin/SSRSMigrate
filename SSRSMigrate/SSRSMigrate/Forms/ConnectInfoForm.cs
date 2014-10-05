@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using log4net.Config;
 using Ninject;
@@ -17,9 +18,13 @@ namespace SSRSMigrate.Forms
     {
         private StandardKernel mKernel = null;
         private ILoggerFactory mLoggerFactory = null;
+        private bool mDebug = false;
+        private DebugForm mDebugForm = null;
 
         public ConnectInfoForm()
         {
+            this.mDebugForm = new DebugForm();
+
             XmlConfigurator.Configure();
 
             var settings = new NinjectSettings()
@@ -35,6 +40,16 @@ namespace SSRSMigrate.Forms
             this.mLoggerFactory = mKernel.Get<ILoggerFactory>();
 
             InitializeComponent();
+
+            this.LoadSettings();
+
+            if (this.mDebug)
+                this.mDebugForm.Show();
+        }
+
+        private void LoadSettings()
+        {
+            this.mDebug = Properties.Settings.Default.Debug;
         }
 
         #region Migrate Method Radio Events
@@ -466,6 +481,8 @@ namespace SSRSMigrate.Forms
                 writer, 
                 this.mLoggerFactory);
 
+            migrateForm.DebugForm = this.mDebugForm;
+
             migrateForm.ShowDialog();
         }
         #endregion
@@ -498,6 +515,8 @@ namespace SSRSMigrate.Forms
                 reportExporter,
                 dataSourceExporter,
                 this.mLoggerFactory);
+
+            exportDiskForm.DebugForm = this.mDebugForm;
 
             exportDiskForm.ShowDialog();
         }
@@ -534,6 +553,8 @@ namespace SSRSMigrate.Forms
                 dataSourceExporter,
                 zipBunder,
                 this.mLoggerFactory);
+
+            exportZipForm.DebugForm = this.mDebugForm;
 
             exportZipForm.ShowDialog();
         }

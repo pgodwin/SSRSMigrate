@@ -30,6 +30,15 @@ namespace SSRSMigrate.Forms
         private BackgroundWorker mMigrationWorker = null;
         private ILogger mLogger = null;
 
+        private DebugForm mDebugForm = null;
+
+        #region Properties
+        public DebugForm DebugForm
+        {
+            set { this.mDebugForm = value; }
+        }
+        #endregion
+
         public MigrateForm(
             string sourceRootPath, 
             string sourceServerUrl,
@@ -222,6 +231,8 @@ namespace SSRSMigrate.Forms
             this.lblStatus.Text = string.Format("Refreshing item '{0}'...", item.Path);
 
             this.mLogger.Debug("Refreshing item '{0}' on server '{1}'...", item.Path, this.mSourceServerUrl);
+
+            this.mDebugForm.LogMessage(string.Format("Refreshing item '{0}' on server '{1}'...", item.Path, this.mSourceServerUrl));
         }
         #endregion
 
