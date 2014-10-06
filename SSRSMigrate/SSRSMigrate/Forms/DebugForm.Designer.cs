@@ -31,9 +31,9 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lstDebug = new System.Windows.Forms.ListView();
             this.colDateTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colCaller = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colException = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colCaller = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,7 +45,7 @@
             this.groupBox1.Controls.Add(this.lstDebug);
             this.groupBox1.Location = new System.Drawing.Point(8, 1);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(787, 245);
+            this.groupBox1.Size = new System.Drawing.Size(1099, 252);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
@@ -61,7 +61,7 @@
             this.colException});
             this.lstDebug.Location = new System.Drawing.Point(11, 16);
             this.lstDebug.Name = "lstDebug";
-            this.lstDebug.Size = new System.Drawing.Size(765, 218);
+            this.lstDebug.Size = new System.Drawing.Size(1077, 225);
             this.lstDebug.TabIndex = 0;
             this.lstDebug.UseCompatibleStateImageBehavior = false;
             this.lstDebug.View = System.Windows.Forms.View.Details;
@@ -71,26 +71,26 @@
             this.colDateTime.Text = "Timestamp";
             this.colDateTime.Width = 109;
             // 
+            // colCaller
+            // 
+            this.colCaller.Text = "Caller";
+            this.colCaller.Width = 153;
+            // 
             // colMessage
             // 
             this.colMessage.Text = "Message";
-            this.colMessage.Width = 422;
+            this.colMessage.Width = 637;
             // 
             // colException
             // 
             this.colException.Text = "Exception";
             this.colException.Width = 171;
             // 
-            // colCaller
-            // 
-            this.colCaller.Text = "Caller";
-            this.colCaller.Width = 110;
-            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(802, 255);
+            this.ClientSize = new System.Drawing.Size(1114, 262);
             this.Controls.Add(this.groupBox1);
             this.MaximizeBox = false;
             this.Name = "DebugForm";
