@@ -44,6 +44,7 @@
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.btnExport = new System.Windows.Forms.Button();
+            this.btnDebug = new System.Windows.Forms.Button();
             this.grpSource.SuspendLayout();
             this.mnuSourceItems.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -168,11 +169,22 @@
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
+            // btnDebug
+            // 
+            this.btnDebug.Image = global::SSRSMigrate.Properties.Resources.bug_go;
+            this.btnDebug.Location = new System.Drawing.Point(12, 531);
+            this.btnDebug.Name = "btnDebug";
+            this.btnDebug.Size = new System.Drawing.Size(32, 23);
+            this.btnDebug.TabIndex = 16;
+            this.btnDebug.UseVisualStyleBackColor = true;
+            this.btnDebug.Click += new System.EventHandler(this.btnDebug_Click);
+            // 
             // ExportDiskForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(619, 584);
+            this.Controls.Add(this.btnDebug);
             this.Controls.Add(this.btnExport);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.grpSource);
@@ -206,5 +218,6 @@
         private System.Windows.Forms.ContextMenuStrip mnuSourceItems;
         private System.Windows.Forms.ToolStripMenuItem checkAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem uncheckAllToolStripMenuItem;
+        private System.Windows.Forms.Button btnDebug;
     }
 }

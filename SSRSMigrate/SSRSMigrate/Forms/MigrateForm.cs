@@ -113,9 +113,36 @@ namespace SSRSMigrate.Forms
                     e.Cancel = true;
         }
 
+        private void btnPerformMigration_Click(object sender, EventArgs e)
+        {
+            // If there are no items in the list, there is nothing to migrate
+            if (this.lstSrcReports.Items.Count <= 0)
+                return;
+
+            this.DirectMigration();
+        }
+
         private void btnSrcRefreshReports_Click(object sender, EventArgs e)
         {
             this.SourceRefreshReports();
+        }
+
+        private void checkAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.lstSrcReports.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = true);
+        }
+
+        private void uncheckAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.lstSrcReports.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = false);
+        }
+
+        private void btnDebug_Click(object sender, EventArgs e)
+        {
+            if (this.mDebugForm.Visible)
+                this.mDebugForm.Hide();
+            else
+                this.mDebugForm.Show();
         }
         #endregion
 
@@ -132,16 +159,20 @@ namespace SSRSMigrate.Forms
             }
             catch (Exception er)
             {
-                this.mLogger.Error(er, "Error getting list of items from '{0}' on server '{1}'.}",
+                string msg = string.Format("Error getting list of items from '{0}' on server '{1}'.}",
                     this.mSourceRootPath,
                     this.mSourceServerUrl);
+
+                this.mDebugForm.LogMessage(msg, er);
+
+                this.mLogger.Error(er, msg);
 
                 MessageBox.Show(
                    string.Format("Error getting list of items from '{0}' on server '{1}'.\n\r\n\r{2}", 
                         this.mSourceRootPath,
                         this.mSourceServerUrl,
                         er.Message),
-                   "Migration Error",
+                   "Refresh Error",
                    MessageBoxButtons.OK,
                    MessageBoxIcon.Error);
             }
@@ -169,12 +200,16 @@ namespace SSRSMigrate.Forms
             if ((e.Cancelled == true))
             {
                 msg = string.Format("Cancelled. {0}", e.Result);
+
+                this.mDebugForm.LogMessage(msg);
             }
             else if ((e.Error != null))
             {
-                msg = string.Format("{0}", e.Error.Message);
+                msg = string.Format("Error. {0}", e.Error.Message);
 
                 this.mLogger.Error(e.Error, "Error during item refresh");
+
+                this.mDebugForm.LogMessage(msg, e.Error);
 
                 MessageBox.Show(msg,
                     "Refresh Error",
@@ -185,10 +220,15 @@ namespace SSRSMigrate.Forms
             {
                 msg = string.Format("Completed.");
 
-                this.btnPerformMigration.Enabled = true;
-            }
+                // Only allow migration if the refresh completed without error
+                //  and there are items to migrate
+                if (this.lstSrcReports.Items.Count > 0)
+                    this.btnPerformMigration.Enabled = true;
 
-            this.mLogger.Info("Item refresh completed: {0}", msg);
+                this.mDebugForm.LogMessage(msg);
+            }
+ 
+            this.mLogger.Info("Item refresh: {0}", msg);
             this.lblStatus.Text = msg;
             this.btnSrcRefreshReports.Enabled = true;
         }
@@ -212,6 +252,13 @@ namespace SSRSMigrate.Forms
         // Reporters
         private void ReportsReader_Reporter(ReportServerItem item)
         {
+            if (item == null)
+            {
+                this.mLogger.Warn("ReportsReader_Reporter - item contains a NULL value.");
+
+                return;
+            }
+
             ListViewItem oItem = new ListViewItem(item.Name);
             oItem.Checked = true;
             oItem.Tag = item.Path;
@@ -237,15 +284,6 @@ namespace SSRSMigrate.Forms
         #endregion
 
         #region Migration Methods
-        private void btnPerformMigration_Click(object sender, EventArgs e)
-        {
-            // If there are no items in the list, there is nothing to migrate
-            if (this.lstSrcReports.Items.Count <= 0)
-                return;
-
-            this.DirectMigration();
-        }
-
         // Used for getting the ListView items from within the BackgroundWorker thread.
         private delegate ListView.ListViewItemCollection GetItems(ListView listView);
 
@@ -278,6 +316,8 @@ namespace SSRSMigrate.Forms
             }
             catch (Exception er)
             {
+                this.mLogger.Fatal(er, "Error migrating items.");
+
                 MessageBox.Show(
                     string.Format("Error migrating items to '{0}':\n\r{1}", this.mDestinationRootPath, er.Message),
                     "Migration Error",
@@ -286,7 +326,6 @@ namespace SSRSMigrate.Forms
             }
         }
 
-        //TODO Exception handling in MigrationWorker
         public void MigrationWorker(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
@@ -365,7 +404,11 @@ namespace SSRSMigrate.Forms
                             status.Success = false;
                             status.Error = er;
 
-                            //TODO Should have some sort of event that ConnectInfoForm subscribes to in order to report errors to a debug window?
+                            this.mDebugForm.LogMessage(
+                                string.Format("Folder can't be migrated from '{0}' to '{1}', it already exists.", 
+                                    status.FromPath,
+                                    status.ToPath),
+                                er);
                         }
                     }
                     else
@@ -429,7 +472,11 @@ namespace SSRSMigrate.Forms
                             status.Success = false;
                             status.Error = er;
 
-                            //TODO Should have some sort of event that ConnectInfoForm subscribes to in order to report errors to a debug window?
+                            this.mDebugForm.LogMessage(
+                                string.Format("Data Source can't be migrated from '{0}' to '{1}', it already exists.",
+                                    status.FromPath,
+                                    status.ToPath),
+                                er);
                         }
                     }
                     else
@@ -506,7 +553,11 @@ namespace SSRSMigrate.Forms
                             status.Success = false;
                             status.Error = er;
 
-                            //TODO Should have some sort of event that ConnectInfoForm subscribes to in order to report errors to a debug window?
+                            this.mDebugForm.LogMessage(
+                                string.Format("Report can't be migrated from '{0}' to '{1}', it already exists.",
+                                    status.FromPath,
+                                    status.ToPath),
+                                er);
                         }
                     }
                     else
@@ -544,9 +595,11 @@ namespace SSRSMigrate.Forms
             }
             else if ((e.Error != null))
             {
-                msg = string.Format("{0}", e.Error.Message);
+                msg = string.Format("Error. {0}", e.Error.Message);
                 
                 this.mLogger.Error(e.Error, "Error during migration");
+
+                this.mDebugForm.LogMessage(msg, e.Error);
 
                 MessageBox.Show(msg,
                     "Migration Error",
@@ -610,7 +663,13 @@ namespace SSRSMigrate.Forms
 
                     progressBar.ToolTipText = item.Name;
 
-                    this.lblStatus.Text = string.Format("Migrated item at '{0}'...", item.Path);
+                    string msg = string.Format("Migrated item from '{0}' to '{1}'...", 
+                        status.FromPath,
+                        status.ToPath);
+
+                    this.mDebugForm.LogMessage(msg);
+                    this.mLogger.Info("MigrationProgressChanged - {0}", msg);
+                    this.lblStatus.Text = string.Format("Migrated item '{0}'...", item.Path);
                 }
                 else
                     this.mLogger.Warn("MigrationProgressChanged - MigrationStatus.Item is NULL for item migrated from '{0}' to '{1}'.", status.FromPath, status.ToPath);
@@ -620,15 +679,5 @@ namespace SSRSMigrate.Forms
             progressBar.Maximum = 100;
         }
         #endregion
-
-        private void checkAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.lstSrcReports.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = true);
-        }
-
-        private void uncheckAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.lstSrcReports.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = false);
-        }
     }
 }

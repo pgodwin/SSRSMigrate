@@ -39,23 +39,24 @@
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.grpSource = new System.Windows.Forms.GroupBox();
+            this.btnDebug = new System.Windows.Forms.Button();
             this.btnSrcRefreshReports = new System.Windows.Forms.Button();
             this.lstSrcReports = new System.Windows.Forms.ListView();
             this.colSrcName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colSrcPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.mnuSourceItems = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.checkAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uncheckAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnPerformMigration = new System.Windows.Forms.Button();
             this.lstDestReports = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.mnuSourceItems = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.checkAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.uncheckAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.grpSource.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.mnuSourceItems.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip
@@ -83,6 +84,7 @@
             // 
             // grpSource
             // 
+            this.grpSource.Controls.Add(this.btnDebug);
             this.grpSource.Controls.Add(this.btnSrcRefreshReports);
             this.grpSource.Controls.Add(this.lstSrcReports);
             this.grpSource.Location = new System.Drawing.Point(12, 12);
@@ -91,6 +93,16 @@
             this.grpSource.TabIndex = 1;
             this.grpSource.TabStop = false;
             this.grpSource.Text = "Source Server";
+            // 
+            // btnDebug
+            // 
+            this.btnDebug.Image = global::SSRSMigrate.Properties.Resources.bug_go;
+            this.btnDebug.Location = new System.Drawing.Point(21, 478);
+            this.btnDebug.Name = "btnDebug";
+            this.btnDebug.Size = new System.Drawing.Size(32, 23);
+            this.btnDebug.TabIndex = 17;
+            this.btnDebug.UseVisualStyleBackColor = true;
+            this.btnDebug.Click += new System.EventHandler(this.btnDebug_Click);
             // 
             // btnSrcRefreshReports
             // 
@@ -142,6 +154,28 @@
             // 
             this.colSrcPath.Text = "Path";
             this.colSrcPath.Width = 387;
+            // 
+            // mnuSourceItems
+            // 
+            this.mnuSourceItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkAllToolStripMenuItem,
+            this.uncheckAllToolStripMenuItem});
+            this.mnuSourceItems.Name = "mnuSourceItems";
+            this.mnuSourceItems.Size = new System.Drawing.Size(138, 48);
+            // 
+            // checkAllToolStripMenuItem
+            // 
+            this.checkAllToolStripMenuItem.Name = "checkAllToolStripMenuItem";
+            this.checkAllToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.checkAllToolStripMenuItem.Text = "Check All";
+            this.checkAllToolStripMenuItem.Click += new System.EventHandler(this.checkAllToolStripMenuItem_Click);
+            // 
+            // uncheckAllToolStripMenuItem
+            // 
+            this.uncheckAllToolStripMenuItem.Name = "uncheckAllToolStripMenuItem";
+            this.uncheckAllToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.uncheckAllToolStripMenuItem.Text = "Uncheck All";
+            this.uncheckAllToolStripMenuItem.Click += new System.EventHandler(this.uncheckAllToolStripMenuItem_Click);
             // 
             // groupBox1
             // 
@@ -209,28 +243,6 @@
             // 
             this.columnHeader3.Text = "Status";
             // 
-            // mnuSourceItems
-            // 
-            this.mnuSourceItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.checkAllToolStripMenuItem,
-            this.uncheckAllToolStripMenuItem});
-            this.mnuSourceItems.Name = "mnuSourceItems";
-            this.mnuSourceItems.Size = new System.Drawing.Size(153, 70);
-            // 
-            // checkAllToolStripMenuItem
-            // 
-            this.checkAllToolStripMenuItem.Name = "checkAllToolStripMenuItem";
-            this.checkAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.checkAllToolStripMenuItem.Text = "Check All";
-            this.checkAllToolStripMenuItem.Click += new System.EventHandler(this.checkAllToolStripMenuItem_Click);
-            // 
-            // uncheckAllToolStripMenuItem
-            // 
-            this.uncheckAllToolStripMenuItem.Name = "uncheckAllToolStripMenuItem";
-            this.uncheckAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.uncheckAllToolStripMenuItem.Text = "Uncheck All";
-            this.uncheckAllToolStripMenuItem.Click += new System.EventHandler(this.uncheckAllToolStripMenuItem_Click);
-            // 
             // MigrateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -249,8 +261,8 @@
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.grpSource.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
             this.mnuSourceItems.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -275,6 +287,7 @@
         private System.Windows.Forms.ContextMenuStrip mnuSourceItems;
         private System.Windows.Forms.ToolStripMenuItem checkAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem uncheckAllToolStripMenuItem;
+        private System.Windows.Forms.Button btnDebug;
     }
 }
 

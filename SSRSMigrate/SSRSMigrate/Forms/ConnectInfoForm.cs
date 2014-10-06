@@ -23,8 +23,6 @@ namespace SSRSMigrate.Forms
 
         public ConnectInfoForm()
         {
-            this.mDebugForm = new DebugForm();
-
             XmlConfigurator.Configure();
 
             var settings = new NinjectSettings()
@@ -43,8 +41,11 @@ namespace SSRSMigrate.Forms
 
             this.LoadSettings();
 
-            if (this.mDebug)
-                this.mDebugForm.Show();
+            // Create the DebugForm and hide it if debug is False
+            this.mDebugForm = new DebugForm();
+            this.mDebugForm.Show();
+            if (!this.mDebug)
+                this.mDebugForm.Hide();
         }
 
         private void LoadSettings()
@@ -482,7 +483,6 @@ namespace SSRSMigrate.Forms
                 this.mLoggerFactory);
 
             migrateForm.DebugForm = this.mDebugForm;
-
             migrateForm.ShowDialog();
         }
         #endregion
@@ -517,7 +517,6 @@ namespace SSRSMigrate.Forms
                 this.mLoggerFactory);
 
             exportDiskForm.DebugForm = this.mDebugForm;
-
             exportDiskForm.ShowDialog();
         }
         #endregion
@@ -555,7 +554,6 @@ namespace SSRSMigrate.Forms
                 this.mLoggerFactory);
 
             exportZipForm.DebugForm = this.mDebugForm;
-
             exportZipForm.ShowDialog();
         }
         #endregion

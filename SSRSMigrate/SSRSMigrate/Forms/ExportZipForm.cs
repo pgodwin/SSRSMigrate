@@ -149,7 +149,7 @@ namespace SSRSMigrate.Forms
 
             this.ExportToDisk();
         }
-
+        
         private void btnSrcRefreshReports_Click(object sender, EventArgs e)
         {
             if (this.mSourceRefreshWorker.IsBusy)
@@ -163,6 +163,24 @@ namespace SSRSMigrate.Forms
             }
 
             this.SourceRefreshReports();
+        }
+
+        private void checkAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.lstSrcReports.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = true);
+        }
+
+        private void uncheckAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.lstSrcReports.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = false);
+        }
+
+        private void btnDebug_Click(object sender, EventArgs e)
+        {
+            if (this.mDebugForm.Visible)
+                this.mDebugForm.Hide();
+            else
+                this.mDebugForm.Show();
         }
         #endregion
 
@@ -179,7 +197,14 @@ namespace SSRSMigrate.Forms
             }
             catch (Exception er)
             {
-                MessageBox.Show(string.Format("Error refreshing items at '{0}':\n\r{1}", this.mSourceRootPath,
+                string msg = string.Format("Error getting list of items from '{0}'.}",
+                    this.mSourceRootPath);
+
+                this.mDebugForm.LogMessage(msg, er);
+
+                this.mLogger.Error(er, msg);
+
+                MessageBox.Show(string.Format("Error getting list of items from '{0}':\n\r{1}", this.mSourceRootPath,
                     er.Message),
                     "Refresh Error",
                     MessageBoxButtons.OK,
@@ -209,13 +234,19 @@ namespace SSRSMigrate.Forms
             if ((e.Cancelled == true))
             {
                 msg = string.Format("Cancelled. {0}", e.Result);
+
+                this.mDebugForm.LogMessage(msg);
             }
             else if ((e.Error != null))
             {
-                msg = string.Format("Error getting item list:\n\r{0}", e.Error);
+                msg = string.Format("Error. {0}", e.Error.Message);
+
+                this.mLogger.Error(e.Error, "Error during item refresh");
+
+                this.mDebugForm.LogMessage(msg, e.Error);
 
                 MessageBox.Show(msg,
-                    "Error",
+                    "Refresh Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
@@ -227,8 +258,11 @@ namespace SSRSMigrate.Forms
                 //  and there are items to export.
                 if (this.lstSrcReports.Items.Count > 0)
                     this.btnExport.Enabled = true;
+
+                this.mDebugForm.LogMessage(msg);
             }
 
+            this.mLogger.Info("Item refresh: {0}", msg);
             this.btnSrcRefreshReports.Enabled = true;
             this.lblStatus.Text = msg;
         }
@@ -244,6 +278,13 @@ namespace SSRSMigrate.Forms
 
         private void ReportsReader_Reporter(ReportServerItem item)
         {
+            if (item == null)
+            {
+                this.mLogger.Warn("ReportsReader_Reporter - item contains a NULL value.");
+
+                return;
+            }
+
             ListViewItem oItem = new ListViewItem(item.Name);
             oItem.Checked = true;
             //oItem.Tag = item;
@@ -262,6 +303,10 @@ namespace SSRSMigrate.Forms
             this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
 
             this.lblStatus.Text = string.Format("Refreshing item '{0}'...", item.Path);
+
+            this.mLogger.Debug("Refreshing item '{0}'...", item.Path);
+
+            this.mDebugForm.LogMessage(string.Format("Refreshing item '{0}'...", item.Path));
         }
         #endregion
 
@@ -272,12 +317,16 @@ namespace SSRSMigrate.Forms
             {
                 this.btnExport.Enabled = false;
                 this.btnSrcRefreshReports.Enabled = false;
+
                 this.mExportWorker.RunWorkerAsync(this.mExportOutputTempDirectory);
             }
             catch (Exception er)
             {
+                this.mLogger.Fatal(er, "Error exporting items.");
+
                 MessageBox.Show(
-                    string.Format("Error exporting items to '{0}':\n\r{1}", this.mExportDestinationFilename, er.Message),
+                    string.Format("Error exporting items to '{0}':\n\r{1}", 
+                    this.mExportDestinationFilename, er.Message),
                     "Export Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -352,6 +401,11 @@ namespace SSRSMigrate.Forms
                             saveFilePath,
                             true);
 
+                        this.mLogger.Trace("ExportItemsWorker - FolderItem.Success = {0}; FromPath = {1}; ToPath = {2}",
+                            status.Success,
+                            status.FromPath,
+                            status.ToPath);
+
                         // If the save to the temporary path was successful, add folder to the ZipBundler
                         if (status.Success)
                         {
@@ -364,6 +418,8 @@ namespace SSRSMigrate.Forms
                             ++itemsExportedCounter;
                         }
                     }
+                    else
+                        this.mLogger.Warn("ExportItemsWorker - FolderItem for path '{0}' returned NULL.", folderPath);
                 }
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
@@ -394,6 +450,11 @@ namespace SSRSMigrate.Forms
                             saveFilePath,
                             true);
 
+                        this.mLogger.Trace("ExportItemsWorker - DataSourceItem.Success = {0}; FromPath = {1}; ToPath = {2}",
+                            status.Success,
+                            status.FromPath,
+                            status.ToPath);
+
                         // If the save to the temporary path was successful, add file to the ZipBundler
                         if (status.Success)
                         {
@@ -406,6 +467,8 @@ namespace SSRSMigrate.Forms
                             ++itemsExportedCounter;
                         }
                     }
+                    else
+                        this.mLogger.Warn("ExportItemsWorker - DataSourceItem for path '{0}' returned NULL.", dataSourcePath);
                 }
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
@@ -436,6 +499,11 @@ namespace SSRSMigrate.Forms
                             saveFilePath,
                             true);
 
+                        this.mLogger.Trace("ExportItemsWorker - ReportItem.Success = {0}; FromPath = {1}; ToPath = {2}",
+                            status.Success,
+                            status.FromPath,
+                            status.ToPath);
+
                         // If the save to the temporary path was successful, add file to the ZipBundler
                         if (status.Success)
                         {
@@ -448,6 +516,8 @@ namespace SSRSMigrate.Forms
                             ++itemsExportedCounter;
                         }
                     }
+                    else
+                        this.mLogger.Warn("ExportItemsWorker - ReportItem for path '{0}' returned NULL.", reportPath);
                 }
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
@@ -466,7 +536,7 @@ namespace SSRSMigrate.Forms
                 watch.Elapsed.Seconds,
                 average_item);
 
-            this.mLogger.Trace("ExportItemsworker - {0}", result);
+            this.mLogger.Trace("ExportItemsWorker - {0}", result);
 
             e.Result = result;
         }
@@ -481,16 +551,16 @@ namespace SSRSMigrate.Forms
             }
             else if ((e.Error != null))
             {
-                msg = string.Format("Error exporting items:\n\r{0}", e.Error);
+                msg = string.Format("Error. {0}", e.Error);
 
                 this.mLogger.Error(e.Error, "Error during export");
 
+                this.mDebugForm.LogMessage(msg, e.Error);
+
                 MessageBox.Show(msg,
-                    "Error",
+                    "Export Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-
-                //TODO Should log failures and perhaps display them in a debugger window.
             }
             else
             {
@@ -498,7 +568,10 @@ namespace SSRSMigrate.Forms
                 
                 // If the export completed, create the summary and save the ZipBundler
                 this.mZipBundler.CreateSummary();
-                this.mZipBundler.Save(this.mExportDestinationFilename);
+                string filename = this.mZipBundler.Save(this.mExportDestinationFilename);
+
+                this.mLogger.Info("ExportedItemsCompleted - Saved zip bundle to '{0}'.", filename);
+                this.mDebugForm.LogMessage(string.Format("Saved zip bundle to '{0}'.", filename));
             }
 
             this.mLogger.Info("Export completed: {0}", msg);
@@ -519,27 +592,33 @@ namespace SSRSMigrate.Forms
                 ExportStatus exportStatus = (ExportStatus)e.UserState;
 
                 if (exportStatus.Success)
-                    this.lblStatus.Text = string.Format("Saved '{0}'", exportStatus.ToPath);
+                {
+                    string msg = string.Format("Saved item from '{0}' to '{1}'.", 
+                        exportStatus.FromPath,
+                        exportStatus.ToPath);
+
+                    this.mDebugForm.LogMessage(msg);
+                    this.mLogger.Info("ExportItemsProgressChanged - {0}", msg);
+
+                    this.lblStatus.Text = msg;
+                }
                 else
                 {
-                    this.lblStatus.Text = string.Format("Failed '{0}': ",
+                    string msg = string.Format("Failed to export item from '{0}' to '{1}': ",
+                        exportStatus.FromPath,
                         exportStatus.ToPath,
                         string.Join(",", exportStatus.Errors));
 
-                    //TODO Should log failures and perhaps display them in a debugger window.
+                    this.mDebugForm.LogMessage(msg, true);
+                    this.mLogger.Error(msg);
+                    this.lblStatus.Text = string.Format("Failed '{0}': ",
+                        exportStatus.ToPath,
+                        string.Join(",", exportStatus.Errors));
                 }
             }
+            else
+                this.mLogger.Warn("ExportItemsProgressChanged - ExportStatus is NULL.");
         }
         #endregion
-
-        private void checkAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.lstSrcReports.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = true);
-        }
-
-        private void uncheckAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.lstSrcReports.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = false);
-        }
     }
 }

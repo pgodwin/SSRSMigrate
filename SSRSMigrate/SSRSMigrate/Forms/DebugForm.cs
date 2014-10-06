@@ -32,7 +32,33 @@ namespace SSRSMigrate.Forms
             oItem.SubItems.Add(message);
             oItem.ToolTipText = message;
 
-            //lstDebug.Items.Add(oItem);
+            lstDebug.Invoke(new Action(() => lstDebug.Items.Add(oItem)));
+            lstDebug.Invoke(new Action(() => oItem.EnsureVisible()));
+        }
+
+        /// <summary>
+        /// Adds a message to the debug logger.
+        /// </summary>
+        /// <param name="message">The message text.</param>
+        /// <param name="isWarning">if set to <c>true</c> [is warning].</param>
+        public void LogMessage(string message, bool isWarning = false)
+        {
+            if (message == null)
+                message = "";
+
+            StackTrace stackTrace = new StackTrace();
+            var callerMethod = new StackTrace().GetFrame(1).GetMethod();
+            var callerClass = callerMethod.ReflectedType.Name;
+            string caller = string.Format("{0}.{1}", callerClass, callerMethod.Name);
+
+            ListViewItem oItem = new ListViewItem(DateTime.Now.ToString());
+            oItem.SubItems.Add(caller);
+            oItem.SubItems.Add(message);
+            oItem.ToolTipText = message;
+
+            if (isWarning)
+                oItem.ForeColor = Color.OrangeRed;
+
             lstDebug.Invoke(new Action(() => lstDebug.Items.Add(oItem)));
             lstDebug.Invoke(new Action(() => oItem.EnsureVisible()));
         }
