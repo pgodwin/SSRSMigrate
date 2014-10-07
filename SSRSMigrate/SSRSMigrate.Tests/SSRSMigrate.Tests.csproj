@@ -84,6 +84,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bundler\BundleReader\ZipBundleReaderTests.cs" />
     <Compile Include="Exporter\DataSourceItemExporterTests.cs" />
     <Compile Include="Exporter\ExportStatusTests.cs" />
     <Compile Include="Exporter\FolderItemExporterTests.cs" />

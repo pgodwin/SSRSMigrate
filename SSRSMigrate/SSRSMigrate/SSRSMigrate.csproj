@@ -91,9 +91,11 @@
   <ItemGroup>
     <Compile Include="Bundler\BundleSummaryEntry.cs" />
     <Compile Include="Bundler\IBundler.cs" />
+    <Compile Include="Bundler\IBundleReader.cs" />
     <Compile Include="Bundler\ICheckSumGenerator.cs" />
     <Compile Include="Bundler\MD5CheckSumGenerator.cs" />
     <Compile Include="Bundler\ZipBundler.cs" />
+    <Compile Include="Bundler\ZipBundleReader.cs" />
     <Compile Include="Errors\UserInterfaceInvalidFieldException.cs" />
     <Compile Include="DataMapper\IDataMapper.cs" />
     <Compile Include="DataMapper\ReportingService2005DataMapper.cs" />
