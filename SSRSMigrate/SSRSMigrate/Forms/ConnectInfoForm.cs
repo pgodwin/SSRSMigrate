@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using log4net.Config;
 using Ninject;
 using Ninject.Extensions.Logging.Log4net;
+using SSRSMigrate.Bundler;
 using SSRSMigrate.Enum;
 using SSRSMigrate.Errors;
 using SSRSMigrate.Exporter;

@@ -6,6 +6,7 @@ using Ninject;
 using NUnit.Framework;
 using System.Reflection;
 using System.IO;
+using SSRSMigrate.Bundler;
 using SSRSMigrate.Wrappers;
 using SSRSMigrate.Exporter;
 using Ninject.Extensions.Logging.Log4net;

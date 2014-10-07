@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SSRSMigrate.SSRS.Item;
+﻿using System.Collections.Generic;
 
-namespace SSRSMigrate.Exporter
+namespace SSRSMigrate.Bundler
 {
     public interface IBundler
     {

@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ionic.Zip;
-using Ninject.Extensions.Logging;
-using SSRSMigrate.Wrappers;
-using System.Security.Cryptography;
-using System.IO;
-using SSRSMigrate.SSRS.Item;
 using Newtonsoft.Json;
+using Ninject.Extensions.Logging;
+using SSRSMigrate.Exporter;
+using SSRSMigrate.Wrappers;
 
-namespace SSRSMigrate.Exporter
+namespace SSRSMigrate.Bundler
 {
     //Sample Export Zip Archive Structure:
     //

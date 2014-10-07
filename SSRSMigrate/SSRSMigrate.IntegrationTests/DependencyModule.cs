@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Ninject.Modules;
 using Ninject.Activation;
+using SSRSMigrate.Bundler;
 using SSRSMigrate.ReportServer2005;
 using System.Net;
 using SSRSMigrate.SSRS.Repository;

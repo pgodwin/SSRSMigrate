@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Ninject.Activation;
+using SSRSMigrate.Bundler;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.ReportServer2010;
 using SSRSMigrate.ReportServer2005;

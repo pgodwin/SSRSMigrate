@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using SSRSMigrate.Bundler;
 using SSRSMigrate.Exporter;
 using Moq;
 using SSRSMigrate.TestHelper.Logging;
