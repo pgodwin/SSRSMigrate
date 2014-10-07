@@ -125,7 +125,7 @@ namespace SSRSMigrate
                     password,
                     domain);
 
-                service.UseDefaultCredentials = false;
+                //service.UseDefaultCredentials = false;
             }
 
             return new ReportServer2005Repository(path, service, new ReportingService2005DataMapper());
@@ -166,7 +166,7 @@ namespace SSRSMigrate
                     password,
                     domain);
 
-                service.UseDefaultCredentials = false;
+                //service.UseDefaultCredentials = false;
             }
 
             return new ReportServer2010Repository(path, service, new ReportingService2010DataMapper());
@@ -207,7 +207,7 @@ namespace SSRSMigrate
                     password,
                     domain);
 
-                service.UseDefaultCredentials = false;
+                //service.UseDefaultCredentials = false;
             }
 
             return new ReportServer2005Repository(path, service, new ReportingService2005DataMapper());
@@ -248,7 +248,7 @@ namespace SSRSMigrate
                     password,
                     domain);
 
-                service.UseDefaultCredentials = false;
+                //service.UseDefaultCredentials = false;
             }
 
             return new ReportServer2010Repository(path, service, new ReportingService2010DataMapper());
