@@ -73,5 +73,16 @@ namespace SSRSMigrate.Bundler
             if (this.mZipFileWrapper != null)
                 this.mZipFileWrapper.Dispose();
         }
+
+
+        public string Extract(string fileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Read()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

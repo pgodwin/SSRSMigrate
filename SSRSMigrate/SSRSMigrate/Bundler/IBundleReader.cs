@@ -21,5 +21,9 @@ namespace SSRSMigrate.Bundler
         event FolderReadEventHandler OnFolderRead;
         event DataSourceReadEventHandler OnDataSourceRead;
         event ReportReadEventHandler OnReportRead;
+
+        // Methods
+        string Extract(string fileName);
+        void Read();
     }
 }
