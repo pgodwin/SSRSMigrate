@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Moq;
@@ -15,8 +16,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
     // Holds data for test methods and mocks
     public struct TestData
     {
-        public string FileName { get; set; }
-        public string Path { get; set; }
+        public string ExtractedTo { get; set; }
         public string CheckSum { get; set; }
         public string ZipPath { get; set; }
     };
@@ -32,152 +32,273 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         private string zipFileName = "C:\\temp\\SSRSMigrate_AW_Tests.zip";
         private string unPackDirectory = "C:\\temp\\";
 
-
         #region Test Values
-        TestData awDataSource = new TestData()
+        TestData dataSourceAW = new TestData()
         {
-            FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json",
-            Path = "/SSRSMigrate_AW_Tests/Data Sources/AWDataSource",
+            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json",
             CheckSum = "7b4e44d94590f501ba24cd3904a925c3",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources"
+            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json"
         };
 
-        TestData testDataSource = new TestData()
+        ZipEntryReadEvent dataSourceAWEventArgs = null;
+
+        TestData dataSourceTest = new TestData()
         {
-            FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json",
-            Path = "/SSRSMigrate_AW_Tests/Data Sources/Test Data Source",
+            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json",
             CheckSum = "c0815114c3ce9dde35eca314bbfe4bc9",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources"
+            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json"
         };
 
-        TestData rootFolder = new TestData()
+        ZipEntryReadEvent dataSourceTestEventArgs = null;
+
+        TestData folderRoot = new TestData()
         {
-            FileName = "C:\\temp\\SSRSMigrate_AW_Tests",
-            Path = "/SSRSMigrate_AW_Tests",
+            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests",
             CheckSum = "",
             ZipPath = "Export\\SSRSMigrate_AW_Tests"
         };
 
-        TestData dataSourcesFolder = new TestData()
+        ZipEntryReadEvent folderRootEventArgs = null;
+
+        TestData folderDataSources = new TestData()
         {
-            FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Data Sources",
-            Path = "/SSRSMigrate_AW_Tests/Data Sources",
+            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Data Sources",
             CheckSum = "",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources"
         };
 
+        ZipEntryReadEvent folderDataSourcesEventArgs = null;
+
         TestData reportsFolder = new TestData()
         {
-            FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports",
-            Path = "/SSRSMigrate_AW_Tests/Reports",
+            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports",
             CheckSum = "",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
         };
 
+        ZipEntryReadEvent reportsFolderEventArgs = null;
+
         TestData subFolder = new TestData()
         {
-            FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Sub Folder",
-            Path = "/SSRSMigrate_AW_Tests/Sub Folder",
+            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Sub Folder",
             CheckSum = "",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Sub Folder"
         };
 
-        TestData companySalesReport = new TestData()
+        ZipEntryReadEvent folderSubFolderEventArgs = null;
+
+        TestData reportCompanySales = new TestData()
         {
-            FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl",
-            Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
+            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl",
             CheckSum = "1adde7720ca2f0af49550fc676f70804",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
         };
 
-        TestData salesOrderDetailReport = new TestData()
+        ZipEntryReadEvent reportCompanySalesEventArgs = null;
+
+        TestData reportSalesOrderDetail = new TestData()
         {
-            FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl",
-            Path = "/SSRSMigrate_AW_Tests/Reports/Sales Order Detail",
+            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl",
             CheckSum = "640a2f60207f03779fdedfed71d8101d",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
         };
 
-        TestData storeContactsReport = new TestData()
+        ZipEntryReadEvent reportSalesOrderDetailEventArgs = null;
+
+        TestData reportStoreContacts = new TestData()
         {
-            FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl",
-            Path = "/SSRSMigrate_AW_Tests/Reports/Store Contacts",
+            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl",
             CheckSum = "a225b92ed8475e6bc5b59f5b2cc396fa",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
         };
 
-        TestData doesNotExistReport = new TestData()
+        ZipEntryReadEvent reportStoreContactsEventArgs = null;
+
+        TestData reportDoesNotExist = new TestData()
         {
-            FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\File Doesnt Exist.rdl",
-            Path = "/SSRSMigrate_AW_Tests/Reports/File Doesnt Exist",
+            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\File Doesnt Exist.rdl",
             CheckSum = "",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
         };
 
-        TestData folderDesNotExistReport = new TestData()
+        ZipEntryReadEvent reportDoesNotExistEventArgs = null;
+
+        TestData folderDoesNotExist = new TestData()
         {
-            FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist",
-            Path = "/SSRSMigrate_AW_Tests/Folder Doesnt Exist",
+            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist",
             CheckSum = "",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist"
         };
 
+        ZipEntryReadEvent folderDoesNotExistEventArgs = null;
+
         TestData summaryFile = new TestData()
         {
-            FileName = "C:\\temp\\ExportSummary.json",
-            Path = "",
+            ExtractedTo = "C:\\temp\\ExportSummary.json",
             CheckSum = "",
             ZipPath = "ExportSummary.json"
         };
+
+        ZipEntryReadEvent summaryFileEventArgs = null;
+
+        string exportSummary = @"{
+  ""DataSources"": [
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+      ""FileName"": ""AWDataSource.json"",
+      ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
+    }
+  ],
+  ""Reports"": [
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": ""Company Sales.rdl"",
+      ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": ""Sales Order Detail.rdl"",
+      ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": ""Store Contacts.rdl"",
+      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+    }
+  ],
+  ""Folders"": [
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
+      ""FileName"": """",
+      ""CheckSum"": """"
+    }
+  ]
+}";
         #endregion
 
         #region Actual Values
         #endregion
 
+        #region Value Setup
+        private void SetupTestValues()
+        {
+            dataSourceAWEventArgs = new ZipEntryReadEvent(
+                dataSourceAW.ZipPath,
+                dataSourceAW.ExtractedTo);
+
+            dataSourceTestEventArgs = new ZipEntryReadEvent(
+                dataSourceTest.ZipPath,
+                 dataSourceTest.ExtractedTo);
+
+            folderRootEventArgs = new ZipEntryReadEvent(
+                folderRoot.ZipPath,
+                folderRoot.ExtractedTo);
+
+            folderDataSourcesEventArgs = new ZipEntryReadEvent(
+                folderDataSources.ZipPath,
+                folderDataSources.ExtractedTo);
+
+            reportsFolderEventArgs = new ZipEntryReadEvent(
+                reportsFolder.ZipPath,
+                reportsFolder.ExtractedTo);
+
+            folderSubFolderEventArgs = new ZipEntryReadEvent(
+                subFolder.ZipPath,
+                subFolder.ExtractedTo);
+
+            reportCompanySalesEventArgs = new ZipEntryReadEvent(
+                reportCompanySales.ZipPath,
+                reportCompanySales.ExtractedTo);
+
+            reportSalesOrderDetailEventArgs = new ZipEntryReadEvent(
+                reportSalesOrderDetail.ZipPath,
+                reportSalesOrderDetail.ExtractedTo);
+
+            reportStoreContactsEventArgs = new ZipEntryReadEvent(
+                reportStoreContacts.ZipPath,
+                reportStoreContacts.ExtractedTo);
+
+            reportDoesNotExistEventArgs = new ZipEntryReadEvent(
+                reportDoesNotExist.ZipPath,
+                reportDoesNotExist.ExtractedTo);
+
+            folderDoesNotExistEventArgs = new ZipEntryReadEvent(
+                folderDoesNotExist.ZipPath,
+                folderDoesNotExist.ExtractedTo);
+
+            summaryFileEventArgs = new ZipEntryReadEvent(
+                summaryFile.ZipPath,
+                summaryFile.ExtractedTo);
+        }
+        #endregion
+
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
+            this.SetupTestValues();
+
             zipReaderMock = new Mock<IZipFileReaderWrapper>();
             checkSumGenMock = new Mock<ICheckSumGenerator>();
 
-            // IZipFileReaderWrapper.UnPackDirectory Property Mocks
             // IZipFileReaderWrapper.UnPack Method Mocks
+            // Each time IZipFileReaderWrapper.OnEntryExtracted is called,
+            //  get the next ZipEntryReadEvent from the queue and pass that
+            //  to ZipBundleReader.EntryExtractedEventHandler instead.
+            // Ref: http://haacked.com/archive/2009/09/29/moq-sequences.aspx/
+            zipReaderMock.Setup(z => z.UnPack(zipFileName, unPackDirectory))
+                .Returns(() => unPackDirectory)
+                .Raises(z => z.OnEntryExtracted += null,
+                    new Queue<ZipEntryReadEvent>(new[]
+                    {
+                        folderRootEventArgs,
+                        folderDataSourcesEventArgs,
+                        reportsFolderEventArgs,
+                        folderSubFolderEventArgs,
+                        dataSourceAWEventArgs,
+                        dataSourceTestEventArgs,
+                        reportCompanySalesEventArgs,
+                        reportSalesOrderDetailEventArgs,
+                        reportStoreContactsEventArgs,
+                        summaryFileEventArgs
+                    }).Dequeue);
 
             // ICheckSumGenerator.CreateCheckSum Method Mocks
-
-            MockLogger logger = new MockLogger();
-            zipBundleReader = new ZipBundleReader(
-                zipFileName,
-                zipReaderMock.Object,
-                checkSumGenMock.Object,
-                logger
-                );
-
-            zipBundleReader.OnDataSourceRead += OnDataSourceReadEvent;
-            zipBundleReader.OnFolderRead += OnFolderReadEvent;
-            zipBundleReader.OnReportRead += OnReportReadEvent;
         }
 
         [TestFixtureTearDown]
         public void TestFixtureTearDown()
         {
-            zipBundleReader.OnDataSourceRead -= OnDataSourceReadEvent;
-            zipBundleReader.OnFolderRead -= OnFolderReadEvent;
-            zipBundleReader.OnReportRead -= OnReportReadEvent;
-
-            zipBundleReader = null;
         }
 
         [SetUp]
         public void SetUp()
         {
-            
+            // Initialize for each test so the entries don't get duplicated in ZipBundleReader
+            MockLogger logger = new MockLogger();
+
+            zipBundleReader = new ZipBundleReader(
+                zipFileName,
+                unPackDirectory,
+                zipReaderMock.Object,
+                checkSumGenMock.Object,
+                logger
+                );
+
+            // Subscribe to the events again for each test
+            zipBundleReader.OnDataSourceRead += OnDataSourceReadEvent;
+            zipBundleReader.OnFolderRead += OnFolderReadEvent;
+            zipBundleReader.OnReportRead += OnReportReadEvent;
         }
 
         [TearDown]
         public void TearDown()
         {
+            // Unsubscribe to events after each test
+            zipBundleReader.OnDataSourceRead -= OnDataSourceReadEvent;
+            zipBundleReader.OnFolderRead -= OnFolderReadEvent;
+            zipBundleReader.OnReportRead -= OnReportReadEvent;
 
+            zipBundleReader = null;
         }
 
         #region Event Handlers
@@ -217,18 +338,10 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         [Test]
         public void Extract()
         {
-            ZipEntryReadEvent readEvent = new ZipEntryReadEvent(
-                summaryFile.ZipPath,
-                summaryFile.FileName,
-                1,
-                10);
-
-            //TODO Trigger events during Extract()
-            zipReaderMock.Raise(e => e.OnEntryExtracted += null, readEvent);
-
-            string actualUnPackedDirectory = zipBundleReader.Extract(zipFileName, unPackDirectory);
+            string actualUnPackedDirectory = zipBundleReader.Extract();
 
             Assert.AreEqual(unPackDirectory, actualUnPackedDirectory);
+            zipReaderMock.Verify(z => z.UnPack(zipFileName, unPackDirectory));
         }
         #endregion
     }
