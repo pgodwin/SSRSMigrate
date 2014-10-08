@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bundler\BundleSummaryEntry.cs" />
+    <Compile Include="Bundler\Events\ItemReadEvent.cs" />
     <Compile Include="Bundler\IBundler.cs" />
     <Compile Include="Bundler\IBundleReader.cs" />
     <Compile Include="Bundler\ICheckSumGenerator.cs" />

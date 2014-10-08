@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Ninject.Extensions.Logging;
+using SSRSMigrate.Bundler.Events;
 using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate.Bundler
@@ -17,10 +18,18 @@ namespace SSRSMigrate.Bundler
 
         private string mExportSummaryFilename = "ExportSummary.json";
 
+        #region Public Properties
         public string ExportSummaryFilename
         {
             get { return this.mExportSummaryFilename; }
         }
+        #endregion
+
+        #region Events
+        public event FolderReadEventHandler OnFolderRead;
+        public event DataSourceReadEventHandler OnDataSourceRead;
+        public event ReportReadEventHandler OnReportRead;
+        #endregion
 
         public Dictionary<string, List<BundleSummaryEntry>> Entries
         {
