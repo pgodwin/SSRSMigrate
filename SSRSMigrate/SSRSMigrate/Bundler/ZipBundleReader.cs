@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Ninject.Extensions.Logging;
@@ -14,6 +15,7 @@ namespace SSRSMigrate.Bundler
         private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
         private readonly ILogger mLogger = null;
         private readonly string mFileName = null;
+        private readonly string mUnpackDirectory = null;
 
         private string mExportSummaryFilename = "ExportSummary.json";
 
@@ -36,13 +38,17 @@ namespace SSRSMigrate.Bundler
         }
 
         public ZipBundleReader(
-            string fileNameName,
+            string fileName,
+            string unpackDirectory,
             IZipFileReaderWrapper zipFileReaderWrapper, 
             ICheckSumGenerator checkSumGenerator, 
             ILogger logger)
         {
-            if (string.IsNullOrEmpty(fileNameName))
-                throw new ArgumentException("fileNameName");
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentException("fileName");
+
+            if (string.IsNullOrEmpty(unpackDirectory))
+                throw new ArgumentException("unpackDirectory");
 
             if (zipFileReaderWrapper == null)
                 throw new ArgumentNullException("zipFileReaderWrapper");
@@ -53,7 +59,8 @@ namespace SSRSMigrate.Bundler
             if (logger == null)
                 throw new ArgumentNullException("logger");
 
-            this.mFileName = fileNameName;
+            this.mFileName = fileName;
+            this.mUnpackDirectory = unpackDirectory;
             this.mZipFileReaderWrapper = zipFileReaderWrapper;
             this.mCheckSumGenerator = checkSumGenerator;
             this.mLogger = logger;
@@ -79,30 +86,28 @@ namespace SSRSMigrate.Bundler
             }
         }
 
-        public string Extract(string fileName, string unpackDirectory)
+        public string Extract()
         {
-            if (string.IsNullOrEmpty(fileName))
-                throw new ArgumentException("fileName");
-
-            if (string.IsNullOrEmpty(unpackDirectory))
-                throw new ArgumentException("unpackDirectory");
-
-            return this.mZipFileReaderWrapper.UnPack(fileName, unpackDirectory);
+            return this.mZipFileReaderWrapper.UnPack(this.mFileName, this.mUnpackDirectory);
         }
 
         public void ReadExportSummary()
         {
+            //TODO Deserialize <UnpackDirectory>\ExportSummory.json to Dictionary<string, List<BundleSummaryEntry>>
             throw new NotImplementedException();
         }
 
         public void Read()
         {
+            //TODO Iterate through mEntries, verify the checksum for the extracted
+            //  entry matches the checksum of the current entry,
+            //  and call the respective OnXRead event with this information.
             throw new NotImplementedException();
         }
 
         private void EntryExtractedEventHandler(IZipFileReaderWrapper sender, ZipEntryReadEvent e)
         {
-           
+
         }
     }
 }
