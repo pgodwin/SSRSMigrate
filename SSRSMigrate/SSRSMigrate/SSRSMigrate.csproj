@@ -173,7 +173,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Wrappers\IZipFileReaderWrapper.cs" />
     <Compile Include="Wrappers\IZipFileWrapper.cs" />
+    <Compile Include="Wrappers\ZipEntryReadEvent.cs" />
+    <Compile Include="Wrappers\ZipFileReaderWrapper.cs" />
     <Compile Include="Wrappers\ZipFileWrapper.cs" />
     <EmbeddedResource Include="Forms\ConnectInfoForm.resx">
       <DependentUpon>ConnectInfoForm.cs</DependentUpon>
