@@ -23,7 +23,8 @@ namespace SSRSMigrate.Bundler
         event ReportReadEventHandler OnReportRead;
 
         // Methods
-        string Extract(string fileName);
+        string Extract(string fileName, string unpackDirectory);
+        void ReadExportSummary();
         void Read();
     }
 }
