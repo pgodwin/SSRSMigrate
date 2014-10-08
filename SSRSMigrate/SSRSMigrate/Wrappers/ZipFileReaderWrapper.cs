@@ -56,6 +56,7 @@ namespace SSRSMigrate.Wrappers
             return this.mUnPackDirectory;
         }
 
+        //TODO Might be able to do away with this.
         internal override void ExtractProgressHandler(object sender, EventArgs e)
         {
             ExtractProgressEventArgs evt = (ExtractProgressEventArgs) e;
@@ -63,15 +64,15 @@ namespace SSRSMigrate.Wrappers
             if (evt.EventType == ZipProgressEventType.Extracting_AfterExtractEntry)
             {
                 string fileName = evt.CurrentEntry.FileName;
-                string extractTo = evt.ExtractLocation;
+                fileName = fileName.Replace('/', '\\');
+
+                string extractTo = Path.Combine(evt.ExtractLocation, fileName);
 
                 if (this.OnEntryExtracted != null)
                 {
                     ZipEntryReadEvent readEvent = new ZipEntryReadEvent(
                         fileName,
-                        extractTo,
-                        evt.EntriesExtracted,
-                        evt.EntriesTotal);
+                        extractTo);
 
                     this.OnEntryExtracted(this, readEvent);
                 }
