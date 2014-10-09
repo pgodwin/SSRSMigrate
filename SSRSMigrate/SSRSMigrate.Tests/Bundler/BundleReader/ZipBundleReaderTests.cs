@@ -543,6 +543,10 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             Assert.AreEqual(3, actualReports.Count);
         }
 
+        //TODO Read_FileNotFound
+        //TODO Read_DirectoryNotFound
+        //TODO Read_ChecksumMismatch
+
         // Event handlers for ZipBundleReader's On*Read events
         private void OnFolderReadEvent(IBundleReader sender, ItemReadEvent e)
         {
