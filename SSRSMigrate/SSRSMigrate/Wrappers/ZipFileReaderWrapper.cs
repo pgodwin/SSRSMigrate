@@ -9,7 +9,6 @@ namespace SSRSMigrate.Wrappers
 {
     public class ZipFileReaderWrapper : ZipFileReader, IZipFileReaderWrapper
     {
-        private ZipFile mZipFile = null;
         private string mUnPackDirectory = null;
         private string mFileName = null;
 
@@ -18,11 +17,34 @@ namespace SSRSMigrate.Wrappers
         {
             get { return this.mUnPackDirectory; }
         }
+
+        public string FileName
+        {
+            get { return this.mFileName; }
+            set
+            {
+                if (!ZipFile.IsZipFile(value))
+                    throw new ZipException(string.Format("'{0}' is not a valid zip archive.", value));
+
+                this.mFileName = value;
+            }
+        }
         #endregion
 
         #region Events
         public event EntryExtractedEventHandler OnEntryExtracted;
         #endregion
+
+        public ZipFileReaderWrapper(string unpackDirectory)
+        {
+            if (string.IsNullOrEmpty(unpackDirectory))
+                throw new ArgumentException("unpackDirectory");
+
+            if (Directory.Exists(this.mUnPackDirectory))
+                Directory.Delete(this.mUnPackDirectory, true);
+
+            this.mUnPackDirectory = unpackDirectory;
+        }
 
         public ZipFileReaderWrapper(string fileName, string unpackDirectory)
         {
@@ -35,24 +57,32 @@ namespace SSRSMigrate.Wrappers
             if (!File.Exists(fileName))
                 throw new FileNotFoundException(fileName);
 
+            if (!ZipFile.IsZipFile(fileName))
+                throw new ZipException(string.Format("'{0}' is not a valid zip.", fileName));
+
             if (Directory.Exists(this.mUnPackDirectory))
                 Directory.Delete(this.mUnPackDirectory, true);
 
             this.mFileName = fileName;
             this.mUnPackDirectory = unpackDirectory;
-            this.mZipFile = ZipFile.Read(fileName);
         }
 
         public string UnPack()
         {
-            this.mZipFile.ExtractProgress += ExtractProgressHandler;
+            if (string.IsNullOrEmpty(this.mFileName))
+                throw new ZipException("Please specify a filename.");
 
-            foreach (ZipEntry entry in this.mZipFile)
+            using (ZipFile zipFile = ZipFile.Read(this.mFileName))
             {
-                entry.Extract(this.mUnPackDirectory, ExtractExistingFileAction.OverwriteSilently);
-            }
+                zipFile.ExtractProgress += ExtractProgressHandler;
 
-            return this.mUnPackDirectory;
+                foreach (ZipEntry entry in zipFile)
+                {
+                    entry.Extract(this.mUnPackDirectory, ExtractExistingFileAction.OverwriteSilently);
+                }
+
+                return this.mUnPackDirectory;
+            }
         }
 
         public string ReadEntry(string entryName)
@@ -60,22 +90,25 @@ namespace SSRSMigrate.Wrappers
             if (string.IsNullOrEmpty(entryName))
                 throw new ArgumentException("entryName");
 
-            if (!this.mZipFile.ContainsEntry(entryName))
-                throw new FileNotFoundException(entryName);
-
-            ZipEntry entry = this.mZipFile[entryName];
-            using (var stream = entry.OpenReader())
+            using (ZipFile zipFile = ZipFile.Read(this.mFileName))
             {
-                using (StreamReader reader = new StreamReader(stream))
+                if (!zipFile.ContainsEntry(entryName))
+                    throw new FileNotFoundException(entryName);
+
+                ZipEntry entry = zipFile[entryName];
+
+                using (var stream = entry.OpenReader())
                 {
-                    return reader.ReadToEnd();
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        return reader.ReadToEnd();
+                    }
                 }
             }
 
             return null;
         }
 
-        //TODO Might be able to do away with this.
         internal override void ExtractProgressHandler(object sender, EventArgs e)
         {
             ExtractProgressEventArgs evt = (ExtractProgressEventArgs) e;
@@ -100,8 +133,8 @@ namespace SSRSMigrate.Wrappers
 
         public void Dispose()
         {
-            this.mZipFile.ExtractProgress -= ExtractProgressHandler;
-            this.mZipFile.Dispose();
+            //this.mZipFile.ExtractProgress -= ExtractProgressHandler;
+            //this.mZipFile.Dispose();
         }
     }
 }

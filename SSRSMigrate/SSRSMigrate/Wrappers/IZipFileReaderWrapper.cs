@@ -12,6 +12,7 @@ namespace SSRSMigrate.Wrappers
     {
         // Properties
         string UnPackDirectory { get;  }
+        string FileName { get; set; }
 
         // Events
         event EntryExtractedEventHandler OnEntryExtracted;
