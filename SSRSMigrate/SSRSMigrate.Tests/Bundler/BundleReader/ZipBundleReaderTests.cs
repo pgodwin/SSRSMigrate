@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Ionic.Zip;
 using Moq;
 using NUnit.Framework;
 using SSRSMigrate.Bundler;
@@ -277,10 +278,14 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                         summaryFileEventArgs
                     }).Dequeue);
 
+            // IZipFileReaderWrapper.FileName Property Mocks
+            zipReaderMock.SetupSet(z => z.FileName = "NotAZip.txt")
+                .Throws(new ZipException(string.Format("'NotAZip.txt' is not a valid zip archive.")));
+
             // IZipFileReaderWrapper.ReadEntry Method Mocks
             zipReaderMock.Setup(z => z.ReadEntry("ExportSummary.json"))
                 .Returns(() => exportSummary);
-
+            
             // ICheckSumGenerator.CreateCheckSum Method Mocks
         }
 
@@ -352,6 +357,25 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
             Assert.NotNull(actual);
         }
+
+        [Test]
+        public void Constructor_InvalidFileName()
+        {
+            ZipException ex = Assert.Throws<ZipException>(
+                delegate
+                {
+                    MockLogger logger = new MockLogger();
+
+                    ZipBundleReader reader = new ZipBundleReader(
+                                "NotAZip.txt",
+                                unPackDirectory,
+                                zipReaderMock.Object,
+                                checkSumGenMock.Object,
+                                logger);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("'NotAZip.txt' is not a valid zip archive."));
+        }
         #endregion
 
         #region Extract Tests
@@ -360,17 +384,23 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         {
             string actualUnPackedDirectory = zipBundleReader.Extract();
 
-            Assert.AreEqual(unPackDirectory, actualUnPackedDirectory);
             zipReaderMock.Verify(z => z.UnPack());
+
+            Assert.AreEqual(unPackDirectory, actualUnPackedDirectory);
         }
         #endregion
-
+        
         #region ReadExportSummary Tests
-
         [Test]
         public void ReadExportSummary()
         {
             zipBundleReader.ReadExportSummary();
+
+            zipReaderMock.Verify(z => z.ReadEntry("ExportSummary.json"));
+
+            Assert.AreEqual(zipBundleReader.Entries["DataSources"].Count, 2);
+            Assert.AreEqual(zipBundleReader.Entries["Reports"].Count, 3);
+            Assert.AreEqual(zipBundleReader.Entries["Folders"].Count, 3);
         }
         #endregion
     }
