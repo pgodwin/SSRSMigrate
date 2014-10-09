@@ -403,12 +403,13 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
             string zipPath = "Export\\SSRSMigrate_AW_Tests\\Reports";
             string expectedFileName = "File Doesnt Exist.rdl";
 
-            BundleSummaryEntry actual = zipBundler.CreateEntrySummary(itemFileName, zipPath);
+            FileNotFoundException ex = Assert.Throws<FileNotFoundException>(
+               delegate
+               {
+                   BundleSummaryEntry actual = zipBundler.CreateEntrySummary(itemFileName, zipPath);
+               });
 
-            Assert.NotNull(actual);
-            Assert.AreEqual("", actual.CheckSum);
-            Assert.AreEqual(zipPath, actual.Path);
-            Assert.AreEqual(expectedFileName, actual.FileName);
+            Assert.That(ex.Message, Is.EqualTo(itemFileName));
         }
         #endregion
 

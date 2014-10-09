@@ -11,8 +11,14 @@ namespace SSRSMigrate.Bundler
             if (string.IsNullOrEmpty(fileName))
                 throw new ArgumentException("fileName");
 
-            if (!File.Exists(fileName))
+            if (Directory.Exists(fileName))
                 return "";
+
+            if (!File.Exists(fileName))
+                throw new FileNotFoundException(fileName);
+
+            //if (!File.Exists(fileName))
+            //    return "";
 
             using (var md5 = MD5.Create())
             {
