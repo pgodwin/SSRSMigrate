@@ -298,7 +298,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         public void SetUp()
         {
             // Initialize for each test so the entries don't get duplicated in ZipBundleReader
-            MockLogger logger = new MockLogger();
+            var logger = new MockLogger();
 
             zipBundleReader = new ZipBundleReader(
                 zipFileName,
@@ -346,9 +346,9 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         [Test]
         public void Constructor()
         {
-            MockLogger logger = new MockLogger();
+            var logger = new MockLogger();
 
-            ZipBundleReader actual = new ZipBundleReader(
+            var actual = new ZipBundleReader(
                 zipFileName,
                 unPackDirectory,
                 zipReaderMock.Object,
@@ -364,9 +364,9 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             ZipException ex = Assert.Throws<ZipException>(
                 delegate
                 {
-                    MockLogger logger = new MockLogger();
+                    var logger = new MockLogger();
 
-                    ZipBundleReader reader = new ZipBundleReader(
+                    var reader = new ZipBundleReader(
                                 "NotAZip.txt",
                                 unPackDirectory,
                                 zipReaderMock.Object,
@@ -401,6 +401,65 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             Assert.AreEqual(zipBundleReader.Entries["DataSources"].Count, 2);
             Assert.AreEqual(zipBundleReader.Entries["Reports"].Count, 3);
             Assert.AreEqual(zipBundleReader.Entries["Folders"].Count, 3);
+        }
+
+        [Test]
+        public void ReadExportSummary_EntryDoesntExist()
+        {
+            string entryName = "ExportSummary.json";
+
+            var readerMock = new Mock<IZipFileReaderWrapper>();
+
+            readerMock.Setup(z => z.ReadEntry(entryName))
+                .Throws(new FileNotFoundException(entryName));
+
+            var logger = new MockLogger();
+
+            var reader = new ZipBundleReader(
+                        zipFileName,
+                        unPackDirectory,
+                        readerMock.Object,
+                        checkSumGenMock.Object,
+                        logger);
+
+            FileNotFoundException ex = Assert.Throws<FileNotFoundException>(
+                delegate
+                {
+                    reader.ReadExportSummary();
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(entryName));
+        }
+
+        [Test]
+        public void ReadExportSummary_EmptySummary()
+        {
+            string entryName = "ExportSummary.json";
+
+            var readerMock = new Mock<IZipFileReaderWrapper>();
+
+            readerMock.Setup(z => z.ReadEntry(entryName))
+                .Returns(() => null);
+
+            var logger = new MockLogger();
+
+            var reader = new ZipBundleReader(
+                        zipFileName,
+                        unPackDirectory,
+                        readerMock.Object,
+                        checkSumGenMock.Object,
+                        logger);
+
+            Exception ex = Assert.Throws<Exception>(
+                delegate
+                {
+                    reader.ReadExportSummary();
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("No data in export summary."));
+            Assert.AreEqual(0, reader.Entries["DataSources"].Count);
+            Assert.AreEqual(0, reader.Entries["Reports"].Count);
+            Assert.AreEqual(0, reader.Entries["Folders"].Count);
         }
         #endregion
     }
