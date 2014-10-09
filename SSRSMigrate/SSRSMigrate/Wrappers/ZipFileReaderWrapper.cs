@@ -24,11 +24,7 @@ namespace SSRSMigrate.Wrappers
         public event EntryExtractedEventHandler OnEntryExtracted;
         #endregion
 
-        public ZipFileReaderWrapper()
-        {            
-        }
-
-        public string UnPack(string fileName, string unpackDirectory)
+        public ZipFileReaderWrapper(string fileName, string unpackDirectory)
         {
             if (string.IsNullOrEmpty(fileName))
                 throw new ArgumentException("fileName");
@@ -45,7 +41,10 @@ namespace SSRSMigrate.Wrappers
             this.mFileName = fileName;
             this.mUnPackDirectory = unpackDirectory;
             this.mZipFile = ZipFile.Read(fileName);
+        }
 
+        public string UnPack()
+        {
             this.mZipFile.ExtractProgress += ExtractProgressHandler;
 
             foreach (ZipEntry entry in this.mZipFile)
@@ -54,6 +53,26 @@ namespace SSRSMigrate.Wrappers
             }
 
             return this.mUnPackDirectory;
+        }
+
+        public string ReadEntry(string entryName)
+        {
+            if (string.IsNullOrEmpty(entryName))
+                throw new ArgumentException("entryName");
+
+            if (!this.mZipFile.ContainsEntry(entryName))
+                throw new FileNotFoundException(entryName);
+
+            ZipEntry entry = this.mZipFile[entryName];
+            using (var stream = entry.OpenReader())
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+
+            return null;
         }
 
         //TODO Might be able to do away with this.

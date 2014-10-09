@@ -17,7 +17,8 @@ namespace SSRSMigrate.Wrappers
         event EntryExtractedEventHandler OnEntryExtracted;
 
         // Methods
-        string UnPack(string fileName, string unpackDirectory);
+        string UnPack();
+        string ReadEntry(string entryName);
 
         // Internal Zip Event Handler
         //void ExtractProgressHandler(object sender, EventArgs e);

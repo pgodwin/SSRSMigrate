@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 using SSRSMigrate.Wrappers;
 
@@ -88,13 +89,17 @@ namespace SSRSMigrate.Bundler
 
         public string Extract()
         {
-            return this.mZipFileReaderWrapper.UnPack(this.mFileName, this.mUnpackDirectory);
+            return this.mZipFileReaderWrapper.UnPack();
         }
 
         public void ReadExportSummary()
         {
-            //TODO Deserialize <UnpackDirectory>\ExportSummory.json to Dictionary<string, List<BundleSummaryEntry>>
-            throw new NotImplementedException();
+            string exportSummary = this.mZipFileReaderWrapper.ReadEntry(this.mExportSummaryFilename);
+
+            if (string.IsNullOrEmpty(exportSummary))
+                throw new Exception("No data in export summary.");
+
+            this.mEntries = JsonConvert.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummary);
         }
 
         public void Read()
