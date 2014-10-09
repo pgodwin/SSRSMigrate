@@ -398,9 +398,9 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
             zipReaderMock.Verify(z => z.ReadEntry("ExportSummary.json"));
 
-            Assert.AreEqual(zipBundleReader.Entries["DataSources"].Count, 2);
-            Assert.AreEqual(zipBundleReader.Entries["Reports"].Count, 3);
-            Assert.AreEqual(zipBundleReader.Entries["Folders"].Count, 3);
+            Assert.AreEqual(2, zipBundleReader.Entries["DataSources"].Count);
+            Assert.AreEqual(3, zipBundleReader.Entries["Reports"].Count);
+            Assert.AreEqual(3, zipBundleReader.Entries["Folders"].Count);
         }
 
         [Test]
