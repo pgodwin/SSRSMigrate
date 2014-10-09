@@ -358,10 +358,10 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         [Test]
         public void Extract()
         {
-            //string actualUnPackedDirectory = zipBundleReader.Extract();
+            string actualUnPackedDirectory = zipBundleReader.Extract();
 
-            //Assert.AreEqual(unPackDirectory, actualUnPackedDirectory);
-            //zipReaderMock.Verify(z => z.UnPack(zipFileName, unPackDirectory));
+            Assert.AreEqual(unPackDirectory, actualUnPackedDirectory);
+            zipReaderMock.Verify(z => z.UnPack());
         }
         #endregion
 
