@@ -102,10 +102,14 @@ namespace SSRSMigrate.Bundler
 
         public void ReadExportSummary()
         {
-            string exportSummary = this.mZipFileReaderWrapper.ReadEntry(this.mExportSummaryFilename);
+            this.mLogger.Debug("ReadExportSummary - Reading summary from entry '{0}' in bundle '{1}'...", this.mExportSummaryFilename, this.mFileName);
 
+            string exportSummary = this.mZipFileReaderWrapper.ReadEntry(this.mExportSummaryFilename);
+ 
             if (string.IsNullOrEmpty(exportSummary))
                 throw new Exception("No data in export summary.");
+
+            this.mLogger.Debug("ReadExportSummary - Summary = {0}", exportSummary);
 
             this.mEntries = JsonConvert.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummary);
         }
