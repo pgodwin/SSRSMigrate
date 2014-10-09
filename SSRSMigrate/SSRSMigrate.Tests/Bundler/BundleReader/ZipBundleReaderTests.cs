@@ -30,13 +30,15 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         private ZipBundleReader zipBundleReader = null;
         private Mock<IZipFileReaderWrapper> zipReaderMock = null;
         private Mock<ICheckSumGenerator> checkSumGenMock = null;
+        private Mock<ISystemIOWrapper> ioWrapper = null;
+
         private string zipFileName = "C:\\temp\\SSRSMigrate_AW_Tests.zip";
         private string unPackDirectory = "C:\\temp\\";
 
         #region Test Values
         TestData dataSourceAW = new TestData()
         {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json",
+            ExtractedTo = "C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json",
             CheckSum = "7b4e44d94590f501ba24cd3904a925c3",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json"
         };
@@ -45,7 +47,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
         TestData dataSourceTest = new TestData()
         {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json",
+            ExtractedTo = "C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json",
             CheckSum = "c0815114c3ce9dde35eca314bbfe4bc9",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json"
         };
@@ -54,7 +56,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
         TestData folderRoot = new TestData()
         {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests",
+            ExtractedTo = "C:\\temp\\Export\\SSRSMigrate_AW_Tests",
             CheckSum = "",
             ZipPath = "Export\\SSRSMigrate_AW_Tests"
         };
@@ -63,7 +65,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
         TestData folderDataSources = new TestData()
         {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Data Sources",
+            ExtractedTo = "C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Data Sources",
             CheckSum = "",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources"
         };
@@ -72,7 +74,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
         TestData reportsFolder = new TestData()
         {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports",
+            ExtractedTo = "C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Reports",
             CheckSum = "",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
         };
@@ -81,7 +83,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
         TestData subFolder = new TestData()
         {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Sub Folder",
+            ExtractedTo = "C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder",
             CheckSum = "",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Sub Folder"
         };
@@ -90,7 +92,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
         TestData reportCompanySales = new TestData()
         {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl",
+            ExtractedTo = "C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl",
             CheckSum = "1adde7720ca2f0af49550fc676f70804",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
         };
@@ -99,7 +101,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
         TestData reportSalesOrderDetail = new TestData()
         {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl",
+            ExtractedTo = "C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl",
             CheckSum = "640a2f60207f03779fdedfed71d8101d",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
         };
@@ -108,7 +110,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
         TestData reportStoreContacts = new TestData()
         {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl",
+            ExtractedTo = "C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl",
             CheckSum = "a225b92ed8475e6bc5b59f5b2cc396fa",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
         };
@@ -117,7 +119,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
         TestData reportDoesNotExist = new TestData()
         {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\File Doesnt Exist.rdl",
+            ExtractedTo = "C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Reports\\File Doesnt Exist.rdl",
             CheckSum = "",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
         };
@@ -126,7 +128,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
         TestData folderDoesNotExist = new TestData()
         {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist",
+            ExtractedTo = "C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist",
             CheckSum = "",
             ZipPath = "Export\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist"
         };
@@ -193,6 +195,9 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         #endregion
 
         #region Actual Values
+        private List<string> actualReports = null;
+        private List<string> actualFolders = null;
+        private List<string> actualDataSources = null; 
         #endregion
 
         #region Value Setup
@@ -255,6 +260,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
             zipReaderMock = new Mock<IZipFileReaderWrapper>();
             checkSumGenMock = new Mock<ICheckSumGenerator>();
+            ioWrapper = new Mock<ISystemIOWrapper>();
 
             // IZipFileReaderWrapper.UnPack Method Mocks
             // Each time IZipFileReaderWrapper.OnEntryExtracted is called,
@@ -287,6 +293,70 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                 .Returns(() => exportSummary);
             
             // ICheckSumGenerator.CreateCheckSum Method Mocks
+            checkSumGenMock.Setup(c => c.CreateCheckSum(dataSourceAW.ExtractedTo))
+                .Returns(() => "42352f007cf07bcec798b5ca9e4643a7");
+
+            checkSumGenMock.Setup(c => c.CreateCheckSum(dataSourceTest.ExtractedTo))
+                .Returns(() => "81a151f4b17aba7e1516d0801cadf4ee");
+
+            checkSumGenMock.Setup(c => c.CreateCheckSum(folderRoot.ExtractedTo))
+                .Returns(() => "");
+
+            checkSumGenMock.Setup(c => c.CreateCheckSum(folderDataSources.ExtractedTo))
+                .Returns(() => "");
+
+            checkSumGenMock.Setup(c => c.CreateCheckSum(reportsFolder.ExtractedTo))
+                .Returns(() => "");
+
+            checkSumGenMock.Setup(c => c.CreateCheckSum(subFolder.ExtractedTo))
+                .Returns(() => "");
+
+            checkSumGenMock.Setup(c => c.CreateCheckSum(reportCompanySales.ExtractedTo))
+                .Returns(() => "1adde7720ca2f0af49550fc676f70804");
+
+            checkSumGenMock.Setup(c => c.CreateCheckSum(reportSalesOrderDetail.ExtractedTo))
+                .Returns(() => "640a2f60207f03779fdedfed71d8101d");
+
+            checkSumGenMock.Setup(c => c.CreateCheckSum(reportStoreContacts.ExtractedTo))
+                .Returns(() => "a225b92ed8475e6bc5b59f5b2cc396fa");
+
+            checkSumGenMock.Setup(c => c.CreateCheckSum("C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Reports\\Doesnt Exist.rdl"))
+                .Throws(new FileNotFoundException("C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Reports\\Doesnt Exist.rdl"));
+
+            // ISystemIOWrapper.DirectoryExists Method Mocks
+            ioWrapper.Setup(i => i.DirectoryExists(folderRoot.ExtractedTo))
+                .Returns(() => true);
+
+            ioWrapper.Setup(i => i.DirectoryExists(folderDataSources.ExtractedTo))
+                .Returns(() => true);
+
+            ioWrapper.Setup(i => i.DirectoryExists(reportsFolder.ExtractedTo))
+                .Returns(() => true);
+
+            ioWrapper.Setup(i => i.DirectoryExists(subFolder.ExtractedTo))
+                .Returns(() => true);
+
+            ioWrapper.Setup(i => i.DirectoryExists(folderDoesNotExist.ExtractedTo))
+                .Returns(() => false);
+
+            // ISystemIOWrapper.FileExists Method Mocks
+            ioWrapper.Setup(i => i.FileExists(dataSourceAW.ExtractedTo))
+                .Returns(() => true);
+
+            ioWrapper.Setup(i => i.FileExists(dataSourceTest.ExtractedTo))
+                .Returns(() => true);
+
+            ioWrapper.Setup(i => i.FileExists(reportCompanySales.ExtractedTo))
+                .Returns(() => true);
+
+            ioWrapper.Setup(i => i.FileExists(reportSalesOrderDetail.ExtractedTo))
+                .Returns(() => true);
+
+            ioWrapper.Setup(i => i.FileExists(reportStoreContacts.ExtractedTo))
+                .Returns(() => true);
+
+            ioWrapper.Setup(i => i.FileExists(reportDoesNotExist.ExtractedTo))
+                .Returns(() => false);
         }
 
         [TestFixtureTearDown]
@@ -305,13 +375,19 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                 unPackDirectory,
                 zipReaderMock.Object,
                 checkSumGenMock.Object,
-                logger
+                logger,
+                ioWrapper.Object
                 );
 
             // Subscribe to the events again for each test
             zipBundleReader.OnDataSourceRead += OnDataSourceReadEvent;
             zipBundleReader.OnFolderRead += OnFolderReadEvent;
             zipBundleReader.OnReportRead += OnReportReadEvent;
+
+            // Recreate each a list before each test
+            actualReports = new List<string>();
+            actualFolders = new List<string>();
+            actualDataSources = new List<string>();
         }
 
         [TearDown]
@@ -326,20 +402,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         }
 
         #region Event Handlers
-        private void OnFolderReadEvent(IBundleReader sender, ItemReadEvent e)
-        {
-            
-        }
-
-        private void OnDataSourceReadEvent(IBundleReader sender, ItemReadEvent e)
-        {
-
-        }
-
-        private void OnReportReadEvent(IBundleReader sender, ItemReadEvent e)
-        {
-
-        }
+        
         #endregion
 
         #region Constructor Tests
@@ -353,7 +416,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                 unPackDirectory,
                 zipReaderMock.Object,
                 checkSumGenMock.Object,
-                logger);
+                logger,
+                ioWrapper.Object);
 
             Assert.NotNull(actual);
         }
@@ -371,7 +435,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                                 unPackDirectory,
                                 zipReaderMock.Object,
                                 checkSumGenMock.Object,
-                                logger);
+                                logger,
+                                ioWrapper.Object);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("'NotAZip.txt' is not a valid zip archive."));
@@ -420,7 +485,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                         unPackDirectory,
                         readerMock.Object,
                         checkSumGenMock.Object,
-                        logger);
+                        logger,
+                        ioWrapper.Object);
 
             FileNotFoundException ex = Assert.Throws<FileNotFoundException>(
                 delegate
@@ -448,7 +514,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                         unPackDirectory,
                         readerMock.Object,
                         checkSumGenMock.Object,
-                        logger);
+                        logger,
+                        ioWrapper.Object);
 
             Exception ex = Assert.Throws<Exception>(
                 delegate
@@ -460,6 +527,39 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             Assert.AreEqual(0, reader.Entries["DataSources"].Count);
             Assert.AreEqual(0, reader.Entries["Reports"].Count);
             Assert.AreEqual(0, reader.Entries["Folders"].Count);
+        }
+        #endregion
+
+        #region Read Tests
+        [Test]
+        public void Read()
+        {
+            zipBundleReader.ReadExportSummary();
+
+            zipBundleReader.Read();
+
+            Assert.AreEqual(2, actualDataSources.Count);
+            Assert.AreEqual(3, actualFolders.Count);
+            Assert.AreEqual(3, actualReports.Count);
+        }
+
+        // Event handlers for ZipBundleReader's On*Read events
+        private void OnFolderReadEvent(IBundleReader sender, ItemReadEvent e)
+        {
+            if (e.Success)
+                actualFolders.Add(e.FileName);
+        }
+
+        private void OnDataSourceReadEvent(IBundleReader sender, ItemReadEvent e)
+        {
+            if (e.Success)
+                actualDataSources.Add(e.FileName);
+        }
+
+        private void OnReportReadEvent(IBundleReader sender, ItemReadEvent e)
+        {
+            if (e.Success)
+                actualReports.Add(e.FileName);
         }
         #endregion
     }

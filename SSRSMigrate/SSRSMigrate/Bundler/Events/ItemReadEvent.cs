@@ -2,20 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.SqlServer.Server;
-using SSRSMigrate.SSRS.Item;
 
 namespace SSRSMigrate.Bundler.Events
 {
     public class ItemReadEvent : EventArgs
     {
-        public ReportServerItem Item { get; private set; }
+        public string FileName { get; private set; }
+        public string Path { get; private set; }
+        public bool IsFolder { get; private set; }
+        public string CheckSum { get; private set; }
         public bool Success { get; private set; }
         public string[] Errors { get; private set; }
 
-        public ItemReadEvent(ReportServerItem item, bool success, string[] errors = null)
+        public ItemReadEvent(
+            string fileName,
+            string path,
+            bool isFolder,
+            string checkSum,
+            bool success, 
+            string[] errors = null)
         {
-            this.Item = item;
+            this.FileName = fileName;
+            this.Path = path;
+            this.IsFolder = isFolder;
+            this.CheckSum = checkSum;
             this.Success = success;
             this.Errors = errors;
         }
