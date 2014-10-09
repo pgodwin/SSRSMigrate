@@ -25,6 +25,11 @@ namespace SSRSMigrate.Bundler
         {
             get { return this.mExportSummaryFilename; }
         }
+
+        public Dictionary<string, List<BundleSummaryEntry>> Entries
+        {
+            get { return this.mEntries; }
+        }
         #endregion
 
         #region Events
@@ -32,11 +37,6 @@ namespace SSRSMigrate.Bundler
         public event DataSourceReadEventHandler OnDataSourceRead;
         public event ReportReadEventHandler OnReportRead;
         #endregion
-
-        public Dictionary<string, List<BundleSummaryEntry>> Entries
-        {
-            get { return this.mEntries; }
-        }
 
         public ZipBundleReader(
             string fileName,
@@ -63,6 +63,7 @@ namespace SSRSMigrate.Bundler
             this.mFileName = fileName;
             this.mUnpackDirectory = unpackDirectory;
             this.mZipFileReaderWrapper = zipFileReaderWrapper;
+            this.mZipFileReaderWrapper.FileName = fileName;
             this.mCheckSumGenerator = checkSumGenerator;
             this.mLogger = logger;
 
@@ -112,7 +113,7 @@ namespace SSRSMigrate.Bundler
 
         private void EntryExtractedEventHandler(IZipFileReaderWrapper sender, ZipEntryReadEvent e)
         {
-
+            this.mLogger.Debug("EntryExtractedEventHandler - Entry '{0}' extracted to '{1}'...", e.FileName, e.ExtractedTo);
         }
     }
 }
