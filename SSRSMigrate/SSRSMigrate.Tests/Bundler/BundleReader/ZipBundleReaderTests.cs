@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
 using Ionic.Zip;
@@ -30,7 +31,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         private ZipBundleReader zipBundleReader = null;
         private Mock<IZipFileReaderWrapper> zipReaderMock = null;
         private Mock<ICheckSumGenerator> checkSumGenMock = null;
-        private Mock<ISystemIOWrapper> ioWrapper = null;
+        private Mock<IFileSystem> fileSystemMock = null;
 
         private string zipFileName = "C:\\temp\\SSRSMigrate_AW_Tests.zip";
         private string unPackDirectory = "C:\\temp\\";
@@ -260,7 +261,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
             zipReaderMock = new Mock<IZipFileReaderWrapper>();
             checkSumGenMock = new Mock<ICheckSumGenerator>();
-            ioWrapper = new Mock<ISystemIOWrapper>();
+            fileSystemMock = new Mock<IFileSystem>();
 
             // IZipFileReaderWrapper.UnPack Method Mocks
             // Each time IZipFileReaderWrapper.OnEntryExtracted is called,
@@ -324,38 +325,38 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                 .Throws(new FileNotFoundException("C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Reports\\Doesnt Exist.rdl"));
 
             // ISystemIOWrapper.DirectoryExists Method Mocks
-            ioWrapper.Setup(i => i.DirectoryExists(folderRoot.ExtractedTo))
+            fileSystemMock.Setup(i => i.Directory.Exists(folderRoot.ExtractedTo))
                 .Returns(() => true);
 
-            ioWrapper.Setup(i => i.DirectoryExists(folderDataSources.ExtractedTo))
+            fileSystemMock.Setup(i => i.Directory.Exists(folderDataSources.ExtractedTo))
                 .Returns(() => true);
 
-            ioWrapper.Setup(i => i.DirectoryExists(reportsFolder.ExtractedTo))
+            fileSystemMock.Setup(i => i.Directory.Exists(reportsFolder.ExtractedTo))
                 .Returns(() => true);
 
-            ioWrapper.Setup(i => i.DirectoryExists(subFolder.ExtractedTo))
+            fileSystemMock.Setup(i => i.Directory.Exists(subFolder.ExtractedTo))
                 .Returns(() => true);
 
-            ioWrapper.Setup(i => i.DirectoryExists(folderDoesNotExist.ExtractedTo))
+            fileSystemMock.Setup(i => i.Directory.Exists(folderDoesNotExist.ExtractedTo))
                 .Returns(() => false);
 
             // ISystemIOWrapper.FileExists Method Mocks
-            ioWrapper.Setup(i => i.FileExists(dataSourceAW.ExtractedTo))
+            fileSystemMock.Setup(i => i.File.Exists(dataSourceAW.ExtractedTo))
                 .Returns(() => true);
 
-            ioWrapper.Setup(i => i.FileExists(dataSourceTest.ExtractedTo))
+            fileSystemMock.Setup(i => i.File.Exists(dataSourceTest.ExtractedTo))
                 .Returns(() => true);
 
-            ioWrapper.Setup(i => i.FileExists(reportCompanySales.ExtractedTo))
+            fileSystemMock.Setup(i => i.File.Exists(reportCompanySales.ExtractedTo))
                 .Returns(() => true);
 
-            ioWrapper.Setup(i => i.FileExists(reportSalesOrderDetail.ExtractedTo))
+            fileSystemMock.Setup(i => i.File.Exists(reportSalesOrderDetail.ExtractedTo))
                 .Returns(() => true);
 
-            ioWrapper.Setup(i => i.FileExists(reportStoreContacts.ExtractedTo))
+            fileSystemMock.Setup(i => i.File.Exists(reportStoreContacts.ExtractedTo))
                 .Returns(() => true);
 
-            ioWrapper.Setup(i => i.FileExists(reportDoesNotExist.ExtractedTo))
+            fileSystemMock.Setup(i => i.File.Exists(reportDoesNotExist.ExtractedTo))
                 .Returns(() => false);
         }
 
@@ -376,7 +377,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                 zipReaderMock.Object,
                 checkSumGenMock.Object,
                 logger,
-                ioWrapper.Object
+                fileSystemMock.Object
                 );
 
             // Subscribe to the events again for each test
@@ -417,7 +418,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                 zipReaderMock.Object,
                 checkSumGenMock.Object,
                 logger,
-                ioWrapper.Object);
+                fileSystemMock.Object);
 
             Assert.NotNull(actual);
         }
@@ -436,7 +437,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                                 zipReaderMock.Object,
                                 checkSumGenMock.Object,
                                 logger,
-                                ioWrapper.Object);
+                                fileSystemMock.Object);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("'NotAZip.txt' is not a valid zip archive."));
@@ -486,7 +487,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                         readerMock.Object,
                         checkSumGenMock.Object,
                         logger,
-                        ioWrapper.Object);
+                        fileSystemMock.Object);
 
             FileNotFoundException ex = Assert.Throws<FileNotFoundException>(
                 delegate
@@ -515,7 +516,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                         readerMock.Object,
                         checkSumGenMock.Object,
                         logger,
-                        ioWrapper.Object);
+                        fileSystemMock.Object);
 
             Exception ex = Assert.Throws<Exception>(
                 delegate

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
 using Ninject.Activation;
@@ -70,6 +71,8 @@ namespace SSRSMigrate
             this.Bind<IReportServerWriter>()
                 .To<ReportServerWriter>()
                 .Named("2010-DEST");
+
+            this.Bind<IFileSystem>().To<FileSystem>();
 
             // Bind IExportWriter
             this.Bind<IExportWriter>().To<FileExportWriter>().WhenInjectedExactlyInto<DataSourceItemExporter>();

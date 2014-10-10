@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
@@ -16,7 +17,7 @@ namespace SSRSMigrate.Bundler
         private readonly ICheckSumGenerator mCheckSumGenerator = null;
         private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
         private readonly ILogger mLogger = null;
-        private readonly ISystemIOWrapper mSysIOWrapper = null;
+        private readonly IFileSystem mFileSystem = null;
         private readonly string mFileName = null;
         private readonly string mUnpackDirectory = null;
 
@@ -47,7 +48,7 @@ namespace SSRSMigrate.Bundler
             IZipFileReaderWrapper zipFileReaderWrapper, 
             ICheckSumGenerator checkSumGenerator, 
             ILogger logger,
-            ISystemIOWrapper systemIOWrapper)
+            IFileSystem fileSystem)
         {
             if (string.IsNullOrEmpty(fileName))
                 throw new ArgumentException("fileName");
@@ -64,8 +65,8 @@ namespace SSRSMigrate.Bundler
             if (logger == null)
                 throw new ArgumentNullException("logger");
 
-            if (systemIOWrapper == null)
-                throw new ArgumentNullException("systemIOWrapper");
+            if (fileSystem == null)
+                throw new ArgumentNullException("fileSystem");
 
             this.mFileName = fileName;
             this.mUnpackDirectory = unpackDirectory;
@@ -73,7 +74,7 @@ namespace SSRSMigrate.Bundler
             this.mZipFileReaderWrapper.FileName = fileName;
             this.mCheckSumGenerator = checkSumGenerator;
             this.mLogger = logger;
-            this.mSysIOWrapper = systemIOWrapper;
+            this.mFileSystem = fileSystem;
 
             // Register event for when entries are extracted using the IZipFileReaderWrapper
             this.mZipFileReaderWrapper.OnEntryExtracted += EntryExtractedEventHandler;
@@ -133,7 +134,7 @@ namespace SSRSMigrate.Bundler
                 string checkSum = this.mCheckSumGenerator.CreateCheckSum(fileName);
 
                 // Check if the folder exists on disk
-                if (!this.mSysIOWrapper.DirectoryExists(fileName))
+                if (!this.mFileSystem.Directory.Exists(fileName))
                 {
                     success = false;
                     errors.Add(string.Format("Directory does not exist '{0}'.", fileName));
@@ -185,7 +186,7 @@ namespace SSRSMigrate.Bundler
                 string checkSum = this.mCheckSumGenerator.CreateCheckSum(fileName);
 
                 // Check if the file exists on disk
-                if (!this.mSysIOWrapper.FileExists(fileName))
+                if (!this.mFileSystem.File.Exists(fileName))
                 {
                     success = false;
                     errors.Add(string.Format("File does not exist '{0}'.", fileName));
@@ -236,7 +237,7 @@ namespace SSRSMigrate.Bundler
                 string checkSum = this.mCheckSumGenerator.CreateCheckSum(fileName);
 
                 // Check if the file exists on disk
-                if (!this.mSysIOWrapper.FileExists(fileName))
+                if (!this.mFileSystem.File.Exists(fileName))
                 {
                     success = false;
                     errors.Add(string.Format("File does not exist '{0}'.", fileName));

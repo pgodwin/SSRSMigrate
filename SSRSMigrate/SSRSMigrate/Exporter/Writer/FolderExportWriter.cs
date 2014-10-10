@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
 using System.IO;
@@ -11,8 +12,14 @@ namespace SSRSMigrate.Exporter.Writer
     /// </summary>
     public class FolderExportWriter : IExportWriter
     {
-        public FolderExportWriter()
+        private readonly IFileSystem mFileSystem = null;
+
+        public FolderExportWriter(IFileSystem fileSystem)
         {
+            if (fileSystem == null)
+                throw new ArgumentNullException("fileSystem");
+
+            this.mFileSystem = fileSystem;
         }
 
         /// <summary>
@@ -23,14 +30,14 @@ namespace SSRSMigrate.Exporter.Writer
         /// <exception cref="System.IO.IOException"></exception>
         public void Save(string fileName, bool overwrite = true)
         {
-            if (Directory.Exists(fileName) && !overwrite)
+            if (this.mFileSystem.Directory.Exists(fileName) && !overwrite)
                 throw new IOException(string.Format("Directory '{0}' already exists.", fileName));
 
 
-            if (Directory.Exists(fileName))
-                Directory.Delete(fileName, true);
+            if (this.mFileSystem.Directory.Exists(fileName))
+                this.mFileSystem.Directory.Delete(fileName, true);
 
-            Directory.CreateDirectory(fileName);
+            this.mFileSystem.Directory.CreateDirectory(fileName);
         }
 
         /// <summary>

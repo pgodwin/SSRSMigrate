@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
 using System.IO;
@@ -11,8 +12,14 @@ namespace SSRSMigrate.Exporter.Writer
     /// </summary>
     public class FileExportWriter : IExportWriter
     {
-        public FileExportWriter()
+        private readonly IFileSystem mFileSystem = null;
+
+        public FileExportWriter(IFileSystem fileSystem)
         {
+            if (fileSystem == null)
+                throw new ArgumentNullException("fileSystem");
+
+            this.mFileSystem = fileSystem;
         }
 
         /// <summary>
@@ -34,18 +41,16 @@ namespace SSRSMigrate.Exporter.Writer
             if (string.IsNullOrEmpty(fileName))
                 throw new ArgumentException("fileName");
 
-            //TODO Use System.IO.Abstractions
-            if (File.Exists(fileName) && !overwrite)
+            if (this.mFileSystem.File.Exists(fileName) && !overwrite)
                 throw new IOException(string.Format("File '{0}' already exists.", fileName));
 
-            if (File.Exists(fileName) && overwrite)
-                File.Delete(fileName);
+            if (this.mFileSystem.File.Exists(fileName) && overwrite)
+                this.mFileSystem.File.Delete(fileName);
 
-            if (!Directory.Exists(Path.GetDirectoryName(fileName)))
-                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+            if (!this.mFileSystem.Directory.Exists(Path.GetDirectoryName(fileName)))
+                this.mFileSystem.Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 
-            using (StreamWriter sw = new StreamWriter(fileName))
-                sw.Write("");
+            this.mFileSystem.File.WriteAllText(fileName, "");
         }
 
         /// <summary>
@@ -68,18 +73,16 @@ namespace SSRSMigrate.Exporter.Writer
             if (string.IsNullOrEmpty(data))
                 throw new ArgumentException("data");
 
-            //TODO Use System.IO.Abstractions
-            if (File.Exists(fileName) && !overwrite)
+            if (this.mFileSystem.File.Exists(fileName) && !overwrite)
                 throw new IOException(string.Format("File '{0}' already exists.", fileName));
 
-            if (File.Exists(fileName) && overwrite)
-                File.Delete(fileName);
+            if (this.mFileSystem.File.Exists(fileName) && overwrite)
+                this.mFileSystem.File.Delete(fileName);
 
-            if (!Directory.Exists(Path.GetDirectoryName(fileName)))
-                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+            if (!this.mFileSystem.Directory.Exists(Path.GetDirectoryName(fileName)))
+                this.mFileSystem.Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 
-            using (StreamWriter sw = new StreamWriter(fileName))
-                sw.Write(data);
+            this.mFileSystem.File.WriteAllText(fileName, data);
         }
 
         /// <summary>
@@ -99,17 +102,16 @@ namespace SSRSMigrate.Exporter.Writer
             if (data == null)
                 throw new ArgumentNullException("data");
 
-            //TODO Use System.IO.Abstractions
-            if (File.Exists(fileName) && !overwrite)
+            if (this.mFileSystem.File.Exists(fileName) && !overwrite)
                 throw new IOException(string.Format("File '{0}' already exists.", fileName));
 
-            if (File.Exists(fileName) && overwrite)
-                File.Delete(fileName);
+            if (this.mFileSystem.File.Exists(fileName) && overwrite)
+                this.mFileSystem.File.Delete(fileName);
 
-            if (!Directory.Exists(Path.GetDirectoryName(fileName)))
-                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+            if (!this.mFileSystem.Directory.Exists(Path.GetDirectoryName(fileName)))
+                this.mFileSystem.Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 
-            File.WriteAllBytes(fileName, data);
+            this.mFileSystem.File.WriteAllBytes(fileName, data);
         }
     }
 }

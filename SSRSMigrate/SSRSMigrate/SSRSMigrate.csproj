@@ -79,6 +79,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.IO.Abstractions">
+      <HintPath>..\packages\System.IO.Abstractions.1.4.0.92\lib\net35\System.IO.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -173,8 +176,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
-    <Compile Include="Wrappers\ISystemIOWrapper.cs" />
-    <Compile Include="Wrappers\SystemIOWrapper.cs" />
     <Compile Include="Wrappers\IZipFileReaderWrapper.cs" />
     <Compile Include="Wrappers\IZipFileWrapper.cs" />
     <Compile Include="Wrappers\ZipEntryReadEvent.cs" />
