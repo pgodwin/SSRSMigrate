@@ -34,6 +34,7 @@ namespace SSRSMigrate.Exporter.Writer
             if (string.IsNullOrEmpty(fileName))
                 throw new ArgumentException("fileName");
 
+            //TODO Use System.IO.Abstractions
             if (File.Exists(fileName) && !overwrite)
                 throw new IOException(string.Format("File '{0}' already exists.", fileName));
 
@@ -67,6 +68,7 @@ namespace SSRSMigrate.Exporter.Writer
             if (string.IsNullOrEmpty(data))
                 throw new ArgumentException("data");
 
+            //TODO Use System.IO.Abstractions
             if (File.Exists(fileName) && !overwrite)
                 throw new IOException(string.Format("File '{0}' already exists.", fileName));
 
@@ -97,6 +99,7 @@ namespace SSRSMigrate.Exporter.Writer
             if (data == null)
                 throw new ArgumentNullException("data");
 
+            //TODO Use System.IO.Abstractions
             if (File.Exists(fileName) && !overwrite)
                 throw new IOException(string.Format("File '{0}' already exists.", fileName));
 
