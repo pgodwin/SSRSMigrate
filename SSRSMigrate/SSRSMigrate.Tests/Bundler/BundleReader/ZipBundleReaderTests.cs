@@ -193,6 +193,60 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
     }
   ]
 }";
+
+        string exportSummaryFileDoesntExist = @"{
+  ""DataSources"": [
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+      ""FileName"": ""AWDataSource.json"",
+      ""CheckSum"": ""42352f007cf07bcec798b5ca9e4643a7""
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+      ""FileName"": ""Test Data Source.json"",
+      ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
+    }
+  ],
+  ""Reports"": [
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": ""Company Sales.rdl"",
+      ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": ""Sales Order Detail.rdl"",
+      ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": ""Store Contacts.rdl"",
+      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": ""File Doesnt Exist.rdl"",
+      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+    },
+  ],
+  ""Folders"": [
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+      ""FileName"": """",
+      ""CheckSum"": """"
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": """",
+      ""CheckSum"": """"
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder"",
+      ""FileName"": """",
+      ""CheckSum"": """"
+    }
+  ]
+}";
         #endregion
 
         #region Actual Values
@@ -544,7 +598,52 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             Assert.AreEqual(3, actualReports.Count);
         }
 
-        //TODO Read_FileNotFound
+        [Test]
+        public void Read_FileDoesntExist()
+        {
+            string entryName = "ExportSummary.json";
+            int expectedSuccessfulReports = 3;
+            int expectedFailedReports = 1;
+            string expectedFailedReportName = "C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Reports\\File Doesnt Exist.rdl";
+            int actualSuccessfulReports = 0;
+            int actualFailedReports = 0;
+            string actualFailedReportName = null;
+
+            var readerMock = new Mock<IZipFileReaderWrapper>();
+
+            readerMock.Setup(z => z.ReadEntry(entryName))
+                .Returns(() => exportSummaryFileDoesntExist);
+
+            var logger = new MockLogger();
+
+            var reader = new ZipBundleReader(
+                        zipFileName,
+                        unPackDirectory,
+                        readerMock.Object,
+                        checkSumGenMock.Object,
+                        logger,
+                        fileSystemMock.Object);
+
+            reader.ReadExportSummary();
+
+            reader.OnReportRead += delegate(IBundleReader sender, ItemReadEvent e)
+            {
+                if (e.Success)
+                    actualSuccessfulReports++;
+                else
+                {
+                    actualFailedReports++;
+                    actualFailedReportName = e.FileName;
+                }
+            };
+
+            reader.Read();
+
+            Assert.AreEqual(expectedSuccessfulReports, actualSuccessfulReports);
+            Assert.AreEqual(expectedFailedReports, actualFailedReports);
+            Assert.AreEqual(expectedFailedReportName, actualFailedReportName);
+        }
+
         //TODO Read_DirectoryNotFound
         //TODO Read_ChecksumMismatch
 
