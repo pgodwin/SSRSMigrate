@@ -213,7 +213,7 @@ namespace SSRSMigrate.Bundler
                     success,
                     errors.ToArray());
 
-                if (this.OnFolderRead != null)
+                if (this.OnDataSourceRead != null)
                 {
                     this.mLogger.Debug("Read - Triggering OnDataSourceRead event for entry '{0}'...", fileName);
 
@@ -264,7 +264,7 @@ namespace SSRSMigrate.Bundler
                     success,
                     errors.ToArray());
 
-                if (this.OnFolderRead != null)
+                if (this.OnReportRead != null)
                 {
                     this.mLogger.Debug("Read - Triggering OnReportRead event for entry '{0}'...", fileName);
 
