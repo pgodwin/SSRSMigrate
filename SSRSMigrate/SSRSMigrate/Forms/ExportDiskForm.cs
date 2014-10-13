@@ -501,8 +501,6 @@ namespace SSRSMigrate.Forms
                     "Export Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-
-                //TODO Should log failures and perhaps display them in a debugger window.
             }
             else
             {

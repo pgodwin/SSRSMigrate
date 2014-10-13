@@ -41,7 +41,6 @@ namespace SSRSMigrate.Bundler
         public event ReportReadEventHandler OnReportRead;
         #endregion
 
-        //TODO Use System.IO.Abstractions
         public ZipBundleReader(
             string fileName,
             string unpackDirectory,

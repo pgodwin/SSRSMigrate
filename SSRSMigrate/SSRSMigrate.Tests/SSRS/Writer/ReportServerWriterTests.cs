@@ -25,5 +25,6 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: repository"));
         
         }
+
     }
 }
