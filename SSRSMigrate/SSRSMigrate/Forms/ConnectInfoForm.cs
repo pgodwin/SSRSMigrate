@@ -124,16 +124,25 @@ namespace SSRSMigrate.Forms
             if (this.rdoMethodExportZip.Checked)
             {
                 this.grpExportZip.Visible = true;
+                this.grpDestServer.Visible = true;
             }
             else
             {
                 this.grpExportZip.Visible = false;
+                this.grpDestServer.Visible = false;
             }
         }
 
         private void rdoMethodImportZip_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (this.rdoMethodImportZip.Checked)
+            {
+                this.grpImportZip.Visible = true;
+            }
+            else
+            {
+                this.grpImportZip.Visible = false;
+            }
         }
         #endregion
 
