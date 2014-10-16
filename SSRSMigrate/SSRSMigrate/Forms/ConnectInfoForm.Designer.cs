@@ -35,6 +35,10 @@
             this.rdoMethodExportZip = new System.Windows.Forms.RadioButton();
             this.rdoMethodDirect = new System.Windows.Forms.RadioButton();
             this.grpSrcServer = new System.Windows.Forms.GroupBox();
+            this.grpImportZip = new System.Windows.Forms.GroupBox();
+            this.btnImportZipBrowse = new System.Windows.Forms.Button();
+            this.txtImportZipFilename = new System.Windows.Forms.TextBox();
+            this.lblImportZipFilename = new System.Windows.Forms.Label();
             this.cboSrcVersion = new System.Windows.Forms.ComboBox();
             this.txtSrcPath = new System.Windows.Forms.TextBox();
             this.txtSrcDomain = new System.Windows.Forms.TextBox();
@@ -74,16 +78,12 @@
             this.btnExportDiskFolderBrowse = new System.Windows.Forms.Button();
             this.txtExportDiskFolderName = new System.Windows.Forms.TextBox();
             this.lblExportDiskFolderName = new System.Windows.Forms.Label();
-            this.grpImportZip = new System.Windows.Forms.GroupBox();
-            this.lblImportZipFilename = new System.Windows.Forms.Label();
-            this.txtImportZipFilename = new System.Windows.Forms.TextBox();
-            this.btnImportZipBrowse = new System.Windows.Forms.Button();
             this.grpMigrateMethod.SuspendLayout();
             this.grpSrcServer.SuspendLayout();
+            this.grpImportZip.SuspendLayout();
             this.grpDestServer.SuspendLayout();
             this.grpExportZip.SuspendLayout();
             this.grpExportDisk.SuspendLayout();
-            this.grpImportZip.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpMigrateMethod
@@ -184,6 +184,44 @@
             this.grpSrcServer.TabIndex = 1;
             this.grpSrcServer.TabStop = false;
             this.grpSrcServer.Text = "Source Server";
+            // 
+            // grpImportZip
+            // 
+            this.grpImportZip.Controls.Add(this.btnImportZipBrowse);
+            this.grpImportZip.Controls.Add(this.txtImportZipFilename);
+            this.grpImportZip.Controls.Add(this.lblImportZipFilename);
+            this.grpImportZip.Location = new System.Drawing.Point(0, 1);
+            this.grpImportZip.Name = "grpImportZip";
+            this.grpImportZip.Size = new System.Drawing.Size(350, 225);
+            this.grpImportZip.TabIndex = 32;
+            this.grpImportZip.TabStop = false;
+            this.grpImportZip.Text = "Import from ZIP archive";
+            this.grpImportZip.Visible = false;
+            // 
+            // btnImportZipBrowse
+            // 
+            this.btnImportZipBrowse.Location = new System.Drawing.Point(309, 20);
+            this.btnImportZipBrowse.Name = "btnImportZipBrowse";
+            this.btnImportZipBrowse.Size = new System.Drawing.Size(24, 23);
+            this.btnImportZipBrowse.TabIndex = 2;
+            this.btnImportZipBrowse.Text = "...";
+            this.btnImportZipBrowse.UseVisualStyleBackColor = true;
+            // 
+            // txtImportZipFilename
+            // 
+            this.txtImportZipFilename.Location = new System.Drawing.Point(84, 22);
+            this.txtImportZipFilename.Name = "txtImportZipFilename";
+            this.txtImportZipFilename.Size = new System.Drawing.Size(219, 20);
+            this.txtImportZipFilename.TabIndex = 1;
+            // 
+            // lblImportZipFilename
+            // 
+            this.lblImportZipFilename.AutoSize = true;
+            this.lblImportZipFilename.Location = new System.Drawing.Point(11, 25);
+            this.lblImportZipFilename.Name = "lblImportZipFilename";
+            this.lblImportZipFilename.Size = new System.Drawing.Size(67, 13);
+            this.lblImportZipFilename.TabIndex = 0;
+            this.lblImportZipFilename.Text = "Zip filename:";
             // 
             // cboSrcVersion
             // 
@@ -561,43 +599,6 @@
             this.lblExportDiskFolderName.TabIndex = 0;
             this.lblExportDiskFolderName.Text = "Folder:";
             // 
-            // grpImportZip
-            // 
-            this.grpImportZip.Controls.Add(this.btnImportZipBrowse);
-            this.grpImportZip.Controls.Add(this.txtImportZipFilename);
-            this.grpImportZip.Controls.Add(this.lblImportZipFilename);
-            this.grpImportZip.Location = new System.Drawing.Point(0, 1);
-            this.grpImportZip.Name = "grpImportZip";
-            this.grpImportZip.Size = new System.Drawing.Size(350, 225);
-            this.grpImportZip.TabIndex = 32;
-            this.grpImportZip.TabStop = false;
-            this.grpImportZip.Text = "Import from ZIP archive";
-            // 
-            // lblImportZipFilename
-            // 
-            this.lblImportZipFilename.AutoSize = true;
-            this.lblImportZipFilename.Location = new System.Drawing.Point(11, 25);
-            this.lblImportZipFilename.Name = "lblImportZipFilename";
-            this.lblImportZipFilename.Size = new System.Drawing.Size(67, 13);
-            this.lblImportZipFilename.TabIndex = 0;
-            this.lblImportZipFilename.Text = "Zip filename:";
-            // 
-            // txtImportZipFilename
-            // 
-            this.txtImportZipFilename.Location = new System.Drawing.Point(84, 22);
-            this.txtImportZipFilename.Name = "txtImportZipFilename";
-            this.txtImportZipFilename.Size = new System.Drawing.Size(219, 20);
-            this.txtImportZipFilename.TabIndex = 1;
-            // 
-            // btnImportZipBrowse
-            // 
-            this.btnImportZipBrowse.Location = new System.Drawing.Point(309, 20);
-            this.btnImportZipBrowse.Name = "btnImportZipBrowse";
-            this.btnImportZipBrowse.Size = new System.Drawing.Size(24, 23);
-            this.btnImportZipBrowse.TabIndex = 2;
-            this.btnImportZipBrowse.Text = "...";
-            this.btnImportZipBrowse.UseVisualStyleBackColor = true;
-            // 
             // ConnectInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -619,14 +620,14 @@
             this.grpMigrateMethod.PerformLayout();
             this.grpSrcServer.ResumeLayout(false);
             this.grpSrcServer.PerformLayout();
+            this.grpImportZip.ResumeLayout(false);
+            this.grpImportZip.PerformLayout();
             this.grpDestServer.ResumeLayout(false);
             this.grpDestServer.PerformLayout();
             this.grpExportZip.ResumeLayout(false);
             this.grpExportZip.PerformLayout();
             this.grpExportDisk.ResumeLayout(false);
             this.grpExportDisk.PerformLayout();
-            this.grpImportZip.ResumeLayout(false);
-            this.grpImportZip.PerformLayout();
             this.ResumeLayout(false);
 
         }

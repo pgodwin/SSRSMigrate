@@ -100,10 +100,14 @@ namespace SSRSMigrate.Forms
             if (this.rdoMethodDirect.Checked)
             {
                 this.grpDestServer.Visible = true;
+                this.grpSrcServer.Visible = true;
             }
             else
             {
                 this.grpDestServer.Visible = false;
+                this.grpSrcServer.Visible = false;
+                this.grpImportZip.Visible = false;
+                this.grpExportZip.Visible = false;
             }
         }
 
@@ -138,10 +142,12 @@ namespace SSRSMigrate.Forms
             if (this.rdoMethodImportZip.Checked)
             {
                 this.grpImportZip.Visible = true;
+                this.grpDestServer.Visible = true;
             }
             else
             {
                 this.grpImportZip.Visible = false;
+                this.grpDestServer.Visible = false;
             }
         }
         #endregion
@@ -185,6 +191,9 @@ namespace SSRSMigrate.Forms
             this.cboSrcVersion.SelectedIndex = 0;
             this.cboDestDefaultCred.SelectedIndex = 0;
             this.cboDestVersion.SelectedIndex = 0;
+
+            // Start with Server-to-Server migration checked
+            this.rdoMethodDirect.Checked = true;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
