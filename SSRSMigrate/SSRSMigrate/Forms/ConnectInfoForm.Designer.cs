@@ -34,25 +34,6 @@
             this.rdoMethodImportZip = new System.Windows.Forms.RadioButton();
             this.rdoMethodExportZip = new System.Windows.Forms.RadioButton();
             this.rdoMethodDirect = new System.Windows.Forms.RadioButton();
-            this.grpSrcServer = new System.Windows.Forms.GroupBox();
-            this.grpImportZip = new System.Windows.Forms.GroupBox();
-            this.btnImportZipBrowse = new System.Windows.Forms.Button();
-            this.txtImportZipFilename = new System.Windows.Forms.TextBox();
-            this.lblImportZipFilename = new System.Windows.Forms.Label();
-            this.cboSrcVersion = new System.Windows.Forms.ComboBox();
-            this.txtSrcPath = new System.Windows.Forms.TextBox();
-            this.txtSrcDomain = new System.Windows.Forms.TextBox();
-            this.txtSrcPassword = new System.Windows.Forms.TextBox();
-            this.txtSrcUsername = new System.Windows.Forms.TextBox();
-            this.cboSrcDefaultCred = new System.Windows.Forms.ComboBox();
-            this.txtSrcUrl = new System.Windows.Forms.TextBox();
-            this.lblSrcPath = new System.Windows.Forms.Label();
-            this.lblSrcDomain = new System.Windows.Forms.Label();
-            this.lblSrcPassword = new System.Windows.Forms.Label();
-            this.lblSrcUsername = new System.Windows.Forms.Label();
-            this.lblSrcDefaultCred = new System.Windows.Forms.Label();
-            this.lblSrcVersion = new System.Windows.Forms.Label();
-            this.lblSrcUrl = new System.Windows.Forms.Label();
             this.grpDestServer = new System.Windows.Forms.GroupBox();
             this.cbkDestOverwrite = new System.Windows.Forms.CheckBox();
             this.cboDestVersion = new System.Windows.Forms.ComboBox();
@@ -78,12 +59,31 @@
             this.btnExportDiskFolderBrowse = new System.Windows.Forms.Button();
             this.txtExportDiskFolderName = new System.Windows.Forms.TextBox();
             this.lblExportDiskFolderName = new System.Windows.Forms.Label();
+            this.lblSrcUrl = new System.Windows.Forms.Label();
+            this.lblSrcVersion = new System.Windows.Forms.Label();
+            this.lblSrcDefaultCred = new System.Windows.Forms.Label();
+            this.lblSrcUsername = new System.Windows.Forms.Label();
+            this.lblSrcPassword = new System.Windows.Forms.Label();
+            this.lblSrcDomain = new System.Windows.Forms.Label();
+            this.lblSrcPath = new System.Windows.Forms.Label();
+            this.txtSrcUrl = new System.Windows.Forms.TextBox();
+            this.cboSrcDefaultCred = new System.Windows.Forms.ComboBox();
+            this.txtSrcUsername = new System.Windows.Forms.TextBox();
+            this.txtSrcPassword = new System.Windows.Forms.TextBox();
+            this.txtSrcDomain = new System.Windows.Forms.TextBox();
+            this.txtSrcPath = new System.Windows.Forms.TextBox();
+            this.cboSrcVersion = new System.Windows.Forms.ComboBox();
+            this.grpSrcServer = new System.Windows.Forms.GroupBox();
+            this.grpImportZip = new System.Windows.Forms.GroupBox();
+            this.btnImportZipBrowse = new System.Windows.Forms.Button();
+            this.txtImportZipFilename = new System.Windows.Forms.TextBox();
+            this.lblImportZipFilename = new System.Windows.Forms.Label();
             this.grpMigrateMethod.SuspendLayout();
-            this.grpSrcServer.SuspendLayout();
-            this.grpImportZip.SuspendLayout();
             this.grpDestServer.SuspendLayout();
             this.grpExportZip.SuspendLayout();
             this.grpExportDisk.SuspendLayout();
+            this.grpSrcServer.SuspendLayout();
+            this.grpImportZip.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpMigrateMethod
@@ -161,195 +161,6 @@
             this.rdoMethodDirect.MouseLeave += new System.EventHandler(this.rdoMethodDirect_MouseLeave);
             this.rdoMethodDirect.MouseHover += new System.EventHandler(this.rdoMethodDirect_MouseHover);
             // 
-            // grpSrcServer
-            // 
-            this.grpSrcServer.Controls.Add(this.grpImportZip);
-            this.grpSrcServer.Controls.Add(this.cboSrcVersion);
-            this.grpSrcServer.Controls.Add(this.txtSrcPath);
-            this.grpSrcServer.Controls.Add(this.txtSrcDomain);
-            this.grpSrcServer.Controls.Add(this.txtSrcPassword);
-            this.grpSrcServer.Controls.Add(this.txtSrcUsername);
-            this.grpSrcServer.Controls.Add(this.cboSrcDefaultCred);
-            this.grpSrcServer.Controls.Add(this.txtSrcUrl);
-            this.grpSrcServer.Controls.Add(this.lblSrcPath);
-            this.grpSrcServer.Controls.Add(this.lblSrcDomain);
-            this.grpSrcServer.Controls.Add(this.lblSrcPassword);
-            this.grpSrcServer.Controls.Add(this.lblSrcUsername);
-            this.grpSrcServer.Controls.Add(this.lblSrcDefaultCred);
-            this.grpSrcServer.Controls.Add(this.lblSrcVersion);
-            this.grpSrcServer.Controls.Add(this.lblSrcUrl);
-            this.grpSrcServer.Location = new System.Drawing.Point(207, 13);
-            this.grpSrcServer.Name = "grpSrcServer";
-            this.grpSrcServer.Size = new System.Drawing.Size(350, 226);
-            this.grpSrcServer.TabIndex = 1;
-            this.grpSrcServer.TabStop = false;
-            this.grpSrcServer.Text = "Source Server";
-            // 
-            // grpImportZip
-            // 
-            this.grpImportZip.Controls.Add(this.btnImportZipBrowse);
-            this.grpImportZip.Controls.Add(this.txtImportZipFilename);
-            this.grpImportZip.Controls.Add(this.lblImportZipFilename);
-            this.grpImportZip.Location = new System.Drawing.Point(0, 1);
-            this.grpImportZip.Name = "grpImportZip";
-            this.grpImportZip.Size = new System.Drawing.Size(350, 225);
-            this.grpImportZip.TabIndex = 32;
-            this.grpImportZip.TabStop = false;
-            this.grpImportZip.Text = "Import from ZIP archive";
-            this.grpImportZip.Visible = false;
-            // 
-            // btnImportZipBrowse
-            // 
-            this.btnImportZipBrowse.Location = new System.Drawing.Point(309, 20);
-            this.btnImportZipBrowse.Name = "btnImportZipBrowse";
-            this.btnImportZipBrowse.Size = new System.Drawing.Size(24, 23);
-            this.btnImportZipBrowse.TabIndex = 2;
-            this.btnImportZipBrowse.Text = "...";
-            this.btnImportZipBrowse.UseVisualStyleBackColor = true;
-            // 
-            // txtImportZipFilename
-            // 
-            this.txtImportZipFilename.Location = new System.Drawing.Point(84, 22);
-            this.txtImportZipFilename.Name = "txtImportZipFilename";
-            this.txtImportZipFilename.Size = new System.Drawing.Size(219, 20);
-            this.txtImportZipFilename.TabIndex = 1;
-            // 
-            // lblImportZipFilename
-            // 
-            this.lblImportZipFilename.AutoSize = true;
-            this.lblImportZipFilename.Location = new System.Drawing.Point(11, 25);
-            this.lblImportZipFilename.Name = "lblImportZipFilename";
-            this.lblImportZipFilename.Size = new System.Drawing.Size(67, 13);
-            this.lblImportZipFilename.TabIndex = 0;
-            this.lblImportZipFilename.Text = "Zip filename:";
-            // 
-            // cboSrcVersion
-            // 
-            this.cboSrcVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboSrcVersion.FormattingEnabled = true;
-            this.cboSrcVersion.Items.AddRange(new object[] {
-            "SQL Server 2008",
-            "SQL Server 2008 R2",
-            "SQL Server 2012",
-            "SQL Server 2014"});
-            this.cboSrcVersion.Location = new System.Drawing.Point(113, 46);
-            this.cboSrcVersion.Name = "cboSrcVersion";
-            this.cboSrcVersion.Size = new System.Drawing.Size(146, 21);
-            this.cboSrcVersion.TabIndex = 27;
-            // 
-            // txtSrcPath
-            // 
-            this.txtSrcPath.Location = new System.Drawing.Point(113, 180);
-            this.txtSrcPath.Name = "txtSrcPath";
-            this.txtSrcPath.Size = new System.Drawing.Size(161, 20);
-            this.txtSrcPath.TabIndex = 26;
-            this.txtSrcPath.Text = "/";
-            // 
-            // txtSrcDomain
-            // 
-            this.txtSrcDomain.Location = new System.Drawing.Point(113, 154);
-            this.txtSrcDomain.Name = "txtSrcDomain";
-            this.txtSrcDomain.Size = new System.Drawing.Size(121, 20);
-            this.txtSrcDomain.TabIndex = 25;
-            // 
-            // txtSrcPassword
-            // 
-            this.txtSrcPassword.Location = new System.Drawing.Point(113, 128);
-            this.txtSrcPassword.Name = "txtSrcPassword";
-            this.txtSrcPassword.Size = new System.Drawing.Size(121, 20);
-            this.txtSrcPassword.TabIndex = 24;
-            // 
-            // txtSrcUsername
-            // 
-            this.txtSrcUsername.Location = new System.Drawing.Point(113, 101);
-            this.txtSrcUsername.Name = "txtSrcUsername";
-            this.txtSrcUsername.Size = new System.Drawing.Size(121, 20);
-            this.txtSrcUsername.TabIndex = 23;
-            // 
-            // cboSrcDefaultCred
-            // 
-            this.cboSrcDefaultCred.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboSrcDefaultCred.FormattingEnabled = true;
-            this.cboSrcDefaultCred.Items.AddRange(new object[] {
-            "True",
-            "False"});
-            this.cboSrcDefaultCred.Location = new System.Drawing.Point(113, 74);
-            this.cboSrcDefaultCred.Name = "cboSrcDefaultCred";
-            this.cboSrcDefaultCred.Size = new System.Drawing.Size(121, 21);
-            this.cboSrcDefaultCred.TabIndex = 22;
-            this.cboSrcDefaultCred.SelectedIndexChanged += new System.EventHandler(this.cboSrcDefaultCred_SelectedIndexChanged);
-            // 
-            // txtSrcUrl
-            // 
-            this.txtSrcUrl.Location = new System.Drawing.Point(113, 20);
-            this.txtSrcUrl.Name = "txtSrcUrl";
-            this.txtSrcUrl.Size = new System.Drawing.Size(220, 20);
-            this.txtSrcUrl.TabIndex = 21;
-            this.txtSrcUrl.Text = "http://localhost/ReportServer";
-            // 
-            // lblSrcPath
-            // 
-            this.lblSrcPath.AutoSize = true;
-            this.lblSrcPath.Location = new System.Drawing.Point(73, 183);
-            this.lblSrcPath.Name = "lblSrcPath";
-            this.lblSrcPath.Size = new System.Drawing.Size(32, 13);
-            this.lblSrcPath.TabIndex = 20;
-            this.lblSrcPath.Text = "Path:";
-            // 
-            // lblSrcDomain
-            // 
-            this.lblSrcDomain.AutoSize = true;
-            this.lblSrcDomain.Location = new System.Drawing.Point(59, 157);
-            this.lblSrcDomain.Name = "lblSrcDomain";
-            this.lblSrcDomain.Size = new System.Drawing.Size(46, 13);
-            this.lblSrcDomain.TabIndex = 19;
-            this.lblSrcDomain.Text = "Domain:";
-            // 
-            // lblSrcPassword
-            // 
-            this.lblSrcPassword.AutoSize = true;
-            this.lblSrcPassword.Location = new System.Drawing.Point(49, 128);
-            this.lblSrcPassword.Name = "lblSrcPassword";
-            this.lblSrcPassword.Size = new System.Drawing.Size(56, 13);
-            this.lblSrcPassword.TabIndex = 18;
-            this.lblSrcPassword.Text = "Password:";
-            // 
-            // lblSrcUsername
-            // 
-            this.lblSrcUsername.AutoSize = true;
-            this.lblSrcUsername.Location = new System.Drawing.Point(49, 104);
-            this.lblSrcUsername.Name = "lblSrcUsername";
-            this.lblSrcUsername.Size = new System.Drawing.Size(58, 13);
-            this.lblSrcUsername.TabIndex = 17;
-            this.lblSrcUsername.Text = "Username:";
-            // 
-            // lblSrcDefaultCred
-            // 
-            this.lblSrcDefaultCred.AutoSize = true;
-            this.lblSrcDefaultCred.Location = new System.Drawing.Point(8, 77);
-            this.lblSrcDefaultCred.Name = "lblSrcDefaultCred";
-            this.lblSrcDefaultCred.Size = new System.Drawing.Size(99, 13);
-            this.lblSrcDefaultCred.TabIndex = 16;
-            this.lblSrcDefaultCred.Text = "Default Credentials:";
-            // 
-            // lblSrcVersion
-            // 
-            this.lblSrcVersion.AutoSize = true;
-            this.lblSrcVersion.Location = new System.Drawing.Point(62, 49);
-            this.lblSrcVersion.Name = "lblSrcVersion";
-            this.lblSrcVersion.Size = new System.Drawing.Size(45, 13);
-            this.lblSrcVersion.TabIndex = 15;
-            this.lblSrcVersion.Text = "Version:";
-            // 
-            // lblSrcUrl
-            // 
-            this.lblSrcUrl.AutoSize = true;
-            this.lblSrcUrl.Location = new System.Drawing.Point(19, 23);
-            this.lblSrcUrl.Name = "lblSrcUrl";
-            this.lblSrcUrl.Size = new System.Drawing.Size(88, 13);
-            this.lblSrcUrl.TabIndex = 14;
-            this.lblSrcUrl.Text = "Web Service Url:";
-            // 
             // grpDestServer
             // 
             this.grpDestServer.Controls.Add(this.cbkDestOverwrite);
@@ -367,9 +178,9 @@
             this.grpDestServer.Controls.Add(this.lblDestDefaultCred);
             this.grpDestServer.Controls.Add(this.lblDestVersion);
             this.grpDestServer.Controls.Add(this.lblDestUrl);
-            this.grpDestServer.Location = new System.Drawing.Point(567, 18);
+            this.grpDestServer.Location = new System.Drawing.Point(568, 12);
             this.grpDestServer.Name = "grpDestServer";
-            this.grpDestServer.Size = new System.Drawing.Size(350, 221);
+            this.grpDestServer.Size = new System.Drawing.Size(350, 227);
             this.grpDestServer.TabIndex = 2;
             this.grpDestServer.TabStop = false;
             this.grpDestServer.Text = "Destination Server";
@@ -526,9 +337,9 @@
             this.grpExportZip.Controls.Add(this.btnExportZipFileBrowse);
             this.grpExportZip.Controls.Add(this.txtExportZipFilename);
             this.grpExportZip.Controls.Add(this.lblExportZipFilename);
-            this.grpExportZip.Location = new System.Drawing.Point(567, 11);
+            this.grpExportZip.Location = new System.Drawing.Point(568, 12);
             this.grpExportZip.Name = "grpExportZip";
-            this.grpExportZip.Size = new System.Drawing.Size(350, 225);
+            this.grpExportZip.Size = new System.Drawing.Size(350, 227);
             this.grpExportZip.TabIndex = 29;
             this.grpExportZip.TabStop = false;
             this.grpExportZip.Text = "Export to ZIP Archive";
@@ -567,7 +378,7 @@
             this.grpExportDisk.Controls.Add(this.lblExportDiskFolderName);
             this.grpExportDisk.Location = new System.Drawing.Point(568, 12);
             this.grpExportDisk.Name = "grpExportDisk";
-            this.grpExportDisk.Size = new System.Drawing.Size(350, 229);
+            this.grpExportDisk.Size = new System.Drawing.Size(350, 227);
             this.grpExportDisk.TabIndex = 31;
             this.grpExportDisk.TabStop = false;
             this.grpExportDisk.Text = "Export to disk";
@@ -599,11 +410,200 @@
             this.lblExportDiskFolderName.TabIndex = 0;
             this.lblExportDiskFolderName.Text = "Folder:";
             // 
+            // lblSrcUrl
+            // 
+            this.lblSrcUrl.AutoSize = true;
+            this.lblSrcUrl.Location = new System.Drawing.Point(19, 23);
+            this.lblSrcUrl.Name = "lblSrcUrl";
+            this.lblSrcUrl.Size = new System.Drawing.Size(88, 13);
+            this.lblSrcUrl.TabIndex = 14;
+            this.lblSrcUrl.Text = "Web Service Url:";
+            // 
+            // lblSrcVersion
+            // 
+            this.lblSrcVersion.AutoSize = true;
+            this.lblSrcVersion.Location = new System.Drawing.Point(62, 49);
+            this.lblSrcVersion.Name = "lblSrcVersion";
+            this.lblSrcVersion.Size = new System.Drawing.Size(45, 13);
+            this.lblSrcVersion.TabIndex = 15;
+            this.lblSrcVersion.Text = "Version:";
+            // 
+            // lblSrcDefaultCred
+            // 
+            this.lblSrcDefaultCred.AutoSize = true;
+            this.lblSrcDefaultCred.Location = new System.Drawing.Point(8, 77);
+            this.lblSrcDefaultCred.Name = "lblSrcDefaultCred";
+            this.lblSrcDefaultCred.Size = new System.Drawing.Size(99, 13);
+            this.lblSrcDefaultCred.TabIndex = 16;
+            this.lblSrcDefaultCred.Text = "Default Credentials:";
+            // 
+            // lblSrcUsername
+            // 
+            this.lblSrcUsername.AutoSize = true;
+            this.lblSrcUsername.Location = new System.Drawing.Point(49, 104);
+            this.lblSrcUsername.Name = "lblSrcUsername";
+            this.lblSrcUsername.Size = new System.Drawing.Size(58, 13);
+            this.lblSrcUsername.TabIndex = 17;
+            this.lblSrcUsername.Text = "Username:";
+            // 
+            // lblSrcPassword
+            // 
+            this.lblSrcPassword.AutoSize = true;
+            this.lblSrcPassword.Location = new System.Drawing.Point(49, 128);
+            this.lblSrcPassword.Name = "lblSrcPassword";
+            this.lblSrcPassword.Size = new System.Drawing.Size(56, 13);
+            this.lblSrcPassword.TabIndex = 18;
+            this.lblSrcPassword.Text = "Password:";
+            // 
+            // lblSrcDomain
+            // 
+            this.lblSrcDomain.AutoSize = true;
+            this.lblSrcDomain.Location = new System.Drawing.Point(59, 157);
+            this.lblSrcDomain.Name = "lblSrcDomain";
+            this.lblSrcDomain.Size = new System.Drawing.Size(46, 13);
+            this.lblSrcDomain.TabIndex = 19;
+            this.lblSrcDomain.Text = "Domain:";
+            // 
+            // lblSrcPath
+            // 
+            this.lblSrcPath.AutoSize = true;
+            this.lblSrcPath.Location = new System.Drawing.Point(73, 183);
+            this.lblSrcPath.Name = "lblSrcPath";
+            this.lblSrcPath.Size = new System.Drawing.Size(32, 13);
+            this.lblSrcPath.TabIndex = 20;
+            this.lblSrcPath.Text = "Path:";
+            // 
+            // txtSrcUrl
+            // 
+            this.txtSrcUrl.Location = new System.Drawing.Point(113, 20);
+            this.txtSrcUrl.Name = "txtSrcUrl";
+            this.txtSrcUrl.Size = new System.Drawing.Size(220, 20);
+            this.txtSrcUrl.TabIndex = 21;
+            this.txtSrcUrl.Text = "http://localhost/ReportServer";
+            // 
+            // cboSrcDefaultCred
+            // 
+            this.cboSrcDefaultCred.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSrcDefaultCred.FormattingEnabled = true;
+            this.cboSrcDefaultCred.Items.AddRange(new object[] {
+            "True",
+            "False"});
+            this.cboSrcDefaultCred.Location = new System.Drawing.Point(113, 74);
+            this.cboSrcDefaultCred.Name = "cboSrcDefaultCred";
+            this.cboSrcDefaultCred.Size = new System.Drawing.Size(121, 21);
+            this.cboSrcDefaultCred.TabIndex = 22;
+            this.cboSrcDefaultCred.SelectedIndexChanged += new System.EventHandler(this.cboSrcDefaultCred_SelectedIndexChanged);
+            // 
+            // txtSrcUsername
+            // 
+            this.txtSrcUsername.Location = new System.Drawing.Point(113, 101);
+            this.txtSrcUsername.Name = "txtSrcUsername";
+            this.txtSrcUsername.Size = new System.Drawing.Size(121, 20);
+            this.txtSrcUsername.TabIndex = 23;
+            // 
+            // txtSrcPassword
+            // 
+            this.txtSrcPassword.Location = new System.Drawing.Point(113, 128);
+            this.txtSrcPassword.Name = "txtSrcPassword";
+            this.txtSrcPassword.Size = new System.Drawing.Size(121, 20);
+            this.txtSrcPassword.TabIndex = 24;
+            // 
+            // txtSrcDomain
+            // 
+            this.txtSrcDomain.Location = new System.Drawing.Point(113, 154);
+            this.txtSrcDomain.Name = "txtSrcDomain";
+            this.txtSrcDomain.Size = new System.Drawing.Size(121, 20);
+            this.txtSrcDomain.TabIndex = 25;
+            // 
+            // txtSrcPath
+            // 
+            this.txtSrcPath.Location = new System.Drawing.Point(113, 180);
+            this.txtSrcPath.Name = "txtSrcPath";
+            this.txtSrcPath.Size = new System.Drawing.Size(161, 20);
+            this.txtSrcPath.TabIndex = 26;
+            this.txtSrcPath.Text = "/";
+            // 
+            // cboSrcVersion
+            // 
+            this.cboSrcVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSrcVersion.FormattingEnabled = true;
+            this.cboSrcVersion.Items.AddRange(new object[] {
+            "SQL Server 2008",
+            "SQL Server 2008 R2",
+            "SQL Server 2012",
+            "SQL Server 2014"});
+            this.cboSrcVersion.Location = new System.Drawing.Point(113, 46);
+            this.cboSrcVersion.Name = "cboSrcVersion";
+            this.cboSrcVersion.Size = new System.Drawing.Size(146, 21);
+            this.cboSrcVersion.TabIndex = 27;
+            // 
+            // grpSrcServer
+            // 
+            this.grpSrcServer.Controls.Add(this.cboSrcVersion);
+            this.grpSrcServer.Controls.Add(this.txtSrcPath);
+            this.grpSrcServer.Controls.Add(this.txtSrcDomain);
+            this.grpSrcServer.Controls.Add(this.txtSrcPassword);
+            this.grpSrcServer.Controls.Add(this.txtSrcUsername);
+            this.grpSrcServer.Controls.Add(this.cboSrcDefaultCred);
+            this.grpSrcServer.Controls.Add(this.txtSrcUrl);
+            this.grpSrcServer.Controls.Add(this.lblSrcPath);
+            this.grpSrcServer.Controls.Add(this.lblSrcDomain);
+            this.grpSrcServer.Controls.Add(this.lblSrcPassword);
+            this.grpSrcServer.Controls.Add(this.lblSrcUsername);
+            this.grpSrcServer.Controls.Add(this.lblSrcDefaultCred);
+            this.grpSrcServer.Controls.Add(this.lblSrcVersion);
+            this.grpSrcServer.Controls.Add(this.lblSrcUrl);
+            this.grpSrcServer.Location = new System.Drawing.Point(207, 13);
+            this.grpSrcServer.Name = "grpSrcServer";
+            this.grpSrcServer.Size = new System.Drawing.Size(350, 227);
+            this.grpSrcServer.TabIndex = 1;
+            this.grpSrcServer.TabStop = false;
+            this.grpSrcServer.Text = "Source Server";
+            // 
+            // grpImportZip
+            // 
+            this.grpImportZip.Controls.Add(this.btnImportZipBrowse);
+            this.grpImportZip.Controls.Add(this.txtImportZipFilename);
+            this.grpImportZip.Controls.Add(this.lblImportZipFilename);
+            this.grpImportZip.Location = new System.Drawing.Point(207, 13);
+            this.grpImportZip.Name = "grpImportZip";
+            this.grpImportZip.Size = new System.Drawing.Size(350, 227);
+            this.grpImportZip.TabIndex = 33;
+            this.grpImportZip.TabStop = false;
+            this.grpImportZip.Text = "Import from ZIP archive";
+            this.grpImportZip.Visible = false;
+            // 
+            // btnImportZipBrowse
+            // 
+            this.btnImportZipBrowse.Location = new System.Drawing.Point(309, 20);
+            this.btnImportZipBrowse.Name = "btnImportZipBrowse";
+            this.btnImportZipBrowse.Size = new System.Drawing.Size(24, 23);
+            this.btnImportZipBrowse.TabIndex = 2;
+            this.btnImportZipBrowse.Text = "...";
+            this.btnImportZipBrowse.UseVisualStyleBackColor = true;
+            // 
+            // txtImportZipFilename
+            // 
+            this.txtImportZipFilename.Location = new System.Drawing.Point(84, 22);
+            this.txtImportZipFilename.Name = "txtImportZipFilename";
+            this.txtImportZipFilename.Size = new System.Drawing.Size(219, 20);
+            this.txtImportZipFilename.TabIndex = 1;
+            // 
+            // lblImportZipFilename
+            // 
+            this.lblImportZipFilename.AutoSize = true;
+            this.lblImportZipFilename.Location = new System.Drawing.Point(11, 25);
+            this.lblImportZipFilename.Name = "lblImportZipFilename";
+            this.lblImportZipFilename.Size = new System.Drawing.Size(67, 13);
+            this.lblImportZipFilename.TabIndex = 0;
+            this.lblImportZipFilename.Text = "Zip filename:";
+            // 
             // ConnectInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(933, 288);
+            this.Controls.Add(this.grpImportZip);
             this.Controls.Add(this.grpExportDisk);
             this.Controls.Add(this.grpExportZip);
             this.Controls.Add(this.btnConnect);
@@ -618,16 +618,16 @@
             this.Load += new System.EventHandler(this.ConnectInfoForm_Load);
             this.grpMigrateMethod.ResumeLayout(false);
             this.grpMigrateMethod.PerformLayout();
-            this.grpSrcServer.ResumeLayout(false);
-            this.grpSrcServer.PerformLayout();
-            this.grpImportZip.ResumeLayout(false);
-            this.grpImportZip.PerformLayout();
             this.grpDestServer.ResumeLayout(false);
             this.grpDestServer.PerformLayout();
             this.grpExportZip.ResumeLayout(false);
             this.grpExportZip.PerformLayout();
             this.grpExportDisk.ResumeLayout(false);
             this.grpExportDisk.PerformLayout();
+            this.grpSrcServer.ResumeLayout(false);
+            this.grpSrcServer.PerformLayout();
+            this.grpImportZip.ResumeLayout(false);
+            this.grpImportZip.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -638,21 +638,6 @@
         private System.Windows.Forms.RadioButton rdoMethodDirect;
         private System.Windows.Forms.RadioButton rdoMethodImportZip;
         private System.Windows.Forms.RadioButton rdoMethodExportZip;
-        private System.Windows.Forms.GroupBox grpSrcServer;
-        private System.Windows.Forms.ComboBox cboSrcVersion;
-        private System.Windows.Forms.TextBox txtSrcPath;
-        private System.Windows.Forms.TextBox txtSrcDomain;
-        private System.Windows.Forms.TextBox txtSrcPassword;
-        private System.Windows.Forms.TextBox txtSrcUsername;
-        private System.Windows.Forms.ComboBox cboSrcDefaultCred;
-        private System.Windows.Forms.TextBox txtSrcUrl;
-        private System.Windows.Forms.Label lblSrcPath;
-        private System.Windows.Forms.Label lblSrcDomain;
-        private System.Windows.Forms.Label lblSrcPassword;
-        private System.Windows.Forms.Label lblSrcUsername;
-        private System.Windows.Forms.Label lblSrcDefaultCred;
-        private System.Windows.Forms.Label lblSrcVersion;
-        private System.Windows.Forms.Label lblSrcUrl;
         private System.Windows.Forms.Label lblMethodInfo;
         private System.Windows.Forms.GroupBox grpDestServer;
         private System.Windows.Forms.CheckBox cbkDestOverwrite;
@@ -680,6 +665,21 @@
         private System.Windows.Forms.Button btnExportDiskFolderBrowse;
         private System.Windows.Forms.TextBox txtExportDiskFolderName;
         private System.Windows.Forms.Label lblExportDiskFolderName;
+        private System.Windows.Forms.Label lblSrcUrl;
+        private System.Windows.Forms.Label lblSrcVersion;
+        private System.Windows.Forms.Label lblSrcDefaultCred;
+        private System.Windows.Forms.Label lblSrcUsername;
+        private System.Windows.Forms.Label lblSrcPassword;
+        private System.Windows.Forms.Label lblSrcDomain;
+        private System.Windows.Forms.Label lblSrcPath;
+        private System.Windows.Forms.TextBox txtSrcUrl;
+        private System.Windows.Forms.ComboBox cboSrcDefaultCred;
+        private System.Windows.Forms.TextBox txtSrcUsername;
+        private System.Windows.Forms.TextBox txtSrcPassword;
+        private System.Windows.Forms.TextBox txtSrcDomain;
+        private System.Windows.Forms.TextBox txtSrcPath;
+        private System.Windows.Forms.ComboBox cboSrcVersion;
+        private System.Windows.Forms.GroupBox grpSrcServer;
         private System.Windows.Forms.GroupBox grpImportZip;
         private System.Windows.Forms.Button btnImportZipBrowse;
         private System.Windows.Forms.TextBox txtImportZipFilename;

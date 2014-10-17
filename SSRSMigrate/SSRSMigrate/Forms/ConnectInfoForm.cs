@@ -106,8 +106,6 @@ namespace SSRSMigrate.Forms
             {
                 this.grpDestServer.Visible = false;
                 this.grpSrcServer.Visible = false;
-                this.grpImportZip.Visible = false;
-                this.grpExportZip.Visible = false;
             }
         }
 
@@ -116,10 +114,12 @@ namespace SSRSMigrate.Forms
             if (this.rdoMethodExportDisk.Checked)
             {
                 this.grpExportDisk.Visible = true;
+                this.grpSrcServer.Visible = true;
             }
             else
             {
                 this.grpExportDisk.Visible = false;
+                this.grpSrcServer.Visible = false;
             }
         }
 
@@ -128,12 +128,12 @@ namespace SSRSMigrate.Forms
             if (this.rdoMethodExportZip.Checked)
             {
                 this.grpExportZip.Visible = true;
-                this.grpDestServer.Visible = true;
+                this.grpSrcServer.Visible = true;
             }
             else
             {
                 this.grpExportZip.Visible = false;
-                this.grpDestServer.Visible = false;
+                this.grpSrcServer.Visible = false;
             }
         }
 
