@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using log4net.Config;
 using Ninject;
@@ -208,6 +210,8 @@ namespace SSRSMigrate.Forms
                     this.ExportToDisk_Connection();
                 else if (this.rdoMethodExportZip.Checked)
                     this.ExportToZip_Connection();
+                else if (this.rdoMethodImportZip.Checked)
+                    this.ImportFromZip_Connection();
             }
             catch (UserInterfaceInvalidFieldException er)
             {
@@ -331,6 +335,28 @@ namespace SSRSMigrate.Forms
                 dataSourceExporter,
                 zipBundler);
         }
+
+        private void ImportFromZip_Connection()
+        {
+            // Save configuration
+            this.Save_DestinationConfiguration();
+            this.Save_ImportZipConfiguration();
+
+            IReportServerWriter writer = null;
+            IBundleReader zipBundleReader = null;
+
+            string version = this.GetDestinationServerVersion();
+
+            writer = this.mKernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>(version);
+            zipBundleReader = this.mKernel.Get<IBundleReader>();
+
+            this.PerformImportFromZip(
+                this.txtImportZipFilename.Text,
+                this.txtDestPath.Text,
+                writer,
+                zipBundleReader
+                );
+        }
         #endregion
 
         #region UI Input Check Methods
@@ -339,7 +365,7 @@ namespace SSRSMigrate.Forms
             if (this.rdoMethodDirect.Checked)
             {
                 this.UI_SourceCheck();
-                this.UI_DirectMigration_DestinationCheck();
+                this.UI_Migration_DestinationCheck();
             }
             else if (this.rdoMethodExportDisk.Checked)
             {
@@ -353,8 +379,8 @@ namespace SSRSMigrate.Forms
             }
             else if (this.rdoMethodImportZip.Checked)
             {
-                //TODO UI_ImportZip_SourceCheck();
-                //TODO UI_ImportZip_DestinationCheck();
+                this.UI_ImportZip_SourceCheck();
+                this.UI_Migration_DestinationCheck();
             }
         }
 
@@ -379,7 +405,7 @@ namespace SSRSMigrate.Forms
                 this.txtSrcPath.Text = "/";
         }
 
-        private void UI_DirectMigration_DestinationCheck()
+        private void UI_Migration_DestinationCheck()
         {
             if (string.IsNullOrEmpty(this.txtDestUrl.Text))
                 throw new UserInterfaceInvalidFieldException("destination url");
@@ -410,6 +436,15 @@ namespace SSRSMigrate.Forms
         {
             if (string.IsNullOrEmpty(this.txtExportZipFilename.Text))
                 throw new UserInterfaceInvalidFieldException("filename");
+        }
+
+        private void UI_ImportZip_SourceCheck()
+        {
+            if (string.IsNullOrEmpty(this.txtImportZipFilename.Text))
+                throw new UserInterfaceInvalidFieldException("filename");
+
+            if (!File.Exists(this.txtImportZipFilename.Text))
+                throw new FileNotFoundException(this.txtImportZipFilename.Text);
         }
 
         private string GetSourceServerVersion()
@@ -478,6 +513,15 @@ namespace SSRSMigrate.Forms
                 Properties.Settings.Default.DestVersion = "2010";
 
             Properties.Settings.Default.DestWebServiceUrl = this.txtDestUrl.Text;
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void Save_ImportZipConfiguration()
+        {
+            Properties.Settings.Default.ImportZipFileName = this.txtImportZipFilename.Text;
+            Properties.Settings.Default.ImportZipUnpackDir = Path.Combine(Path.GetTempPath(),
+                Guid.NewGuid().ToString("N"));
 
             Properties.Settings.Default.Save();
         }
@@ -574,6 +618,29 @@ namespace SSRSMigrate.Forms
 
             exportZipForm.DebugForm = this.mDebugForm;
             exportZipForm.ShowDialog();
+        }
+        #endregion
+
+        #region Import from Zip Archive Group
+        private void btnImportZipBrowse_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openDialog = new OpenFileDialog();
+            openDialog.Filter = "Zip files (*.zip)|*.zip|All files (*.*)|*.*";
+            openDialog.FilterIndex = 2;
+            openDialog.RestoreDirectory = true;
+
+            if (openDialog.ShowDialog() == DialogResult.OK)
+            {
+                this.txtImportZipFilename.Text = openDialog.FileName;
+            }
+        }
+
+        private void PerformImportFromZip(string sourceFilename,
+            string destinationRootPath,
+            IReportServerWriter writer,
+            IBundleReader zipBundleReader)
+        {
+            
         }
         #endregion
     }

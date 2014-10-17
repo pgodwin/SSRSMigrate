@@ -581,6 +581,7 @@
             this.btnImportZipBrowse.TabIndex = 2;
             this.btnImportZipBrowse.Text = "...";
             this.btnImportZipBrowse.UseVisualStyleBackColor = true;
+            this.btnImportZipBrowse.Click += new System.EventHandler(this.btnImportZipBrowse_Click);
             // 
             // txtImportZipFilename
             // 
