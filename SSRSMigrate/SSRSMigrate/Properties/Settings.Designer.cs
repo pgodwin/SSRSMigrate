@@ -234,5 +234,29 @@ namespace SSRSMigrate.Properties {
                 this["MigrationMethod"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ImportZipFileName {
+            get {
+                return ((string)(this["ImportZipFileName"]));
+            }
+            set {
+                this["ImportZipFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ImportZipUnpackDir {
+            get {
+                return ((string)(this["ImportZipUnpackDir"]));
+            }
+            set {
+                this["ImportZipUnpackDir"] = value;
+            }
+        }
     }
 }
