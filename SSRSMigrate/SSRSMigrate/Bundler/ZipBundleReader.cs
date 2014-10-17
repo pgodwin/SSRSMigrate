@@ -13,7 +13,7 @@ namespace SSRSMigrate.Bundler
 {
     public class ZipBundleReader : IBundleReader
     {
-        private readonly IZipFileReaderWrapper mZipFileReaderWrapper = null;
+        private IZipFileReaderWrapper mZipFileReaderWrapper = null;
         private readonly ICheckSumGenerator mCheckSumGenerator = null;
         private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
         private readonly ILogger mLogger = null;
@@ -74,6 +74,8 @@ namespace SSRSMigrate.Bundler
             this.mCheckSumGenerator = checkSumGenerator;
             this.mLogger = logger;
             this.mFileSystem = fileSystem;
+            this.mZipFileReaderWrapper.UnPackDirectory = unpackDirectory;
+            this.mZipFileReaderWrapper.FileName = fileName;
 
             // Register event for when entries are extracted using the IZipFileReaderWrapper
             this.mZipFileReaderWrapper.OnEntryExtracted += EntryExtractedEventHandler;

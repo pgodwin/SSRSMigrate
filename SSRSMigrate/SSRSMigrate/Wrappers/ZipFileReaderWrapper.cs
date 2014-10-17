@@ -16,6 +16,13 @@ namespace SSRSMigrate.Wrappers
         public string UnPackDirectory
         {
             get { return this.mUnPackDirectory; }
+            set
+            {
+                if (Directory.Exists(this.mUnPackDirectory))
+                    Directory.Delete(this.mUnPackDirectory, true);
+
+                this.mUnPackDirectory = value;
+            }
         }
 
         public string FileName
@@ -34,6 +41,11 @@ namespace SSRSMigrate.Wrappers
         #region Events
         public event EntryExtractedEventHandler OnEntryExtracted;
         #endregion
+
+        public ZipFileReaderWrapper()
+        {
+            
+        }
 
         public ZipFileReaderWrapper(string unpackDirectory)
         {

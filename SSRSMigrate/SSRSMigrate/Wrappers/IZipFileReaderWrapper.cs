@@ -11,7 +11,7 @@ namespace SSRSMigrate.Wrappers
     public interface IZipFileReaderWrapper : IDisposable
     {
         // Properties
-        string UnPackDirectory { get;  }
+        string UnPackDirectory { get; set; }
         string FileName { get; set; }
 
         // Events

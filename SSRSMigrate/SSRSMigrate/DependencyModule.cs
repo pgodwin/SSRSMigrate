@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
+using Ninject;
 using Ninject.Activation;
 using SSRSMigrate.Bundler;
 using SSRSMigrate.SSRS.Repository;
@@ -90,8 +92,26 @@ namespace SSRSMigrate
             // Bind IZipFileWrapper
             this.Bind<IZipFileWrapper>().To<ZipFileWrapper>();
 
+            // Bind IZipFileReaderWrapper
+            this.Bind<IZipFileReaderWrapper>().To<ZipFileReaderWrapper>();
+
             // Bind ICheckSumGenerator
             this.Bind<ICheckSumGenerator>().To<MD5CheckSumGenerator>();
+            
+            // Bind IBundleReader
+            this.Bind<IBundleReader>().To<ZipBundleReader>()
+                .WithConstructorArgument("fileName", GetImportZipFileName)
+                .WithConstructorArgument("unpackDirectory", GetImportZipUnpackDirectory);
+        }
+
+        private string GetImportZipFileName(IContext context)
+        {
+            return Properties.Settings.Default.ImportZipFileName;
+        }
+
+        private string GetImportZipUnpackDirectory(IContext context)
+        {
+            return Properties.Settings.Default.ImportZipUnpackDir;
         }
     }
 
