@@ -353,6 +353,7 @@ namespace SSRSMigrate.Forms
             this.PerformImportFromZip(
                 this.txtImportZipFilename.Text,
                 this.txtDestPath.Text,
+                this.txtDestUrl.Text,
                 writer,
                 zipBundleReader
                 );
@@ -635,12 +636,23 @@ namespace SSRSMigrate.Forms
             }
         }
 
-        private void PerformImportFromZip(string sourceFilename,
+        private void PerformImportFromZip(
+            string sourceFilename,
             string destinationRootPath,
+            string destinationServerUrl,
             IReportServerWriter writer,
             IBundleReader zipBundleReader)
         {
-            
+            ImportZipForm importzipForm = new ImportZipForm(
+                sourceFilename,
+                destinationRootPath,
+                destinationServerUrl,
+                zipBundleReader,
+                writer,
+                this.mLoggerFactory);
+
+            importzipForm.DebugForm = this.mDebugForm;
+            importzipForm.ShowDialog();
         }
         #endregion
     }

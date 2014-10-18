@@ -143,6 +143,12 @@
     <Compile Include="Forms\ExportZipForm.Designer.cs">
       <DependentUpon>ExportZipForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ImportZipForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ImportZipForm.Designer.cs">
+      <DependentUpon>ImportZipForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MigrateForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,6 +198,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ExportZipForm.resx">
       <DependentUpon>ExportZipForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ImportZipForm.resx">
+      <DependentUpon>ImportZipForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MigrateForm.resx">
       <DependentUpon>MigrateForm.cs</DependentUpon>
