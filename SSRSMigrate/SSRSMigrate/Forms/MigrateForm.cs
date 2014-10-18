@@ -111,6 +111,24 @@ namespace SSRSMigrate.Forms
             if (this.mMigrationWorker != null)
                 if (this.mMigrationWorker.IsBusy)
                     e.Cancel = true;
+
+            if (this.mSourceRefreshWorker != null)
+            {
+                this.mSourceRefreshWorker.DoWork -= new DoWorkEventHandler(this.SourceRefreshReportsWorker);
+                this.mSourceRefreshWorker.RunWorkerCompleted -=
+                    new RunWorkerCompletedEventHandler(this.bw_SourceRefreshReportsCompleted);
+                this.mSourceRefreshWorker.ProgressChanged -=
+                    new ProgressChangedEventHandler(this.bw_SourceRefreshReportsProgressChanged);
+            }
+
+            if (this.mMigrationWorker != null)
+            {
+                this.mMigrationWorker.DoWork -= new DoWorkEventHandler(this.MigrationWorker);
+                this.mMigrationWorker.RunWorkerCompleted -=
+                    new RunWorkerCompletedEventHandler(this.bw_MigrationCompleted);
+                this.mMigrationWorker.ProgressChanged -=
+                    new ProgressChangedEventHandler(this.bw_MigrationProgressChanged);
+            }
         }
 
         private void btnPerformMigration_Click(object sender, EventArgs e)
@@ -159,7 +177,7 @@ namespace SSRSMigrate.Forms
             }
             catch (Exception er)
             {
-                string msg = string.Format("Error getting list of items from '{0}' on server '{1}'.}",
+                string msg = string.Format("Error getting list of items from '{0}' on server '{1}'.",
                     this.mSourceRootPath,
                     this.mSourceServerUrl);
 
