@@ -24,7 +24,7 @@ namespace SSRSMigrate.Forms
         private readonly string mSourceRootPath = null;
         private readonly string mSourceServerUrl = null;
         private readonly string mDestinationRootPath = null;
-        private readonly string destinationServerUrl = null;
+        private readonly string mDestinationServerUrl = null;
 
         private BackgroundWorker mSourceRefreshWorker = null;
         private BackgroundWorker mMigrationWorker = null;
@@ -74,7 +74,7 @@ namespace SSRSMigrate.Forms
             this.mSourceRootPath = sourceRootPath;
             this.mSourceServerUrl = sourceServerUrl;
             this.mDestinationRootPath = destinationRootPath;
-            this.destinationServerUrl = destinationServerUrl;
+            this.mDestinationServerUrl = destinationServerUrl;
             this.mReportServerReader = reader;
             this.mReportServerWriter = writer;
             this.mLoggerFactory = loggerFactory;
@@ -526,7 +526,7 @@ namespace SSRSMigrate.Forms
                             this.mLogger.Trace("MigrationWorker - ReportItem.Definition Before = {0}", SSRSUtil.ByteArrayToString(reportItem.Definition));
 
                         reportItem.Definition = SSRSUtil.UpdateReportDefinition(
-                            this.destinationServerUrl,
+                            this.mDestinationServerUrl,
                             this.mSourceRootPath,
                             this.mDestinationRootPath,
                             reportItem.Definition);
