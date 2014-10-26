@@ -233,6 +233,7 @@ namespace SSRSMigrate.Bundler
         public string CreateSummary()
         {
             // Serialize mEntries Dictionary to JSON format
+            //TODO Use ISerializeWrapper
             string summary = JsonConvert.SerializeObject(this.mEntries, Formatting.Indented);
 
             this.mLogger.Trace("CreateSummary - JSON = {0}", summary);

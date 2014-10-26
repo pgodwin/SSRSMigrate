@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Newtonsoft.Json;
+
+namespace SSRSMigrate.Wrappers
+{
+    public class JsonConvertWrapper : ISerializeWrapper
+    {
+        public T DeserializeObject<T>(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                throw new ArgumentException("value");
+
+            return JsonConvert.DeserializeObject<T>(value);
+        }
+
+        public string SerializeObject<T>(object value)
+        {
+            if (value == null)
+                throw new ArgumentNullException("value");
+
+            return JsonConvert.SerializeObject(value, Formatting.Indented);
+        }
+    }
+}

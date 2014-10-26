@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
 using Moq;
 using NUnit.Framework;
 using SSRSMigrate.Importer;
+using SSRSMigrate.ReportServer2005;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.Status;
 using SSRSMigrate.TestHelper.Logging;
+using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate.Tests.Importer
 {
@@ -18,12 +21,16 @@ namespace SSRSMigrate.Tests.Importer
     {
         private DataSourceItemImporter importer = null;
         private Mock<IFileSystem> fileSystemMock = null;
+        private Mock<ISerializeWrapper> serializeWrapperMock = null;
         private MockLogger loggerMock = null;
 
         #region Expected Data
 
         private string expectedAWDataSourceFileName =
             "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json";
+
+        private string expectedAWDataSourcePath =
+            "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Data Sources";
 
         private string expectedAWDataSource = @"{
   ""ConnectString"": ""Data Source=(local);Initial Catalog=AdventureWorks2008"",
@@ -53,42 +60,32 @@ namespace SSRSMigrate.Tests.Importer
 
         private DataSourceItem expectedAWDataSourceItem = new DataSourceItem()
         {
-
+            CreatedBy = "DOMAIN\\user",
+            CreationDate = DateTime.Parse("7/23/2014 8:28:43 AM"),
+            Description = null,
+            ID = Guid.NewGuid().ToString(),
+            ModifiedBy = "DOMAIN\\user",
+            ModifiedDate = DateTime.Parse("7/23/2014 8:28:43 AM"),
+            Size = 414,
+            VirtualPath = null,
+            Name = "AWDataSource",
+            Path = "/SSRSMigrate_AW_Tests/Data Sources/AWDataSource",
+            ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
+            CredentialsRetrieval = "Integrated",
+            Enabled = true,
+            EnabledSpecified = true,
+            Extension = "SQL",
+            ImpersonateUser = false,
+            ImpersonateUserSpecified = true,
+            OriginalConnectStringExpressionBased = false,
+            Password = null,
+            Prompt = "Enter a user name and password to access the data source:",
+            UseOriginalConnectString = false,
+            UserName = null,
+            WindowsCredentials = false
         };
 
-        private string expectedTestDataSourceFileName =
-            "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json";
-        
-        private string expectedTestDataSource = @"{
-  ""ConnectString"": ""Data Source=(local);Initial Catalog=AdventureWorks2008"",
-  ""CredentialsRetrieval"": ""Integrated"",
-  ""Enabled"": true,
-  ""EnabledSpecified"": true,
-  ""Extension"": ""SQL"",
-  ""ImpersonateUser"": false,
-  ""ImpersonateUserSpecified"": true,
-  ""OriginalConnectStringExpressionBased"": false,
-  ""Password"": null,
-  ""Prompt"": ""Enter a user name and password to access the data source:"",
-  ""UseOriginalConnectString"": false,
-  ""UserName"": null,
-  ""WindowsCredentials"": false,
-  ""Name"": ""Test Data Source"",
-  ""Path"": ""/SSRSMigrate_AW_Tests/Data Sources/Test Data Source"",
-  ""CreatedBy"": ""nitzer\\jasper"",
-  ""CreationDate"": ""2014-09-30T16:18:29.093"",
-  ""Description"": null,
-  ""ID"": ""72946d28-f222-400a-a42c-f1febf0dc49f"",
-  ""ModifiedBy"": ""nitzer\\jasper"",
-  ""ModifiedDate"": ""2014-09-30T16:18:52.543"",
-  ""Size"": 307,
-  ""VirtualPath"": null
-}";
-
-        private DataSourceItem expectedTestDataSourceItem = new DataSourceItem()
-        {
-           
-        };
+        private string expectedDataSourceItem_NotFound_Filename = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Data Sources\\NotFound.json";
         #endregion
 
         [TestFixtureSetUp]
@@ -96,11 +93,28 @@ namespace SSRSMigrate.Tests.Importer
         {
             loggerMock = new MockLogger();
             fileSystemMock = new Mock<IFileSystem>();
+            serializeWrapperMock = new Mock<ISerializeWrapper>();
 
-            // TODO ISystemIOWrapper.FileExists Method Mocks
-            // ...
+            // ISystemIOWrapper.File.ReadAllText Method Mocks
+            fileSystemMock.Setup(f => f.File.ReadAllText(expectedAWDataSourceFileName))
+                .Returns(() => expectedAWDataSource);
 
-            importer = new DataSourceItemImporter(fileSystemMock.Object, loggerMock);
+            // ISystemIOWrapper.File.Exists Method Mocks
+            fileSystemMock.Setup(f => f.File.Exists(expectedAWDataSourceFileName))
+                .Returns(() => true);
+
+            fileSystemMock.Setup(f => f.File.Exists(expectedDataSourceItem_NotFound_Filename))
+                .Returns(() => false);
+
+            // ISystemIOWrapper.Path.GetDirectoryName Method Mocks
+            fileSystemMock.Setup(f => f.Path.GetDirectoryName(expectedAWDataSourceFileName))
+                .Returns(() => expectedAWDataSourcePath);
+
+            // ISerializeWrapper.DeserializeObject<DataSourceItem> Method Mocks
+            serializeWrapperMock.Setup(s => s.DeserializeObject<DataSourceItem>(expectedAWDataSource))
+                .Returns(() => expectedAWDataSourceItem);
+
+            importer = new DataSourceItemImporter(serializeWrapperMock.Object, fileSystemMock.Object, loggerMock);
         }
 
         [TestFixtureTearDown]
@@ -130,6 +144,24 @@ namespace SSRSMigrate.Tests.Importer
             DataSourceItem actual = importer.ImportItem(expectedAWDataSourceFileName, out status);
 
             Assert.NotNull(actual);
+            Assert.NotNull(status);
+            Assert.AreEqual(actual.Name, expectedAWDataSourceItem.Name);
+            Assert.AreEqual(actual.Path, expectedAWDataSourceItem.Path);
+            Assert.True(status.Success);
+        }
+
+        [Test]
+        public void ImportItem_NotFound()
+        {
+            ImportStatus status = null;
+
+            FileNotFoundException ex = Assert.Throws<FileNotFoundException>(
+               delegate
+               {
+                   importer.ImportItem(expectedDataSourceItem_NotFound_Filename, out status);
+               });
+
+            Assert.That(ex.Message, Is.EqualTo(expectedDataSourceItem_NotFound_Filename));
         }
         #endregion
     }

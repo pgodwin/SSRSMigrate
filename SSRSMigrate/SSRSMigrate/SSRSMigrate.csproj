@@ -187,8 +187,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Wrappers\ISerializeWrapper.cs" />
     <Compile Include="Wrappers\IZipFileReaderWrapper.cs" />
     <Compile Include="Wrappers\IZipFileWrapper.cs" />
+    <Compile Include="Wrappers\JsonConvertWrapper.cs" />
     <Compile Include="Wrappers\ZipEntryReadEvent.cs" />
     <Compile Include="Wrappers\ZipFileReaderWrapper.cs" />
     <Compile Include="Wrappers\ZipFileWrapper.cs" />

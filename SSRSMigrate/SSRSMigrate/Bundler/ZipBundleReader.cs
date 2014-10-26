@@ -114,6 +114,7 @@ namespace SSRSMigrate.Bundler
 
             this.mLogger.Debug("ReadExportSummary - Summary = {0}", exportSummary);
 
+            //TODO Use ISerilizeWrapper
             this.mEntries = JsonConvert.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummary);
         }
 

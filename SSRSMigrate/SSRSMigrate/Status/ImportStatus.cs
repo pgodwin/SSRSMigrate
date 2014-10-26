@@ -9,7 +9,7 @@ namespace SSRSMigrate.Status
     {
         private string mFromFileName;
         private string mFromPath;
-        private string[] mErrors;
+        private string mError;
         private bool mSuccess;
 
         public string FromFileName
@@ -24,10 +24,10 @@ namespace SSRSMigrate.Status
             protected set { mFromPath = value; }
         }
 
-        public string[] Errors
+        public string Error
         {
-            get { return mErrors; }
-            protected set { mErrors = value; }
+            get { return mError; }
+            protected set { mError = value; }
         }
 
         public bool Success
@@ -39,7 +39,7 @@ namespace SSRSMigrate.Status
         public ImportStatus(
             string fromFileName,
             string fromPath,
-            string[] errors,
+            string error,
             bool success)
         {
             if (string.IsNullOrEmpty(fromFileName))
@@ -50,7 +50,7 @@ namespace SSRSMigrate.Status
 
             this.mFromFileName = fromFileName;
             this.mFromPath = fromPath;
-            this.mErrors = errors;
+            this.mError = error;
             this.mSuccess = success;
         }
     }
