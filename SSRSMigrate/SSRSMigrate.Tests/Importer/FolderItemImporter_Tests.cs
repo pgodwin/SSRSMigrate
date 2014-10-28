@@ -36,7 +36,7 @@ namespace SSRSMigrate.Tests.Importer
         private string expectedFolderItem_NotFound_FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\NotFound";
 
         // Expected data for a folder item that is in a path that does not contain a proper token.
-        // These would be items in a path that is not a child of and 'Export' folder.
+        // These would be items in a path that is not a child of an 'Export' folder.
          private string expectedFolderItem_NoToken_FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\SSRSMigrate_AW_Tests\\NoToken";
         
         private string expectedFolderItemPath_NoToken = "C:\\temp\\SSRSMigrate_AW_Tests\\SSRSMigrate_AW_Tests";
