@@ -8,7 +8,6 @@ using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SSRSMigrate.Importer;
-using SSRSMigrate.ReportServer2005;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.Status;
 using SSRSMigrate.TestHelper.Logging;
