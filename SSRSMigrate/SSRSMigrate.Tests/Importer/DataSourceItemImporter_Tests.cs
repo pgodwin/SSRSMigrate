@@ -25,6 +25,7 @@ namespace SSRSMigrate.Tests.Importer
         private MockLogger loggerMock = null;
 
         #region Expected Data
+        // Expected successful import item data
         private string expectedAWDataSourceFileName =
             "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json";
 
@@ -84,8 +85,10 @@ namespace SSRSMigrate.Tests.Importer
             WindowsCredentials = false
         };
 
+        // Expected data for a data source item that does not exist on disk
         private string expectedDataSourceItem_NotFound_Filename = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Data Sources\\NotFound.json";
 
+        // Expected data for a data source item that has an exception when being deserialized
         private string expectedAWDataSource_DeserializeException_FileName =
             "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Data Sources\\Exception.json";
 
@@ -167,6 +170,9 @@ namespace SSRSMigrate.Tests.Importer
         }
 
         #region ImportItem Tests
+        /// <summary>
+        /// Tests importing a data source item that exists on disk and will import successfully.
+        /// </summary>
         [Test]
         public void ImportItem_AWDataSource()
         {
@@ -181,6 +187,9 @@ namespace SSRSMigrate.Tests.Importer
             Assert.True(status.Success);
         }
 
+        /// <summary>
+        /// Tests importing a data source item that does not exist on disk.
+        /// </summary>
         [Test]
         public void ImportItem_NotFound()
         {
@@ -195,6 +204,9 @@ namespace SSRSMigrate.Tests.Importer
             Assert.That(ex.Message, Is.EqualTo(expectedDataSourceItem_NotFound_Filename));
         }
 
+        /// <summary>
+        /// Tests importing a data source item where the item's content cannot be deserialized to an DataSourceItem object.
+        /// </summary>
         [Test]
         public void ImportItem_DeserializeException()
         {
