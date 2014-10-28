@@ -47,7 +47,7 @@ namespace SSRSMigrate.Importer
 
             string data = this.mFileSystem.File.ReadAllText(filename);
             string path = this.mFileSystem.Path.GetDirectoryName(filename);
-            string error = null;
+            Exception error = null;
             bool success = true;
 
             DataSourceItem item = null;
@@ -60,7 +60,7 @@ namespace SSRSMigrate.Importer
             catch (Exception er)
             {
                 success = false;
-                error =  er.Message;
+                error = er;
             }
             
             status = new ImportStatus(filename, path, error, success);
