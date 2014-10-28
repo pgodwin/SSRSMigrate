@@ -43,8 +43,10 @@ namespace SSRSMigrate.Importer
             if (!this.mFileSystem.File.Exists(filename))
                 throw new FileNotFoundException(filename);
 
+            this.mLogger.Debug("ImportItem - filename = {0}", filename);
+
             string data = this.mFileSystem.File.ReadAllText(filename);
-            string path = this.mFileSystem.Path.GetDirectoryName(filename);
+            string diskPath = this.mFileSystem.Path.GetDirectoryName(filename);
             Exception error = null;
             bool success = true;
 
@@ -52,16 +54,24 @@ namespace SSRSMigrate.Importer
 
             try
             {
+                this.mLogger.Trace("ImportItem - data = {0}", data);
+                this.mLogger.Debug("ImportItem - diskPath = {0}", diskPath);
+
                 item = this.mSerializeWrapper.DeserializeObject<DataSourceItem>(data);
                 success = true;
+
+                this.mLogger.Debug("ImportItem - Name = {0}", item.Name);
+                this.mLogger.Debug("ImportItem - Path = {0}", item.Path);
             }
             catch (Exception er)
             {
+                this.mLogger.Error(er, "ImportItem - Error importing item from '{0}'.", filename);
+
                 success = false;
                 error = er;
             }
             
-            status = new ImportStatus(filename, path, error, success);
+            status = new ImportStatus(filename, diskPath, error, success);
 
             return item;
         }
