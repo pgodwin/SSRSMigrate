@@ -117,7 +117,7 @@ namespace SSRSMigrate.Tests.Importer
 
         #region ImportItem Tests
         /// <summary>
-        /// Testes importing a ReportItem that exists on disk and will import successfully.
+        /// Tests importing a ReportItem that exists on disk and will import successfully.
         /// </summary>
         [Test]
         public void ImportItem()
