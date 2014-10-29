@@ -147,6 +147,9 @@
     <None Include="Test AW Data\Imports\ExtractedArchive\Export\SSRSMigrate_AW_Tests\Reports\Store Contacts.rdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Test AW Data\Imports\ExtractedArchive\SSRSMigrate_AW_Tests\Reports\Company Sales.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Test AW Data\Imports\SSRSMigrate_AW_Tests.zip" />
     <None Include="Test AW Data\ZipBundler\SSRSMigrate_AW_Tests\Data Sources\AWDataSource.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
