@@ -36,16 +36,6 @@ namespace SSRSMigrate.IntegrationTests.Importer
             VirtualPath = null,
             Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
         };
-
-        ReportItem expectedReportItem_NoToken = new ReportItem()
-        {
-            Name = "Company Sales",
-            Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
-            Description = null,
-            ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
-            VirtualPath = null,
-            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
-        };
         #endregion
 
         #region Environment Methods
