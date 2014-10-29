@@ -16,8 +16,6 @@ using SSRSMigrate.Exporter.Writer;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.Factory;
 using SSRSMigrate.DataMapper;
-using SSRSMigrate.TestHelper.Logging;
-using Ninject.Extensions.Logging;
 using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate.IntegrationTests
@@ -106,6 +104,12 @@ namespace SSRSMigrate.IntegrationTests
 
             // Bind ISerializeWrapper
             this.Bind<ISerializeWrapper>().To<JsonConvertWrapper>();
+
+            // Bind IZipFileReaderWrapper
+            this.Bind<IZipFileReaderWrapper>().To<ZipFileReaderWrapper>();
+
+            // Bind IBundleReader
+            this.Bind<IBundleReader>().To<ZipBundleReader>();
         }
     }
 
