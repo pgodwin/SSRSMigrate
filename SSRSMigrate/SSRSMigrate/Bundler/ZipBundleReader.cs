@@ -5,6 +5,7 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using Ninject;
 using Ninject.Extensions.Logging;
 using SSRSMigrate.Bundler.Events;
 using SSRSMigrate.Wrappers;
@@ -61,6 +62,7 @@ namespace SSRSMigrate.Bundler
         public event ReportReadEventHandler OnReportRead;
         #endregion
 
+        [Inject]
         public ZipBundleReader(
            IZipFileReaderWrapper zipFileReaderWrapper,
            ICheckSumGenerator checkSumGenerator,
