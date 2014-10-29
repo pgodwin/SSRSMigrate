@@ -1,0 +1,10 @@
+{
+  "ConnectString": "Data Source=(local);Initial Catalog=AdventureWorks2008",
+  "CredentialsRetrieval": "Integrated",
+  "Enabled": true,
+  "EnabledSpecified": true,
+  "Extension": "SQL",
+  "ImpersonateUser": false,
+  "ImpersonateUserSpecified": true,
+  "OriginalConnectStringExpressionBased": false,
+  "Password": null,

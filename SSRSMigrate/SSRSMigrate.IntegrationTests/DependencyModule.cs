@@ -103,6 +103,9 @@ namespace SSRSMigrate.IntegrationTests
 
             // Bind ICheckSumGenerator
             this.Bind<ICheckSumGenerator>().To<MD5CheckSumGenerator>();
+
+            // Bind ISerializeWrapper
+            this.Bind<ISerializeWrapper>().To<JsonConvertWrapper>();
         }
     }
 
