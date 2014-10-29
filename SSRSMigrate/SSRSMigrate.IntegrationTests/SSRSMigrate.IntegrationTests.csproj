@@ -123,6 +123,25 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Test AW Data\Imports\ExtractedArchive\ExportSummary.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test AW Data\Imports\ExtractedArchive\Export\SSRSMigrate_AW_Tests\Data Sources\AWDataSource.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test AW Data\Imports\ExtractedArchive\Export\SSRSMigrate_AW_Tests\Data Sources\Test Data Source.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test AW Data\Imports\ExtractedArchive\Export\SSRSMigrate_AW_Tests\Reports\Company Sales.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test AW Data\Imports\ExtractedArchive\Export\SSRSMigrate_AW_Tests\Reports\Sales Order Detail.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test AW Data\Imports\ExtractedArchive\Export\SSRSMigrate_AW_Tests\Reports\Store Contacts.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Test AW Data\Imports\SSRSMigrate_AW_Tests.zip" />
     <None Include="Test AW Data\ZipBundler\SSRSMigrate_AW_Tests\Data Sources\AWDataSource.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -157,16 +176,21 @@
   <ItemGroup>
     <Content Include="Test AW Data\Exports\2005\SSRSMigrate_AW_Tests\Reports\Sub Folder\EmptyPlaceHolder.txt" />
     <Content Include="Test AW Data\Exports\2010\SSRSMigrate_AW_Tests\Reports\Sub Folder\EmptyPlaceHolder.txt" />
+    <Content Include="Test AW Data\Imports\ExtractedArchive\Export\SSRSMigrate_AW_Tests\Reports\Sub Folder\EmptyPlaceHolder.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Test AW Data\ZipBundler\SSRSMigrate_AW_Tests\Sub Folder\EmptyPlaceHolder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>echo d | xcopy "$(SolutionDir)SSRSMigrate.Tests\Test AW Reports" "$(ProjectDir)$(OutDir)Test AW Reports" /f /j /s /z /r /y</PreBuildEvent>
+    <PreBuildEvent>echo d | xcopy "$(SolutionDir)SSRSMigrate.Tests\Test AW Reports" "$(ProjectDir)$(OutDir)Test AW Reports" /f /j /s /z /r /y
+echo d | xcopy "$(SolutionDir)SSRSMigrate.IntegrationTests\Test AW Data\Imports" "$(ProjectDir)$(OutDir)Test AW Data\Imports" /f /j /s /z /r /y</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>del /F /Q "$(ProjectDir)$(OutDir)Test AW Data\ZipBundler\SSRSMigrate_AW_Tests\Sub Folder\EmptyPlaceHolder.txt"</PostBuildEvent>
+    <PostBuildEvent>del /F /Q "$(ProjectDir)$(OutDir)Test AW Data\ZipBundler\SSRSMigrate_AW_Tests\Sub Folder\EmptyPlaceHolder.txt"
+del /F /Q "$(ProjectDir)$(OutDir)Test AW Data\Imports\ExtractedArchive\Export\SSRSMigrate_AW_Tests\Reports\Sub Folder\EmptyPlaceHolder.txt"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

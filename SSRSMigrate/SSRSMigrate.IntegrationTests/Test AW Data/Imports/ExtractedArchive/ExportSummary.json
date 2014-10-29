@@ -1,0 +1,48 @@
+{
+  "DataSources": [
+    {
+      "Path": "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+      "FileName": "AWDataSource.json",
+      "CheckSum": "42352f007cf07bcec798b5ca9e4643a7"
+    },
+    {
+      "Path": "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+      "FileName": "Test Data Source.json",
+      "CheckSum": "81a151f4b17aba7e1516d0801cadf4ee"
+    }
+  ],
+  "Reports": [
+    {
+      "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
+      "FileName": "Company Sales.rdl",
+      "CheckSum": "1adde7720ca2f0af49550fc676f70804"
+    },
+    {
+      "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
+      "FileName": "Sales Order Detail.rdl",
+      "CheckSum": "640a2f60207f03779fdedfed71d8101d"
+    },
+    {
+      "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
+      "FileName": "Store Contacts.rdl",
+      "CheckSum": "a225b92ed8475e6bc5b59f5b2cc396fa"
+    }
+  ],
+  "Folders": [
+    {
+      "Path": "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+      "FileName": "",
+      "CheckSum": ""
+    },
+    {
+      "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
+      "FileName": "",
+      "CheckSum": ""
+    },
+    {
+      "Path": "Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder",
+      "FileName": "",
+      "CheckSum": ""
+    }
+  ]
+}
