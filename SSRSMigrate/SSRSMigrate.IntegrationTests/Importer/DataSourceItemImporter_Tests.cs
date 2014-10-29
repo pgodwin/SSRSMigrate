@@ -23,7 +23,6 @@ namespace SSRSMigrate.IntegrationTests.Importer
         #region Test Data
         private string dataSourceItemFilename = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json";
         private string dataSourceItem_NotFound_FileName = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\NotFound.json";
-        private string dataSourceItem_NoToken_FileName = "SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json";
         private string dataSourceItemFilename_DeserializeError_Filename = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\SerializationError.json";
         #endregion
 
