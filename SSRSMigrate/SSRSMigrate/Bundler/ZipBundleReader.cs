@@ -18,8 +18,8 @@ namespace SSRSMigrate.Bundler
         private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
         private readonly ILogger mLogger = null;
         private readonly IFileSystem mFileSystem = null;
-        private readonly string mFileName = null;
-        private readonly string mUnpackDirectory = null;
+        private string mFileName = null;
+        private string mUnpackDirectory = null;
 
         private string mExportSummaryFilename = "ExportSummary.json";
 
@@ -33,6 +33,26 @@ namespace SSRSMigrate.Bundler
         {
             get { return this.mEntries; }
         }
+
+        public string ArchiveFileName
+        {
+            get { return this.mFileName; }
+            set
+            {
+                this.mZipFileReaderWrapper.FileName = value;
+                this.mFileName = value;
+            }
+        }
+
+        public string UnPackDirectory
+        {
+            get { return this.mUnpackDirectory; }
+            set
+            {
+                this.mZipFileReaderWrapper.UnPackDirectory = value;
+                this.mUnpackDirectory = value;
+            }
+        }
         #endregion
 
         #region Events
@@ -40,6 +60,42 @@ namespace SSRSMigrate.Bundler
         public event DataSourceReadEventHandler OnDataSourceRead;
         public event ReportReadEventHandler OnReportRead;
         #endregion
+
+        public ZipBundleReader(
+           IZipFileReaderWrapper zipFileReaderWrapper,
+           ICheckSumGenerator checkSumGenerator,
+           ILogger logger,
+           IFileSystem fileSystem)
+        {
+
+            if (zipFileReaderWrapper == null)
+                throw new ArgumentNullException("zipFileReaderWrapper");
+
+            if (checkSumGenerator == null)
+                throw new ArgumentNullException("checkSumGenerator");
+
+            if (logger == null)
+                throw new ArgumentNullException("logger");
+
+            if (fileSystem == null)
+                throw new ArgumentNullException("fileSystem");
+
+            this.mZipFileReaderWrapper = zipFileReaderWrapper;
+            this.mCheckSumGenerator = checkSumGenerator;
+            this.mLogger = logger;
+            this.mFileSystem = fileSystem;
+
+            // Register event for when entries are extracted using the IZipFileReaderWrapper
+            this.mZipFileReaderWrapper.OnEntryExtracted += EntryExtractedEventHandler;
+
+            // Create entries Dictionary with default keys
+            this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>()
+		    {
+			    { "DataSources", new List<BundleSummaryEntry>() },
+			    { "Reports", new List<BundleSummaryEntry>() },
+			    { "Folders", new List<BundleSummaryEntry>() }
+		    };
+        }
 
         public ZipBundleReader(
             string fileName,
