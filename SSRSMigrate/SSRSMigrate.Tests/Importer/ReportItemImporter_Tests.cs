@@ -88,10 +88,10 @@ namespace SSRSMigrate.Tests.Importer
                 .Returns(() => expectedReportItemPath_NoToken);
 
             // ISystemIOWrapper.Path.GetFileName Method Mocks
-            fileSystemMock.Setup(f => f.Path.GetFileName(expectedReportItemFileName))
+            fileSystemMock.Setup(f => f.Path.GetFileNameWithoutExtension(expectedReportItemFileName))
                 .Returns(() => expectedReportItem.Name);
 
-            fileSystemMock.Setup(f => f.Path.GetFileName(expectedReportItem_NoToken_FileName))
+            fileSystemMock.Setup(f => f.Path.GetFileNameWithoutExtension(expectedReportItem_NoToken_FileName))
                 .Returns(() => expectedReportItem_NoToken.Name);
 
             importer = new ReportItemImporter(fileSystemMock.Object, loggerMock);

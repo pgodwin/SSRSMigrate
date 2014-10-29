@@ -51,7 +51,7 @@ namespace SSRSMigrate.Importer
             {
                 this.mLogger.Debug("ImportItem - diskPath = {0}", diskPath);
 
-                string name = this.mFileSystem.Path.GetFileName(filename);
+                string name = this.mFileSystem.Path.GetFileNameWithoutExtension(filename);
 
                 this.mLogger.Debug("ImportItem - name = {0}", name);
 
