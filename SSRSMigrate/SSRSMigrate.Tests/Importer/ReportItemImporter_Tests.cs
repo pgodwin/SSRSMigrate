@@ -42,8 +42,8 @@ namespace SSRSMigrate.Tests.Importer
 
         // Expected data for a Report item that is in a path that does not contain a proper token.
         // These would be items in a path that is not a child of an 'Export' folder.
-        private string expectedReportItem_NoToken_FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Reports\\NoToken.rdl";
-        private string expectedReportItemPath_NoToken = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Reports";
+        private string expectedReportItem_NoToken_FileName = "C:\\temp\\SSRSMigrate_AW_Tests\\SSRSMigrate_AW_Tests\\Reports\\NoToken.rdl";
+        private string expectedReportItemPath_NoToken = "C:\\temp\\SSRSMigrate_AW_Tests\\SSRSMigrate_AW_Tests\\Reports";
 
         private ReportItem expectedReportItem_NoToken = new ReportItem()
         {
