@@ -85,6 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bundler\BundleReader\ZipBundleReader_Tests.cs" />
     <Compile Include="DependencyModule.cs" />
     <Compile Include="EndToEnd_Export\ReportServer2005\ExportEverythingTests.cs" />
     <Compile Include="EndToEnd_Export\ReportServer2010\ExportEverythingTests.cs" />
@@ -178,7 +179,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Bundler\BundleReader\" />
     <Folder Include="Test AW Data\Exports\2005\SSRSMigrate_AW_Tests\Data Sources\" />
     <Folder Include="Test AW Data\Exports\2010\SSRSMigrate_AW_Tests\Data Sources\" />
   </ItemGroup>
