@@ -9,6 +9,6 @@ namespace SSRSMigrate.Wrappers
     public interface ISerializeWrapper
     {
         T DeserializeObject<T>(string value);
-        string SerializeObject<T>(object value);
+        string SerializeObject(object value);
     }
 }

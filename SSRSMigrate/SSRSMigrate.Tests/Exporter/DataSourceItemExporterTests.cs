@@ -10,6 +10,7 @@ using SSRSMigrate.Exporter.Writer;
 using Newtonsoft.Json;
 using System.IO;
 using SSRSMigrate.Status;
+using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate.Tests.Exporter
 {
@@ -19,13 +20,38 @@ namespace SSRSMigrate.Tests.Exporter
     {
         DataSourceItemExporter exporter = null;
         Mock<IExportWriter> exportWriterMock = null;
+        Mock<ISerializeWrapper> serializeWrapperMock = null;
 
         #region Expected Values
         DataSourceItem expectedDataSourceItem = null;
 
         string expectedDataSourceItemFileName = "C:\\temp\\SSRSMigrate_AW_Tests\\AWDataSource.json";
 
-        string expectedDataSourceItemJson = null;
+        string expectedDataSourceItemJson = @"{
+  ""ConnectString"": ""Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008"",
+  ""CredentialsRetrieval"": ""Integrated"",
+  ""Enabled"": true,
+  ""EnabledSpecified"": true,
+  ""Extension"": ""SQL"",
+  ""ImpersonateUser"": false,
+  ""ImpersonateUserSpecified"": true,
+  ""OriginalConnectStringExpressionBased"": false,
+  ""Password"": null,
+  ""Prompt"": ""Enter a user name and password to access the data source:"",
+  ""UseOriginalConnectString"": false,
+  ""UserName"": null,
+  ""WindowsCredentials"": false,
+  ""Name"": ""AWDataSource"",
+  ""Path"": ""/SSRSMigrate_AW_Tests/Data Sources/AWDataSource"",
+  ""CreatedBy"": ""nitzer\\jasper"",
+  ""CreationDate"": ""2014-09-30T16:18:14.19"",
+  ""Description"": null,
+  ""ID"": ""7b79a3fc-bbcf-4773-881f-62ca675f1646"",
+  ""ModifiedBy"": ""nitzer\\jasper"",
+  ""ModifiedDate"": ""2014-09-30T16:18:38.907"",
+  ""Size"": 307,
+  ""VirtualPath"": null
+}";
         #endregion
 
         [TestFixtureSetUp]
@@ -61,14 +87,20 @@ namespace SSRSMigrate.Tests.Exporter
             expectedDataSourceItemJson = JsonConvert.SerializeObject(expectedDataSourceItem, Formatting.Indented);
             
             exportWriterMock = new Mock<IExportWriter>();
+            serializeWrapperMock = new Mock<ISerializeWrapper>();
 
+            // Mock IExporter.Save any argument with overwrite = True
             exportWriterMock.Setup(e => e.Save(It.IsAny<string>(), It.IsAny<string>(), true));
             
             // Mock IExporter.Save where the filename exists but overwrite = false
             exportWriterMock.Setup(e => e.Save(expectedDataSourceItemFileName, It.IsAny<string>(), false))
                 .Throws(new IOException(string.Format("File '{0}' already exists.", expectedDataSourceItemFileName)));
 
-            exporter = new DataSourceItemExporter(exportWriterMock.Object);
+            // Mock ISerializeWrapper.Serialize
+            serializeWrapperMock.Setup(s => s.SerializeObject(expectedDataSourceItem))
+                .Returns(() => expectedDataSourceItemJson);
+
+            exporter = new DataSourceItemExporter(exportWriterMock.Object, serializeWrapperMock.Object);
         }
 
         [TestFixtureTearDown]
@@ -90,7 +122,7 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void Constructor_Succeed()
         {
-            DataSourceItemExporter dataSourceExporter = new DataSourceItemExporter(exportWriterMock.Object);
+            DataSourceItemExporter dataSourceExporter = new DataSourceItemExporter(exportWriterMock.Object, serializeWrapperMock.Object);
 
             Assert.NotNull(dataSourceExporter);
         }
@@ -101,11 +133,24 @@ namespace SSRSMigrate.Tests.Exporter
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    DataSourceItemExporter dataSourceExporter = new DataSourceItemExporter(null);
+                    DataSourceItemExporter dataSourceExporter = new DataSourceItemExporter(null, serializeWrapperMock.Object);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: exportWriter"));
         
+        }
+
+        [Test]
+        public void Constructor_NullISerializeWrapper()
+        {
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+                delegate
+                {
+                    DataSourceItemExporter dataSourceExporter = new DataSourceItemExporter(exportWriterMock.Object, null);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: serializeWrapper"));
+
         }
         #endregion
 

@@ -76,6 +76,8 @@ namespace SSRSMigrate
 
             this.Bind<IFileSystem>().To<FileSystem>();
 
+            this.Bind<ISerializeWrapper>().To<JsonConvertWrapper>();
+
             // Bind IExportWriter
             this.Bind<IExportWriter>().To<FileExportWriter>().WhenInjectedExactlyInto<DataSourceItemExporter>();
             this.Bind<IExportWriter>().To<FileExportWriter>().WhenInjectedExactlyInto<ReportItemExporter>();

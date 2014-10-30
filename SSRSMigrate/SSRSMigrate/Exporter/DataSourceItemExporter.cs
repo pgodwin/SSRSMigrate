@@ -7,19 +7,27 @@ using Newtonsoft.Json;
 using System.IO;
 using SSRSMigrate.Exporter.Writer;
 using SSRSMigrate.Status;
+using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate.Exporter
 {
     public class DataSourceItemExporter : IItemExporter<DataSourceItem>
     {
         private readonly IExportWriter mExportWriter = null;
+        private readonly ISerializeWrapper mSerializeWrapper = null;
 
-        public DataSourceItemExporter(IExportWriter exportWriter)
+        public DataSourceItemExporter(
+            IExportWriter exportWriter,
+            ISerializeWrapper serializeWrapper)
         {
             if (exportWriter == null)
                 throw new ArgumentNullException("exportWriter");
 
+            if (serializeWrapper == null)
+                throw new ArgumentNullException("serializeWrapper");
+
             this.mExportWriter = exportWriter;
+            this.mSerializeWrapper = serializeWrapper;
         }
 
         public ExportStatus SaveItem(DataSourceItem item, string fileName, bool overwrite = true)
@@ -33,8 +41,7 @@ namespace SSRSMigrate.Exporter
             try
             {
                 // Serialize DataSourceItem to JSON
-                //TODO Use ISerializeWrapper
-                string json = JsonConvert.SerializeObject(item, Formatting.Indented);
+                string json = this.mSerializeWrapper.SerializeObject(item);
 
                 this.mExportWriter.Save(fileName, json, overwrite);
 

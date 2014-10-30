@@ -83,6 +83,12 @@ namespace SSRSMigrate.IntegrationTests
 
             this.Bind<IFileSystem>().To<FileSystem>();
 
+            // Bind ISerializeWrapper
+            this.Bind<ISerializeWrapper>().To<JsonConvertWrapper>();
+
+            // Bind IZipFileReaderWrapper
+            this.Bind<IZipFileReaderWrapper>().To<ZipFileReaderWrapper>();
+
             // Bind IExportWriter
             this.Bind<IExportWriter>().To<FileExportWriter>().WhenInjectedExactlyInto<DataSourceItemExporter>();
             this.Bind<IExportWriter>().To<FileExportWriter>().WhenInjectedExactlyInto<ReportItemExporter>();
@@ -101,12 +107,6 @@ namespace SSRSMigrate.IntegrationTests
 
             // Bind ICheckSumGenerator
             this.Bind<ICheckSumGenerator>().To<MD5CheckSumGenerator>();
-
-            // Bind ISerializeWrapper
-            this.Bind<ISerializeWrapper>().To<JsonConvertWrapper>();
-
-            // Bind IZipFileReaderWrapper
-            this.Bind<IZipFileReaderWrapper>().To<ZipFileReaderWrapper>();
 
             // Bind IBundleReader
             this.Bind<IBundleReader>().To<ZipBundleReader>();

@@ -16,7 +16,7 @@ namespace SSRSMigrate.Wrappers
             return JsonConvert.DeserializeObject<T>(value);
         }
 
-        public string SerializeObject<T>(object value)
+        public string SerializeObject(object value)
         {
             if (value == null)
                 throw new ArgumentNullException("value");
