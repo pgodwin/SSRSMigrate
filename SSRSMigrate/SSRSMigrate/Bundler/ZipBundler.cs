@@ -68,6 +68,7 @@ namespace SSRSMigrate.Bundler
     {
         private readonly IZipFileWrapper mZipFileWrapper = null;
         private readonly ICheckSumGenerator mCheckSumGenerator = null;
+        private readonly ISerializeWrapper mSerializeWrapper = null;
         private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
         private readonly ILogger mLogger = null;
 
@@ -83,7 +84,11 @@ namespace SSRSMigrate.Bundler
             get { return this.mEntries; }
         }
 
-        public ZipBundler(IZipFileWrapper zipFileWrapper, ICheckSumGenerator checkSumGenerator, ILogger logger)
+        public ZipBundler(
+            IZipFileWrapper zipFileWrapper, 
+            ICheckSumGenerator checkSumGenerator, 
+            ILogger logger,
+            ISerializeWrapper serializeWrapper)
         {
             if (zipFileWrapper == null)
                 throw new ArgumentNullException("zipFileWrapper");
@@ -94,9 +99,13 @@ namespace SSRSMigrate.Bundler
             if (logger == null)
                 throw new ArgumentNullException("logger");
 
+            if (serializeWrapper == null)
+                throw new ArgumentNullException("serializeWrapper");
+
             this.mZipFileWrapper = zipFileWrapper;
             this.mCheckSumGenerator = checkSumGenerator;
             this.mLogger = logger;
+            this.mSerializeWrapper = serializeWrapper;
 
             // Create entries Dictionary with default keys
             this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>()
@@ -233,8 +242,7 @@ namespace SSRSMigrate.Bundler
         public string CreateSummary()
         {
             // Serialize mEntries Dictionary to JSON format
-            //TODO Use ISerializeWrapper
-            string summary = JsonConvert.SerializeObject(this.mEntries, Formatting.Indented);
+            string summary = this.mSerializeWrapper.SerializeObject(this.mEntries);
 
             this.mLogger.Trace("CreateSummary - JSON = {0}", summary);
             this.mLogger.Trace("CreateSummary - Saving summary as '{0}'...", this.mExportSummaryFilename);

@@ -30,6 +30,7 @@ namespace SSRSMigrate.Tests.Exporter
         ZipBundler zipBundler = null;
         Mock<IZipFileWrapper> zipFileMock = null;
         Mock<ICheckSumGenerator> checkSumGenMock = null;
+        Mock<ISerializeWrapper> serializeWrapperMock = null;
 
         #region Test Values
         TestData awDataSource = new TestData()
@@ -122,6 +123,73 @@ namespace SSRSMigrate.Tests.Exporter
         #endregion
 
         #region Expected Values
+        Dictionary<string, List<BundleSummaryEntry>> expectedEntries = new Dictionary<string, List<BundleSummaryEntry>>()
+		    {
+		        {
+		            "DataSources", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                            FileName = "AWDataSource.json",
+                            CheckSum = "7b4e44d94590f501ba24cd3904a925c3"
+		                }
+		            }
+		        },
+		        {
+		            "Reports", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Company Sales.rdl",
+                            CheckSum = "1adde7720ca2f0af49550fc676f70804"
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Sales Order Detail.rdl",
+                            CheckSum = "640a2f60207f03779fdedfed71d8101d"
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Store Contacts.rdl",
+                            CheckSum = "a225b92ed8475e6bc5b59f5b2cc396fa"
+		                },
+		            }
+		        },
+		        {
+		            "Folders", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Sub Folder",
+                            FileName = "",
+                            CheckSum = ""
+		                }
+		            }
+		        }
+		    };
+
         string expectedSummary = @"{
   ""DataSources"": [
     {
@@ -152,15 +220,37 @@ namespace SSRSMigrate.Tests.Exporter
       ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
       ""FileName"": """",
       ""CheckSum"": """"
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+      ""FileName"": """",
+      ""CheckSum"": """"
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+      ""FileName"": """",
+      ""CheckSum"": """"
+    },
+    {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Sub Folder"",
+      ""FileName"": """",
+      ""CheckSum"": """"
     }
   ]
 }";
+
+        Dictionary<string, List<BundleSummaryEntry>> expectedEntriesNoData = new Dictionary<string, List<BundleSummaryEntry>>()
+		    {
+			    { "DataSources", new List<BundleSummaryEntry>() },
+			    { "Reports", new List<BundleSummaryEntry>() },
+			    { "Folders", new List<BundleSummaryEntry>() }
+		    };
+
         string expectedSummaryNoData = @"{
   ""DataSources"": [],
   ""Reports"": [],
   ""Folders"": []
 }";
-
         #endregion
 
         [TestFixtureSetUp]
@@ -168,6 +258,7 @@ namespace SSRSMigrate.Tests.Exporter
         {
             zipFileMock = new Mock<IZipFileWrapper>();
             checkSumGenMock = new Mock<ICheckSumGenerator>();
+            serializeWrapperMock = new Mock<ISerializeWrapper>();
 
             // IZipFileWrapper.AddDirectory Mocks
             zipFileMock.Setup(z => z.AddDirectory(It.IsAny<string>()));
@@ -251,6 +342,25 @@ namespace SSRSMigrate.Tests.Exporter
             checkSumGenMock.Setup(c => c.CreateCheckSum(
                 doesNotExistReport.FileName))
                 .Returns(() => doesNotExistReport.CheckSum);
+
+            // ISerializeWrapper.Serialize Mocks
+            //serializeWrapperMock.Setup(s => s.SerializeObject(It.IsAny <Dictionary<string, List<BundleSummaryEntry>>>()))
+            //    .Returns(() => expectedSummary);
+
+            serializeWrapperMock.Setup(s => s.SerializeObject(It.Is<Dictionary<string, List<BundleSummaryEntry>>>(
+                p => p["DataSources"].Count > 0 &&
+                        p["Folders"].Count > 0 &&
+                        p["Reports"].Count > 0
+                )))
+                .Returns(() => expectedSummary);
+
+            // Mock for ISerializeWrapper.Serialize where the entry being serialized contains no data
+            serializeWrapperMock.Setup(s => s.SerializeObject(It.Is<Dictionary<string, List<BundleSummaryEntry>>>(
+                p =>    p["DataSources"].Count == 0 &&
+                        p["Folders"].Count == 0 &&
+                        p["Reports"].Count == 0
+                )))
+                .Returns(() => expectedSummaryNoData);
         }
 
         [TestFixtureTearDown]
@@ -265,7 +375,7 @@ namespace SSRSMigrate.Tests.Exporter
             // Recreate ZipBundler for each test, so the CreateSummary tests have fresh data
             MockLogger logger = new MockLogger();
 
-            zipBundler = new ZipBundler(zipFileMock.Object, checkSumGenMock.Object, logger);
+            zipBundler = new ZipBundler(zipFileMock.Object, checkSumGenMock.Object, logger, serializeWrapperMock.Object);
         }
 
         [TearDown]
@@ -280,7 +390,7 @@ namespace SSRSMigrate.Tests.Exporter
         {
             MockLogger logger = new MockLogger();
 
-            ZipBundler actual = new ZipBundler(zipFileMock.Object, checkSumGenMock.Object, logger);
+            ZipBundler actual = new ZipBundler(zipFileMock.Object, checkSumGenMock.Object, logger, serializeWrapperMock.Object);
 
             Assert.NotNull(actual);
         }
@@ -295,7 +405,7 @@ namespace SSRSMigrate.Tests.Exporter
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    new ZipBundler(null, checkSumMock.Object, logger);
+                    new ZipBundler(null, checkSumMock.Object, logger, serializeWrapperMock.Object);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: zipFileWrapper"));
@@ -311,7 +421,7 @@ namespace SSRSMigrate.Tests.Exporter
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    new ZipBundler(zipMock.Object, null, logger);
+                    new ZipBundler(zipMock.Object, null, logger, serializeWrapperMock.Object);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: checkSumGenerator"));
