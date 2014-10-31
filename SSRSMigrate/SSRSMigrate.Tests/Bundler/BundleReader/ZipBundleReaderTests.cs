@@ -32,6 +32,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         private Mock<IZipFileReaderWrapper> zipReaderMock = null;
         private Mock<ICheckSumGenerator> checkSumGenMock = null;
         private Mock<IFileSystem> fileSystemMock = null;
+        private Mock<ISerializeWrapper> serializeWrapperMock = null;
 
         private string zipFileName = "C:\\temp\\SSRSMigrate_AW_Tests.zip";
         private string unPackDirectory = "C:\\temp\\";
@@ -86,7 +87,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         {
             ExtractedTo = "C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder",
             CheckSum = "",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Sub Folder"
+            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder"
         };
 
         ZipEntryReadEvent folderSubFolderEventArgs = null;
@@ -145,12 +146,85 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
         ZipEntryReadEvent summaryFileEventArgs = null;
 
+        Dictionary<string, List<BundleSummaryEntry>> entries = new Dictionary<string, List<BundleSummaryEntry>>()
+		    {
+		        {
+		            "DataSources", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                            FileName = "AWDataSource.json",
+                            CheckSum = "7b4e44d94590f501ba24cd3904a925c3"
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                            FileName = "Test Data Source.json",
+                            CheckSum = "81a151f4b17aba7e1516d0801cadf4ee"
+		                }
+		            }
+		        },
+		        {
+		            "Reports", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Company Sales.rdl",
+                            CheckSum = "1adde7720ca2f0af49550fc676f70804"
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Sales Order Detail.rdl",
+                            CheckSum = "640a2f60207f03779fdedfed71d8101d"
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Store Contacts.rdl",
+                            CheckSum = "a225b92ed8475e6bc5b59f5b2cc396fa"
+		                },
+		            }
+		        },
+		        {
+		            "Folders", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder",
+                            FileName = "",
+                            CheckSum = ""
+		                }
+		            }
+		        }
+		    };
+
         string exportSummary = @"{
   ""DataSources"": [
     {
       ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
       ""FileName"": ""AWDataSource.json"",
-      ""CheckSum"": ""42352f007cf07bcec798b5ca9e4643a7""
+      ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
     },
     {
       ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
@@ -177,6 +251,11 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
   ],
   ""Folders"": [
     {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
+      ""FileName"": """",
+      ""CheckSum"": """"
+    },
+    {
       ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
       ""FileName"": """",
       ""CheckSum"": """"
@@ -194,12 +273,91 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
   ]
 }";
         // For testing when a file in the export summary does not exist on disk
+         Dictionary<string, List<BundleSummaryEntry>> entriesFileDoesntExist = new Dictionary<string, List<BundleSummaryEntry>>()
+		    {
+		        {
+		            "DataSources", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                            FileName = "AWDataSource.json",
+                            CheckSum = "7b4e44d94590f501ba24cd3904a925c3"
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                            FileName = "Test Data Source.json",
+                            CheckSum = "81a151f4b17aba7e1516d0801cadf4ee"
+		                }
+		            }
+		        },
+		        {
+		            "Reports", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Company Sales.rdl",
+                            CheckSum = "1adde7720ca2f0af49550fc676f70804"
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Sales Order Detail.rdl",
+                            CheckSum = "640a2f60207f03779fdedfed71d8101d"
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Store Contacts.rdl",
+                            CheckSum = "a225b92ed8475e6bc5b59f5b2cc396fa"
+		                },
+                        new BundleSummaryEntry()
+                        {
+                            Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "File Doesnt Exist.rdl",
+                            CheckSum = "a225b92ed8475e6bc5b59f5b2cc396fa"
+                        }
+		            }
+		        },
+		        {
+		            "Folders", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder",
+                            FileName = "",
+                            CheckSum = ""
+		                }
+		            }
+		        }
+		    };
+
         string exportSummaryFileDoesntExist = @"{
   ""DataSources"": [
     {
       ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
       ""FileName"": ""AWDataSource.json"",
-      ""CheckSum"": ""42352f007cf07bcec798b5ca9e4643a7""
+      ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
     },
     {
       ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
@@ -231,6 +389,11 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
   ],
   ""Folders"": [
     {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
+      ""FileName"": """",
+      ""CheckSum"": """"
+    },
+    {
       ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
       ""FileName"": """",
       ""CheckSum"": """"
@@ -249,12 +412,90 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 }";
         
         // For testing when a directory in the export summary does not exist on disk
+        Dictionary<string, List<BundleSummaryEntry>> entriesDirectoryDoesntExist = new Dictionary<string, List<BundleSummaryEntry>>()
+		    {
+		        {
+		            "DataSources", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                            FileName = "AWDataSource.json",
+                            CheckSum = "7b4e44d94590f501ba24cd3904a925c3"
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                            FileName = "Test Data Source.json",
+                            CheckSum = "81a151f4b17aba7e1516d0801cadf4ee"
+		                }
+		            }
+		        },
+		        {
+		            "Reports", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Company Sales.rdl",
+                            CheckSum = "1adde7720ca2f0af49550fc676f70804"
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Sales Order Detail.rdl",
+                            CheckSum = "640a2f60207f03779fdedfed71d8101d"
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Store Contacts.rdl",
+                            CheckSum = "a225b92ed8475e6bc5b59f5b2cc396fa"
+		                },
+		            }
+		        },
+		        {
+		            "Folders", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+                        {
+                            Path = "Export\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist",
+                            FileName = "",
+                            CheckSum = ""
+                        }
+		            }
+		        }
+		    };
         string exportSummaryDirectoryDoesntExist = @"{
   ""DataSources"": [
     {
       ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
       ""FileName"": ""AWDataSource.json"",
-      ""CheckSum"": ""42352f007cf07bcec798b5ca9e4643a7""
+      ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
     },
     {
       ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
@@ -281,6 +522,11 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
   ],
   ""Folders"": [
     {
+      ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
+      ""FileName"": """",
+      ""CheckSum"": """"
+    },
+    {
       ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
       ""FileName"": """",
       ""CheckSum"": """"
@@ -303,12 +549,85 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
   ]
 }";
         // For testing when a checksum does not match
+        Dictionary<string, List<BundleSummaryEntry>> entriesChecksumMismatch = new Dictionary<string, List<BundleSummaryEntry>>()
+		    {
+		        {
+		            "DataSources", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                            FileName = "AWDataSource.json",
+                            CheckSum = "7b4e44d94590f501ba24cd3904a925c3"
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                            FileName = "Test Data Source.json",
+                            CheckSum = "81a151f4b17aba7e1516d0801cadf4ee"
+		                }
+		            }
+		        },
+		        {
+		            "Reports", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Company Sales.rdl",
+                            CheckSum = "BAD CHECKSUM HERE"
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Sales Order Detail.rdl",
+                            CheckSum = "640a2f60207f03779fdedfed71d8101d"
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "Store Contacts.rdl",
+                            CheckSum = "a225b92ed8475e6bc5b59f5b2cc396fa"
+		                },
+		            }
+		        },
+		        {
+		            "Folders", new List<BundleSummaryEntry>()
+		            {
+		                new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports",
+                            FileName = "",
+                            CheckSum = ""
+		                },
+                        new BundleSummaryEntry()
+		                {
+		                    Path = "Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder",
+                            FileName = "",
+                            CheckSum = ""
+		                }
+		            }
+		        }
+		    };
+
         string exportSummaryChecksumMismatch = @"{
   ""DataSources"": [
     {
       ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
       ""FileName"": ""AWDataSource.json"",
-      ""CheckSum"": ""42352f007cf07bcec798b5ca9e4643a7""
+      ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
     },
     {
       ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
@@ -420,6 +739,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             zipReaderMock = new Mock<IZipFileReaderWrapper>();
             checkSumGenMock = new Mock<ICheckSumGenerator>();
             fileSystemMock = new Mock<IFileSystem>();
+            serializeWrapperMock = new Mock<ISerializeWrapper>();
 
             // IZipFileReaderWrapper.UnPack Method Mocks
             // Each time IZipFileReaderWrapper.OnEntryExtracted is called,
@@ -453,7 +773,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             
             // ICheckSumGenerator.CreateCheckSum Method Mocks
             checkSumGenMock.Setup(c => c.CreateCheckSum(dataSourceAW.ExtractedTo))
-                .Returns(() => "42352f007cf07bcec798b5ca9e4643a7");
+                .Returns(() => "7b4e44d94590f501ba24cd3904a925c3");
 
             checkSumGenMock.Setup(c => c.CreateCheckSum(dataSourceTest.ExtractedTo))
                 .Returns(() => "81a151f4b17aba7e1516d0801cadf4ee");
@@ -516,6 +836,10 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
             fileSystemMock.Setup(i => i.File.Exists(reportDoesNotExist.ExtractedTo))
                 .Returns(() => false);
+
+            // ISerializeWrapper.DeserializeObject Mocks
+            serializeWrapperMock.Setup(s => s.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummary))
+                .Returns(() => entries);
         }
 
         [TestFixtureTearDown]
@@ -535,7 +859,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                 zipReaderMock.Object,
                 checkSumGenMock.Object,
                 logger,
-                fileSystemMock.Object
+                fileSystemMock.Object,
+                serializeWrapperMock.Object
                 );
 
             // Subscribe to the events again for each test
@@ -576,7 +901,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                 zipReaderMock.Object,
                 checkSumGenMock.Object,
                 logger,
-                fileSystemMock.Object);
+                fileSystemMock.Object,
+                serializeWrapperMock.Object);
 
             Assert.NotNull(actual);
         }
@@ -595,7 +921,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                                 zipReaderMock.Object,
                                 checkSumGenMock.Object,
                                 logger,
-                                fileSystemMock.Object);
+                                fileSystemMock.Object,
+                                serializeWrapperMock.Object);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("'NotAZip.txt' is not a valid zip archive."));
@@ -624,7 +951,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
             Assert.AreEqual(2, zipBundleReader.Entries["DataSources"].Count);
             Assert.AreEqual(3, zipBundleReader.Entries["Reports"].Count);
-            Assert.AreEqual(3, zipBundleReader.Entries["Folders"].Count);
+            Assert.AreEqual(4, zipBundleReader.Entries["Folders"].Count);
         }
 
         [Test]
@@ -645,7 +972,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                         readerMock.Object,
                         checkSumGenMock.Object,
                         logger,
-                        fileSystemMock.Object);
+                        fileSystemMock.Object,
+                        serializeWrapperMock.Object);
 
             FileNotFoundException ex = Assert.Throws<FileNotFoundException>(
                 delegate
@@ -674,7 +1002,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                         readerMock.Object,
                         checkSumGenMock.Object,
                         logger,
-                        fileSystemMock.Object);
+                        fileSystemMock.Object,
+                        serializeWrapperMock.Object);
 
             Exception ex = Assert.Throws<Exception>(
                 delegate
@@ -698,7 +1027,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             zipBundleReader.Read();
 
             Assert.AreEqual(2, actualDataSources.Count);
-            Assert.AreEqual(3, actualFolders.Count);
+            Assert.AreEqual(4, actualFolders.Count);
             Assert.AreEqual(3, actualReports.Count);
         }
 
@@ -714,9 +1043,14 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             string actualFailedReportName = null;
 
             var readerMock = new Mock<IZipFileReaderWrapper>();
+            var serializeMock = new Mock<ISerializeWrapper>();
 
             readerMock.Setup(z => z.ReadEntry(entryName))
                 .Returns(() => exportSummaryFileDoesntExist);
+
+            serializeMock.Setup(
+                s => s.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummaryFileDoesntExist))
+                .Returns(() => entriesFileDoesntExist);
 
             var logger = new MockLogger();
 
@@ -726,7 +1060,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                         readerMock.Object,
                         checkSumGenMock.Object,
                         logger,
-                        fileSystemMock.Object);
+                        fileSystemMock.Object,
+                        serializeMock.Object);
 
             reader.ReadExportSummary();
 
@@ -752,7 +1087,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         public void Read_DirectoryDoesntExist()
         {
             string entryName = "ExportSummary.json";
-            int expectedSuccessfulDirectories = 3;
+            int expectedSuccessfulDirectories = 4;
             int expectedFailedDirectories = 1;
             string expectedFailedDirectoryName = "C:\\temp\\Export\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist";
             int actualSuccessfulDirectories = 0;
@@ -760,9 +1095,14 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             string actualFailedDirectoryName = null;
 
             var readerMock = new Mock<IZipFileReaderWrapper>();
+            var serializeMock = new Mock<ISerializeWrapper>();
 
             readerMock.Setup(z => z.ReadEntry(entryName))
                 .Returns(() => exportSummaryDirectoryDoesntExist);
+
+            serializeMock.Setup(
+                s => s.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummaryDirectoryDoesntExist))
+                .Returns(() => entriesDirectoryDoesntExist);
 
             var logger = new MockLogger();
 
@@ -772,7 +1112,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                         readerMock.Object,
                         checkSumGenMock.Object,
                         logger,
-                        fileSystemMock.Object);
+                        fileSystemMock.Object,
+                        serializeMock.Object);
 
             reader.ReadExportSummary();
 
@@ -810,9 +1151,14 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             string actualFailedPath = null;
 
             var readerMock = new Mock<IZipFileReaderWrapper>();
+            var serializeMock = new Mock<ISerializeWrapper>();
 
             readerMock.Setup(z => z.ReadEntry(entryName))
                 .Returns(() => exportSummaryChecksumMismatch);
+
+            serializeMock.Setup(
+                s => s.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummaryChecksumMismatch))
+                .Returns(() => entriesChecksumMismatch);
 
             var logger = new MockLogger();
 
@@ -822,7 +1168,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                         readerMock.Object,
                         checkSumGenMock.Object,
                         logger,
-                        fileSystemMock.Object);
+                        fileSystemMock.Object,
+                        serializeMock.Object);
 
             reader.ReadExportSummary();
 

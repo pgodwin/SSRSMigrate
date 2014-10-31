@@ -16,6 +16,7 @@ namespace SSRSMigrate.Bundler
     {
         private IZipFileReaderWrapper mZipFileReaderWrapper = null;
         private readonly ICheckSumGenerator mCheckSumGenerator = null;
+        private readonly ISerializeWrapper mSerializeWrapper = null;
         private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
         private readonly ILogger mLogger = null;
         private readonly IFileSystem mFileSystem = null;
@@ -67,7 +68,8 @@ namespace SSRSMigrate.Bundler
            IZipFileReaderWrapper zipFileReaderWrapper,
            ICheckSumGenerator checkSumGenerator,
            ILogger logger,
-           IFileSystem fileSystem)
+           IFileSystem fileSystem,
+            ISerializeWrapper serializeWrapper)
         {
 
             if (zipFileReaderWrapper == null)
@@ -82,10 +84,14 @@ namespace SSRSMigrate.Bundler
             if (fileSystem == null)
                 throw new ArgumentNullException("fileSystem");
 
+            if (serializeWrapper == null)
+                throw new ArgumentNullException("serializeWrapper");
+
             this.mZipFileReaderWrapper = zipFileReaderWrapper;
             this.mCheckSumGenerator = checkSumGenerator;
             this.mLogger = logger;
             this.mFileSystem = fileSystem;
+            this.mSerializeWrapper = serializeWrapper;
 
             // Register event for when entries are extracted using the IZipFileReaderWrapper
             this.mZipFileReaderWrapper.OnEntryExtracted += EntryExtractedEventHandler;
@@ -105,7 +111,8 @@ namespace SSRSMigrate.Bundler
             IZipFileReaderWrapper zipFileReaderWrapper, 
             ICheckSumGenerator checkSumGenerator, 
             ILogger logger,
-            IFileSystem fileSystem)
+            IFileSystem fileSystem,
+            ISerializeWrapper serializeWrapper)
         {
             if (string.IsNullOrEmpty(fileName))
                 throw new ArgumentException("fileName");
@@ -125,6 +132,9 @@ namespace SSRSMigrate.Bundler
             if (fileSystem == null)
                 throw new ArgumentNullException("fileSystem");
 
+            if (serializeWrapper == null)
+                throw new ArgumentNullException("serializeWrapper");
+
             this.mFileName = fileName;
             this.mUnpackDirectory = unpackDirectory;
             this.mZipFileReaderWrapper = zipFileReaderWrapper;
@@ -134,6 +144,7 @@ namespace SSRSMigrate.Bundler
             this.mFileSystem = fileSystem;
             this.mZipFileReaderWrapper.UnPackDirectory = unpackDirectory;
             this.mZipFileReaderWrapper.FileName = fileName;
+            this.mSerializeWrapper = serializeWrapper;
 
             // Register event for when entries are extracted using the IZipFileReaderWrapper
             this.mZipFileReaderWrapper.OnEntryExtracted += EntryExtractedEventHandler;
@@ -172,8 +183,8 @@ namespace SSRSMigrate.Bundler
 
             this.mLogger.Debug("ReadExportSummary - Summary = {0}", exportSummary);
 
-            //TODO Use ISerilizeWrapper
-            this.mEntries = JsonConvert.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummary);
+            //this.mEntries = JsonConvert.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummary);
+            this.mEntries = this.mSerializeWrapper.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummary);
         }
 
         public void Read()
