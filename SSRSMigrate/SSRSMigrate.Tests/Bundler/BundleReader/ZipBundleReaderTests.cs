@@ -34,7 +34,10 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         private Mock<IFileSystem> fileSystemMock = null;
         private Mock<ISerializeWrapper> serializeWrapperMock = null;
 
+        // The path to the zip archive to be read by the tests. This is passed to the ZipBundleReader constructor
         private string zipFileName = "C:\\temp\\SSRSMigrate_AW_Tests.zip";
+
+        // The path to where the zip archive would be extracted to. This is passed to the ZipBundleReader constructor
         private string unPackDirectory = "C:\\temp\\";
 
         #region Test Values
@@ -673,12 +676,16 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         #endregion
 
         #region Actual Values
+        // These hold the paths to the items read from the ExportSummary
         private List<string> actualReports = null;
         private List<string> actualFolders = null;
         private List<string> actualDataSources = null; 
         #endregion
 
         #region Value Setup
+        /// <summary>
+        /// Setups the test values used in the OnEntryExtracted event
+        /// </summary>
         private void SetupTestValues()
         {
             dataSourceAWEventArgs = new ZipEntryReadEvent(
@@ -885,11 +892,10 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             zipBundleReader = null;
         }
 
-        #region Event Handlers
-        
-        #endregion
-
         #region Constructor Tests
+        /// <summary>
+        /// Test the contructor when passed all valid parameters.
+        /// </summary>
         [Test]
         public void Constructor()
         {
@@ -907,6 +913,9 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             Assert.NotNull(actual);
         }
 
+        /// <summary>
+        /// Test the constructor when passed a filename parameter that is not a zip archive.
+        /// </summary>
         [Test]
         public void Constructor_InvalidFileName()
         {
@@ -930,6 +939,9 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         #endregion
 
         #region Extract Tests
+        /// <summary>
+        /// Test extracting the zip archive successfully.
+        /// </summary>
         [Test]
         public void Extract()
         {
@@ -942,6 +954,9 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         #endregion
         
         #region ReadExportSummary Tests
+        /// <summary>
+        /// Test reading the ExportSummary.json from the zip archive successfully, where it contains the expected bundle entries.
+        /// </summary>
         [Test]
         public void ReadExportSummary()
         {
@@ -954,6 +969,9 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             Assert.AreEqual(4, zipBundleReader.Entries["Folders"].Count);
         }
 
+        /// <summary>
+        /// Tests reading the ExportSummary.json from the zip archive where the ExportSummary.json zip entry does not exist.
+        /// </summary>
         [Test]
         public void ReadExportSummary_EntryDoesntExist()
         {
@@ -984,6 +1002,9 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             Assert.That(ex.Message, Is.EqualTo(entryName));
         }
 
+        /// <summary>
+        /// Tests reading the ExportSummary.json from the zip archive where the ExportSummary.json contains no bundle entries.
+        /// </summary>
         [Test]
         public void ReadExportSummary_EmptySummary()
         {
@@ -1019,6 +1040,9 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         #endregion
 
         #region Read Tests
+        /// <summary>
+        /// Tests reading the ExportSummary.json and reading each bundle entry successfully, where each bundle entry was extracted and exists on disk.
+        /// </summary>
         [Test]
         public void Read()
         {
@@ -1031,6 +1055,10 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             Assert.AreEqual(3, actualReports.Count);
         }
 
+        /// <summary>
+        /// Tests reading the ExportSummary.json and reading each bundle entry, where a single report bundle entry was not extracted, 
+        /// so it does not exist on disk.
+        /// </summary>
         [Test]
         public void Read_FileDoesntExist()
         {
@@ -1083,6 +1111,10 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             Assert.AreEqual(expectedFailedReportName, actualFailedReportName);
         }
 
+        /// <summary>
+        /// Tests reading the ExportSummary.json and reading each bundle entry, where a single folder bundle entry was not extracted, 
+        /// so it does not exist on disk.
+        /// </summary>
         [Test]
         public void Read_DirectoryDoesntExist()
         {
@@ -1134,7 +1166,11 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             Assert.AreEqual(expectedFailedDirectories, actualFailedDirectories);
             Assert.AreEqual(expectedFailedDirectoryName, actualFailedDirectoryName);
         }
-        
+
+        /// <summary>
+        /// Tests reading the ExportSummary.json and reading each bundle entry, where a single report bundle entry was extracted,
+        /// but the checksum for the report on disk does not match the checksum in EntrySummary.json.
+        /// </summary>
         [Test]
         public void Read_Report_ChecksumMismatch()
         {
