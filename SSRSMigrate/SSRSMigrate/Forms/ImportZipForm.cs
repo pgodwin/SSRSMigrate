@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using Ninject.Extensions.Logging;
 using SSRSMigrate.Bundler;
 using SSRSMigrate.Bundler.Events;
+using SSRSMigrate.Importer;
+using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Writer;
+using SSRSMigrate.Status;
 
 namespace SSRSMigrate.Forms
 {
@@ -17,7 +22,9 @@ namespace SSRSMigrate.Forms
     public partial class ImportZipForm : Form
     {
         private readonly IBundleReader mBundleReader = null;
-        //private readonly IBundleItemReader mBundleItemReader = null;
+        private readonly IItemImporter<DataSourceItem> mDataSourceItemImporter = null;
+        private readonly IItemImporter<FolderItem> mFolderItemImporter = null;
+        private readonly IItemImporter<ReportItem> mReportItemImporter = null;
         private readonly IReportServerWriter mReportServerWriter = null;
         private ILoggerFactory mLoggerFactory = null;
         private readonly string mSourceFileName = null;
@@ -42,7 +49,11 @@ namespace SSRSMigrate.Forms
             string destinationServerUrl,
             IBundleReader bundleReader,
             IReportServerWriter writer,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IItemImporter<DataSourceItem> dataSourceItemImporter,
+            IItemImporter<FolderItem> folderItemImporter,
+            IItemImporter<ReportItem> reportItemImporter
+            )
         {
             if (string.IsNullOrEmpty(sourceFileName))
                 throw new ArgumentException("sourceFileName");
@@ -62,6 +73,15 @@ namespace SSRSMigrate.Forms
             if (loggerFactory == null)
                 throw new ArgumentNullException("loggerFactory");
 
+            if (dataSourceItemImporter == null)
+                throw new ArgumentNullException("dataSourceItemImporter");
+
+            if (folderItemImporter == null)
+                throw new ArgumentNullException("folderItemImporter");
+
+            if (reportItemImporter == null)
+                throw new ArgumentNullException("reportItemImporter");
+
             InitializeComponent();
 
             this.mSourceFileName = sourceFileName;
@@ -71,6 +91,9 @@ namespace SSRSMigrate.Forms
             this.mReportServerWriter = writer;
             this.mLoggerFactory = loggerFactory;
             this.mLogger = this.mLoggerFactory.GetCurrentClassLogger();
+            this.mDataSourceItemImporter = dataSourceItemImporter;
+            this.mFolderItemImporter = folderItemImporter;
+            this.mReportItemImporter = reportItemImporter;
         }
 
         #region UI Events
@@ -135,7 +158,7 @@ namespace SSRSMigrate.Forms
 
         private void btnSrcRefreshReports_Click(object sender, EventArgs e)
         {
-
+            this.SourceRefreshReports();
         }
         #endregion
 
@@ -236,19 +259,30 @@ namespace SSRSMigrate.Forms
 
         private void BundleReaderOnDataSourceRead(IBundleReader sender, ItemReadEvent itemReadEvent)
         {
-            ListViewItem oItem = new ListViewItem(itemReadEvent.FileName);
+            ListViewItem oItem = null;
 
-            // If extra failed, indicate in list
             if (itemReadEvent.Success)
-                oItem.Checked = true;
+            {
+                ImportStatus status = null;
+                DataSourceItem item = this.mDataSourceItemImporter.ImportItem(itemReadEvent.FileName, out status);
+
+                if (status.Success)
+                {
+                    oItem = this.AddListViewDataSourceItem_Success(itemReadEvent, status, item);
+                }
+                else
+                {
+                    oItem = this.AddListViewDataSourceItem_ImportFailed(itemReadEvent, status);
+                }
+            }
             else
             {
-                oItem.Checked = false;
-                oItem.ForeColor = Color.Red;
+                oItem = this.AddListViewDataSourceItem_ExtractFailed(itemReadEvent);
             }
 
-            oItem.Tag = itemReadEvent.FileName;
             oItem.SubItems.Add(itemReadEvent.Path);
+            oItem.SubItems.Add(itemReadEvent.FileName);
+
             oItem.Group = this.lstSrcReports.Groups["dataSourcesGroup"];
 
             this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
@@ -261,65 +295,68 @@ namespace SSRSMigrate.Forms
             this.mDebugForm.LogMessage(string.Format("Refreshing item '{0}' in path '{1}'...", itemReadEvent.FileName, itemReadEvent.Path));
         }
 
+        //lstSrcReports Columns:
+        //Name
+        //Path
+        //Error
+        //ZipPath
+        //ExtractedTo
+        private ListViewItem AddListViewDataSourceItem_Success(ItemReadEvent e, ImportStatus status, DataSourceItem item)
+        {
+            ListViewItem oItem = new ListViewItem(item.Name);
+
+            oItem.Tag = e.FileName;
+            oItem.SubItems.Add(item.Path);
+            oItem.SubItems.Add("");
+
+            oItem.Checked = true;
+
+            return oItem;
+        }
+
+        private ListViewItem AddListViewDataSourceItem_ExtractFailed(ItemReadEvent e)
+        {
+            string name = Path.GetFileNameWithoutExtension(e.FileName);
+            string errors = string.Join("; ", e.Errors);
+
+            ListViewItem oItem = new ListViewItem(name);
+
+            oItem.Checked = false;
+            oItem.ForeColor = Color.Red;
+
+            oItem.Tag = e.FileName;
+            oItem.SubItems.Add("");
+            oItem.SubItems.Add(errors);
+
+            return oItem;
+        }
+
+        private ListViewItem AddListViewDataSourceItem_ImportFailed(ItemReadEvent e, ImportStatus status)
+        {
+            string name = Path.GetFileNameWithoutExtension(e.FileName);
+
+            ListViewItem oItem = new ListViewItem(name);
+
+            oItem.Checked = false;
+            oItem.ForeColor = Color.Red;
+
+            oItem.Tag = e.FileName;
+            oItem.SubItems.Add(e.Path);
+            oItem.SubItems.Add(status.Error.Message);
+
+
+            return oItem;
+        }
         private void BundleReaderOnReportRead(IBundleReader sender, ItemReadEvent itemReadEvent)
         {
             ListViewItem oItem = new ListViewItem(itemReadEvent.FileName);
-
-            // If extra failed, indicate in list
-            if (itemReadEvent.Success)
-                oItem.Checked = true;
-            else
-            {
-                oItem.Checked = false;
-                oItem.ForeColor = Color.Red;
-            }
-
-            oItem.Tag = itemReadEvent.FileName;
-            oItem.SubItems.Add(itemReadEvent.Path);
-            oItem.Group = this.lstSrcReports.Groups["reportsGroup"];
-
-            this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
-            this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
-
-            this.lblStatus.Text = string.Format("Refreshing item '{0}'...", itemReadEvent.FileName);
-
-            this.mLogger.Debug("Refreshing item '{0}' in path '{1}'...", itemReadEvent.FileName, itemReadEvent.Path);
-
-            this.mDebugForm.LogMessage(string.Format("Refreshing item '{0}' in path '{1}'...", itemReadEvent.FileName, itemReadEvent.Path));
         }
 
         private void BundleReaderOnFolderRead(IBundleReader sender, ItemReadEvent itemReadEvent)
         {
             ListViewItem oItem = new ListViewItem(itemReadEvent.FileName);
-
-            // If extra failed, indicate in list
-            if (itemReadEvent.Success)
-                oItem.Checked = true;
-            else
-            {
-                oItem.Checked = false;
-                oItem.ForeColor = Color.Red;
-            }
-
-            oItem.Tag = itemReadEvent.FileName;
-            oItem.SubItems.Add(itemReadEvent.Path);
-            oItem.Group = this.lstSrcReports.Groups["foldersGroup"];
-
-            this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
-            this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
-
-            this.lblStatus.Text = string.Format("Refreshing item '{0}'...", itemReadEvent.FileName);
-
-            this.mLogger.Debug("Refreshing item '{0}' in path '{1}'...", itemReadEvent.FileName, itemReadEvent.Path);
-
-            this.mDebugForm.LogMessage(string.Format("Refreshing item '{0}' in path '{1}'...", itemReadEvent.FileName, itemReadEvent.Path));
         }
         #endregion
-
-        private void btnSrcRefreshReports_Click_1(object sender, EventArgs e)
-        {
-            this.SourceRefreshReports();
-        }
 
         #region Import Methods
         #endregion

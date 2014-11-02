@@ -11,6 +11,8 @@ using SSRSMigrate.Enum;
 using SSRSMigrate.Errors;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.Factory;
+using SSRSMigrate.Importer;
+using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Writer;
 using Ninject.Extensions.Logging;
@@ -344,18 +346,32 @@ namespace SSRSMigrate.Forms
 
             IReportServerWriter writer = null;
             IBundleReader zipBundleReader = null;
+            IItemImporter<DataSourceItem> dataSourceItemImporter = null;
+            IItemImporter<FolderItem> folderItemImporter = null;
+            IItemImporter<ReportItem> reportItemImporter = null;
 
             string version = this.GetDestinationServerVersion();
 
             writer = this.mKernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>(version);
             zipBundleReader = this.mKernel.Get<IBundleReader>();
 
+            // Set properties for IBundleReader
+            zipBundleReader.UnPackDirectory = this.GetTempExtractPath();
+            zipBundleReader.ArchiveFileName = this.txtImportZipFilename.Text;
+
+            dataSourceItemImporter = this.mKernel.Get<DataSourceItemImporter>();
+            folderItemImporter = this.mKernel.Get<FolderItemImporter>();
+            reportItemImporter = this.mKernel.Get<ReportItemImporter>();
+
             this.PerformImportFromZip(
                 this.txtImportZipFilename.Text,
                 this.txtDestPath.Text,
                 this.txtDestUrl.Text,
                 writer,
-                zipBundleReader
+                zipBundleReader,
+                dataSourceItemImporter,
+                folderItemImporter,
+                reportItemImporter
                 );
         }
         #endregion
@@ -641,7 +657,10 @@ namespace SSRSMigrate.Forms
             string destinationRootPath,
             string destinationServerUrl,
             IReportServerWriter writer,
-            IBundleReader zipBundleReader)
+            IBundleReader zipBundleReader,
+            IItemImporter<DataSourceItem> dataSourceItemImporter,
+            IItemImporter<FolderItem> folderItemImporter,
+            IItemImporter<ReportItem> reportItemImporter)
         {
             ImportZipForm importzipForm = new ImportZipForm(
                 sourceFilename,
@@ -649,10 +668,21 @@ namespace SSRSMigrate.Forms
                 destinationServerUrl,
                 zipBundleReader,
                 writer,
-                this.mLoggerFactory);
+                this.mLoggerFactory,
+                dataSourceItemImporter,
+                folderItemImporter,
+                reportItemImporter);
 
             importzipForm.DebugForm = this.mDebugForm;
             importzipForm.ShowDialog();
+        }
+
+        private string GetTempExtractPath()
+        {
+            string path = Path.Combine(Path.GetTempPath(),
+                Guid.NewGuid().ToString("N"));
+
+            return path;
         }
         #endregion
     }

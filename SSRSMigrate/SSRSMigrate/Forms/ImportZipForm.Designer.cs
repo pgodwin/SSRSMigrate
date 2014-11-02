@@ -46,12 +46,12 @@
             this.lstSrcReports = new System.Windows.Forms.ListView();
             this.colSrcName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colSrcPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.colError = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colZipPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colExtractedTo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.groupBox1.SuspendLayout();
             this.grpSource.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -77,6 +77,7 @@
             this.btnPerformImport.TabIndex = 16;
             this.btnPerformImport.Text = "Perform Import";
             this.btnPerformImport.UseVisualStyleBackColor = true;
+            this.btnPerformImport.Click += new System.EventHandler(this.btnPerformImport_Click);
             // 
             // lstDestReports
             // 
@@ -142,6 +143,7 @@
             this.btnDebug.Size = new System.Drawing.Size(32, 23);
             this.btnDebug.TabIndex = 17;
             this.btnDebug.UseVisualStyleBackColor = true;
+            this.btnDebug.Click += new System.EventHandler(this.btnDebug_Click);
             // 
             // btnSrcRefreshReports
             // 
@@ -152,7 +154,7 @@
             this.btnSrcRefreshReports.TabIndex = 15;
             this.btnSrcRefreshReports.Text = "Refresh Reports List";
             this.btnSrcRefreshReports.UseVisualStyleBackColor = true;
-            this.btnSrcRefreshReports.Click += new System.EventHandler(this.btnSrcRefreshReports_Click_1);
+            this.btnSrcRefreshReports.Click += new System.EventHandler(this.btnSrcRefreshReports_Click);
             // 
             // lstSrcReports
             // 
@@ -196,6 +198,18 @@
             this.colSrcPath.Text = "Path";
             this.colSrcPath.Width = 387;
             // 
+            // colError
+            // 
+            this.colError.Text = "Error";
+            // 
+            // colZipPath
+            // 
+            this.colZipPath.Text = "Zip Path";
+            // 
+            // colExtractedTo
+            // 
+            this.colExtractedTo.Text = "Extracted To";
+            // 
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -218,18 +232,6 @@
             // 
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(100, 16);
-            // 
-            // colError
-            // 
-            this.colError.Text = "Error";
-            // 
-            // colZipPath
-            // 
-            this.colZipPath.Text = "Zip Path";
-            // 
-            // colExtractedTo
-            // 
-            this.colExtractedTo.Text = "Extracted To";
             // 
             // ImportZipForm
             // 
