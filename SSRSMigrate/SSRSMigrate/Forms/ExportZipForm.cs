@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Windows.Forms;
 using SSRSMigrate.Bundler;
@@ -25,6 +25,7 @@ namespace SSRSMigrate.Forms
         private readonly DataSourceItemExporter mDataSourceExporter = null;
         private readonly IBundler mZipBundler = null;
         private readonly ILoggerFactory mLoggerFactory = null;
+        private readonly IFileSystem mFileSystem = null;
 
         private readonly string mSourceRootPath = null;
         private readonly string mExportDestinationFilename = null;
@@ -50,7 +51,8 @@ namespace SSRSMigrate.Forms
             ReportItemExporter reportExporter,
             DataSourceItemExporter dataSourceExporter,
             IBundler zipBundler,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IFileSystem fileSystem)
         {
             if (string.IsNullOrEmpty(sourceRootPath))
                 throw new ArgumentException("sourceRootPath");
@@ -76,6 +78,9 @@ namespace SSRSMigrate.Forms
             if (loggerFactory == null)
                 throw new ArgumentNullException("loggerFactory");
 
+            if (fileSystem == null)
+                throw new ArgumentNullException("fileSystem");
+
             InitializeComponent();
 
             this.mSourceRootPath = sourceRootPath;
@@ -86,6 +91,7 @@ namespace SSRSMigrate.Forms
             this.mDataSourceExporter = dataSourceExporter;
             this.mZipBundler = zipBundler;
             this.mLoggerFactory = loggerFactory;
+            this.mFileSystem = fileSystem;
 
             this.mLogger = mLoggerFactory.GetCurrentClassLogger();
 
@@ -98,7 +104,7 @@ namespace SSRSMigrate.Forms
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
 
-            return Path.Combine(Path.GetTempPath(), name);
+            return this.mFileSystem.Path.Combine(this.mFileSystem.Path.GetTempPath(), name);
         }
 
         private void CreateExportOutputFolder(string path)
@@ -106,12 +112,12 @@ namespace SSRSMigrate.Forms
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            if (Directory.Exists(path))
+            if (this.mFileSystem.Directory.Exists(path))
             {
-                Directory.Delete(path, true);
+                this.mFileSystem.Directory.Delete(path, true);
             }
 
-            Directory.CreateDirectory(path);
+            this.mFileSystem.Directory.CreateDirectory(path);
         }
 
         #region UI Events
@@ -142,6 +148,7 @@ namespace SSRSMigrate.Forms
                     e.Cancel = true;
 
             //TODO Clean up temporary extracted data
+            this.mFileSystem.Directory.Delete(this.mExportOutputTempDirectory);
         }
 
         private void btnExport_Click(object sender, EventArgs e)

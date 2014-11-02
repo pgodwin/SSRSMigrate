@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Windows.Forms;
 using log4net.Config;
@@ -25,6 +26,7 @@ namespace SSRSMigrate.Forms
         private ILoggerFactory mLoggerFactory = null;
         private bool mDebug = false;
         private DebugForm mDebugForm = null;
+        private IFileSystem mFileSystem = null;
 
         public ConnectInfoForm()
         {
@@ -41,6 +43,7 @@ namespace SSRSMigrate.Forms
                 new ReportServerRepositoryModule());
 
             this.mLoggerFactory = mKernel.Get<ILoggerFactory>();
+            this.mFileSystem = mKernel.Get<IFileSystem>();
 
             InitializeComponent();
 
@@ -318,6 +321,7 @@ namespace SSRSMigrate.Forms
             FolderItemExporter folderExporter = null;
             ReportItemExporter reportExporter = null;
             IBundler zipBundler = null;
+            IFileSystem fileSystem = null;
 
             string version = this.GetSourceServerVersion();
 
@@ -328,6 +332,7 @@ namespace SSRSMigrate.Forms
             reportExporter = this.mKernel.Get<ReportItemExporter>();
 
             zipBundler = this.mKernel.Get<IBundler>();
+            fileSystem = this.mKernel.Get<IFileSystem>();
 
             this.PerformExportToZip(this.txtSrcPath.Text,
                 this.txtExportZipFilename.Text,
@@ -335,7 +340,8 @@ namespace SSRSMigrate.Forms
                 folderExporter,
                 reportExporter,
                 dataSourceExporter,
-                zipBundler);
+                zipBundler,
+                fileSystem);
         }
 
         private void ImportFromZip_Connection()
@@ -349,6 +355,7 @@ namespace SSRSMigrate.Forms
             IItemImporter<DataSourceItem> dataSourceItemImporter = null;
             IItemImporter<FolderItem> folderItemImporter = null;
             IItemImporter<ReportItem> reportItemImporter = null;
+            IFileSystem fileSystem = null;
 
             string version = this.GetDestinationServerVersion();
 
@@ -362,6 +369,7 @@ namespace SSRSMigrate.Forms
             dataSourceItemImporter = this.mKernel.Get<DataSourceItemImporter>();
             folderItemImporter = this.mKernel.Get<FolderItemImporter>();
             reportItemImporter = this.mKernel.Get<ReportItemImporter>();
+            fileSystem = this.mKernel.Get<IFileSystem>();
 
             this.PerformImportFromZip(
                 this.txtImportZipFilename.Text,
@@ -371,7 +379,8 @@ namespace SSRSMigrate.Forms
                 zipBundleReader,
                 dataSourceItemImporter,
                 folderItemImporter,
-                reportItemImporter
+                reportItemImporter,
+                fileSystem
                 );
         }
         #endregion
@@ -460,7 +469,7 @@ namespace SSRSMigrate.Forms
             if (string.IsNullOrEmpty(this.txtImportZipFilename.Text))
                 throw new UserInterfaceInvalidFieldException("filename");
 
-            if (!File.Exists(this.txtImportZipFilename.Text))
+            if (!this.mFileSystem.File.Exists(this.txtImportZipFilename.Text))
                 throw new FileNotFoundException(this.txtImportZipFilename.Text);
         }
 
@@ -537,7 +546,7 @@ namespace SSRSMigrate.Forms
         private void Save_ImportZipConfiguration()
         {
             Properties.Settings.Default.ImportZipFileName = this.txtImportZipFilename.Text;
-            Properties.Settings.Default.ImportZipUnpackDir = Path.Combine(Path.GetTempPath(),
+            Properties.Settings.Default.ImportZipUnpackDir = this.mFileSystem.Path.Combine(this.mFileSystem.Path.GetTempPath(),
                 Guid.NewGuid().ToString("N"));
 
             Properties.Settings.Default.Save();
@@ -621,7 +630,8 @@ namespace SSRSMigrate.Forms
             FolderItemExporter folderExporter,
             ReportItemExporter reportExporter,
             DataSourceItemExporter dataSourceExporter,
-            IBundler zipBunder)
+            IBundler zipBunder,
+            IFileSystem fileSystem)
         {
             ExportZipForm exportZipForm = new ExportZipForm(
                 sourceRootPath,
@@ -631,7 +641,8 @@ namespace SSRSMigrate.Forms
                 reportExporter,
                 dataSourceExporter,
                 zipBunder,
-                this.mLoggerFactory);
+                this.mLoggerFactory,
+                fileSystem);
 
             exportZipForm.DebugForm = this.mDebugForm;
             exportZipForm.ShowDialog();
@@ -660,7 +671,8 @@ namespace SSRSMigrate.Forms
             IBundleReader zipBundleReader,
             IItemImporter<DataSourceItem> dataSourceItemImporter,
             IItemImporter<FolderItem> folderItemImporter,
-            IItemImporter<ReportItem> reportItemImporter)
+            IItemImporter<ReportItem> reportItemImporter,
+            IFileSystem fileSystem)
         {
             ImportZipForm importzipForm = new ImportZipForm(
                 sourceFilename,
@@ -671,7 +683,8 @@ namespace SSRSMigrate.Forms
                 this.mLoggerFactory,
                 dataSourceItemImporter,
                 folderItemImporter,
-                reportItemImporter);
+                reportItemImporter,
+                fileSystem);
 
             importzipForm.DebugForm = this.mDebugForm;
             importzipForm.ShowDialog();
@@ -679,7 +692,7 @@ namespace SSRSMigrate.Forms
 
         private string GetTempExtractPath()
         {
-            string path = Path.Combine(Path.GetTempPath(),
+            string path = this.mFileSystem.Path.Combine(this.mFileSystem.Path.GetTempPath(),
                 Guid.NewGuid().ToString("N"));
 
             return path;

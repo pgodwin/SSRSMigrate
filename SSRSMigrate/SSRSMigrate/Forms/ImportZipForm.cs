@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -30,6 +30,7 @@ namespace SSRSMigrate.Forms
         private readonly string mSourceFileName = null;
         private readonly string mDestinationRootPath = null;
         private readonly string mDestinationServerUrl = null;
+        private readonly IFileSystem mFileSystem = null;
 
         private BackgroundWorker mSourceRefreshWorker = null;
         private BackgroundWorker mImportWorker = null;
@@ -52,8 +53,8 @@ namespace SSRSMigrate.Forms
             ILoggerFactory loggerFactory,
             IItemImporter<DataSourceItem> dataSourceItemImporter,
             IItemImporter<FolderItem> folderItemImporter,
-            IItemImporter<ReportItem> reportItemImporter
-            )
+            IItemImporter<ReportItem> reportItemImporter,
+            IFileSystem fileSystem)
         {
             if (string.IsNullOrEmpty(sourceFileName))
                 throw new ArgumentException("sourceFileName");
@@ -82,6 +83,9 @@ namespace SSRSMigrate.Forms
             if (reportItemImporter == null)
                 throw new ArgumentNullException("reportItemImporter");
 
+            if (fileSystem == null)
+                throw new ArgumentNullException("fileSystem");
+    
             InitializeComponent();
 
             this.mSourceFileName = sourceFileName;
@@ -94,6 +98,7 @@ namespace SSRSMigrate.Forms
             this.mDataSourceItemImporter = dataSourceItemImporter;
             this.mFolderItemImporter = folderItemImporter;
             this.mReportItemImporter = reportItemImporter;
+            this.mFileSystem = fileSystem;
         }
 
         #region UI Events
@@ -318,7 +323,7 @@ namespace SSRSMigrate.Forms
 
         private ListViewItem AddListViewDataSourceItem_ExtractFailed(ItemReadEvent e)
         {
-            string name = Path.GetFileNameWithoutExtension(e.FileName);
+            string name = this.mFileSystem.Path.GetFileNameWithoutExtension(e.FileName);
             string errors = string.Join("; ", e.Errors);
 
             ListViewItem oItem = new ListViewItem(name);
@@ -335,7 +340,7 @@ namespace SSRSMigrate.Forms
 
         private ListViewItem AddListViewDataSourceItem_ImportFailed(ItemReadEvent e, ImportStatus status)
         {
-            string name = Path.GetFileNameWithoutExtension(e.FileName);
+            string name = this.mFileSystem.Path.GetFileNameWithoutExtension(e.FileName);
 
             ListViewItem oItem = new ListViewItem(name);
 

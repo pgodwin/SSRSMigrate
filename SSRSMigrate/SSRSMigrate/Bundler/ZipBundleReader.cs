@@ -69,7 +69,7 @@ namespace SSRSMigrate.Bundler
            ICheckSumGenerator checkSumGenerator,
            ILogger logger,
            IFileSystem fileSystem,
-            ISerializeWrapper serializeWrapper)
+           ISerializeWrapper serializeWrapper)
         {
 
             if (zipFileReaderWrapper == null)
