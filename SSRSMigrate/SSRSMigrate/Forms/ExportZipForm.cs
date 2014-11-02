@@ -140,6 +140,8 @@ namespace SSRSMigrate.Forms
             if (this.mSourceRefreshWorker != null)
                 if (this.mSourceRefreshWorker.IsBusy)
                     e.Cancel = true;
+
+            //TODO Clean up temporary extracted data
         }
 
         private void btnExport_Click(object sender, EventArgs e)

@@ -144,6 +144,8 @@ namespace SSRSMigrate.Forms
                 this.mSourceRefreshWorker.ProgressChanged -= new ProgressChangedEventHandler(this.bw_SourceRefreshProgressChanged);
 
             }
+
+            //TODO Clean up temporary extracted data
         }
 
         private void btnPerformImport_Click(object sender, EventArgs e)
