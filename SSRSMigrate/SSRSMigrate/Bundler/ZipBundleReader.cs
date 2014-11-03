@@ -254,13 +254,17 @@ namespace SSRSMigrate.Bundler
 
                 bool success = true;
                 List<string> errors = new List<string>();
-                string checkSum = this.mCheckSumGenerator.CreateCheckSum(fileName);
+                string checkSum = "";
 
                 // Check if the file exists on disk
                 if (!this.mFileSystem.File.Exists(fileName))
                 {
                     success = false;
                     errors.Add(string.Format("File does not exist '{0}'.", fileName));
+                }
+                else
+                {
+                    checkSum = this.mCheckSumGenerator.CreateCheckSum(fileName);
                 }
 
                 // Check if the checksums match
@@ -305,13 +309,17 @@ namespace SSRSMigrate.Bundler
 
                 bool success = true;
                 List<string> errors = new List<string>();
-                string checkSum = this.mCheckSumGenerator.CreateCheckSum(fileName);
+                string checkSum = "";
 
                 // Check if the file exists on disk
                 if (!this.mFileSystem.File.Exists(fileName))
                 {
                     success = false;
                     errors.Add(string.Format("File does not exist '{0}'.", fileName));
+                }
+                else
+                {
+                    checkSum = this.mCheckSumGenerator.CreateCheckSum(fileName);
                 }
 
                 // Check if the checksums match
