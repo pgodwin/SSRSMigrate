@@ -202,13 +202,17 @@ namespace SSRSMigrate.Bundler
 
                 bool success = true;
                 List<string> errors = new List<string>();
-                string checkSum = this.mCheckSumGenerator.CreateCheckSum(fileName);
+                string checkSum = "";
 
                 // Check if the folder exists on disk
                 if (!this.mFileSystem.Directory.Exists(fileName))
                 {
                     success = false;
                     errors.Add(string.Format("Directory does not exist '{0}'.", fileName));
+                }
+                else
+                {
+                    checkSum = this.mCheckSumGenerator.CreateCheckSum(fileName);
                 }
 
                 // Check if the checksums match (folder.CheckSum should be "")
