@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
 using Ninject;
+using Ninject.Extensions.Logging;
 using Ninject.Extensions.Logging.Log4net;
 using NUnit.Framework;
 using SSRSMigrate.Bundler;
 using SSRSMigrate.Bundler.Events;
+using SSRSMigrate.Errors;
+using SSRSMigrate.TestHelper.Logging;
+using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate.IntegrationTests.Bundler.BundleReader
 {
@@ -427,31 +432,432 @@ namespace SSRSMigrate.IntegrationTests.Bundler.BundleReader
         }
 
         #region Constructor Tests
-        //TODO Constructor tests
+        /// <summary>
+        /// Test the contructor when passed all valid parameters.
+        /// </summary>
+        [Test]
+        public void Constructor()
+        {
+            var logger = new MockLogger();
+            var zipReader = kernel.Get<IZipFileReaderWrapper>();
+            var checkSumGen = kernel.Get<ICheckSumGenerator>();
+            var fileSystem = kernel.Get<IFileSystem>();
+            var serializeWrapper = kernel.Get<ISerializeWrapper>();
+            string zipFile = Path.Combine(GetTestDataPath(), zipFilename);
+
+            var actualReader = new ZipBundleReader(
+                zipFile,
+                unpackDir,
+                zipReader,
+                checkSumGen,
+                logger,
+                fileSystem,
+                serializeWrapper);
+
+            Assert.NotNull(actualReader);
+
+            actualReader = null;
+            zipReader = null;
+            checkSumGen = null;
+            fileSystem = null;
+            serializeWrapper = null;
+        }
+
+        /// <summary>
+        /// Test the constructor when passed a filename parameter that is not a zip archive.
+        /// </summary>
+        [Test]
+        public void Constructor_InvalidFileName()
+        {
+            var logger = new MockLogger();
+            var zipReader = kernel.Get<IZipFileReaderWrapper>();
+            var checkSumGen = kernel.Get<ICheckSumGenerator>();
+            var fileSystem = kernel.Get<IFileSystem>();
+            var serializeWrapper = kernel.Get<ISerializeWrapper>();
+            string zipFile = Path.Combine(GetTestDataPath(), "NotAZip.txt");
+
+            InvalidFileArchiveException ex = Assert.Throws<InvalidFileArchiveException>(
+                delegate
+                {
+                    var actualReader = new ZipBundleReader(
+                        zipFile,
+                        unpackDir,
+                        zipReader,
+                        checkSumGen,
+                        logger,
+                        fileSystem,
+                        serializeWrapper);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("'{0}' is not a valid archive.", zipFile)));
+        
+            zipReader = null;
+            checkSumGen = null;
+            fileSystem = null;
+            serializeWrapper = null;
+        }
+
+        /// <summary>
+        /// Tests the constructor when passed a filename that does not exist.
+        /// </summary>
+        [Test]
+        public void Constructor_ArchiveNotFound()
+        {
+            var logger = new MockLogger();
+            var zipReader = kernel.Get<IZipFileReaderWrapper>();
+            var checkSumGen = kernel.Get<ICheckSumGenerator>();
+            var fileSystem = kernel.Get<IFileSystem>();
+            var serializeWrapper = kernel.Get<ISerializeWrapper>();
+            string zipFile = Path.Combine(GetTestDataPath(), "NotFound.zip");
+
+            InvalidFileArchiveException ex = Assert.Throws<InvalidFileArchiveException>(
+                delegate
+                {
+                    var actualReader = new ZipBundleReader(
+                       zipFile,
+                       unpackDir,
+                       zipReader,
+                       checkSumGen,
+                       logger,
+                       fileSystem,
+                       serializeWrapper);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("'{0}' is not a valid archive.", zipFile)));
+
+            zipReader = null;
+            checkSumGen = null;
+            fileSystem = null;
+            serializeWrapper = null;
+        }
         #endregion
 
         #region Extract Tests
-        //TODO Extract tests
+        /// <summary>
+        /// Test extracting the zip archive successfully.
+        /// </summary>
         [Test]
         public void Extract()
         {
-            //string actualUnPackedDirectory = bundleReader.Extract();
-        }
+            string actualUnPackedDirectory = bundleReader.Extract();
 
-        //TODO Extract_NotFound Tests
+            // Verify extracted structure matches what we expect
+            Assert.True(Directory.Exists(actualUnPackedDirectory), "UnpackedDirectory");
+            Assert.True(Directory.Exists(Path.Combine(actualUnPackedDirectory, "Export")), "UnpackedDirectory\\Export");
+            Assert.True(File.Exists(Path.Combine(actualUnPackedDirectory, "ExportSummary.json")),
+                "UnpackedDirectory\\ExportSummary.json");
+            Assert.True(Directory.Exists(Path.Combine(actualUnPackedDirectory, "Export\\SSRSMigrate_AW_Tests")), "UnpackedDirectory\\Export\\SSRSMigrate_AW_Tests");
+            Assert.True(Directory.Exists(Path.Combine(actualUnPackedDirectory, "Export\\SSRSMigrate_AW_Tests\\Data Sources")), "UnpackedDirectory\\Export\\SSRSMigrate_AW_Tests\\Data Sources");
+
+            // Verify data source files
+            Assert.True(
+                File.Exists(Path.Combine(actualUnPackedDirectory,
+                    "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json")),
+                "UnpackedDirectory\\Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json");
+            Assert.True(
+                File.Exists(Path.Combine(actualUnPackedDirectory,
+                    "Export\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json")),
+                "UnpackedDirectory\\Export\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json");
+            Assert.True(Directory.Exists(Path.Combine(actualUnPackedDirectory, "Export\\SSRSMigrate_AW_Tests\\Reports")), "UnpackedDirectory\\Export\\SSRSMigrate_AW_Tests\\Reports");
+            
+            // Verify report files
+            Assert.True(
+                File.Exists(Path.Combine(actualUnPackedDirectory,
+                    "Export\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl")),
+                "UnpackedDirectory\\Export\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl");
+            Assert.True(
+                File.Exists(Path.Combine(actualUnPackedDirectory,
+                    "Export\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl")),
+                "UnpackedDirectory\\Export\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl");
+            Assert.True(
+                File.Exists(Path.Combine(actualUnPackedDirectory,
+                    "Export\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl")),
+                "UnpackedDirectory\\Export\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl");
+            Assert.True(
+                Directory.Exists(Path.Combine(actualUnPackedDirectory,
+                    "Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder")),
+                "UnpackedDirectory\\Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder");
+        }
         #endregion
 
         #region ReadExportSummary Tests
-        //TODO ReadExportSummart tests
-        //TODO ReadExportSummary_EntryDoesntExist
-        //TODO ReadExportSummary_EmptySummary
+        /// <summary>
+        /// Test reading the ExportSummary.json from the zip archive successfully, where it contains the expected bundle entries.
+        /// </summary>
+        [Test]
+        public void ReadExportSummary()
+        {
+            bundleReader.ReadExportSummary();
+
+            Assert.AreEqual(2, bundleReader.Entries["DataSources"].Count);
+            Assert.AreEqual(3, bundleReader.Entries["Reports"].Count);
+            Assert.AreEqual(4, bundleReader.Entries["Folders"].Count);
+        }
+
+        /// <summary>
+        /// Tests reading the ExportSummary.json from the zip archive where the ExportSummary.json zip entry does not exist.
+        /// </summary>
+        [Test]
+        public void ReadExportSummary_EntryDoesntExist()
+        {
+            var logger = new MockLogger();
+            var zipReader = kernel.Get<IZipFileReaderWrapper>();
+            var checkSumGen = kernel.Get<ICheckSumGenerator>();
+            var fileSystem = kernel.Get<IFileSystem>();
+            var serializeWrapper = kernel.Get<ISerializeWrapper>();
+            string zipFile = Path.Combine(GetTestDataPath(), "EntryDoesntExist.zip");
+
+            var actualReader = new ZipBundleReader(
+                       zipFile,
+                       unpackDir,
+                       zipReader,
+                       checkSumGen,
+                       logger,
+                       fileSystem,
+                       serializeWrapper);
+
+            FileNotFoundException ex = Assert.Throws<FileNotFoundException>(
+                delegate
+                {
+                    actualReader.ReadExportSummary();
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("ExportSummary.json"));
+
+            zipReader = null;
+            checkSumGen = null;
+            fileSystem = null;
+            serializeWrapper = null;
+        }
+
+        /// <summary>
+        /// Tests reading the ExportSummary.json from the zip archive where the ExportSummary.json contains no bundle entries.
+        /// </summary>
+        [Test]
+        public void ReadExportSummary_EmptySummary()
+        {
+            var logger = new MockLogger();
+            var zipReader = kernel.Get<IZipFileReaderWrapper>();
+            var checkSumGen = kernel.Get<ICheckSumGenerator>();
+            var fileSystem = kernel.Get<IFileSystem>();
+            var serializeWrapper = kernel.Get<ISerializeWrapper>();
+            string zipFile = Path.Combine(GetTestDataPath(), "EmptySummaryEntry.zip");
+
+            var actualReader = new ZipBundleReader(
+                       zipFile,
+                       unpackDir,
+                       zipReader,
+                       checkSumGen,
+                       logger,
+                       fileSystem,
+                       serializeWrapper);
+
+            Exception ex = Assert.Throws<Exception>(
+                delegate
+                {
+                    actualReader.ReadExportSummary();
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("No data in export summary."));
+
+            zipReader = null;
+            checkSumGen = null;
+            fileSystem = null;
+            serializeWrapper = null;
+        }
         #endregion
 
         #region Read Tests
-        //TODO Read
-        //TODO Read_FileDoesntExist
-        //TODO Read_DirectoryDoesntExist
-        //TODO Read_Report_ChecksumMismatch
+        /// <summary>
+        /// Tests reading the ExportSummary.json and reading each bundle entry successfully, where each bundle entry was extracted and exists on disk.
+        /// </summary>
+        [Test]
+        public void Read()
+        {
+            bundleReader.Extract();
+            bundleReader.ReadExportSummary();
+            bundleReader.Read();
+
+            Assert.AreEqual(2, actualDataSources.Count);
+            Assert.AreEqual(4, actualFolders.Count);
+            Assert.AreEqual(3, actualReports.Count);
+        }
+
+        /// <summary>
+        /// Tests reading the ExportSummary.json and reading each bundle entry, where a single report bundle entry was not extracted, 
+        /// so it does not exist on disk.
+        /// </summary>
+        [Test]
+        public void Read_FileDoesntExist()
+        {
+            var logger = new MockLogger();
+            var zipReader = kernel.Get<IZipFileReaderWrapper>();
+            var checkSumGen = kernel.Get<ICheckSumGenerator>();
+            var fileSystem = kernel.Get<IFileSystem>();
+            var serializeWrapper = kernel.Get<ISerializeWrapper>();
+            string zipFile = Path.Combine(GetTestDataPath(), zipFilename);
+
+            var actualReader = new ZipBundleReader(
+                       zipFile,
+                       unpackDir,
+                       zipReader,
+                       checkSumGen,
+                       logger,
+                       fileSystem,
+                       serializeWrapper);
+
+            string actualUnPackDir = actualReader.Extract();
+
+            // This is the file to delete on disk to simulate a report not extracted
+            string expectedFailedReportName = Path.Combine(actualUnPackDir, "Export\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl");
+
+            // Delete this file from the extraction directory, for the purpose of testing for a file that does not exist
+            File.Delete(expectedFailedReportName);
+
+            // Set expected values
+            int expectedSuccessfulReports = 2;
+            int expectedFailedReports = 1;
+            int actualSuccessfulReports = 0;
+            int actualFailedReports = 0;
+            string actualFailedReportName = null;
+
+            actualReader.OnReportRead += delegate(IBundleReader sender, ItemReadEvent e)
+            {
+                if (e.Success)
+                    actualSuccessfulReports++;
+                else
+                {
+                    actualFailedReports++;
+                    actualFailedReportName = e.FileName;
+                }
+            };
+
+            actualReader.ReadExportSummary();
+            actualReader.Read();
+
+            Assert.AreEqual(expectedSuccessfulReports, actualSuccessfulReports, "Successful Reports");
+            Assert.AreEqual(expectedFailedReports, actualFailedReports, "Failed Reports");
+            Assert.AreEqual(expectedFailedReportName, actualFailedReportName, "Report Name");
+        }
+
+        /// <summary>
+        /// Tests reading the ExportSummary.json and reading each bundle entry, where a single folder bundle entry was not extracted, 
+        /// so it does not exist on disk.
+        /// </summary>
+        [Test]
+        public void Read_DirectoryDoesntExist()
+        {
+            var logger = new MockLogger();
+            var zipReader = kernel.Get<IZipFileReaderWrapper>();
+            var checkSumGen = kernel.Get<ICheckSumGenerator>();
+            var fileSystem = kernel.Get<IFileSystem>();
+            var serializeWrapper = kernel.Get<ISerializeWrapper>();
+            string zipFile = Path.Combine(GetTestDataPath(), zipFilename);
+
+            var actualReader = new ZipBundleReader(
+                       zipFile,
+                       unpackDir,
+                       zipReader,
+                       checkSumGen,
+                       logger,
+                       fileSystem,
+                       serializeWrapper);
+
+            string actualUnPackDir = actualReader.Extract();
+
+            // This is the directory to delete on disk to simulate a folder not extracted
+            string expectedFailedFolderName = Path.Combine(actualUnPackDir, "Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder");
+
+            // Delete this directory from the extraction directory, for the purpose of testing for a folder that does not exist
+            Directory.Delete(expectedFailedFolderName, true);
+
+            // Set expected values
+            int expectedSuccessfulFolders = 3;
+            int expectedFailedFolders = 1;
+            int actualSuccessfulFolders = 0;
+            int actualFailedFolders = 0;
+            string actualFailedFoldersName = null;
+
+            actualReader.OnFolderRead += delegate(IBundleReader sender, ItemReadEvent e)
+            {
+                if (e.Success)
+                    actualSuccessfulFolders++;
+                else
+                {
+                    actualFailedFolders++;
+                    actualFailedFoldersName = e.FileName;
+                }
+            };
+
+            actualReader.ReadExportSummary();
+            actualReader.Read();
+
+            Assert.AreEqual(expectedSuccessfulFolders, actualSuccessfulFolders, "Successful Folders");
+            Assert.AreEqual(expectedFailedFolders, actualFailedFolders, "Failed Folders");
+            Assert.AreEqual(expectedFailedFolderName, actualFailedFoldersName, "Folders Name");
+        }
+
+        /// <summary>
+        /// Tests reading the ExportSummary.json and reading each bundle entry, where a single report bundle entry was extracted,
+        /// but the checksum for the report on disk does not match the checksum in EntrySummary.json.
+        /// </summary>
+        [Test]
+        public void Read_Report_ChecksumMismatch()
+        {
+            var logger = new MockLogger();
+            var zipReader = kernel.Get<IZipFileReaderWrapper>();
+            var checkSumGen = kernel.Get<ICheckSumGenerator>();
+            var fileSystem = kernel.Get<IFileSystem>();
+            var serializeWrapper = kernel.Get<ISerializeWrapper>();
+            string zipFile = Path.Combine(GetTestDataPath(), "InvalidChecksum.zip");
+
+            var actualReader = new ZipBundleReader(
+                       zipFile,
+                       unpackDir,
+                       zipReader,
+                       checkSumGen,
+                       logger,
+                       fileSystem,
+                       serializeWrapper);
+
+            string actualUnPackDir = actualReader.Extract();
+
+            // This is the file on disk that has an invalid checksum
+            string expectedFailedFilename = Path.Combine(actualUnPackDir, "Export\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl");
+            string expectedFailedChecksum = "BAD CHECKSUM HERE";
+
+            // Set expected values
+            int expectedSuccessful = 2;
+            int expectedFailed = 1;
+
+            // Actual values
+            int actualSuccessful = 0;
+            int actualFailed = 0;
+            string actualFailedFilename = null;
+            string actualFailedChecksum = null;
+            string actualFailedPath = null;
+
+            actualReader.OnReportRead += delegate(IBundleReader sender, ItemReadEvent e)
+            {
+                if (e.Success)
+                    actualSuccessful++;
+                else
+                {
+                    actualFailed++;
+                    actualFailedPath = e.Path;
+                    actualFailedFilename = e.FileName;
+                    actualFailedChecksum = e.CheckSum;
+                }
+            };
+
+            actualReader.ReadExportSummary();
+            actualReader.Read();
+
+            Assert.AreEqual(expectedSuccessful, actualSuccessful);
+            Assert.AreEqual(expectedFailed, actualFailed);
+            Assert.AreEqual(expectedFailedChecksum, actualFailedChecksum);
+            Assert.AreEqual(expectedFailedFilename, actualFailedFilename);
+        }
 
         // Event handlers for ZipBundleReader's On*Read events
         private void OnFolderReadEvent(IBundleReader sender, ItemReadEvent e)
