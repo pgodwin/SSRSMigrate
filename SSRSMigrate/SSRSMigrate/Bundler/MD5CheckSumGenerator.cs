@@ -17,9 +17,6 @@ namespace SSRSMigrate.Bundler
             if (!File.Exists(fileName))
                 throw new FileNotFoundException(fileName);
 
-            //if (!File.Exists(fileName))
-            //    return "";
-
             using (var md5 = MD5.Create())
             {
                 using (var stream = File.OpenRead(fileName))
