@@ -9,6 +9,7 @@ using Moq;
 using NUnit.Framework;
 using SSRSMigrate.Bundler;
 using SSRSMigrate.Bundler.Events;
+using SSRSMigrate.Errors;
 using SSRSMigrate.TestHelper.Logging;
 using SSRSMigrate.Wrappers;
 
@@ -772,7 +773,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
             // IZipFileReaderWrapper.FileName Property Mocks
             zipReaderMock.SetupSet(z => z.FileName = "NotAZip.txt")
-                .Throws(new ZipException(string.Format("'NotAZip.txt' is not a valid zip archive.")));
+                .Throws(new InvalidFileArchiveException("NotAZip.txt"));
 
             // IZipFileReaderWrapper.ReadEntry Method Mocks
             zipReaderMock.Setup(z => z.ReadEntry("ExportSummary.json"))
@@ -919,7 +920,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         [Test]
         public void Constructor_InvalidFileName()
         {
-            ZipException ex = Assert.Throws<ZipException>(
+            InvalidFileArchiveException ex = Assert.Throws<InvalidFileArchiveException>(
                 delegate
                 {
                     var logger = new MockLogger();
@@ -934,7 +935,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                                 serializeWrapperMock.Object);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo("'NotAZip.txt' is not a valid zip archive."));
+            Assert.That(ex.Message, Is.EqualTo("'NotAZip.txt' is not a valid archive."));
         }
         #endregion
 

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Ionic.Zip;
+using SSRSMigrate.Errors;
 
 namespace SSRSMigrate.Wrappers
 {
@@ -31,7 +32,7 @@ namespace SSRSMigrate.Wrappers
             set
             {
                 if (!ZipFile.IsZipFile(value))
-                    throw new ZipException(string.Format("'{0}' is not a valid zip archive.", value));
+                    throw new InvalidFileArchiveException(value);
 
                 this.mFileName = value;
             }
@@ -70,7 +71,7 @@ namespace SSRSMigrate.Wrappers
                 throw new FileNotFoundException(fileName);
 
             if (!ZipFile.IsZipFile(fileName))
-                throw new ZipException(string.Format("'{0}' is not a valid zip.", fileName));
+                throw new InvalidFileArchiveException(fileName);
 
             if (Directory.Exists(this.mUnPackDirectory))
                 Directory.Delete(this.mUnPackDirectory, true);
@@ -82,7 +83,7 @@ namespace SSRSMigrate.Wrappers
         public string UnPack()
         {
             if (string.IsNullOrEmpty(this.mFileName))
-                throw new ZipException("Please specify a filename.");
+                throw new ArgumentException("Please specify a filename.");
 
             using (ZipFile zipFile = ZipFile.Read(this.mFileName))
             {

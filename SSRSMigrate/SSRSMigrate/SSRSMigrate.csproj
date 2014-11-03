@@ -100,6 +100,7 @@
     <Compile Include="Bundler\MD5CheckSumGenerator.cs" />
     <Compile Include="Bundler\ZipBundler.cs" />
     <Compile Include="Bundler\ZipBundleReader.cs" />
+    <Compile Include="Errors\InvalidFileArchiveException.cs" />
     <Compile Include="Errors\UserInterfaceInvalidFieldException.cs" />
     <Compile Include="DataMapper\IDataMapper.cs" />
     <Compile Include="DataMapper\ReportingService2005DataMapper.cs" />
