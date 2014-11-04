@@ -24,16 +24,19 @@ namespace SSRSMigrate.Forms
 
             StackTrace stackTrace = new StackTrace();
             var callerMethod = new StackTrace().GetFrame(1).GetMethod();
-            var callerClass = callerMethod.ReflectedType.Name;
-            string caller = string.Format("{0}.{1}", callerClass, callerMethod.Name);
+            if (callerMethod != null)
+            {
+                var callerClass = callerMethod.ReflectedType.Name;
+                string caller = string.Format("{0}.{1}", callerClass, callerMethod.Name);
 
-            ListViewItem oItem = new ListViewItem(DateTime.Now.ToString());
-            oItem.SubItems.Add(caller);
-            oItem.SubItems.Add(message);
-            oItem.ToolTipText = message;
+                ListViewItem oItem = new ListViewItem(DateTime.Now.ToString());
+                oItem.SubItems.Add(caller);
+                oItem.SubItems.Add(message);
+                oItem.ToolTipText = message;
 
-            lstDebug.Invoke(new Action(() => lstDebug.Items.Add(oItem)));
-            lstDebug.Invoke(new Action(() => oItem.EnsureVisible()));
+                lstDebug.Invoke(new Action(() => lstDebug.Items.Add(oItem)));
+                lstDebug.Invoke(new Action(() => oItem.EnsureVisible()));
+            }
         }
 
         /// <summary>
@@ -48,19 +51,22 @@ namespace SSRSMigrate.Forms
 
             StackTrace stackTrace = new StackTrace();
             var callerMethod = new StackTrace().GetFrame(1).GetMethod();
-            var callerClass = callerMethod.ReflectedType.Name;
-            string caller = string.Format("{0}.{1}", callerClass, callerMethod.Name);
+            if (callerMethod != null)
+            {
+                var callerClass = callerMethod.ReflectedType.Name;
+                string caller = string.Format("{0}.{1}", callerClass, callerMethod.Name);
 
-            ListViewItem oItem = new ListViewItem(DateTime.Now.ToString());
-            oItem.SubItems.Add(caller);
-            oItem.SubItems.Add(message);
-            oItem.ToolTipText = message;
+                ListViewItem oItem = new ListViewItem(DateTime.Now.ToString());
+                oItem.SubItems.Add(caller);
+                oItem.SubItems.Add(message);
+                oItem.ToolTipText = message;
 
-            if (isWarning)
-                oItem.ForeColor = Color.OrangeRed;
+                if (isWarning)
+                    oItem.ForeColor = Color.OrangeRed;
 
-            lstDebug.Invoke(new Action(() => lstDebug.Items.Add(oItem)));
-            lstDebug.Invoke(new Action(() => oItem.EnsureVisible()));
+                lstDebug.Invoke(new Action(() => lstDebug.Items.Add(oItem)));
+                lstDebug.Invoke(new Action(() => oItem.EnsureVisible()));
+            }
         }
 
         /// <summary>
@@ -80,19 +86,22 @@ namespace SSRSMigrate.Forms
 
             StackTrace stackTrace = new StackTrace();
             var callerMethod = new StackTrace().GetFrame(1).GetMethod();
-            var callerClass = callerMethod.ReflectedType.Name;
-            string caller = string.Format("{0}.{1}", callerClass, callerMethod.Name);
+            if (callerMethod != null)
+            {
+                var callerClass = callerMethod.ReflectedType.Name;
+                string caller = string.Format("{0}.{1}", callerClass, callerMethod.Name);
 
-            ListViewItem oItem = new ListViewItem(DateTime.Now.ToString());
-            oItem.SubItems.Add(caller);
-            oItem.SubItems.Add(message);
-            oItem.SubItems.Add(sException);
-            oItem.ForeColor = Color.Red;
-            oItem.ToolTipText = message;
+                ListViewItem oItem = new ListViewItem(DateTime.Now.ToString());
+                oItem.SubItems.Add(caller);
+                oItem.SubItems.Add(message);
+                oItem.SubItems.Add(sException);
+                oItem.ForeColor = Color.Red;
+                oItem.ToolTipText = message;
 
-            //lstDebug.Items.Add(oItem);
-            lstDebug.Invoke(new Action(() => lstDebug.Items.Add(oItem)));
-            lstDebug.Invoke(new Action(() => oItem.EnsureVisible()));
+                //lstDebug.Items.Add(oItem);
+                lstDebug.Invoke(new Action(() => lstDebug.Items.Add(oItem)));
+                lstDebug.Invoke(new Action(() => oItem.EnsureVisible()));
+            }
         }
         #endregion
 
