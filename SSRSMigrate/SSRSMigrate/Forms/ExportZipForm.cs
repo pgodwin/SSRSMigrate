@@ -629,14 +629,14 @@ namespace SSRSMigrate.Forms
                 }
                 else
                 {
-                    string msg = string.Format("Failed to export item from '{0}' to '{1}': ",
+                    string msg = string.Format("Failed to export item from '{0}' to '{1}': {2}",
                         exportStatus.FromPath,
                         exportStatus.ToPath,
                         string.Join(",", exportStatus.Errors));
 
                     this.mDebugForm.LogMessage(msg, true);
                     this.mLogger.Error(msg);
-                    this.lblStatus.Text = string.Format("Failed '{0}': ",
+                    this.lblStatus.Text = string.Format("Failed '{0}': {1}",
                         exportStatus.ToPath,
                         string.Join(",", exportStatus.Errors));
                 }
