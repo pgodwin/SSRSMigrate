@@ -207,7 +207,7 @@ namespace SSRSMigrate.Forms
             }
             catch (Exception er)
             {
-                string msg = string.Format("Error getting list of items from '{0}'.}",
+                string msg = string.Format("Error getting list of items from '{0}'.",
                     this.mSourceRootPath);
 
                 this.mDebugForm.LogMessage(msg, er);
