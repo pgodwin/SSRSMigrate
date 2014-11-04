@@ -304,6 +304,14 @@ namespace SSRSMigrate.Forms
         //Error
         //ZipPath
         //ExtractedTo
+
+        /// <summary>
+        /// Adds an item to the ListView for a successfully 'imported' entry.
+        /// </summary>
+        /// <param name="e">The ItemReadEvent object for the entry imported.</param>
+        /// <param name="status">The ImportStatus object for the entry imported.</param>
+        /// <param name="item">The DataSourceItem object that was imported.</param>
+        /// <returns></returns>
         private ListViewItem AddListViewDataSourceItem_Success(ItemReadEvent e, ImportStatus status, DataSourceItem item)
         {
             ListViewItem oItem = new ListViewItem(item.Name);
@@ -317,6 +325,11 @@ namespace SSRSMigrate.Forms
             return oItem;
         }
 
+        /// <summary>
+        /// Adds an item to the Listview for an entry that was not successfully extracted to disk.
+        /// </summary>
+        /// <param name="e">The ItemReadEvent object for the entry that failed to extract.</param>
+        /// <returns></returns>
         private ListViewItem AddListViewDataSourceItem_ExtractFailed(ItemReadEvent e)
         {
             string name = this.mFileSystem.Path.GetFileNameWithoutExtension(e.FileName);
@@ -334,6 +347,12 @@ namespace SSRSMigrate.Forms
             return oItem;
         }
 
+        /// <summary>
+        /// Adds an item to the ListView for an entry that was not successfully imported from disk.
+        /// </summary>
+        /// <param name="e">The ItemReadEvent object for the entry that failed to import from disk.</param>
+        /// <param name="status">The ImportStatus object for the entry that failed to import from disk.</param>
+        /// <returns></returns>
         private ListViewItem AddListViewDataSourceItem_ImportFailed(ItemReadEvent e, ImportStatus status)
         {
             string name = this.mFileSystem.Path.GetFileNameWithoutExtension(e.FileName);
@@ -350,6 +369,7 @@ namespace SSRSMigrate.Forms
 
             return oItem;
         }
+
         private void BundleReaderOnReportRead(IBundleReader sender, ItemReadEvent itemReadEvent)
         {
             ListViewItem oItem = new ListViewItem(itemReadEvent.FileName);
