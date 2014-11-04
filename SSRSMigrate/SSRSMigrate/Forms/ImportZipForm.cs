@@ -198,7 +198,7 @@ namespace SSRSMigrate.Forms
                 this.mLogger.Error(er, msg);
 
                 MessageBox.Show(
-                   string.Format("Error getting list of items from '{0}' archive.\n\r\n\r{2}",
+                   string.Format("Error getting list of items from '{0}' archive.\n\r\n\r{1}",
                         this.mSourceFileName,
                         er.Message),
                    "Refresh Error",
