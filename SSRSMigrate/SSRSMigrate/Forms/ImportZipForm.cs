@@ -145,7 +145,8 @@ namespace SSRSMigrate.Forms
 
             }
 
-            //TODO Clean up temporary extracted data
+            if (this.mFileSystem.Directory.Exists(this.mBundleReader.UnPackDirectory))
+                this.mFileSystem.Directory.Delete(this.mBundleReader.UnPackDirectory, true);
         }
 
         private void btnPerformImport_Click(object sender, EventArgs e)
