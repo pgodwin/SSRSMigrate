@@ -300,12 +300,78 @@ namespace SSRSMigrate.Forms
 
         private void BundleReaderOnReportRead(IBundleReader sender, ItemReadEvent itemReadEvent)
         {
-            ListViewItem oItem = new ListViewItem(itemReadEvent.FileName);
+            ListViewItem oItem = null;
+
+            if (itemReadEvent.Success)
+            {
+                ImportStatus status = null;
+                ReportItem item = this.mReportItemImporter.ImportItem(itemReadEvent.FileName, out status);
+
+                if (status.Success)
+                {
+                    oItem = this.AddListViewItem_Success(itemReadEvent, status, item);
+                }
+                else
+                {
+                    oItem = this.AddListViewItem_ImportFailed(itemReadEvent, status);
+                }
+            }
+            else
+            {
+                oItem = this.AddListViewItem_ExtractFailed(itemReadEvent);
+            }
+
+            oItem.SubItems.Add(itemReadEvent.Path);
+            oItem.SubItems.Add(itemReadEvent.FileName);
+
+            oItem.Group = this.lstSrcReports.Groups["reportsGroup"];
+
+            this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
+            this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
+
+            this.lblStatus.Text = string.Format("Refreshing item '{0}'...", itemReadEvent.FileName);
+
+            this.mLogger.Debug("Refreshing item '{0}' in path '{1}'...", itemReadEvent.FileName, itemReadEvent.Path);
+
+            this.mDebugForm.LogMessage(string.Format("Refreshing item '{0}' in path '{1}'...", itemReadEvent.FileName, itemReadEvent.Path));
         }
 
         private void BundleReaderOnFolderRead(IBundleReader sender, ItemReadEvent itemReadEvent)
         {
-            ListViewItem oItem = new ListViewItem(itemReadEvent.FileName);
+            ListViewItem oItem = null;
+
+            if (itemReadEvent.Success)
+            {
+                ImportStatus status = null;
+                FolderItem item = this.mFolderItemImporter.ImportItem(itemReadEvent.FileName, out status);
+
+                if (status.Success)
+                {
+                    oItem = this.AddListViewItem_Success(itemReadEvent, status, item);
+                }
+                else
+                {
+                    oItem = this.AddListViewItem_ImportFailed(itemReadEvent, status);
+                }
+            }
+            else
+            {
+                oItem = this.AddListViewItem_ExtractFailed(itemReadEvent);
+            }
+
+            oItem.SubItems.Add(itemReadEvent.Path);
+            oItem.SubItems.Add(itemReadEvent.FileName);
+
+            oItem.Group = this.lstSrcReports.Groups["foldersGroup"];
+
+            this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
+            this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
+
+            this.lblStatus.Text = string.Format("Refreshing item '{0}'...", itemReadEvent.FileName);
+
+            this.mLogger.Debug("Refreshing item '{0}' in path '{1}'...", itemReadEvent.FileName, itemReadEvent.Path);
+
+            this.mDebugForm.LogMessage(string.Format("Refreshing item '{0}' in path '{1}'...", itemReadEvent.FileName, itemReadEvent.Path));
         }
 
         //lstSrcReports Columns:
