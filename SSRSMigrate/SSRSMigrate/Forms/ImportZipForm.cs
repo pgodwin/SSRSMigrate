@@ -271,16 +271,16 @@ namespace SSRSMigrate.Forms
 
                 if (status.Success)
                 {
-                    oItem = this.AddListViewDataSourceItem_Success(itemReadEvent, status, item);
+                    oItem = this.AddListViewItem_Success(itemReadEvent, status, item);
                 }
                 else
                 {
-                    oItem = this.AddListViewDataSourceItem_ImportFailed(itemReadEvent, status);
+                    oItem = this.AddListViewItem_ImportFailed(itemReadEvent, status);
                 }
             }
             else
             {
-                oItem = this.AddListViewDataSourceItem_ExtractFailed(itemReadEvent);
+                oItem = this.AddListViewItem_ExtractFailed(itemReadEvent);
             }
 
             oItem.SubItems.Add(itemReadEvent.Path);
@@ -298,6 +298,16 @@ namespace SSRSMigrate.Forms
             this.mDebugForm.LogMessage(string.Format("Refreshing item '{0}' in path '{1}'...", itemReadEvent.FileName, itemReadEvent.Path));
         }
 
+        private void BundleReaderOnReportRead(IBundleReader sender, ItemReadEvent itemReadEvent)
+        {
+            ListViewItem oItem = new ListViewItem(itemReadEvent.FileName);
+        }
+
+        private void BundleReaderOnFolderRead(IBundleReader sender, ItemReadEvent itemReadEvent)
+        {
+            ListViewItem oItem = new ListViewItem(itemReadEvent.FileName);
+        }
+
         //lstSrcReports Columns:
         //Name
         //Path
@@ -310,9 +320,9 @@ namespace SSRSMigrate.Forms
         /// </summary>
         /// <param name="e">The ItemReadEvent object for the entry imported.</param>
         /// <param name="status">The ImportStatus object for the entry imported.</param>
-        /// <param name="item">The DataSourceItem object that was imported.</param>
+        /// <param name="item">The ReportServerItem object that was imported.</param>
         /// <returns></returns>
-        private ListViewItem AddListViewDataSourceItem_Success(ItemReadEvent e, ImportStatus status, DataSourceItem item)
+        private ListViewItem AddListViewItem_Success(ItemReadEvent e, ImportStatus status, ReportServerItem item)
         {
             ListViewItem oItem = new ListViewItem(item.Name);
 
@@ -330,7 +340,7 @@ namespace SSRSMigrate.Forms
         /// </summary>
         /// <param name="e">The ItemReadEvent object for the entry that failed to extract.</param>
         /// <returns></returns>
-        private ListViewItem AddListViewDataSourceItem_ExtractFailed(ItemReadEvent e)
+        private ListViewItem AddListViewItem_ExtractFailed(ItemReadEvent e)
         {
             string name = this.mFileSystem.Path.GetFileNameWithoutExtension(e.FileName);
             string errors = string.Join("; ", e.Errors);
@@ -353,7 +363,7 @@ namespace SSRSMigrate.Forms
         /// <param name="e">The ItemReadEvent object for the entry that failed to import from disk.</param>
         /// <param name="status">The ImportStatus object for the entry that failed to import from disk.</param>
         /// <returns></returns>
-        private ListViewItem AddListViewDataSourceItem_ImportFailed(ItemReadEvent e, ImportStatus status)
+        private ListViewItem AddListViewItem_ImportFailed(ItemReadEvent e, ImportStatus status)
         {
             string name = this.mFileSystem.Path.GetFileNameWithoutExtension(e.FileName);
 
@@ -368,16 +378,6 @@ namespace SSRSMigrate.Forms
 
 
             return oItem;
-        }
-
-        private void BundleReaderOnReportRead(IBundleReader sender, ItemReadEvent itemReadEvent)
-        {
-            ListViewItem oItem = new ListViewItem(itemReadEvent.FileName);
-        }
-
-        private void BundleReaderOnFolderRead(IBundleReader sender, ItemReadEvent itemReadEvent)
-        {
-            ListViewItem oItem = new ListViewItem(itemReadEvent.FileName);
         }
         #endregion
 
