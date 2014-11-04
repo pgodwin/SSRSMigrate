@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO.Abstractions;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using Ninject.Extensions.Logging;
 using SSRSMigrate.Bundler;
 using SSRSMigrate.Bundler.Events;

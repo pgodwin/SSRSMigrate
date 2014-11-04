@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SSRSMigrate.Enum;
 using SSRSMigrate.SSRS.Item;
 using Ninject.Extensions.Logging;

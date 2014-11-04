@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SSRSMigrate.SSRS.Repository;
+﻿using SSRSMigrate.SSRS.Repository;
 
 namespace SSRSMigrate.Factory
 {

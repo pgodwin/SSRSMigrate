@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
-using SSRSMigrate.Exporter;
 using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate.Bundler

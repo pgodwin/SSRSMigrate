@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
-using System.Linq;
-using System.Text;
 using Ninject.Extensions.Logging;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.Status;

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Ninject;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.SSRS.Reader;
