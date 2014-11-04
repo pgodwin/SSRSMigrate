@@ -7,7 +7,7 @@ namespace SSRSMigrate.Wrappers
 {
     public class ZipFileWrapper : IZipFileWrapper
     {
-        private readonly ZipFile mZipFile = null;
+        private ZipFile mZipFile = null;
 
         public ZipFileWrapper()
         {
@@ -98,6 +98,21 @@ namespace SSRSMigrate.Wrappers
         public void Dispose()
         {
             this.mZipFile.Dispose();
+        }
+
+
+        /// <summary>
+        /// Resets the this instance by recreating the underlying ZipFile object.
+        /// </summary>
+        public void Reset()
+        {
+            string comment = this.mZipFile.Comment;
+
+            if (this.mZipFile != null)
+                this.mZipFile.Dispose();
+
+            this.mZipFile = new ZipFile();
+            this.mZipFile.Comment = comment;
         }
     }
 }

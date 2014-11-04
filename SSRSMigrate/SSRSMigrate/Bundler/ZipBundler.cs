@@ -262,5 +262,15 @@ namespace SSRSMigrate.Bundler
 
             return fileName;
         }
+
+        /// <summary>
+        /// Resets this instance by resetting the underlying IZipFileWrapper object.
+        /// </summary>
+        public void Reset()
+        {
+            // This is done to prevent entries from being duplicated in the archive 
+            //  if an export is ran multiple times in the same form instance.
+            this.mZipFileWrapper.Reset();
+        }
     }
 }

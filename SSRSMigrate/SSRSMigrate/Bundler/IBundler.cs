@@ -11,6 +11,7 @@ namespace SSRSMigrate.Bundler
         void AddItem(string key, string itemFileName, string itemPath, bool isFolder);
         string CreateSummary();
         string Save(string fileName);
+        void Reset();
         //TODO Add Exists method that checks if a file or entry exists in the underlying IZipFileWrapper
     }
 }

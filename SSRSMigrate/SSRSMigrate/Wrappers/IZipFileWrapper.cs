@@ -13,5 +13,6 @@ namespace SSRSMigrate.Wrappers
         void AddDirectory(string directoryName, string directoryPathInArchive);
         void Save(string fileName);
         void Save(string fileName, bool overwrite);
+        void Reset();
     }
 }

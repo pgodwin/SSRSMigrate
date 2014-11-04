@@ -36,6 +36,7 @@ namespace SSRSMigrate.Forms
         private ILogger mLogger = null;
 
         private DebugForm mDebugForm = null;
+        private bool mExportRan = false;
 
         #region Properties
         public DebugForm DebugForm
@@ -147,8 +148,8 @@ namespace SSRSMigrate.Forms
                 if (this.mSourceRefreshWorker.IsBusy)
                     e.Cancel = true;
 
-            //TODO Clean up temporary extracted data
-            this.mFileSystem.Directory.Delete(this.mExportOutputTempDirectory);
+            if (this.mFileSystem.Directory.Exists(this.mExportOutputTempDirectory))
+                this.mFileSystem.Directory.Delete(this.mExportOutputTempDirectory, true);
         }
 
         private void btnExport_Click(object sender, EventArgs e)
@@ -327,6 +328,17 @@ namespace SSRSMigrate.Forms
             {
                 this.btnExport.Enabled = false;
                 this.btnSrcRefreshReports.Enabled = false;
+
+                // If an export has not previously been ran in this instance of the form,
+                //  set mExportRan to true
+                if (!this.mExportRan)
+                    this.mExportRan = true;
+                else
+                {
+                    // If an export has been previously ran in this instance of the form,
+                    //  reset the IBundler object so the entries don't get duplicated in the underlying archive.
+                    this.mZipBundler.Reset();
+                }
 
                 this.mExportWorker.RunWorkerAsync(this.mExportOutputTempDirectory);
             }
@@ -602,7 +614,7 @@ namespace SSRSMigrate.Forms
             this.mLogger.Info("Export completed: {0}", msg);
             this.lblStatus.Text = msg;
             this.btnSrcRefreshReports.Enabled = true;
-            this.btnExport.Enabled = false;
+            this.btnExport.Enabled = true;
             this.lblStatus.Text = msg;
         }
 
