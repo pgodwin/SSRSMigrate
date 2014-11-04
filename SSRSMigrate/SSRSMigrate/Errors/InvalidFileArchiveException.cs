@@ -17,8 +17,8 @@ namespace SSRSMigrate.Errors
         {
         }
 
-        public InvalidFileArchiveException(string itemID, Exception inner)
-            : base(itemID, inner)
+        public InvalidFileArchiveException(string itemId, Exception inner)
+            : base(itemId, inner)
         {
         }
     }

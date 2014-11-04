@@ -467,14 +467,14 @@ namespace SSRSMigrate.Forms
 
             // Stop stopwatch and get how long it took for the export to complete successfully
             watch.Stop();
-            double average_item = watch.Elapsed.TotalSeconds / progressCounter;
+            double averageItem = watch.Elapsed.TotalSeconds / progressCounter;
 
             string result = string.Format("{0} items exported in {1}h {2}m {3}s (@ {4:0.00} items/s)",
                 itemsExportedCounter,
                 watch.Elapsed.Hours,
                 watch.Elapsed.Minutes,
                 watch.Elapsed.Seconds,
-                average_item);
+                averageItem);
 
             this.mLogger.Trace("ExportItemsWorker - {0}", result);
 

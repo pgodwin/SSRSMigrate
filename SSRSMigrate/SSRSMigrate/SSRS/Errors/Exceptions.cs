@@ -12,13 +12,13 @@ namespace SSRSMigrate.SSRS.Errors
         {
         }
 
-        public InvalidItemException(string itemID)
-            : base(string.Format("The item with ID '{0}' is invalid.", itemID))
+        public InvalidItemException(string itemId)
+            : base(string.Format("The item with ID '{0}' is invalid.", itemId))
         {
         }
 
-        public InvalidItemException(string itemID, Exception inner)
-            : base(itemID, inner)
+        public InvalidItemException(string itemId, Exception inner)
+            : base(itemId, inner)
         {
         }
     }

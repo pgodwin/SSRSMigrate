@@ -151,10 +151,10 @@ namespace SSRSMigrate.SSRS.Writer
                     if (this.mReportRepository.ItemExists(reportItems[i].Path, "Report"))
                         throw new ItemAlreadyExistsException(reportItems[i].Path);
 
-                string[] report_warnings = this.mReportRepository.WriteReport(parentPath, reportItems[i], this.mOverwrite);
+                string[] reportWarnings = this.mReportRepository.WriteReport(parentPath, reportItems[i], this.mOverwrite);
 
-                if (report_warnings != null)
-                    warnings.AddRange(report_warnings);
+                if (reportWarnings != null)
+                    warnings.AddRange(reportWarnings);
             }
 
             return warnings.ToArray();

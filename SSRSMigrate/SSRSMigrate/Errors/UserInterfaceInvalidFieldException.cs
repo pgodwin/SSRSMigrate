@@ -17,8 +17,8 @@ namespace SSRSMigrate.Errors
         {
         }
 
-        public UserInterfaceInvalidFieldException(string itemID, Exception inner)
-            : base(itemID, inner)
+        public UserInterfaceInvalidFieldException(string itemId, Exception inner)
+            : base(itemId, inner)
         {
         }
     }
