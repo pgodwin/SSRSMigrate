@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO.Abstractions;
+using System.Linq;
 using System.Windows.Forms;
 using Ninject.Extensions.Logging;
 using SSRSMigrate.Bundler;
@@ -106,12 +109,12 @@ namespace SSRSMigrate.Forms
             this.mSourceRefreshWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.bw_SourceRefreshCompleted);
             this.mSourceRefreshWorker.ProgressChanged += new ProgressChangedEventHandler(this.bw_SourceRefreshProgressChanged);
 
-            //this.mImportWorker = new BackgroundWorker();
-            //this.mImportWorker.WorkerReportsProgress = true;
-            //this.mImportWorker.WorkerSupportsCancellation = true;
-            //this.mImportWorker.DoWork += new DoWorkEventHandler(this.MigrationWorker);
-            //this.mImportWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.bw_MigrationCompleted);
-            //this.mImportWorker.ProgressChanged += new ProgressChangedEventHandler(this.bw_MigrationProgressChanged);
+            this.mImportWorker = new BackgroundWorker();
+            this.mImportWorker.WorkerReportsProgress = true;
+            this.mImportWorker.WorkerSupportsCancellation = true;
+            this.mImportWorker.DoWork += new DoWorkEventHandler(this.ImportWorker);
+            this.mImportWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.bw_ImportCompleted);
+            this.mImportWorker.ProgressChanged += new ProgressChangedEventHandler(this.bw_ImportProgressChanged);
 
             this.mBundleReader.OnDataSourceRead += BundleReaderOnDataSourceRead;
             this.mBundleReader.OnFolderRead += BundleReaderOnFolderRead;
@@ -142,6 +145,13 @@ namespace SSRSMigrate.Forms
                 this.mSourceRefreshWorker.DoWork -= new DoWorkEventHandler(this.SourceRefreshWorker);
                 this.mSourceRefreshWorker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(this.bw_SourceRefreshCompleted);
                 this.mSourceRefreshWorker.ProgressChanged -= new ProgressChangedEventHandler(this.bw_SourceRefreshProgressChanged);
+            }
+
+            if (this.mImportWorker != null)
+            {
+                this.mImportWorker.DoWork -= new DoWorkEventHandler(this.ImportWorker);
+                this.mImportWorker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(this.bw_ImportCompleted);
+                this.mImportWorker.ProgressChanged -= new ProgressChangedEventHandler(this.bw_ImportProgressChanged);
 
             }
 
@@ -151,7 +161,11 @@ namespace SSRSMigrate.Forms
 
         private void btnPerformImport_Click(object sender, EventArgs e)
         {
+            // If there are no items in the list, there is nothing to import
+            if (this.lstSrcReports.Items.Count <= 0)
+                return;
 
+            this.ImportZip();
         }
 
         private void btnDebug_Click(object sender, EventArgs e)
@@ -392,7 +406,7 @@ namespace SSRSMigrate.Forms
         {
             ListViewItem oItem = new ListViewItem(item.Name);
 
-            oItem.Tag = e.FileName;
+            oItem.Tag = item;
             oItem.SubItems.Add(item.Path);
             oItem.SubItems.Add("");
 
@@ -416,7 +430,7 @@ namespace SSRSMigrate.Forms
             oItem.Checked = false;
             oItem.ForeColor = Color.Red;
 
-            oItem.Tag = e.FileName;
+            //oItem.Tag = e.FileName;
             oItem.SubItems.Add("");
             oItem.SubItems.Add(errors);
 
@@ -438,16 +452,132 @@ namespace SSRSMigrate.Forms
             oItem.Checked = false;
             oItem.ForeColor = Color.Red;
 
-            oItem.Tag = e.FileName;
+            //oItem.Tag = e.FileName;
             oItem.SubItems.Add(e.Path);
             oItem.SubItems.Add(status.Error.Message);
-
 
             return oItem;
         }
         #endregion
 
         #region Import Methods
+        // Used for getting the ListView items from within the BackgroundWorker thread.
+        private delegate ListView.ListViewItemCollection GetItems(ListView listView);
+
+        // Used for getting the ListView items from within the BackgroundWorker thread.
+        private ListView.ListViewItemCollection GetListViewItems(ListView listView)
+        {
+            ListView.ListViewItemCollection tmpListViewColl = new ListView.ListViewItemCollection(new ListView());
+
+            if (!listView.InvokeRequired)
+            {
+                foreach (ListViewItem item in listView.Items)
+                    tmpListViewColl.Add((ListViewItem)item.Clone());
+
+                return tmpListViewColl;
+            }
+            else
+                return (ListView.ListViewItemCollection)this.Invoke(new ImportZipForm.GetItems(GetListViewItems), new object[] { listView });
+        }
+
+        private void ImportZip()
+        {
+            this.lstDestReports.Items.Clear();
+
+            try
+            {
+                this.btnPerformImport.Enabled = false;
+                this.btnSrcRefreshReports.Enabled = false;
+
+                this.mImportWorker.RunWorkerAsync(this.mDestinationRootPath);
+            }
+            catch (Exception er)
+            {
+                this.mLogger.Fatal(er, "Error importing items.");
+
+                MessageBox.Show(
+                    string.Format("Error importing items to '{0}':\n\r{1}", this.mDestinationRootPath, er.Message),
+                    "Import Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void ImportWorker(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+            string destinationRootPath = (string)e.Argument;
+
+            // Stopwatch to track how long the import takes
+            Stopwatch watch = new Stopwatch();
+
+            // Start stopwatch to get how long it takes to get the total number of checked items
+            watch.Start();
+
+            IEnumerable<ListViewItem> lvItems = GetListViewItems(this.lstSrcReports).Cast<ListViewItem>();
+
+            // Get total count of items in ListView that are checked
+            int totalItems = lvItems.Where(lv => lv.Checked == true).Count();
+
+            // Stop stopwatch after getting the total number of checked items, and log how long it took
+            watch.Stop();
+            this.mLogger.Trace("ImportWorker - Took {0} seconds to get checked ListView items", watch.Elapsed.TotalSeconds);
+
+            // Start stopwatch to get how long it takes to import everything
+            watch.Start();
+
+            int progressCounter = 0;
+            int itemsImportedCounter = 0;
+
+            //TODO Everything else...
+            // Import folders
+            // Get path of ListView items in the folder group that are checked.
+            var folderItems = from lv in lvItems
+                              where lv.Group.Name == "foldersGroup" &&
+                              lv.Checked == true &&
+                              lv.Tag != null    // We don't want anything with a NULL Tag
+                              select (FolderItem)lv.Tag; //TODO Should select the extracted path also.
+
+            foreach (FolderItem folderItem in folderItems)
+            {
+                MigrationStatus status = new MigrationStatus()
+                {
+                    Success = false
+                };
+
+                
+            }
+            // Import Data Sources
+
+            // Import reports
+
+            // Stop stopwatch and get how long it took for the migration to complete successfully
+            watch.Stop();
+            double averageItem = watch.Elapsed.TotalSeconds / progressCounter;
+
+            string result = string.Format("{0} items imported in {1}h {2}m {3}s (@ {4:0.00} items/s)",
+                itemsImportedCounter,
+                watch.Elapsed.Hours,
+                watch.Elapsed.Minutes,
+                watch.Elapsed.Seconds,
+                averageItem);
+
+            this.mLogger.Trace("ImportWorker - {0}", result);
+
+            e.Result = result;
+        }
+
+        private void bw_ImportCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            
+        }
+
+        private void bw_ImportProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            
+        }
+
+
         #endregion
     }
 }
