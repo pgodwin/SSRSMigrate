@@ -435,7 +435,12 @@ namespace SSRSMigrate.Forms
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
-                worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
+                if (worker != null)
+                    worker.ReportProgress(((++progressCounter*100)/totalItems), status);
+                else
+                {
+                    this.mLogger.Warn("MigrationWorker - worker is NULL.");
+                }
             }
 
             // Export data sources
@@ -503,7 +508,12 @@ namespace SSRSMigrate.Forms
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
-                worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
+                if (worker != null)
+                    worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
+                else
+                {
+                    this.mLogger.Warn("MigrationWorker - worker is NULL.");
+                }
             }
 
             // Export reports
@@ -584,7 +594,12 @@ namespace SSRSMigrate.Forms
 
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
-                worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
+                if (worker != null)
+                    worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
+                else
+                {
+                    this.mLogger.Warn("MigrationWorker - worker is NULL.");
+                }
             }
 
             // Stop stopwatch and get how long it took for the migration to complete successfully
