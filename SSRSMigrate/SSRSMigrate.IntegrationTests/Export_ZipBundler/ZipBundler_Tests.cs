@@ -7,6 +7,7 @@ using NUnit.Framework;
 using System.Reflection;
 using System.IO;
 using SSRSMigrate.Bundler;
+using SSRSMigrate.Enum;
 using SSRSMigrate.Wrappers;
 using SSRSMigrate.Exporter;
 using Ninject.Extensions.Logging.Log4net;
@@ -100,43 +101,70 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         #endregion
 
         #region Expected Values
+        private string expectedeSourceRootPath = "/SSRSMigrate_AW_Tests";
+        private SSRSVersion expectedSourceVersion = SSRSVersion.SqlServer2008R2;
+
         string expectedSummary = @"{
-  ""DataSources"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""AWDataSource.json"",
-      ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
-    }
-  ],
-  ""Reports"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Company Sales.rdl"",
-      ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Sales Order Detail.rdl"",
-      ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Store Contacts.rdl"",
-      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
-    }
-  ],
-  ""Folders"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    }
-  ]
+  ""SourceRootPath"": ""/SSRSMigrate_AW_Tests"",
+  ""SourceVersion"": ""SqlServer2008R2"",
+  ""Entries"": {
+    ""DataSources"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": ""AWDataSource.json"",
+        ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
+      }
+    ],
+    ""Reports"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Company Sales.rdl"",
+        ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Sales Order Detail.rdl"",
+        ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Store Contacts.rdl"",
+        ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+      }
+    ],
+    ""Folders"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Sub Folder"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      }
+    ]
+  }
 }";
+
         string expectedSummaryNoData = @"{
-  ""DataSources"": [],
-  ""Reports"": [],
-  ""Folders"": []
+  ""SourceRootPath"": ""/SSRSMigrate_AW_Tests"",
+  ""SourceVersion"": ""SqlServer2008R2"",
+  ""Entries"": {
+    ""DataSources"": [],
+    ""Reports"": [],
+    ""Folders"": []
+  }
 }";
         #endregion
 
@@ -423,22 +451,22 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
                 false);
 
             // Check that the ZipBundler has the entry we added to DataSources
-            Assert.NotNull(zipBundler.Entries["DataSources"][0]);
+            Assert.NotNull(zipBundler.Summary.Entries["DataSources"][0]);
 
             // Check that the proper ZipPath exists in the DataSource entry we added
             Assert.AreEqual(
                 "Export\\SSRSMigrate_AW_Tests\\Data Sources",
-                zipBundler.Entries["DataSources"][0].Path);
+                zipBundler.Summary.Entries["DataSources"][0].Path);
 
             // Check that the checksum is correct for the DataSource entry we added
             Assert.AreEqual(
                 "7b4e44d94590f501ba24cd3904a925c3",
-                zipBundler.Entries["DataSources"][0].CheckSum);
+                zipBundler.Summary.Entries["DataSources"][0].CheckSum);
 
             // Check that the filename is correct for the DataSource entry we added
             Assert.AreEqual(
                 "AWDataSource.json",
-                zipBundler.Entries["DataSources"][0].FileName);
+                zipBundler.Summary.Entries["DataSources"][0].FileName);
 
             // Check that the DataSource file exists in ZipFileWrapper
             //Assert.True(zipFileWrapper.FileExists("Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json"));
@@ -488,22 +516,22 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
                 true);
 
             // Check that the ZipBunlder has the entry we added to Folders
-            Assert.NotNull(zipBundler.Entries["Folders"][0]);
+            Assert.NotNull(zipBundler.Summary.Entries["Folders"][0]);
 
             // Check that the proper ZipPath exists in the Folder entry we added
             Assert.AreEqual(
                 "Export\\SSRSMigrate_AW_Tests\\Reports",
-                zipBundler.Entries["Folders"][0].Path);
+                zipBundler.Summary.Entries["Folders"][0].Path);
 
             // Check that the checksum is correct for the Folder entry we added
             Assert.AreEqual(
                 "",
-                zipBundler.Entries["Folders"][0].CheckSum);
+                zipBundler.Summary.Entries["Folders"][0].CheckSum);
 
             // Check that the filename is correct for the Folder entry we added
             Assert.AreEqual(
                 "",
-                zipBundler.Entries["Folders"][0].FileName);
+                zipBundler.Summary.Entries["Folders"][0].FileName);
 
             // Check that the Folder exists in ZipFileWrapper
             //Assert.True(zipFileWrapper.FileExists("Export\\SSRSMigrate_AW_Tests\\Reports"));
@@ -538,22 +566,22 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
                 false);
 
             // Check that ZipBundler has the entry we added to Reports
-            Assert.NotNull(zipBundler.Entries["Reports"][0]);
+            Assert.NotNull(zipBundler.Summary.Entries["Reports"][0]);
 
             // Check that the proper ZipPath exists in the Reports entry we added
             Assert.AreEqual(
                 "Export\\SSRSMigrate_AW_Tests\\Reports",
-                zipBundler.Entries["Reports"][0].Path);
+                zipBundler.Summary.Entries["Reports"][0].Path);
 
             // Check that the checksum is correct fot the Report entry we added
             Assert.AreEqual(
                 "1adde7720ca2f0af49550fc676f70804",
-                zipBundler.Entries["Reports"][0].CheckSum);
+                zipBundler.Summary.Entries["Reports"][0].CheckSum);
 
             // Check that the filename is correct for the Report entry we added
             Assert.AreEqual(
                 "Company Sales.rdl",
-                zipBundler.Entries["Reports"][0].FileName);
+                zipBundler.Summary.Entries["Reports"][0].FileName);
 
             // Check that the Report exists in ZipFileWrapper
             //Assert.True(zipFileWrapper.FileExists("Export\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl"));
@@ -610,12 +638,13 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
                 awDataSource.Path,
                 false);
 
-            // Add Folder item to ZipBundler
+            // Add sub folder folder item to ZipBundler
             zipBundler.AddItem("Folders",
-                rootFolder.FileName,
-                rootFolder.Path,
+                subFolder.FileName,
+                subFolder.Path,
                 true);
 
+            //TODO Figure out why report items are getting duplicated here.
             // Add Report items to ZipBundler
             // Add Company Sales report
             zipBundler.AddItem("Reports",
@@ -635,7 +664,7 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
                storeContactsReport.Path,
                false);
 
-            string actual = zipBundler.CreateSummary();
+            string actual = zipBundler.CreateSummary(expectedeSourceRootPath, expectedSourceVersion);
 
             Assert.AreEqual(expectedSummary, actual);
         }
@@ -643,7 +672,7 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         [Test]
         public void CreateSummary_NoData()
         {
-            string actual = zipBundler.CreateSummary();
+            string actual = zipBundler.CreateSummary(expectedeSourceRootPath, expectedSourceVersion);
 
             Assert.AreEqual(expectedSummaryNoData, actual);
         }
