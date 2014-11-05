@@ -92,6 +92,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bundler\BundleSummary.cs" />
     <Compile Include="Bundler\BundleSummaryEntry.cs" />
     <Compile Include="Bundler\Events\ItemReadEvent.cs" />
     <Compile Include="Bundler\IBundler.cs" />

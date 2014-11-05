@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ninject.Extensions.Logging;
+using SSRSMigrate.Enum;
 using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate.Bundler
@@ -26,37 +27,51 @@ namespace SSRSMigrate.Bundler
     //ExportSummary.json will contain a list of everything exported and the MD5 checksum of that file:
     //
     //{
-    //  "DataSources": [
-    //    {
-    //      "Path": "Export\\SSRSMigrate_AW_Tests\\Data Sources",
-    //      "FileName": "AWDataSource.json",
-    //      "CheckSum": "7b4e44d94590f501ba24cd3904a925c3"
+    //    "SourceRootPath": "/SSRSMigrate_AW_Tests",
+    //    "SourceVersion": "SqlServer2008R2",
+    //    "Entries": {
+    //    "DataSources": [
+    //        {
+    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+    //        "FileName": "AWDataSource.json",
+    //        "CheckSum": "7b4e44d94590f501ba24cd3904a925c3"
+    //        }
+    //    ],
+    //    "Reports": [
+    //        {
+    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
+    //        "FileName": "Company Sales.rdl",
+    //        "CheckSum": "1adde7720ca2f0af49550fc676f70804"
+    //        },
+    //        {
+    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
+    //        "FileName": "Sales Order Detail.rdl",
+    //        "CheckSum": "640a2f60207f03779fdedfed71d8101d"
+    //        },
+    //        {
+    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
+    //        "FileName": "Store Contacts.rdl",
+    //        "CheckSum": "a225b92ed8475e6bc5b59f5b2cc396fa"
+    //        }
+    //    ],
+    //    "Folders": [
+    //        {
+    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Data Sources",
+    //        "FileName": "",
+    //        "CheckSum": ""
+    //        },
+    //        {
+    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
+    //        "FileName": "",
+    //        "CheckSum": ""
+    //        },
+    //        {
+    //        "Path": "Export\\SSRSMigrate_AW_Tests\\Sub Folder",
+    //        "FileName": "",
+    //        "CheckSum": ""
+    //        }
+    //    ]
     //    }
-    //  ],
-    //  "Reports": [
-    //    {
-    //      "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
-    //      "FileName": "Company Sales.rdl",
-    //      "CheckSum": "1adde7720ca2f0af49550fc676f70804"
-    //    },
-    //    {
-    //      "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
-    //      "FileName": "Sales Order Detail.rdl",
-    //      "CheckSum": "640a2f60207f03779fdedfed71d8101d"
-    //    },
-    //    {
-    //      "Path": "Export\\SSRSMigrate_AW_Tests\\Reports",
-    //      "FileName": "Store Contacts.rdl",
-    //      "CheckSum": "a225b92ed8475e6bc5b59f5b2cc396fa"
-    //    }
-    //  ],
-    //  "Folders": [
-    //    {
-    //      "Path": "Export\\SSRSMigrate_AW_Tests",
-    //      "FileName": "",
-    //      "CheckSum": ""
-    //    }
-    //  ]
     //}
 
     /// <summary>
@@ -67,7 +82,8 @@ namespace SSRSMigrate.Bundler
         private readonly IZipFileWrapper mZipFileWrapper = null;
         private readonly ICheckSumGenerator mCheckSumGenerator = null;
         private readonly ISerializeWrapper mSerializeWrapper = null;
-        private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
+        private BundleSummary mSummary = null;
+        //private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
         private readonly ILogger mLogger = null;
 
         private string mExportSummaryFilename = "ExportSummary.json";
@@ -77,9 +93,14 @@ namespace SSRSMigrate.Bundler
             get { return this.mExportSummaryFilename; }
         }
 
-        public Dictionary<string, List<BundleSummaryEntry>> Entries
+        //public Dictionary<string, List<BundleSummaryEntry>> Entries
+        //{
+        //    get { return this.mEntries; }
+        //}
+
+        public BundleSummary Summary
         {
-            get { return this.mEntries; }
+            get { return this.mSummary;  }
         }
 
         public ZipBundler(
@@ -105,13 +126,15 @@ namespace SSRSMigrate.Bundler
             this.mLogger = logger;
             this.mSerializeWrapper = serializeWrapper;
 
+            this.mSummary = new BundleSummary();
+
             // Create entries Dictionary with default keys
-            this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>()
-		    {
-			    { "DataSources", new List<BundleSummaryEntry>() },
-			    { "Reports", new List<BundleSummaryEntry>() },
-			    { "Folders", new List<BundleSummaryEntry>() }
-		    };
+            //this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>()
+            //{
+            //    { "DataSources", new List<BundleSummaryEntry>() },
+            //    { "Reports", new List<BundleSummaryEntry>() },
+            //    { "Folders", new List<BundleSummaryEntry>() }
+            //};
         }
 
         ~ZipBundler()
@@ -210,7 +233,7 @@ namespace SSRSMigrate.Bundler
             if (string.IsNullOrEmpty(itemPath))
                 throw new ArgumentException("itemPath");
 
-            if (!this.mEntries.ContainsKey(key))
+            if (!this.mSummary.Entries.ContainsKey(key))
                 throw new KeyNotFoundException(key);
 
             this.mLogger.Debug("AddItem - key = {0}; itemFileName = {1}; itemPath = {2}; isFolder = {3}",
@@ -230,17 +253,42 @@ namespace SSRSMigrate.Bundler
 
             BundleSummaryEntry entry = this.CreateEntrySummary(itemFileName, zipPath, isFolder);
 
-            this.mEntries[key].Add(entry);
+            this.mSummary.Entries[key].Add(entry);      
         }
 
         /// <summary>
         /// Creates a JSON string that contains a summary of the data created by the ZipBundler.
         /// </summary>
         /// <returns>String in JSON format containing the summary of data contained in the zip archive.</returns>
+        //TODO Remove this
         public string CreateSummary()
         {
             // Serialize mEntries Dictionary to JSON format
-            string summary = this.mSerializeWrapper.SerializeObject(this.mEntries);
+            //string summary = this.mSerializeWrapper.SerializeObject(this.mEntries);
+            string summary = this.mSerializeWrapper.SerializeObject(this.mSummary);
+
+            this.mLogger.Trace("CreateSummary - JSON = {0}", summary);
+            this.mLogger.Trace("CreateSummary - Saving summary as '{0}'...", this.mExportSummaryFilename);
+
+            // Add JSON serialized summary string as an entry to the zip using the value from mExportSummaryFilename 
+            this.mZipFileWrapper.AddEntry(this.mExportSummaryFilename, summary);
+
+            return summary;
+        }
+
+        /// <summary>
+        /// Creates a JSON string that contains a summary of the data created by the ZipBundler.
+        /// </summary>
+        /// <param name="rootPath">The root path of what is being exported.</param>
+        /// <param name="version">The version of SQL Server where the items are being exported from.</param>
+        /// <returns>String in JSON format containing the summary of data contained in the zip archive.</returns>
+        public string CreateSummary(string rootPath, SSRSVersion version)
+        {
+            this.mSummary.SourceRootPath = rootPath;
+            this.mSummary.SourceVersion = version;
+
+            // Serialize mEntries Dictionary to JSON format
+            string summary = this.mSerializeWrapper.SerializeObject(this.mSummary);
 
             this.mLogger.Trace("CreateSummary - JSON = {0}", summary);
             this.mLogger.Trace("CreateSummary - Saving summary as '{0}'...", this.mExportSummaryFilename);

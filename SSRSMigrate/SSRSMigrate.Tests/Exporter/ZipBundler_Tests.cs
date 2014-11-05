@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.Bundler;
+using SSRSMigrate.Enum;
 using SSRSMigrate.Exporter;
 using Moq;
 using SSRSMigrate.TestHelper.Logging;
@@ -123,6 +124,9 @@ namespace SSRSMigrate.Tests.Exporter
         #endregion
 
         #region Expected Values
+        private BundleSummary expectedBundleSummary = new BundleSummary();
+        private string expectedBundleSourceRootPath = "/SSRSMigrate_AW_Tests";
+        private SSRSVersion expectedSourceVersion = SSRSVersion.SqlServer2008R2;
         Dictionary<string, List<BundleSummaryEntry>> expectedEntries = new Dictionary<string, List<BundleSummaryEntry>>()
 		    {
 		        {
@@ -191,54 +195,59 @@ namespace SSRSMigrate.Tests.Exporter
 		    };
 
         string expectedSummary = @"{
-  ""DataSources"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""AWDataSource.json"",
-      ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
-    }
-  ],
-  ""Reports"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Company Sales.rdl"",
-      ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Sales Order Detail.rdl"",
-      ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Store Contacts.rdl"",
-      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
-    }
-  ],
-  ""Folders"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Sub Folder"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    }
-  ]
+  ""SourceRootPath"": ""/SSRSMigrate_AW_Tests"",
+  ""SourceVersion"": ""SqlServer2008R2"",
+  ""Entries"": {
+    ""DataSources"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": ""AWDataSource.json"",
+        ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
+      }
+    ],
+    ""Reports"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Company Sales.rdl"",
+        ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Sales Order Detail.rdl"",
+        ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Store Contacts.rdl"",
+        ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+      }
+    ],
+    ""Folders"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Sub Folder"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      }
+    ]
+  }
 }";
 
+        private BundleSummary expectedBundleSummaryNoEntries = new BundleSummary();
         Dictionary<string, List<BundleSummaryEntry>> expectedEntriesNoData = new Dictionary<string, List<BundleSummaryEntry>>()
 		    {
 			    { "DataSources", new List<BundleSummaryEntry>() },
@@ -247,15 +256,34 @@ namespace SSRSMigrate.Tests.Exporter
 		    };
 
         string expectedSummaryNoData = @"{
-  ""DataSources"": [],
-  ""Reports"": [],
-  ""Folders"": []
+  ""SourceRootPath"": ""/SSRSMigrate_AW_Tests"",
+  ""SourceVersion"": ""SqlServer2008R2"",
+  ""Entries"": {
+    ""DataSources"": [],
+    ""Reports"": [],
+    ""Folders"": []
+  }
 }";
+        #endregion
+
+        #region Setup Values
+        private void SetUpValues()
+        {
+            expectedBundleSummary.SourceRootPath = expectedBundleSourceRootPath;
+            expectedBundleSummary.SourceVersion = expectedSourceVersion;
+            expectedBundleSummary.Entries = expectedEntries;
+
+            expectedBundleSummaryNoEntries.SourceRootPath = expectedBundleSourceRootPath;
+            expectedBundleSummaryNoEntries.SourceVersion = expectedSourceVersion;
+            expectedBundleSummaryNoEntries.Entries = expectedEntriesNoData;
+        }
         #endregion
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
+            this.SetUpValues();
+
             zipFileMock = new Mock<IZipFileWrapper>();
             checkSumGenMock = new Mock<ICheckSumGenerator>();
             serializeWrapperMock = new Mock<ISerializeWrapper>();
@@ -344,21 +372,33 @@ namespace SSRSMigrate.Tests.Exporter
                 .Returns(() => doesNotExistReport.CheckSum);
 
             // ISerializeWrapper.Serialize Mocks
-            //serializeWrapperMock.Setup(s => s.SerializeObject(It.IsAny <Dictionary<string, List<BundleSummaryEntry>>>()))
+            //serializeWrapperMock.Setup(s => s.SerializeObject(It.Is<Dictionary<string, List<BundleSummaryEntry>>>(
+            //    p => p["DataSources"].Count > 0 &&
+            //            p["Folders"].Count > 0 &&
+            //            p["Reports"].Count > 0
+            //    )))
             //    .Returns(() => expectedSummary);
 
-            serializeWrapperMock.Setup(s => s.SerializeObject(It.Is<Dictionary<string, List<BundleSummaryEntry>>>(
-                p => p["DataSources"].Count > 0 &&
-                        p["Folders"].Count > 0 &&
-                        p["Reports"].Count > 0
+            // Mock for ISerializeWrapper.Serialize where the entry being serialized contains no data
+            //serializeWrapperMock.Setup(s => s.SerializeObject(It.Is<Dictionary<string, List<BundleSummaryEntry>>>(
+            //    p =>    p["DataSources"].Count == 0 &&
+            //            p["Folders"].Count == 0 &&
+            //            p["Reports"].Count == 0
+            //    )))
+            //    .Returns(() => expectedSummaryNoData);
+
+            serializeWrapperMock.Setup(s => s.SerializeObject(It.Is<BundleSummary>(
+                p => p.Entries["DataSources"].Count > 0 &&
+                        p.Entries["Folders"].Count > 0 &&
+                        p.Entries["Reports"].Count > 0
                 )))
                 .Returns(() => expectedSummary);
 
             // Mock for ISerializeWrapper.Serialize where the entry being serialized contains no data
-            serializeWrapperMock.Setup(s => s.SerializeObject(It.Is<Dictionary<string, List<BundleSummaryEntry>>>(
-                p =>    p["DataSources"].Count == 0 &&
-                        p["Folders"].Count == 0 &&
-                        p["Reports"].Count == 0
+            serializeWrapperMock.Setup(s => s.SerializeObject(It.Is<BundleSummary>(
+                p => p.Entries["DataSources"].Count == 0 &&
+                        p.Entries["Folders"].Count == 0 &&
+                        p.Entries["Reports"].Count == 0
                 )))
                 .Returns(() => expectedSummaryNoData);
         }
@@ -432,10 +472,10 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void Entries_ContainsKeys()
         {
-            Assert.NotNull(zipBundler.Entries);
-            Assert.True(zipBundler.Entries.ContainsKey("Reports"));
-            Assert.True(zipBundler.Entries.ContainsKey("DataSources"));
-            Assert.True(zipBundler.Entries.ContainsKey("Folders"));
+            Assert.NotNull(zipBundler.Summary.Entries);
+            Assert.True(zipBundler.Summary.Entries.ContainsKey("Reports"));
+            Assert.True(zipBundler.Summary.Entries.ContainsKey("DataSources"));
+            Assert.True(zipBundler.Summary.Entries.ContainsKey("Folders"));
         }
         #endregion
 
@@ -1176,7 +1216,7 @@ namespace SSRSMigrate.Tests.Exporter
             // Verify that the file was added to the zip
             zipFileMock.Verify(z => z.AddFile(storeContactsReport.FileName, storeContactsReport.ZipPath));
 
-            string actual = zipBundler.CreateSummary();
+            string actual = zipBundler.CreateSummary(expectedBundleSourceRootPath, expectedSourceVersion);
 
             // Verify that the summary was added as an entry to the zip
             zipFileMock.Verify(z => z.AddEntry("ExportSummary.json", expectedSummary));
