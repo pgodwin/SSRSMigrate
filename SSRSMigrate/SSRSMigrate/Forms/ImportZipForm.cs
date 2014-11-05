@@ -13,6 +13,7 @@ using SSRSMigrate.Importer;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.Status;
+using SSRSMigrate.Utility;
 
 namespace SSRSMigrate.Forms
 {
@@ -532,20 +533,33 @@ namespace SSRSMigrate.Forms
             //TODO Everything else...
             // Import folders
             // Get path of ListView items in the folder group that are checked.
-            var folderItems = from lv in lvItems
-                              where lv.Group.Name == "foldersGroup" &&
-                              lv.Checked == true &&
-                              lv.Tag != null    // We don't want anything with a NULL Tag
-                              select (FolderItem)lv.Tag; //TODO Should select the extracted path also.
+            var folderItems =
+                (from lv in lvItems
+                    where lv.Group.Name == "foldersGroup" &&
+                          lv.Checked == true &&
+                          lv.Tag != null    // We don't want anything with a NULL Tag
+                    select new
+                    {
+                        Item = (FolderItem) lv.Tag,
+                        ExtractedTo = lv.SubItems[4].Text
+                    });
 
-            foreach (FolderItem folderItem in folderItems)
+            foreach (var folderItem in folderItems)
             {
                 MigrationStatus status = new MigrationStatus()
                 {
-                    Success = false
+                    Success = false,
+                    Item = folderItem.Item,
+                    FromPath = folderItem.ExtractedTo
                 };
 
-                
+                // Get the destination path for this item (e.g. '/SSRSMigrate_AW_Tests_Destination/Data Sources'
+                string destItemPath = SSRSUtil.GetFullDestinationPathForItem(
+                    "", //TODO  Need to populate with the sourceRootPath
+                    this.mDestinationRootPath,
+                    folderItem.Item.Path);
+
+
             }
             // Import Data Sources
 
