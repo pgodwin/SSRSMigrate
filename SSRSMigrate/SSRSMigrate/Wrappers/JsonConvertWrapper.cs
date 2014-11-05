@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace SSRSMigrate.Wrappers
 {
@@ -18,7 +19,7 @@ namespace SSRSMigrate.Wrappers
             if (value == null)
                 throw new ArgumentNullException("value");
 
-            return JsonConvert.SerializeObject(value, Formatting.Indented);
+            return JsonConvert.SerializeObject(value, Formatting.Indented, new StringEnumConverter());
         }
     }
 }
