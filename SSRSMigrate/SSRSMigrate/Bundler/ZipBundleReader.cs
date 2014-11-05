@@ -15,6 +15,7 @@ namespace SSRSMigrate.Bundler
         private IZipFileReaderWrapper mZipFileReaderWrapper = null;
         private readonly ICheckSumGenerator mCheckSumGenerator = null;
         private readonly ISerializeWrapper mSerializeWrapper = null;
+        //TODO Update to use BundleSummary
         private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
         private readonly ILogger mLogger = null;
         private readonly IFileSystem mFileSystem = null;
@@ -69,7 +70,6 @@ namespace SSRSMigrate.Bundler
            IFileSystem fileSystem,
            ISerializeWrapper serializeWrapper)
         {
-
             if (zipFileReaderWrapper == null)
                 throw new ArgumentNullException("zipFileReaderWrapper");
 
