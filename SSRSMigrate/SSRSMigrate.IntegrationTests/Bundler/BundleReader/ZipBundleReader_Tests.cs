@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
-using System.Linq;
-using System.Text;
 using Ninject;
-using Ninject.Extensions.Logging;
 using Ninject.Extensions.Logging.Log4net;
 using NUnit.Framework;
 using SSRSMigrate.Bundler;
@@ -38,298 +35,316 @@ namespace SSRSMigrate.IntegrationTests.Bundler.BundleReader
         private string unpackDir = null;
         #endregion
 
-        #region Expected Values
-        TestData dataSourceAW = new TestData()
-        {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json",
-            CheckSum = "7b4e44d94590f501ba24cd3904a925c3",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json"
-        };
+//        #region Expected Values
+//        TestData dataSourceAW = new TestData()
+//        {
+//            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json",
+//            CheckSum = "7b4e44d94590f501ba24cd3904a925c3",
+//            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\AWDataSource.json"
+//        };
 
-        TestData dataSourceTest = new TestData()
-        {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json",
-            CheckSum = "c0815114c3ce9dde35eca314bbfe4bc9",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json"
-        };
+//        TestData dataSourceTest = new TestData()
+//        {
+//            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json",
+//            CheckSum = "c0815114c3ce9dde35eca314bbfe4bc9",
+//            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources\\Test Data Source.json"
+//        };
 
-        TestData folderRoot = new TestData()
-        {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests",
-            CheckSum = "",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests"
-        };
+//        TestData folderRoot = new TestData()
+//        {
+//            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests",
+//            CheckSum = "",
+//            ZipPath = "Export\\SSRSMigrate_AW_Tests"
+//        };
 
-        TestData folderDataSources = new TestData()
-        {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Data Sources",
-            CheckSum = "",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources"
-        };
+//        TestData folderDataSources = new TestData()
+//        {
+//            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Data Sources",
+//            CheckSum = "",
+//            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Data Sources"
+//        };
 
-        TestData reportsFolder = new TestData()
-        {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Reports",
-            CheckSum = "",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
-        };
+//        TestData reportsFolder = new TestData()
+//        {
+//            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Reports",
+//            CheckSum = "",
+//            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
+//        };
 
-        TestData subFolder = new TestData()
-        {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder",
-            CheckSum = "",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Sub Folder"
-        };
+//        TestData subFolder = new TestData()
+//        {
+//            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder",
+//            CheckSum = "",
+//            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Sub Folder"
+//        };
 
-        TestData reportCompanySales = new TestData()
-        {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl",
-            CheckSum = "1adde7720ca2f0af49550fc676f70804",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
-        };
+//        TestData reportCompanySales = new TestData()
+//        {
+//            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl",
+//            CheckSum = "1adde7720ca2f0af49550fc676f70804",
+//            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
+//        };
 
-        TestData reportSalesOrderDetail = new TestData()
-        {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl",
-            CheckSum = "640a2f60207f03779fdedfed71d8101d",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
-        };
+//        TestData reportSalesOrderDetail = new TestData()
+//        {
+//            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl",
+//            CheckSum = "640a2f60207f03779fdedfed71d8101d",
+//            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
+//        };
 
-        TestData reportStoreContacts = new TestData()
-        {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl",
-            CheckSum = "a225b92ed8475e6bc5b59f5b2cc396fa",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
-        };
+//        TestData reportStoreContacts = new TestData()
+//        {
+//            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl",
+//            CheckSum = "a225b92ed8475e6bc5b59f5b2cc396fa",
+//            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
+//        };
 
-        TestData reportDoesNotExist = new TestData()
-        {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Reports\\File Doesnt Exist.rdl",
-            CheckSum = "",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
-        };
+//        TestData reportDoesNotExist = new TestData()
+//        {
+//            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Reports\\File Doesnt Exist.rdl",
+//            CheckSum = "",
+//            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Reports"
+//        };
 
-        TestData folderDoesNotExist = new TestData()
-        {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist",
-            CheckSum = "",
-            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist"
-        };
+//        TestData folderDoesNotExist = new TestData()
+//        {
+//            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\Export\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist",
+//            CheckSum = "",
+//            ZipPath = "Export\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist"
+//        };
 
-        TestData summaryFile = new TestData()
-        {
-            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\ExportSummary.json",
-            CheckSum = "",
-            ZipPath = "ExportSummary.json"
-        };
+//        TestData summaryFile = new TestData()
+//        {
+//            ExtractedTo = "C:\\temp\\SSRSMigrate_AW_Tests\\ExportSummary.json",
+//            CheckSum = "",
+//            ZipPath = "ExportSummary.json"
+//        };
 
-        string exportSummary = @"{
-  ""DataSources"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""AWDataSource.json"",
-      ""CheckSum"": ""42352f007cf07bcec798b5ca9e4643a7""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""Test Data Source.json"",
-      ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
-    }
-  ],
-  ""Reports"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Company Sales.rdl"",
-      ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Sales Order Detail.rdl"",
-      ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Store Contacts.rdl"",
-      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
-    }
-  ],
-  ""Folders"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    }
-  ]
-}";
-        // For testing when a file in the export summary does not exist on disk
-        string exportSummaryFileDoesntExist = @"{
-  ""DataSources"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""AWDataSource.json"",
-      ""CheckSum"": ""42352f007cf07bcec798b5ca9e4643a7""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""Test Data Source.json"",
-      ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
-    }
-  ],
-  ""Reports"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Company Sales.rdl"",
-      ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Sales Order Detail.rdl"",
-      ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Store Contacts.rdl"",
-      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""File Doesnt Exist.rdl"",
-      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
-    },
-  ],
-  ""Folders"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-  ]
-}";
+//        private string exportSummary = @"{
+//          ""SourceRootPath"": ""/SSRSMigrate_AW_Tests"",
+//          ""SourceVersion"": ""SqlServer2008R2"",
+//          ""Entries"": {
+//            ""DataSources"": [
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+//                ""FileName"": ""AWDataSource.json"",
+//                ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+//                ""FileName"": ""Test Data Source.json"",
+//                ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
+//              }
+//            ],
+//            ""Reports"": [
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": ""Company Sales.rdl"",
+//                ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": ""Sales Order Detail.rdl"",
+//                ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": ""Store Contacts.rdl"",
+//                ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+//              }
+//            ],
+//            ""Folders"": [
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+//                ""FileName"": """",
+//                ""CheckSum"": """"
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": """",
+//                ""CheckSum"": """"
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Sub Folder"",
+//                ""FileName"": """",
+//                ""CheckSum"": """"
+//              }
+//            ]
+//          }
+//        }";
 
-        // For testing when a directory in the export summary does not exist on disk
-        string exportSummaryDirectoryDoesntExist = @"{
-  ""DataSources"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""AWDataSource.json"",
-      ""CheckSum"": ""42352f007cf07bcec798b5ca9e4643a7""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""Test Data Source.json"",
-      ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
-    }
-  ],
-  ""Reports"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Company Sales.rdl"",
-      ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Sales Order Detail.rdl"",
-      ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Store Contacts.rdl"",
-      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
-    },
-  ],
-  ""Folders"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    }
-  ]
-}";
-        // For testing when a checksum does not match
-        string exportSummaryChecksumMismatch = @"{
-  ""DataSources"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""AWDataSource.json"",
-      ""CheckSum"": ""42352f007cf07bcec798b5ca9e4643a7""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""Test Data Source.json"",
-      ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
-    }
-  ],
-  ""Reports"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Company Sales.rdl"",
-      ""CheckSum"": ""BAD CHECKSUM HERE""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Sales Order Detail.rdl"",
-      ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Store Contacts.rdl"",
-      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
-    },
-  ],
-  ""Folders"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-  ]
-}";
-        #endregion
+//        // For testing when a file in the export summary does not exist on disk
+//        string exportSummaryFileDoesntExist = @"{
+//          ""SourceRootPath"": ""/SSRSMigrate_AW_Tests"",
+//          ""SourceVersion"": ""SqlServer2008R2"",
+//          ""Entries"": {
+//            ""DataSources"": [
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+//                ""FileName"": ""AWDataSource.json"",
+//                ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+//                ""FileName"": ""Test Data Source.json"",
+//                ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
+//              }
+//            ],
+//            ""Reports"": [
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": ""Company Sales.rdl"",
+//                ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": ""Sales Order Detail.rdl"",
+//                ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": ""Store Contacts.rdl"",
+//                ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": ""File Doesnt Exist.rdl"",      
+//                ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+//              }
+//            ],
+//            ""Folders"": [
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+//                ""FileName"": """",
+//                ""CheckSum"": """"
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": """",
+//                ""CheckSum"": """"
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Sub Folder"",
+//                ""FileName"": """",
+//                ""CheckSum"": """"
+//              }
+//            ]
+//          }
+//        }";
+
+//        // For testing when a directory in the export summary does not exist on disk
+//        string exportSummaryDirectoryDoesntExist = @"{
+//          ""SourceRootPath"": ""/SSRSMigrate_AW_Tests"",
+//          ""SourceVersion"": ""SqlServer2008R2"",
+//          ""Entries"": {
+//            ""DataSources"": [
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+//                ""FileName"": ""AWDataSource.json"",
+//                ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+//                ""FileName"": ""Test Data Source.json"",
+//                ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
+//              }
+//            ],
+//            ""Reports"": [
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": ""Company Sales.rdl"",
+//                ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": ""Sales Order Detail.rdl"",
+//                ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": ""Store Contacts.rdl"",
+//                ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+//              }
+//            ],
+//            ""Folders"": [
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+//                ""FileName"": """",
+//                ""CheckSum"": """"
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": """",
+//                ""CheckSum"": """"
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Sub Folder"",
+//                ""FileName"": """",
+//                ""CheckSum"": """"
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist"",
+//                ""FileName"": """",
+//                ""CheckSum"": """"
+//              }
+//            ]
+//          }
+//        }";
+
+//        // For testing when a checksum does not match
+//        string exportSummaryChecksumMismatch = @"{
+//          ""SourceRootPath"": ""/SSRSMigrate_AW_Tests"",
+//          ""SourceVersion"": ""SqlServer2008R2"",
+//          ""Entries"": {
+//            ""DataSources"": [
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+//                ""FileName"": ""AWDataSource.json"",
+//                ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+//                ""FileName"": ""Test Data Source.json"",
+//                ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
+//              }
+//            ],
+//            ""Reports"": [
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": ""Company Sales.rdl"",
+//                ""CheckSum"": ""BAD CHECKSUM HERE""
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": ""Sales Order Detail.rdl"",
+//                ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": ""Store Contacts.rdl"",
+//                ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+//              }
+//            ],
+//            ""Folders"": [
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+//                ""FileName"": """",
+//                ""CheckSum"": """"
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+//                ""FileName"": """",
+//                ""CheckSum"": """"
+//              },
+//              {
+//                ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Sub Folder"",
+//                ""FileName"": """",
+//                ""CheckSum"": """"
+//              }
+//            ]
+//          }
+//        }";
+//        #endregion
 
         #region Actual Values
         private List<string> actualReports = null;
@@ -589,9 +604,9 @@ namespace SSRSMigrate.IntegrationTests.Bundler.BundleReader
         {
             bundleReader.ReadExportSummary();
 
-            Assert.AreEqual(2, bundleReader.Entries["DataSources"].Count);
-            Assert.AreEqual(3, bundleReader.Entries["Reports"].Count);
-            Assert.AreEqual(4, bundleReader.Entries["Folders"].Count);
+            Assert.AreEqual(2, bundleReader.Summary.Entries["DataSources"].Count);
+            Assert.AreEqual(3, bundleReader.Summary.Entries["Reports"].Count);
+            Assert.AreEqual(3, bundleReader.Summary.Entries["Folders"].Count);
         }
 
         /// <summary>
@@ -679,7 +694,7 @@ namespace SSRSMigrate.IntegrationTests.Bundler.BundleReader
             bundleReader.Read();
 
             Assert.AreEqual(2, actualDataSources.Count);
-            Assert.AreEqual(4, actualFolders.Count);
+            Assert.AreEqual(3, actualFolders.Count);
             Assert.AreEqual(3, actualReports.Count);
         }
 
@@ -772,7 +787,7 @@ namespace SSRSMigrate.IntegrationTests.Bundler.BundleReader
             Directory.Delete(expectedFailedFolderName, true);
 
             // Set expected values
-            int expectedSuccessfulFolders = 3;
+            int expectedSuccessfulFolders = 2;
             int expectedFailedFolders = 1;
             int actualSuccessfulFolders = 0;
             int actualFailedFolders = 0;

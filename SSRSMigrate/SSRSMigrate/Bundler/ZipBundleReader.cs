@@ -16,7 +16,8 @@ namespace SSRSMigrate.Bundler
         private readonly ICheckSumGenerator mCheckSumGenerator = null;
         private readonly ISerializeWrapper mSerializeWrapper = null;
         //TODO Update to use BundleSummary
-        private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
+        private BundleSummary mSummary = null;
+        //private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
         private readonly ILogger mLogger = null;
         private readonly IFileSystem mFileSystem = null;
         private string mFileName = null;
@@ -30,9 +31,14 @@ namespace SSRSMigrate.Bundler
             get { return this.mExportSummaryFilename; }
         }
 
-        public Dictionary<string, List<BundleSummaryEntry>> Entries
+        //public Dictionary<string, List<BundleSummaryEntry>> Entries
+        //{
+        //    get { return this.mEntries; }
+        //}
+
+        public BundleSummary Summary
         {
-            get { return this.mEntries; }
+            get { return this.mSummary; }
         }
 
         public string ArchiveFileName
@@ -95,12 +101,14 @@ namespace SSRSMigrate.Bundler
             this.mZipFileReaderWrapper.OnEntryExtracted += EntryExtractedEventHandler;
 
             // Create entries Dictionary with default keys
-            this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>()
-		    {
-			    { "DataSources", new List<BundleSummaryEntry>() },
-			    { "Reports", new List<BundleSummaryEntry>() },
-			    { "Folders", new List<BundleSummaryEntry>() }
-		    };
+            //this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>()
+            //{
+            //    { "DataSources", new List<BundleSummaryEntry>() },
+            //    { "Reports", new List<BundleSummaryEntry>() },
+            //    { "Folders", new List<BundleSummaryEntry>() }
+            //};
+
+            this.mSummary = new BundleSummary();
         }
 
         public ZipBundleReader(
@@ -148,12 +156,14 @@ namespace SSRSMigrate.Bundler
             this.mZipFileReaderWrapper.OnEntryExtracted += EntryExtractedEventHandler;
 
             // Create entries Dictionary with default keys
-            this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>()
-		    {
-			    { "DataSources", new List<BundleSummaryEntry>() },
-			    { "Reports", new List<BundleSummaryEntry>() },
-			    { "Folders", new List<BundleSummaryEntry>() }
-		    };
+            //this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>()
+            //{
+            //    { "DataSources", new List<BundleSummaryEntry>() },
+            //    { "Reports", new List<BundleSummaryEntry>() },
+            //    { "Folders", new List<BundleSummaryEntry>() }
+            //};
+
+            this.mSummary = new BundleSummary();
         }
 
         ~ZipBundleReader()
@@ -181,15 +191,15 @@ namespace SSRSMigrate.Bundler
 
             this.mLogger.Debug("ReadExportSummary - Summary = {0}", exportSummary);
 
-            //this.mEntries = JsonConvert.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummary);
-            this.mEntries = this.mSerializeWrapper.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummary);
+            //this.mEntries = this.mSerializeWrapper.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummary);
+            this.mSummary = this.mSerializeWrapper.DeserializeObject<BundleSummary>(exportSummary);
         }
 
         public void Read()
         {
             // Go through each folder entry
             this.mLogger.Debug("Read - Started reading folder entries...");
-            foreach (BundleSummaryEntry folder in this.mEntries["Folders"])
+            foreach (BundleSummaryEntry folder in this.mSummary.Entries["Folders"])
             {
                 string fileName = Path.Combine(this.mUnpackDirectory, folder.Path);
 
@@ -245,7 +255,7 @@ namespace SSRSMigrate.Bundler
 
             // Go through each data source entry
             this.mLogger.Debug("Read - Started reading data source entries...");
-            foreach (BundleSummaryEntry dataSource in this.mEntries["DataSources"])
+            foreach (BundleSummaryEntry dataSource in this.mSummary.Entries["DataSources"])
             {
                 string fileName = Path.Combine(Path.Combine(this.mUnpackDirectory, dataSource.Path), dataSource.FileName);
 
@@ -300,7 +310,7 @@ namespace SSRSMigrate.Bundler
             this.mLogger.Debug("Read - Finished reading folder entries.");
 
             // Go through each report entry
-            foreach (BundleSummaryEntry report in this.mEntries["Reports"])
+            foreach (BundleSummaryEntry report in this.mSummary.Entries["Reports"])
             {
                 string fileName = Path.Combine(Path.Combine(this.mUnpackDirectory, report.Path), report.FileName);
 

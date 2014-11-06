@@ -9,6 +9,7 @@ using Moq;
 using NUnit.Framework;
 using SSRSMigrate.Bundler;
 using SSRSMigrate.Bundler.Events;
+using SSRSMigrate.Enum;
 using SSRSMigrate.Errors;
 using SSRSMigrate.TestHelper.Logging;
 using SSRSMigrate.Wrappers;
@@ -150,6 +151,10 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
         ZipEntryReadEvent summaryFileEventArgs = null;
 
+        BundleSummary bundleSummary = new BundleSummary();
+        string bundleSourceRootPath = "/SSRSMigrate_AW_Tests";
+        SSRSVersion bundleSourceVersion = SSRSVersion.SqlServer2008R2;
+
         Dictionary<string, List<BundleSummaryEntry>> entries = new Dictionary<string, List<BundleSummaryEntry>>()
 		    {
 		        {
@@ -224,60 +229,67 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 		    };
 
         string exportSummary = @"{
-  ""DataSources"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""AWDataSource.json"",
-      ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""Test Data Source.json"",
-      ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
-    }
-  ],
-  ""Reports"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Company Sales.rdl"",
-      ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Sales Order Detail.rdl"",
-      ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Store Contacts.rdl"",
-      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
-    }
-  ],
-  ""Folders"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    }
-  ]
+  ""SourceRootPath"": ""/SSRSMigrate_AW_Tests"",
+  ""SourceVersion"": ""SqlServer2008R2"",
+  ""Entries"": {
+    ""DataSources"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": ""AWDataSource.json"",
+        ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": ""Test Data Source.json"",
+        ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
+      }
+    ],
+    ""Reports"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Company Sales.rdl"",
+        ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Sales Order Detail.rdl"",
+        ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Store Contacts.rdl"",
+        ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+      }
+    ],
+    ""Folders"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Sub Folder"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      }
+    ]
+  }
 }";
+
         // For testing when a file in the export summary does not exist on disk
-         Dictionary<string, List<BundleSummaryEntry>> entriesFileDoesntExist = new Dictionary<string, List<BundleSummaryEntry>>()
+        BundleSummary bundleSummaryFileDoesntExist = new BundleSummary();
+
+        Dictionary<string, List<BundleSummaryEntry>> entriesFileDoesntExist = new Dictionary<string, List<BundleSummaryEntry>>()
 		    {
 		        {
 		            "DataSources", new List<BundleSummaryEntry>()
@@ -357,65 +369,71 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 		    };
 
         string exportSummaryFileDoesntExist = @"{
-  ""DataSources"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""AWDataSource.json"",
-      ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""Test Data Source.json"",
-      ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
-    }
-  ],
-  ""Reports"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Company Sales.rdl"",
-      ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Sales Order Detail.rdl"",
-      ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Store Contacts.rdl"",
-      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""File Doesnt Exist.rdl"",
-      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
-    },
-  ],
-  ""Folders"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-  ]
+  ""SourceRootPath"": ""/SSRSMigrate_AW_Tests"",
+  ""SourceVersion"": ""SqlServer2008R2"",
+  ""Entries"": {
+    ""DataSources"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": ""AWDataSource.json"",
+        ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": ""Test Data Source.json"",
+        ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
+      }
+    ],
+    ""Reports"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Company Sales.rdl"",
+        ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Sales Order Detail.rdl"",
+        ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Store Contacts.rdl"",
+        ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""File Doesnt Exist.rdl"",      
+        ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+      }
+    ],
+    ""Folders"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Sub Folder"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      }
+    ]
+  }
 }";
         
         // For testing when a directory in the export summary does not exist on disk
+        BundleSummary bundleSummaryDirectoryDoesntExist = new BundleSummary();
+
         Dictionary<string, List<BundleSummaryEntry>> entriesDirectoryDoesntExist = new Dictionary<string, List<BundleSummaryEntry>>()
 		    {
 		        {
@@ -495,64 +513,71 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 		        }
 		    };
         string exportSummaryDirectoryDoesntExist = @"{
-  ""DataSources"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""AWDataSource.json"",
-      ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""Test Data Source.json"",
-      ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
-    }
-  ],
-  ""Reports"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Company Sales.rdl"",
-      ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Sales Order Detail.rdl"",
-      ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Store Contacts.rdl"",
-      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
-    },
-  ],
-  ""Folders"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    }
-  ]
+  ""SourceRootPath"": ""/SSRSMigrate_AW_Tests"",
+  ""SourceVersion"": ""SqlServer2008R2"",
+  ""Entries"": {
+    ""DataSources"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": ""AWDataSource.json"",
+        ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": ""Test Data Source.json"",
+        ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
+      }
+    ],
+    ""Reports"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Company Sales.rdl"",
+        ""CheckSum"": ""1adde7720ca2f0af49550fc676f70804""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Sales Order Detail.rdl"",
+        ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Store Contacts.rdl"",
+        ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+      }
+    ],
+    ""Folders"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Sub Folder"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Folder Doesnt Exist"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      }
+    ]
+  }
 }";
+
         // For testing when a checksum does not match
+        BundleSummary bundleSummaryChecksumMismatch = new BundleSummary();
+
         Dictionary<string, List<BundleSummaryEntry>> entriesChecksumMismatch = new Dictionary<string, List<BundleSummaryEntry>>()
 		    {
 		        {
@@ -627,52 +652,61 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 		    };
 
         string exportSummaryChecksumMismatch = @"{
-  ""DataSources"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""AWDataSource.json"",
-      ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": ""Test Data Source.json"",
-      ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
-    }
-  ],
-  ""Reports"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Company Sales.rdl"",
-      ""CheckSum"": ""BAD CHECKSUM HERE""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Sales Order Detail.rdl"",
-      ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": ""Store Contacts.rdl"",
-      ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
-    },
-  ],
-  ""Folders"": [
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-    {
-      ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports\\Sub Folder"",
-      ""FileName"": """",
-      ""CheckSum"": """"
-    },
-  ]
+  ""SourceRootPath"": ""/SSRSMigrate_AW_Tests"",
+  ""SourceVersion"": ""SqlServer2008R2"",
+  ""Entries"": {
+    ""DataSources"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": ""AWDataSource.json"",
+        ""CheckSum"": ""7b4e44d94590f501ba24cd3904a925c3""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": ""Test Data Source.json"",
+        ""CheckSum"": ""81a151f4b17aba7e1516d0801cadf4ee""
+      }
+    ],
+    ""Reports"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Company Sales.rdl"",
+        ""CheckSum"": ""BAD CHECKSUM HERE""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Sales Order Detail.rdl"",
+        ""CheckSum"": ""640a2f60207f03779fdedfed71d8101d""
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": ""Store Contacts.rdl"",
+        ""CheckSum"": ""a225b92ed8475e6bc5b59f5b2cc396fa""
+      }
+    ],
+    ""Folders"": [
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Data Sources"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Reports"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      },
+      {
+        ""Path"": ""Export\\SSRSMigrate_AW_Tests\\Sub Folder"",
+        ""FileName"": """",
+        ""CheckSum"": """"
+      }
+    ]
+  }
 }";
         #endregion
 
@@ -736,6 +770,22 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             summaryFileEventArgs = new ZipEntryReadEvent(
                 summaryFile.ZipPath,
                 summaryFile.ExtractedTo);
+
+            bundleSummary.SourceRootPath = bundleSourceRootPath;
+            bundleSummary.SourceVersion = bundleSourceVersion;
+            bundleSummary.Entries = entries;
+
+            bundleSummaryFileDoesntExist.SourceRootPath = bundleSourceRootPath;
+            bundleSummaryFileDoesntExist.SourceVersion = bundleSourceVersion;
+            bundleSummaryFileDoesntExist.Entries = entriesFileDoesntExist;
+
+            bundleSummaryDirectoryDoesntExist.SourceRootPath = bundleSourceRootPath;
+            bundleSummaryDirectoryDoesntExist.SourceVersion = bundleSourceVersion;
+            bundleSummaryDirectoryDoesntExist.Entries = entriesDirectoryDoesntExist;
+
+            bundleSummaryChecksumMismatch.SourceRootPath = bundleSourceRootPath;
+            bundleSummaryChecksumMismatch.SourceVersion = bundleSourceVersion;
+            bundleSummaryChecksumMismatch.Entries = entriesChecksumMismatch;
         }
         #endregion
 
@@ -846,8 +896,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                 .Returns(() => false);
 
             // ISerializeWrapper.DeserializeObject Mocks
-            serializeWrapperMock.Setup(s => s.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummary))
-                .Returns(() => entries);
+            serializeWrapperMock.Setup(s => s.DeserializeObject<BundleSummary>(exportSummary))
+                .Returns(() => bundleSummary);
         }
 
         [TestFixtureTearDown]
@@ -965,9 +1015,9 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
 
             zipReaderMock.Verify(z => z.ReadEntry("ExportSummary.json"));
 
-            Assert.AreEqual(2, zipBundleReader.Entries["DataSources"].Count);
-            Assert.AreEqual(3, zipBundleReader.Entries["Reports"].Count);
-            Assert.AreEqual(4, zipBundleReader.Entries["Folders"].Count);
+            Assert.AreEqual(2, zipBundleReader.Summary.Entries["DataSources"].Count);
+            Assert.AreEqual(3, zipBundleReader.Summary.Entries["Reports"].Count);
+            Assert.AreEqual(4, zipBundleReader.Summary.Entries["Folders"].Count);
         }
 
         /// <summary>
@@ -1034,9 +1084,9 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                 });
 
             Assert.That(ex.Message, Is.EqualTo("No data in export summary."));
-            Assert.AreEqual(0, reader.Entries["DataSources"].Count);
-            Assert.AreEqual(0, reader.Entries["Reports"].Count);
-            Assert.AreEqual(0, reader.Entries["Folders"].Count);
+            Assert.AreEqual(0, reader.Summary.Entries["DataSources"].Count);
+            Assert.AreEqual(0, reader.Summary.Entries["Reports"].Count);
+            Assert.AreEqual(0, reader.Summary.Entries["Folders"].Count);
         }
         #endregion
 
@@ -1078,8 +1128,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                 .Returns(() => exportSummaryFileDoesntExist);
 
             serializeMock.Setup(
-                s => s.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummaryFileDoesntExist))
-                .Returns(() => entriesFileDoesntExist);
+                s => s.DeserializeObject<BundleSummary>(exportSummaryFileDoesntExist))
+                .Returns(() => bundleSummaryFileDoesntExist);
 
             var logger = new MockLogger();
 
@@ -1134,8 +1184,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                 .Returns(() => exportSummaryDirectoryDoesntExist);
 
             serializeMock.Setup(
-                s => s.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummaryDirectoryDoesntExist))
-                .Returns(() => entriesDirectoryDoesntExist);
+                s => s.DeserializeObject<BundleSummary>(exportSummaryDirectoryDoesntExist))
+                .Returns(() => bundleSummaryDirectoryDoesntExist);
 
             var logger = new MockLogger();
 
@@ -1194,8 +1244,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                 .Returns(() => exportSummaryChecksumMismatch);
 
             serializeMock.Setup(
-                s => s.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummaryChecksumMismatch))
-                .Returns(() => entriesChecksumMismatch);
+                s => s.DeserializeObject<BundleSummary>(exportSummaryChecksumMismatch))
+                .Returns(() => bundleSummaryChecksumMismatch);
 
             var logger = new MockLogger();
 

@@ -12,7 +12,8 @@ namespace SSRSMigrate.Bundler
     {
         // Properties
         string ExportSummaryFilename { get; }
-        Dictionary<string, List<BundleSummaryEntry>> Entries { get; }
+        //Dictionary<string, List<BundleSummaryEntry>> Entries { get; }
+        BundleSummary Summary { get;  }
         string ArchiveFileName { get; set; }
         string UnPackDirectory { get; set; }
 
