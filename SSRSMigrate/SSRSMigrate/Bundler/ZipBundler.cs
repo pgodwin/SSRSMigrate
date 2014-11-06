@@ -261,20 +261,20 @@ namespace SSRSMigrate.Bundler
         /// </summary>
         /// <returns>String in JSON format containing the summary of data contained in the zip archive.</returns>
         //TODO Remove this
-        public string CreateSummary()
-        {
-            // Serialize mEntries Dictionary to JSON format
-            //string summary = this.mSerializeWrapper.SerializeObject(this.mEntries);
-            string summary = this.mSerializeWrapper.SerializeObject(this.mSummary);
+        //public string CreateSummary()
+        //{
+        //    // Serialize mEntries Dictionary to JSON format
+        //    //string summary = this.mSerializeWrapper.SerializeObject(this.mEntries);
+        //    string summary = this.mSerializeWrapper.SerializeObject(this.mSummary);
 
-            this.mLogger.Trace("CreateSummary - JSON = {0}", summary);
-            this.mLogger.Trace("CreateSummary - Saving summary as '{0}'...", this.mExportSummaryFilename);
+        //    this.mLogger.Trace("CreateSummary - JSON = {0}", summary);
+        //    this.mLogger.Trace("CreateSummary - Saving summary as '{0}'...", this.mExportSummaryFilename);
 
-            // Add JSON serialized summary string as an entry to the zip using the value from mExportSummaryFilename 
-            this.mZipFileWrapper.AddEntry(this.mExportSummaryFilename, summary);
+        //    // Add JSON serialized summary string as an entry to the zip using the value from mExportSummaryFilename 
+        //    this.mZipFileWrapper.AddEntry(this.mExportSummaryFilename, summary);
 
-            return summary;
-        }
+        //    return summary;
+        //}
 
         /// <summary>
         /// Creates a JSON string that contains a summary of the data created by the ZipBundler.

@@ -769,7 +769,7 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
                false);
 
             // Create and add summary to ZipBundler
-            zipBundler.CreateSummary();
+            zipBundler.CreateSummary(expectedeSourceRootPath, expectedSourceVersion);
             
             // Save archive to disk
             string filename = zipArchiveFilename;

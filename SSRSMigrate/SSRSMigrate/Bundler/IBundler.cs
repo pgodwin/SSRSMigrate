@@ -13,7 +13,7 @@ namespace SSRSMigrate.Bundler
         string GetZipPath(string itemFileName, string itemPath, bool isFolder = false);
         BundleSummaryEntry CreateEntrySummary(string itemFileName, string zipPath, bool isFolder = false);
         void AddItem(string key, string itemFileName, string itemPath, bool isFolder);
-        string CreateSummary();
+        //string CreateSummary();
         string CreateSummary(string rootPath, SSRSVersion version);
         string Save(string fileName);
         void Reset();

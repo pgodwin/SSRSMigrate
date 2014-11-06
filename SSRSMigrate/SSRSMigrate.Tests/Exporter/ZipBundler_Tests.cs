@@ -1227,7 +1227,7 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void CreateSummary_NoData()
         {
-            string actual = zipBundler.CreateSummary();
+            string actual = zipBundler.CreateSummary(expectedBundleSourceRootPath, expectedSourceVersion);
 
             // Verify that the summary was added as an entry to the zip
             zipFileMock.Verify(z => z.AddEntry("ExportSummary.json", expectedSummaryNoData));

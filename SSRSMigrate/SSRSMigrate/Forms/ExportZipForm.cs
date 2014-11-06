@@ -6,6 +6,7 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Windows.Forms;
 using SSRSMigrate.Bundler;
+using SSRSMigrate.Enum;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Reader;
@@ -604,7 +605,10 @@ namespace SSRSMigrate.Forms
                 msg = string.Format("Completed. {0}", e.Result);   
                 
                 // If the export completed, create the summary and save the ZipBundler
-                this.mZipBundler.CreateSummary();
+                string sourceRootPath = this.mSourceRootPath;
+                SSRSVersion sourceVersion = this.mReportServerReader.GetSqlServerVersion();
+                this.mZipBundler.CreateSummary(sourceRootPath, sourceVersion);
+
                 string filename = this.mZipBundler.Save(this.mExportDestinationFilename);
 
                 this.mLogger.Info("ExportedItemsCompleted - Saved zip bundle to '{0}'.", filename);
