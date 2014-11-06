@@ -638,14 +638,6 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
                 awDataSource.Path,
                 false);
 
-            // Add sub folder folder item to ZipBundler
-            zipBundler.AddItem("Folders",
-                subFolder.FileName,
-                subFolder.Path,
-                true);
-
-            //TODO Figure out why report items are getting duplicated here.
-            // Add Report items to ZipBundler
             // Add Company Sales report
             zipBundler.AddItem("Reports",
                 companySalesReport.FileName,
@@ -663,6 +655,32 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
                storeContactsReport.FileName,
                storeContactsReport.Path,
                false);
+
+            // Add folder items to ZipBundle last since they will automatically get added by each item,
+            // so this will prevent duplicate key exceptions
+            // Add root  folder item
+            zipBundler.AddItem("Folders",
+                rootFolder.FileName,
+                rootFolder.Path,
+                true);
+
+            // Add data sources folder folder item
+            zipBundler.AddItem("Folders",
+               dataSourcesFolder.FileName,
+               dataSourcesFolder.Path,
+               true);
+
+            // Add reports folder item
+            zipBundler.AddItem("Folders",
+               reportsFolder.FileName,
+               reportsFolder.Path,
+               true);
+
+            // Add sub folder folder item
+            zipBundler.AddItem("Folders",
+                subFolder.FileName,
+                subFolder.Path,
+                true);
 
             string actual = zipBundler.CreateSummary(expectedeSourceRootPath, expectedSourceVersion);
 
