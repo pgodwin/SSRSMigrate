@@ -60,6 +60,7 @@ namespace SSRSMigrate.Wrappers
             if (!File.Exists(fileName))
                 throw new FileNotFoundException(fileName);
 
+            //TODO Add check if the file exists in the zip already
             this.mZipFile.AddFile(fileName, directoryPathInArchive);
         }
 
