@@ -83,7 +83,6 @@ namespace SSRSMigrate.Bundler
         private readonly ICheckSumGenerator mCheckSumGenerator = null;
         private readonly ISerializeWrapper mSerializeWrapper = null;
         private BundleSummary mSummary = null;
-        //private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
         private readonly ILogger mLogger = null;
 
         private string mExportSummaryFilename = "ExportSummary.json";
@@ -92,11 +91,6 @@ namespace SSRSMigrate.Bundler
         {
             get { return this.mExportSummaryFilename; }
         }
-
-        //public Dictionary<string, List<BundleSummaryEntry>> Entries
-        //{
-        //    get { return this.mEntries; }
-        //}
 
         public BundleSummary Summary
         {
@@ -127,14 +121,6 @@ namespace SSRSMigrate.Bundler
             this.mSerializeWrapper = serializeWrapper;
 
             this.mSummary = new BundleSummary();
-
-            // Create entries Dictionary with default keys
-            //this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>()
-            //{
-            //    { "DataSources", new List<BundleSummaryEntry>() },
-            //    { "Reports", new List<BundleSummaryEntry>() },
-            //    { "Folders", new List<BundleSummaryEntry>() }
-            //};
         }
 
         ~ZipBundler()
@@ -255,26 +241,6 @@ namespace SSRSMigrate.Bundler
 
             this.mSummary.Entries[key].Add(entry);      
         }
-
-        /// <summary>
-        /// Creates a JSON string that contains a summary of the data created by the ZipBundler.
-        /// </summary>
-        /// <returns>String in JSON format containing the summary of data contained in the zip archive.</returns>
-        //TODO Remove this
-        //public string CreateSummary()
-        //{
-        //    // Serialize mEntries Dictionary to JSON format
-        //    //string summary = this.mSerializeWrapper.SerializeObject(this.mEntries);
-        //    string summary = this.mSerializeWrapper.SerializeObject(this.mSummary);
-
-        //    this.mLogger.Trace("CreateSummary - JSON = {0}", summary);
-        //    this.mLogger.Trace("CreateSummary - Saving summary as '{0}'...", this.mExportSummaryFilename);
-
-        //    // Add JSON serialized summary string as an entry to the zip using the value from mExportSummaryFilename 
-        //    this.mZipFileWrapper.AddEntry(this.mExportSummaryFilename, summary);
-
-        //    return summary;
-        //}
 
         /// <summary>
         /// Creates a JSON string that contains a summary of the data created by the ZipBundler.
