@@ -510,6 +510,20 @@ namespace SSRSMigrate.Forms
             BackgroundWorker worker = sender as BackgroundWorker;
             string destinationRootPath = (string)e.Argument;
 
+            // Get the source root path from the bundle
+            string sourceRootPath = this.mBundleReader.Summary.SourceRootPath;
+
+            // If the source root path is empty or null, throw an exception
+            if (string.IsNullOrEmpty(sourceRootPath))
+            {
+                this.mLogger.Fatal("ImportWorker - SourceRootPath is NULL or empty.");
+
+                throw new Exception("Provided 'SourceRootPath' from bundle is empty.");
+            }
+
+            this.mLogger.Trace("ImportWorker - SourceRootPath = {0}", sourceRootPath);
+            this.mLogger.Trace("ImportWorker - DestinationRootPath = {0}", this.mDestinationRootPath);
+
             // Stopwatch to track how long the import takes
             Stopwatch watch = new Stopwatch();
 
@@ -530,7 +544,7 @@ namespace SSRSMigrate.Forms
 
             int progressCounter = 0;
             int itemsImportedCounter = 0;
-
+           
             // Import folders
             // Get path of ListView items in the folder group that are checked.
             var folderItems =
@@ -544,6 +558,7 @@ namespace SSRSMigrate.Forms
                         ExtractedTo = lv.SubItems[4].Text
                     });
 
+            // Iterate through each item that was checked in the ListView's 'foldersGroup' group
             foreach (var folderItem in folderItems)
             {
                 MigrationStatus status = new MigrationStatus()
@@ -555,7 +570,7 @@ namespace SSRSMigrate.Forms
 
                 // Get the destination path for this item (e.g. '/SSRSMigrate_AW_Tests_Destination/Data Sources'
                 string destItemPath = SSRSUtil.GetFullDestinationPathForItem(
-                    "", //TODO  Need to populate with the sourceRootPath
+                    sourceRootPath, 
                     this.mDestinationRootPath,
                     folderItem.Item.Path);
 
@@ -563,18 +578,20 @@ namespace SSRSMigrate.Forms
                 folderItem.Item.Path = destItemPath;
                 status.ToPath = destItemPath;
 
-                this.mLogger.Trace("ImportWorker - FolderItem.FromPath = {0}; ToPath = {1}", status.FromPath, status.ToPath);
+                this.mLogger.Trace("ImportWorker - FolderItem.FromPath = {0}; ToPath = {1}", 
+                    status.FromPath, 
+                    status.ToPath);
 
                 try
                 {
-                    //TODO Write FolderItem to the server
-                    //string warning = this.mReportServerWriter.WriteFolder(folderItem.Item);
-                    //if (!string.IsNullOrEmpty(warning))
-                    //    status.Warnings = new string[] { warning };
+                    // Write the FolderItem to the server
+                    string warning = this.mReportServerWriter.WriteFolder(folderItem.Item);
+                    if (!string.IsNullOrEmpty(warning))
+                        status.Warnings = new string[] { warning };
 
-                    //status.Success = true;
+                    status.Success = true;
 
-                    //++itemsImportedCounter;
+                    ++itemsImportedCounter;
                 }
                 catch (ItemAlreadyExistsException er)
                 {
@@ -589,11 +606,173 @@ namespace SSRSMigrate.Forms
                         status.ToPath),
                         er);
                 }
+
+                // Always report progress
+                if (worker != null)
+                    worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
+                else
+                {
+                    this.mLogger.Warn("ImportWorker - worker is NULL.");
+                }
             }
 
-            //TODO Import Data Sources
+            // Import Data Sources
+            // Get path of ListView items in the data sources group that are checked.
+            var dataSourceItems =
+                (from lv in lvItems
+                 where lv.Group.Name == "dataSourcesGroup" &&
+                       lv.Checked == true &&
+                       lv.Tag != null    // We don't want anything with a NULL Tag
+                 select new
+                 {
+                     Item = (DataSourceItem)lv.Tag,
+                     ExtractedTo = lv.SubItems[4].Text
+                 });
 
-            //TODO Import reports
+            foreach (var dataSourceItem in dataSourceItems)
+            {
+                MigrationStatus status = new MigrationStatus()
+                {
+                    Success = false,
+                    Item = dataSourceItem.Item,
+                    FromPath = dataSourceItem.ExtractedTo
+                };
+
+                // Get the destination path for this item (e.g. '/SSRSMigrate_AW_Tests_Destination/Data Sources/AWTestDataSource'
+                string destItemPath = SSRSUtil.GetFullDestinationPathForItem(
+                    sourceRootPath,
+                    this.mDestinationRootPath,
+                    dataSourceItem.Item.Path);
+
+                // Update the FolderItem.Path to be the new destination path
+                dataSourceItem.Item.Path = destItemPath;
+                status.ToPath = destItemPath;
+
+                this.mLogger.Trace("ImportWorker - DataSourceItem.FromPath = {0}; ToPath = {1}",
+                    status.FromPath,
+                    status.ToPath);
+
+                try
+                {
+                    // Write the DataSourceItem to the server
+                    string warning = this.mReportServerWriter.WriteDataSource(dataSourceItem.Item);
+                    if (!string.IsNullOrEmpty(warning))
+                        status.Warnings = new string[] { warning };
+
+                    status.Success = true;
+
+                    ++itemsImportedCounter;
+                }
+                catch (ItemAlreadyExistsException er)
+                {
+                    this.mLogger.Error(er, "Data Source already exists.");
+
+                    status.Success = false;
+                    status.Error = er;
+
+                    this.mDebugForm.LogMessage(
+                        string.Format("Data Source can't be imported from '{0}' to '{1}', it already exists.",
+                        status.FromPath,
+                        status.ToPath),
+                        er);
+                }
+
+                // Always report progress
+                if (worker != null)
+                    worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
+                else
+                {
+                    this.mLogger.Warn("ImportWorker - worker is NULL.");
+                }
+            }
+
+            // Import reports
+            // Get path of ListView items in the reports group that are checked.
+            var reportItems =
+                (from lv in lvItems
+                 where lv.Group.Name == "reportsGroup" &&
+                       lv.Checked == true &&
+                       lv.Tag != null    // We don't want anything with a NULL Tag
+                 select new
+                 {
+                     Item = (ReportItem)lv.Tag,
+                     ExtractedTo = lv.SubItems[4].Text
+                 });
+
+            foreach (var reportItem in reportItems)
+            {
+                MigrationStatus status = new MigrationStatus()
+                {
+                    Success = false,
+                    Item = reportItem.Item,
+                    FromPath = reportItem.ExtractedTo
+                };
+
+                // Get the destination path for this item (e.g. '/SSRSMigrate_AW_Tests_Destination/Reports/Company Sales'
+                string destItemPath = SSRSUtil.GetFullDestinationPathForItem(
+                    sourceRootPath,
+                    this.mDestinationRootPath,
+                    reportItem.Item.Path);
+
+                // Update the FolderItem.Path to be the new destination path
+                reportItem.Item.Path = destItemPath;
+                status.ToPath = destItemPath;
+
+                this.mLogger.Trace("ImportWorker - ReportItem.FromPath = {0}; ToPath = {1}",
+                    status.FromPath,
+                    status.ToPath);
+
+                if (reportItem.Item.Definition != null)
+                    this.mLogger.Trace("ImportWorker - ReportItem.Definition Before = {0}", 
+                        SSRSUtil.ByteArrayToString(reportItem.Item.Definition));
+
+                // Update the ReportItem.Definition to point to the new server
+                reportItem.Item.Definition = SSRSUtil.UpdateReportDefinition(
+                    this.mDestinationServerUrl,
+                    sourceRootPath,
+                    this.mDestinationRootPath,
+                    reportItem.Item.Definition
+                    );
+
+                if (reportItem.Item.Definition != null)
+                    this.mLogger.Trace("ImportWorker - ReportItem.Definition After = {0}",
+                        SSRSUtil.ByteArrayToString(reportItem.Item.Definition));
+
+                try
+                {
+                    // Write ReportItem to server
+                    string[] warnings = this.mReportServerWriter.WriteReport(reportItem.Item);
+
+                    if (warnings != null)
+                        if (warnings.Length > 0)
+                            status.Warnings = warnings;
+
+                    status.Success = true;
+
+                    ++itemsImportedCounter;
+                }
+                catch (ItemAlreadyExistsException er)
+                {
+                    this.mLogger.Error(er, "Report item already exists.");
+
+                    status.Success = false;
+                    status.Error = er;
+
+                    this.mDebugForm.LogMessage(
+                        string.Format("Report can't be migrated from '{0}' to '{1}', it already exists.",
+                            status.FromPath,
+                            status.ToPath),
+                        er);
+                }
+
+                // Always report progress
+                if (worker != null)
+                    worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
+                else
+                {
+                    this.mLogger.Warn("ImportWorker - worker is NULL.");
+                }
+            }
 
             // Stop stopwatch and get how long it took for the migration to complete successfully
             watch.Stop();
@@ -613,15 +792,97 @@ namespace SSRSMigrate.Forms
 
         private void bw_ImportCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            
+            string msg = null;
+
+            if ((e.Cancelled == true))
+            {
+                msg = string.Format("Cancelled.");
+            }
+            else if ((e.Error != null))
+            {
+                msg = string.Format("Error. {0}", e.Error.Message);
+
+                this.mLogger.Error(e.Error, "Error during import");
+
+                this.mDebugForm.LogMessage(msg, e.Error);
+
+                MessageBox.Show(msg,
+                    "Import Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            else
+            {
+                msg = string.Format("Completed. {0}", e.Result);
+            }
+
+            this.mLogger.Info("Import completed: {0}", msg);
+            this.lblStatus.Text = msg;
+            this.btnSrcRefreshReports.Enabled = true;
+            this.btnPerformImport.Enabled = false;
         }
 
         private void bw_ImportProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            
+            if (e.UserState != null)
+            {
+                MigrationStatus status = (MigrationStatus) e.UserState;
+
+                if (status.Item != null)
+                {
+                    ReportServerItem item = (ReportServerItem) status.Item;
+
+                    ListViewItem oItem = new ListViewItem(item.Name);
+                    oItem.SubItems.Add(item.Path);
+
+                    if (!status.Success)
+                    {
+                        oItem.SubItems.Add(status.Error.Message);
+                        oItem.ForeColor = Color.Red;
+
+                        oItem.ToolTipText = status.Error.Message;
+                    }
+
+                    if (status.Warnings.Length > 0)
+                    {
+                        string warnings = string.Join("; ", status.Warnings);
+
+                        oItem.SubItems.Add(warnings);
+                        oItem.ForeColor = Color.OrangeRed;
+
+                        oItem.ToolTipText = string.Join("\n\r", status.Warnings);  
+                    }
+
+                    // Assign to proper ListViewGroup
+                    if (item.GetType() == typeof(FolderItem))
+                        oItem.Group = this.lstDestReports.Groups["foldersGroup"];
+                    else if (item.GetType() == typeof(DataSourceItem))
+                        oItem.Group = this.lstDestReports.Groups["dataSourcesGroup"];
+                    else if (item.GetType() == typeof(ReportItem))
+                        oItem.Group = this.lstDestReports.Groups["reportsGroup"];
+
+                    this.lstDestReports.Items.Add(oItem);
+                    oItem.EnsureVisible();
+
+                    progressBar.ToolTipText = item.Name;
+
+                    string msg = string.Format("Imported item from '{0}' to '{1}'...", 
+                        status.FromPath,
+                        status.ToPath);
+
+                    this.mDebugForm.LogMessage(msg);
+                    this.mLogger.Info("ImportProgressChanged - {0}", msg);
+                    this.lblStatus.Text = string.Format("Imported item '{0}'...", item.Path);
+                }
+                else
+                    this.mLogger.Warn("ImportProgressChanged - MigrationStatus.Item is NULL for item imported from '{0}' to '{1}'.", 
+                        status.FromPath, 
+                        status.ToPath);
+            }
+
+            progressBar.Value = e.ProgressPercentage;
+            progressBar.Maximum = 100;
         }
-
-
         #endregion
     }
 }
