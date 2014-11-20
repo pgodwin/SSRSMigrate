@@ -10,6 +10,7 @@ using Ninject.Extensions.Logging;
 using SSRSMigrate.Bundler;
 using SSRSMigrate.Bundler.Events;
 using SSRSMigrate.Importer;
+using SSRSMigrate.SSRS.Errors;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.Status;
@@ -530,7 +531,6 @@ namespace SSRSMigrate.Forms
             int progressCounter = 0;
             int itemsImportedCounter = 0;
 
-            //TODO Everything else...
             // Import folders
             // Get path of ListView items in the folder group that are checked.
             var folderItems =
@@ -559,11 +559,41 @@ namespace SSRSMigrate.Forms
                     this.mDestinationRootPath,
                     folderItem.Item.Path);
 
+                // Update the FolderItem.Path to be the new destination path
+                folderItem.Item.Path = destItemPath;
+                status.ToPath = destItemPath;
 
+                this.mLogger.Trace("ImportWorker - FolderItem.FromPath = {0}; ToPath = {1}", status.FromPath, status.ToPath);
+
+                try
+                {
+                    //TODO Write FolderItem to the server
+                    //string warning = this.mReportServerWriter.WriteFolder(folderItem.Item);
+                    //if (!string.IsNullOrEmpty(warning))
+                    //    status.Warnings = new string[] { warning };
+
+                    //status.Success = true;
+
+                    //++itemsImportedCounter;
+                }
+                catch (ItemAlreadyExistsException er)
+                {
+                    this.mLogger.Error(er, "Folder item already exists.");
+
+                    status.Success = false;
+                    status.Error = er;
+
+                    this.mDebugForm.LogMessage(
+                        string.Format("Folder can't be imported from '{0}' to '{1}', it already exists.",
+                        status.FromPath,
+                        status.ToPath),
+                        er);
+                }
             }
-            // Import Data Sources
 
-            // Import reports
+            //TODO Import Data Sources
+
+            //TODO Import reports
 
             // Stop stopwatch and get how long it took for the migration to complete successfully
             watch.Stop();
