@@ -15,9 +15,7 @@ namespace SSRSMigrate.Bundler
         private IZipFileReaderWrapper mZipFileReaderWrapper = null;
         private readonly ICheckSumGenerator mCheckSumGenerator = null;
         private readonly ISerializeWrapper mSerializeWrapper = null;
-        //TODO Update to use BundleSummary
         private BundleSummary mSummary = null;
-        //private Dictionary<string, List<BundleSummaryEntry>> mEntries = null;
         private readonly ILogger mLogger = null;
         private readonly IFileSystem mFileSystem = null;
         private string mFileName = null;
@@ -30,12 +28,7 @@ namespace SSRSMigrate.Bundler
         {
             get { return this.mExportSummaryFilename; }
         }
-
-        //public Dictionary<string, List<BundleSummaryEntry>> Entries
-        //{
-        //    get { return this.mEntries; }
-        //}
-
+        
         public BundleSummary Summary
         {
             get { return this.mSummary; }
@@ -100,14 +93,6 @@ namespace SSRSMigrate.Bundler
             // Register event for when entries are extracted using the IZipFileReaderWrapper
             this.mZipFileReaderWrapper.OnEntryExtracted += EntryExtractedEventHandler;
 
-            // Create entries Dictionary with default keys
-            //this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>()
-            //{
-            //    { "DataSources", new List<BundleSummaryEntry>() },
-            //    { "Reports", new List<BundleSummaryEntry>() },
-            //    { "Folders", new List<BundleSummaryEntry>() }
-            //};
-
             this.mSummary = new BundleSummary();
         }
 
@@ -155,14 +140,6 @@ namespace SSRSMigrate.Bundler
             // Register event for when entries are extracted using the IZipFileReaderWrapper
             this.mZipFileReaderWrapper.OnEntryExtracted += EntryExtractedEventHandler;
 
-            // Create entries Dictionary with default keys
-            //this.mEntries = new Dictionary<string, List<BundleSummaryEntry>>()
-            //{
-            //    { "DataSources", new List<BundleSummaryEntry>() },
-            //    { "Reports", new List<BundleSummaryEntry>() },
-            //    { "Folders", new List<BundleSummaryEntry>() }
-            //};
-
             this.mSummary = new BundleSummary();
         }
 
@@ -191,7 +168,6 @@ namespace SSRSMigrate.Bundler
 
             this.mLogger.Debug("ReadExportSummary - Summary = {0}", exportSummary);
 
-            //this.mEntries = this.mSerializeWrapper.DeserializeObject<Dictionary<string, List<BundleSummaryEntry>>>(exportSummary);
             this.mSummary = this.mSerializeWrapper.DeserializeObject<BundleSummary>(exportSummary);
         }
 
