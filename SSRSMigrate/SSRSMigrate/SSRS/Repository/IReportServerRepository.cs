@@ -11,6 +11,7 @@ namespace SSRSMigrate.SSRS.Repository
         // Properties
         string InvalidPathChars { get; }
         ILogger Logger { get; set; }
+        string ServerAddress { get;  }
 
         // Folders
         FolderItem GetFolder(string path);

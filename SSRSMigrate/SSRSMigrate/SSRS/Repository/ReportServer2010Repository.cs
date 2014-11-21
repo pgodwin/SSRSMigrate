@@ -75,6 +75,11 @@ namespace SSRSMigrate.SSRS.Repository
             get { return this.mLogger; }
             set { this.mLogger = value; }
         }
+
+        public string ServerAddress
+        {
+            get { return this.mReportingService.Url; }
+        }
         #endregion
 
         #region Folder Methods
