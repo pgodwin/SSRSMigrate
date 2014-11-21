@@ -395,7 +395,7 @@ namespace SSRSMigrate.Forms
 
             // Stop stopwatch after getting the total number of checked items, and log how long it took
             watch.Stop();
-            this.mLogger.Trace("ExportItemsWorker - Took {0} seconds to get checked ListView items", watch.Elapsed.TotalSeconds);
+            this.mLogger.Debug("ExportItemsWorker - Took {0} seconds to get checked ListView items", watch.Elapsed.TotalSeconds);
 
             // Start stopwatch to get how long it takes to export everything
             watch.Start();
@@ -424,7 +424,7 @@ namespace SSRSMigrate.Forms
                             saveFilePath,
                             true);
 
-                        this.mLogger.Trace("ExportItemsWorker - FolderItem.Success = {0}; FromPath = {1}; ToPath = {2}",
+                        this.mLogger.Debug("ExportItemsWorker - FolderItem.Success = {0}; FromPath = {1}; ToPath = {2}",
                             status.Success,
                             status.FromPath,
                             status.ToPath);
@@ -478,7 +478,7 @@ namespace SSRSMigrate.Forms
                             saveFilePath,
                             true);
 
-                        this.mLogger.Trace("ExportItemsWorker - DataSourceItem.Success = {0}; FromPath = {1}; ToPath = {2}",
+                        this.mLogger.Debug("ExportItemsWorker - DataSourceItem.Success = {0}; FromPath = {1}; ToPath = {2}",
                             status.Success,
                             status.FromPath,
                             status.ToPath);
@@ -532,7 +532,7 @@ namespace SSRSMigrate.Forms
                             saveFilePath,
                             true);
 
-                        this.mLogger.Trace("ExportItemsWorker - ReportItem.Success = {0}; FromPath = {1}; ToPath = {2}",
+                        this.mLogger.Debug("ExportItemsWorker - ReportItem.Success = {0}; FromPath = {1}; ToPath = {2}",
                             status.Success,
                             status.FromPath,
                             status.ToPath);
@@ -574,7 +574,7 @@ namespace SSRSMigrate.Forms
                 watch.Elapsed.Seconds,
                 averageItem);
 
-            this.mLogger.Trace("ExportItemsWorker - {0}", result);
+            this.mLogger.Debug("ExportItemsWorker - {0}", result);
 
             e.Result = result;
         }

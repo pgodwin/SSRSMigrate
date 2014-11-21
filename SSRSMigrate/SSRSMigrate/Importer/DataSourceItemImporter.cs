@@ -51,7 +51,7 @@ namespace SSRSMigrate.Importer
 
             try
             {
-                this.mLogger.Trace("ImportItem - data = {0}", data);
+                this.mLogger.Debug("ImportItem - data = {0}", data);
                 this.mLogger.Debug("ImportItem - diskPath = {0}", diskPath);
 
                 item = this.mSerializeWrapper.DeserializeObject<DataSourceItem>(data);

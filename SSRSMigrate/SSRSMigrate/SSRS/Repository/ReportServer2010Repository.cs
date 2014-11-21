@@ -102,7 +102,7 @@ namespace SSRSMigrate.SSRS.Repository
 
             if (item != null)
             {
-                this.mLogger.Trace("GetFolder - Found item = {0}", item.Path);
+                this.mLogger.Debug("GetFolder - Found item = {0}", item.Path);
 
                 return this.mDataMapper.GetFolder(item);
             }
@@ -126,7 +126,7 @@ namespace SSRSMigrate.SSRS.Repository
             {
                 foreach (CatalogItem item in items)
                 {
-                    this.mLogger.Trace("GetFolders - Found Item = {0}", item.Path);
+                    this.mLogger.Debug("GetFolders - Found Item = {0}", item.Path);
 
                     folderItems.Add(this.mDataMapper.GetFolder(item));
                 }
@@ -148,7 +148,7 @@ namespace SSRSMigrate.SSRS.Repository
 
             var items = this.GetItemsList<FolderItem>(path, "Folder", folder =>
             {
-                this.mLogger.Trace("GetFoldersList - Found item = {0}", folder.Path);
+                this.mLogger.Debug("GetFoldersList - Found item = {0}", folder.Path);
 
                 return this.mDataMapper.GetFolder(folder);
             });
@@ -228,7 +228,7 @@ namespace SSRSMigrate.SSRS.Repository
 
             def = SSRSUtil.StringToByteArray(reportDefinition);
 
-            this.mLogger.Trace("GetReportDefinition - Definition = {0}", reportDefinition);
+            this.mLogger.Debug("GetReportDefinition - Definition = {0}", reportDefinition);
 
             return def;
         }
@@ -251,7 +251,7 @@ namespace SSRSMigrate.SSRS.Repository
 
             if (item != null)
             {
-                this.mLogger.Trace("GetReport - Found item = {0}", item.Path);
+                this.mLogger.Debug("GetReport - Found item = {0}", item.Path);
 
                 byte[] def = this.GetReportDefinition(item.Path);
                 return this.mDataMapper.GetReport(item, def);
@@ -276,7 +276,7 @@ namespace SSRSMigrate.SSRS.Repository
             {
                 foreach (CatalogItem item in items)
                 {
-                    this.mLogger.Trace("GetReports - Found item = {0}", item.Path);
+                    this.mLogger.Debug("GetReports - Found item = {0}", item.Path);
 
                     byte[] def = this.GetReportDefinition(item.Path);
                     reportItems.Add(this.mDataMapper.GetReport(item, def));
@@ -299,7 +299,7 @@ namespace SSRSMigrate.SSRS.Repository
 
             var items = this.GetItemsList<ReportItem>(path, "Report", r => 
                 {
-                    this.mLogger.Trace("GetReports2 - Found item = {0}", r.Path);
+                    this.mLogger.Debug("GetReports2 - Found item = {0}", r.Path);
 
                     byte[] def = this.GetReportDefinition(r.Path);
                     return this.mDataMapper.GetReport(r, def);
@@ -426,7 +426,7 @@ namespace SSRSMigrate.SSRS.Repository
 
             if (item != null)
             {
-                this.mLogger.Trace("GetDataSource - Found item = {0}", item.Path);
+                this.mLogger.Debug("GetDataSource - Found item = {0}", item.Path);
 
                 DataSourceDefinition def = this.mReportingService.GetDataSourceContents(item.Path);
                 return this.mDataMapper.GetDataSource(item, def);
@@ -451,7 +451,7 @@ namespace SSRSMigrate.SSRS.Repository
             {
                 foreach (CatalogItem item in items)
                 {
-                    this.mLogger.Trace("GetDataSources - Found item = {0}", item.Path);
+                    this.mLogger.Debug("GetDataSources - Found item = {0}", item.Path);
 
                     DataSourceDefinition def = this.mReportingService.GetDataSourceContents(item.Path);
                     dataSourceItems.Add(this.mDataMapper.GetDataSource(item, def));
@@ -474,7 +474,7 @@ namespace SSRSMigrate.SSRS.Repository
 
             var items = this.GetItemsList<DataSourceItem>(path,"DataSource", ds => 
                 {
-                    this.mLogger.Trace("GetDataSourcesList - Found item = {0}", ds.Path);
+                    this.mLogger.Debug("GetDataSourcesList - Found item = {0}", ds.Path);
 
                     DataSourceDefinition def = this.mReportingService.GetDataSourceContents(ds.Path);
                     return this.mDataMapper.GetDataSource(ds, def);

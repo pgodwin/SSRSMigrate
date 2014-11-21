@@ -73,7 +73,7 @@ namespace SSRSMigrate.SSRS.Reader
 
             foreach (FolderItem folder in folders)
             {
-                this.mLogger.Trace("GetFolders2 - Calling reporter delegate for '{0}'...", folder.Path);
+                this.mLogger.Debug("GetFolders2 - Calling reporter delegate for '{0}'...", folder.Path);
 
                 progressReporter(folder);
             }
@@ -126,7 +126,7 @@ namespace SSRSMigrate.SSRS.Reader
 
             foreach (ReportItem report in reports)
             {
-                this.mLogger.Trace("GetReports2 - Calling reporter delegate for '{0}'...", report.Path);
+                this.mLogger.Debug("GetReports2 - Calling reporter delegate for '{0}'...", report.Path);
 
                 progressReporter(report);
             }
@@ -179,7 +179,7 @@ namespace SSRSMigrate.SSRS.Reader
 
             foreach (DataSourceItem dataSource in dataSources)
             {
-                this.mLogger.Trace("GetDataSources2 - Calling reporter delegate for '{0}'...", dataSource.Path);
+                this.mLogger.Debug("GetDataSources2 - Calling reporter delegate for '{0}'...", dataSource.Path);
 
                 progressReporter(dataSource);
             }

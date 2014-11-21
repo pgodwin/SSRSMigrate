@@ -521,8 +521,8 @@ namespace SSRSMigrate.Forms
                 throw new Exception("Provided 'SourceRootPath' from bundle is empty.");
             }
 
-            this.mLogger.Trace("ImportWorker - SourceRootPath = {0}", sourceRootPath);
-            this.mLogger.Trace("ImportWorker - DestinationRootPath = {0}", this.mDestinationRootPath);
+            this.mLogger.Debug("ImportWorker - SourceRootPath = {0}", sourceRootPath);
+            this.mLogger.Debug("ImportWorker - DestinationRootPath = {0}", this.mDestinationRootPath);
 
             // Stopwatch to track how long the import takes
             Stopwatch watch = new Stopwatch();
@@ -537,7 +537,7 @@ namespace SSRSMigrate.Forms
 
             // Stop stopwatch after getting the total number of checked items, and log how long it took
             watch.Stop();
-            this.mLogger.Trace("ImportWorker - Took {0} seconds to get checked ListView items", watch.Elapsed.TotalSeconds);
+            this.mLogger.Debug("ImportWorker - Took {0} seconds to get checked ListView items", watch.Elapsed.TotalSeconds);
 
             // Start stopwatch to get how long it takes to import everything
             watch.Start();
@@ -578,7 +578,7 @@ namespace SSRSMigrate.Forms
                 folderItem.Item.Path = destItemPath;
                 status.ToPath = destItemPath;
 
-                this.mLogger.Trace("ImportWorker - FolderItem.FromPath = {0}; ToPath = {1}", 
+                this.mLogger.Debug("ImportWorker - FolderItem.FromPath = {0}; ToPath = {1}", 
                     status.FromPath, 
                     status.ToPath);
 
@@ -648,7 +648,7 @@ namespace SSRSMigrate.Forms
                 dataSourceItem.Item.Path = destItemPath;
                 status.ToPath = destItemPath;
 
-                this.mLogger.Trace("ImportWorker - DataSourceItem.FromPath = {0}; ToPath = {1}",
+                this.mLogger.Debug("ImportWorker - DataSourceItem.FromPath = {0}; ToPath = {1}",
                     status.FromPath,
                     status.ToPath);
 
@@ -718,12 +718,12 @@ namespace SSRSMigrate.Forms
                 reportItem.Item.Path = destItemPath;
                 status.ToPath = destItemPath;
 
-                this.mLogger.Trace("ImportWorker - ReportItem.FromPath = {0}; ToPath = {1}",
+                this.mLogger.Debug("ImportWorker - ReportItem.FromPath = {0}; ToPath = {1}",
                     status.FromPath,
                     status.ToPath);
 
                 if (reportItem.Item.Definition != null)
-                    this.mLogger.Trace("ImportWorker - ReportItem.Definition Before = {0}", 
+                    this.mLogger.Debug("ImportWorker - ReportItem.Definition Before = {0}", 
                         SSRSUtil.ByteArrayToString(reportItem.Item.Definition));
 
                 // Update the ReportItem.Definition to point to the new server
@@ -735,7 +735,7 @@ namespace SSRSMigrate.Forms
                     );
 
                 if (reportItem.Item.Definition != null)
-                    this.mLogger.Trace("ImportWorker - ReportItem.Definition After = {0}",
+                    this.mLogger.Debug("ImportWorker - ReportItem.Definition After = {0}",
                         SSRSUtil.ByteArrayToString(reportItem.Item.Definition));
 
                 try
@@ -785,7 +785,7 @@ namespace SSRSMigrate.Forms
                 watch.Elapsed.Seconds,
                 averageItem);
 
-            this.mLogger.Trace("ImportWorker - {0}", result);
+            this.mLogger.Debug("ImportWorker - {0}", result);
 
             e.Result = result;
         }

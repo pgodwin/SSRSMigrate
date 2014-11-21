@@ -148,7 +148,7 @@ namespace SSRSMigrate.Bundler
             if (string.IsNullOrEmpty(itemPath))
                 throw new ArgumentException("itemPath");
 
-            this.mLogger.Trace("GetZipPath - itemFileName = {0}; itemPath = {1}; isFolder = {2}",
+            this.mLogger.Debug("GetZipPath - itemFileName = {0}; itemPath = {1}; isFolder = {2}",
                 itemFileName,
                 itemPath,
                 isFolder);
@@ -169,7 +169,7 @@ namespace SSRSMigrate.Bundler
 
             string summaryFullPath = string.Format("Export{0}", summaryPathPart);
 
-            this.mLogger.Trace("GetZipPath - Returns = {0}", summaryFullPath);
+            this.mLogger.Debug("GetZipPath - Returns = {0}", summaryFullPath);
 
             return summaryFullPath;
         }
@@ -182,7 +182,7 @@ namespace SSRSMigrate.Bundler
             if (string.IsNullOrEmpty(zipPath))
                 throw new ArgumentException("zipPath");
 
-            this.mLogger.Trace("CreateEntrySummary - itemFileName = {0}; zipPath = {1}; isFolder",
+            this.mLogger.Debug("CreateEntrySummary - itemFileName = {0}; zipPath = {1}; isFolder",
                 itemFileName,
                 zipPath,
                 isFolder);
@@ -200,7 +200,7 @@ namespace SSRSMigrate.Bundler
                 Path = zipPath
             };
 
-            this.mLogger.Trace("CreateEntrySummary - FileName = {0}; Path = {1}; CheckSum = {2}", 
+            this.mLogger.Debug("CreateEntrySummary - FileName = {0}; Path = {1}; CheckSum = {2}", 
                 entry.FileName,
                 entry.Path,
                 entry.CheckSum);
@@ -256,8 +256,8 @@ namespace SSRSMigrate.Bundler
             // Serialize mEntries Dictionary to JSON format
             string summary = this.mSerializeWrapper.SerializeObject(this.mSummary);
 
-            this.mLogger.Trace("CreateSummary - JSON = {0}", summary);
-            this.mLogger.Trace("CreateSummary - Saving summary as '{0}'...", this.mExportSummaryFilename);
+            this.mLogger.Debug("CreateSummary - JSON = {0}", summary);
+            this.mLogger.Debug("CreateSummary - Saving summary as '{0}'...", this.mExportSummaryFilename);
 
             // Add JSON serialized summary string as an entry to the zip using the value from mExportSummaryFilename 
             this.mZipFileWrapper.AddEntry(this.mExportSummaryFilename, summary);

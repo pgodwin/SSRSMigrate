@@ -362,7 +362,7 @@ namespace SSRSMigrate.Forms
             
             // Stop stopwatch after getting the total number of checked items, and log how long it took
             watch.Stop();
-            this.mLogger.Trace("MigrationWorker - Took {0} seconds to get checked ListView items", watch.Elapsed.TotalSeconds);
+            this.mLogger.Debug("MigrationWorker - Took {0} seconds to get checked ListView items", watch.Elapsed.TotalSeconds);
 
             // Start stopwatch to get how long it takes to migrate everything
             watch.Start();
@@ -402,7 +402,7 @@ namespace SSRSMigrate.Forms
                         folderItem.Path = destItemPath;
                         status.ToPath = destItemPath;
 
-                        this.mLogger.Trace("MigrationWorker - FolderItem.FromPath = {0}; ToPath = {1}", status.FromPath, status.ToPath);
+                        this.mLogger.Debug("MigrationWorker - FolderItem.FromPath = {0}; ToPath = {1}", status.FromPath, status.ToPath);
 
                         try
                         {
@@ -475,7 +475,7 @@ namespace SSRSMigrate.Forms
                         dataSourceItem.Path = destItemPath;
                         status.ToPath = destItemPath;
 
-                        this.mLogger.Trace("MigrationWorker - DataSourceItem.FromPath = {0}; ToPath = {1}", status.FromPath, status.ToPath);
+                        this.mLogger.Debug("MigrationWorker - DataSourceItem.FromPath = {0}; ToPath = {1}", status.FromPath, status.ToPath);
 
                         try
                         {
@@ -548,10 +548,10 @@ namespace SSRSMigrate.Forms
                         reportItem.Path = destItemPath;
                         status.ToPath = destItemPath;
 
-                        this.mLogger.Trace("MigrationWorker - ReportItem.FromPath = {0}; ToPath = {1}", status.FromPath, status.ToPath);
+                        this.mLogger.Debug("MigrationWorker - ReportItem.FromPath = {0}; ToPath = {1}", status.FromPath, status.ToPath);
 
                         if (reportItem.Definition != null)
-                            this.mLogger.Trace("MigrationWorker - ReportItem.Definition Before = {0}", SSRSUtil.ByteArrayToString(reportItem.Definition));
+                            this.mLogger.Debug("MigrationWorker - ReportItem.Definition Before = {0}", SSRSUtil.ByteArrayToString(reportItem.Definition));
 
                         reportItem.Definition = SSRSUtil.UpdateReportDefinition(
                             this.mDestinationServerUrl,
@@ -560,7 +560,7 @@ namespace SSRSMigrate.Forms
                             reportItem.Definition);
 
                         if (reportItem.Definition != null)
-                            this.mLogger.Trace("MigrationWorker - ReportItem.Definition After = {0}", SSRSUtil.ByteArrayToString(reportItem.Definition));
+                            this.mLogger.Debug("MigrationWorker - ReportItem.Definition After = {0}", SSRSUtil.ByteArrayToString(reportItem.Definition));
 
                         try
                         {
@@ -613,7 +613,7 @@ namespace SSRSMigrate.Forms
                 watch.Elapsed.Seconds,
                 averageItem);
 
-            this.mLogger.Trace("MigrationWorker - {0}", result);
+            this.mLogger.Debug("MigrationWorker - {0}", result);
 
             e.Result = result;
         }

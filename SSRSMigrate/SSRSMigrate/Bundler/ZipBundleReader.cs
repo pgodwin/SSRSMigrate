@@ -179,7 +179,7 @@ namespace SSRSMigrate.Bundler
             {
                 string fileName = Path.Combine(this.mUnpackDirectory, folder.Path);
 
-                this.mLogger.Trace("Read - Reading folder... Filename = {0}; Path = {1}; Checksum = {2}",
+                this.mLogger.Debug("Read - Reading folder... Filename = {0}; Path = {1}; Checksum = {2}",
                     fileName,
                     folder.Path,
                     folder.CheckSum);
@@ -235,7 +235,7 @@ namespace SSRSMigrate.Bundler
             {
                 string fileName = Path.Combine(Path.Combine(this.mUnpackDirectory, dataSource.Path), dataSource.FileName);
 
-                this.mLogger.Trace("Read - Reading data source... Filename = {0}; Path = {1}; Checksum = {2}",
+                this.mLogger.Debug("Read - Reading data source... Filename = {0}; Path = {1}; Checksum = {2}",
                     dataSource.FileName,
                     dataSource.Path,
                     dataSource.CheckSum);
@@ -290,7 +290,7 @@ namespace SSRSMigrate.Bundler
             {
                 string fileName = Path.Combine(Path.Combine(this.mUnpackDirectory, report.Path), report.FileName);
 
-                this.mLogger.Trace("Read - Reading report... Filename = {0}; Path = {1}; Checksum = {2}",
+                this.mLogger.Debug("Read - Reading report... Filename = {0}; Path = {1}; Checksum = {2}",
                     fileName,
                     report.Path,
                     report.CheckSum);
