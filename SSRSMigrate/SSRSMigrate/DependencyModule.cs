@@ -7,6 +7,7 @@ using SSRSMigrate.ReportServer2005;
 using Ninject.Modules;
 using System.Net;
 using SSRSMigrate.Factory;
+using SSRSMigrate.SSRS.Test;
 using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Exporter.Writer;
@@ -65,6 +66,23 @@ namespace SSRSMigrate
 
             this.Bind<IReportServerWriter>()
                 .To<ReportServerWriter>()
+                .Named("2010-DEST");
+
+            // Bind IReportServerTester
+            this.Bind<IReportServerTester>()
+                .To<ReportServerTester>()
+                .Named("2005-SRC");
+
+            this.Bind<IReportServerTester>()
+                .To<ReportServerTester>()
+                .Named("2010-SRC");
+
+            this.Bind<IReportServerTester>()
+                .To<ReportServerTester>()
+                .Named("2005-DEST");
+
+            this.Bind<IReportServerTester>()
+                .To<ReportServerTester>()
                 .Named("2010-DEST");
 
             this.Bind<IFileSystem>().To<FileSystem>();
@@ -273,5 +291,4 @@ namespace SSRSMigrate
             return new ReportServer2010Repository(path, service, new ReportingService2010DataMapper());
         }
     }
-
 }

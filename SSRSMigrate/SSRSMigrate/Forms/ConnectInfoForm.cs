@@ -696,5 +696,17 @@ namespace SSRSMigrate.Forms
             return path;
         }
         #endregion
+
+        #region Test connection 
+        private void btnSrcTest_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDestTest_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
     }
 }
