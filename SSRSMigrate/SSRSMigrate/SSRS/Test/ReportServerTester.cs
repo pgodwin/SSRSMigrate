@@ -8,7 +8,7 @@ using SSRSMigrate.SSRS.Repository;
 
 namespace SSRSMigrate.SSRS.Test
 {
-    //TODO Write tests
+    //TODO Write ReportServerTester tests
     public class ReportServerTester : IReportServerTester
     {
         private readonly IReportServerRepository mReportRepository;

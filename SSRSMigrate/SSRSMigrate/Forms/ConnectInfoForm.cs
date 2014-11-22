@@ -275,7 +275,7 @@ namespace SSRSMigrate.Forms
             if ((int)destinationVersion < (int)sourceVersion)
                 throw new Exception("Destination server is using an older version of SQL Server than the source server.");
         
-            writer.Overwrite = this.cbkDestOverwrite.Checked; //TODO Should include this in the IoC container somehow
+            writer.Overwrite = this.cbkDestOverwrite.Checked;
 
             this.PerformDirectMigrate(
                 this.txtSrcUrl.Text,
