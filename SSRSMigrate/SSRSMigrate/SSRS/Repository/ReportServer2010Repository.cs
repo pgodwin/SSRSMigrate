@@ -91,7 +91,10 @@ namespace SSRSMigrate.SSRS.Repository
 
             this.mLogger.Debug("GetFolder - path = {0}", path);
 
-            string folderName = path.Substring(path.LastIndexOf('/') + 1);
+            string folderName = path;
+
+            if (folderName != "/")
+                folderName = path.Substring(path.LastIndexOf('/') + 1);
 
             this.mLogger.Debug("GetFolder - folderName = {0}", folderName);
 

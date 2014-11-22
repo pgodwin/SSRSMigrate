@@ -42,6 +42,9 @@ namespace SSRSMigrate
             // Bind IReportServerRepositoryFactory
             this.Bind<IReportServerRepositoryFactory>().To<ReportServerRepositoryFactory>();
 
+            // Bind IReportServerTesterFactory
+            this.Bind<IReportServerTesterFactory>().To<ReportServerTesterFactory>();
+
             // Bind IReportServerReaderFactory
             this.Bind<IReportServerReaderFactory>()
                 .To<ReportServerReaderFactory>();

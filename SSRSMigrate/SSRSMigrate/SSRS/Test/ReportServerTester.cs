@@ -41,9 +41,9 @@ namespace SSRSMigrate.SSRS.Test
 
             try
             {
-                FolderItem item = this.mReportRepository.GetFolder(path);
+                bool exists = this.mReportRepository.ItemExists(path, "Folder");
 
-                if (item != null)
+                if (exists)
                     status.Success = true;
                 else
                 {
@@ -85,7 +85,11 @@ namespace SSRSMigrate.SSRS.Test
                 string error = this.mReportRepository.CreateFolder(itemName, path);
 
                 if (string.IsNullOrEmpty(error))
+                {
                     status.Success = true;
+
+                    this.mReportRepository.DeleteItem(path);
+                }
                 else
                 {
                     status.Success = false;

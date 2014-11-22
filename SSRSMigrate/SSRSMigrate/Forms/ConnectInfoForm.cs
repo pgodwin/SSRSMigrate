@@ -13,6 +13,7 @@ using SSRSMigrate.Factory;
 using SSRSMigrate.Importer;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Reader;
+using SSRSMigrate.SSRS.Test;
 using SSRSMigrate.SSRS.Writer;
 using Ninject.Extensions.Logging;
 
@@ -22,6 +23,7 @@ namespace SSRSMigrate.Forms
     {
         private StandardKernel mKernel = null;
         private ILoggerFactory mLoggerFactory = null;
+        private ILogger mLogger = null;
         private bool mDebug = false;
         private DebugForm mDebugForm = null;
         private IFileSystem mFileSystem = null;
@@ -40,8 +42,9 @@ namespace SSRSMigrate.Forms
                 new Log4NetModule(),
                 new ReportServerRepositoryModule());
 
-            this.mLoggerFactory = mKernel.Get<ILoggerFactory>();
-            this.mFileSystem = mKernel.Get<IFileSystem>();
+            this.mLoggerFactory = this.mKernel.Get<ILoggerFactory>();
+            this.mFileSystem = this.mKernel.Get<IFileSystem>();
+            this.mLogger = this.mLoggerFactory.GetCurrentClassLogger();
 
             InitializeComponent();
 
@@ -700,12 +703,81 @@ namespace SSRSMigrate.Forms
         #region Test connection 
         private void btnSrcTest_Click(object sender, EventArgs e)
         {
+            if (rdoMethodDirect.Checked ||
+                rdoMethodExportDisk.Checked ||
+                rdoMethodExportZip.Checked)
+            {
+                this.TestSourceConnection();
+            }
+        }
 
+        private void TestSourceConnection()
+        {
+            // Save source configuration so it can be loaded by Ninject
+            this.Save_SourceConfiguration();
+
+            string version = "2005-SRC";
+
+            // Get the version to get from the Factory
+            if (this.cboSrcVersion.SelectedIndex == 0)
+                version = "2005-SRC";
+            else
+                version = "2010-SRC";
+
+            try
+            {
+                IReportServerTester tester =
+                    this.mKernel.Get<IReportServerTesterFactory>().GetTester<ReportServerTester>(version);
+
+                ConnectionTestStatus status = tester.ReadTest("/");
+
+                if (status.Success)
+                {
+                    string msg = string.Format("Testing source connection to '{0}' using path '{1}' was successful.",
+                        status.ServerAddress,
+                        status.Path);
+
+                    this.mLogger.Info(msg);
+
+                    MessageBox.Show(msg,
+                        "Test Successful",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.None);
+                }
+                else
+                {
+                    string msg = string.Format("Testing source connection to '{0}' using path '{1}' failed:\n\r{2}",
+                        status.ServerAddress,
+                        status.Path,
+                        status.Error);
+
+                    this.mLogger.Warn(msg);
+
+                    MessageBox.Show(msg,
+                        "Test Failed",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception er)
+            {
+                this.mLogger.Error(er, "Source connection test error.");
+
+                MessageBox.Show(string.Format("Error testing source connection:\n\n{0}", er.Message),
+                    "Test Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private void btnDestTest_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void TestDestinationConnection()
+        {
+            
         }
         #endregion
     }
