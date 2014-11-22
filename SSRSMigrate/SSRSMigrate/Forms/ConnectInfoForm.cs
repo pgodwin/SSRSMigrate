@@ -772,12 +772,62 @@ namespace SSRSMigrate.Forms
 
         private void btnDestTest_Click(object sender, EventArgs e)
         {
-
+            if (rdoMethodDirect.Checked ||
+                rdoMethodImportZip.Checked)
+            {
+                this.TestDestinationConnection();
+            }
         }
 
         private void TestDestinationConnection()
         {
-            
+            // Save destination configuration so it can be loaded by Ninject
+            this.Save_DestinationConfiguration();
+
+            string version = "2005-DEST";
+
+            // Get the version to get from the Factory
+            if (this.cboDestVersion.SelectedIndex == 0)
+                version = "2005-DEST";
+            else
+                version = "2010-DEST";
+
+            try
+            {
+                IReportServerTester tester =
+                    this.mKernel.Get<IReportServerTesterFactory>().GetTester<ReportServerTester>(version);
+
+                ConnectionTestStatus readStatus = tester.ReadTest("/");
+                ConnectionTestStatus writeStatus = tester.WriteTest("/", Guid.NewGuid().ToString("N"));
+
+                string msg = "";
+                MessageBoxIcon icon = MessageBoxIcon.None;
+                
+                string readMsg = string.Format("Read test {0}", readStatus.Success == true ? "was successful." : string.Format("failed:\n{0}", readStatus.Error));
+                string writeMsg = string.Format("Write test {0}", writeStatus.Success == true ? "was successful." : string.Format("failed:\n{0}", writeStatus.Error));
+
+                msg = string.Format("{0}\n\r\n\r{1}", readMsg, writeMsg);
+
+                this.mLogger.Info(msg);
+                
+                if (readStatus.Success == false || writeStatus.Success == false)
+                    icon = MessageBoxIcon.Error;
+
+                MessageBox.Show(msg,
+                        "Destination Test",
+                        MessageBoxButtons.OK,
+                        icon);
+
+            }
+            catch (Exception er)
+            {
+                this.mLogger.Error(er, "Source connection test error.");
+
+                MessageBox.Show(string.Format("Error testing source connection:\n\n{0}", er.Message),
+                    "Test Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
         #endregion
     }

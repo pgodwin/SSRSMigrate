@@ -88,7 +88,7 @@ namespace SSRSMigrate.SSRS.Test
                 {
                     status.Success = true;
 
-                    this.mReportRepository.DeleteItem(path);
+                    this.mReportRepository.DeleteItem(path + itemName);
                 }
                 else
                 {
@@ -100,7 +100,7 @@ namespace SSRSMigrate.SSRS.Test
             }
             catch (Exception er)
             {
-                this.mLogger.Error(er, "Read test failed.");
+                this.mLogger.Error(er, "Write test failed.");
 
                 status.Success = false;
                 status.Error = er.Message;
