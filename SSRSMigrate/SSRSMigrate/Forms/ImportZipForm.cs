@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Windows.Forms;
@@ -243,7 +244,15 @@ namespace SSRSMigrate.Forms
             }
             else if ((e.Error != null))
             {
-                msg = string.Format("Error. {0}", e.Error.Message);
+                if (e.Error is FileNotFoundException)
+                {
+                    msg = string.Format("Invalid export bundle. File '{0}' does not exist.", e.Error.Message);
+                }
+                else
+                {
+                    msg = string.Format("Error. {0}", e.Error.Message);
+                }
+                
 
                 this.mLogger.Error(e.Error, "Error during item refresh");
 
