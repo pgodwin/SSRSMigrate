@@ -32,6 +32,9 @@ namespace SSRSMigrate.SSRS.Writer
 
             this.mReportRepository = repository;
             this.mLogger = logger;
+
+            this.mLogger.Debug("Repository.ServerAddress: {0}", this.mReportRepository.ServerAddress);
+            this.mLogger.Debug("Repository.RootPath: {0}", this.mReportRepository.RootPath);
         }
 
         #region Folder Methods
