@@ -80,6 +80,11 @@ namespace SSRSMigrate.Forms
             this.mLoggerFactory = loggerFactory;
 
             this.mLogger = mLoggerFactory.GetCurrentClassLogger();
+
+            this.mLogger.Info("sourceRootPath: {0}", this.mSourceRootPath);
+            this.mLogger.Info("sourceServerUrl: {0}", this.mSourceServerUrl);
+            this.mLogger.Info("destinationRootPath: {0}", this.mDestinationRootPath);
+            this.mLogger.Info("destinationServerUrl: {0}", this.mDestinationServerUrl);
         }
 
         #region UI Events
@@ -349,6 +354,8 @@ namespace SSRSMigrate.Forms
             BackgroundWorker worker = sender as BackgroundWorker;
             string destinationRootPath = (string)e.Argument;
 
+            this.mLogger.Debug("MigrationWorker - destinationRootPath: {0}", destinationRootPath);
+
             // Stopwatch to track how long the migration takes
             Stopwatch watch = new Stopwatch();
 
@@ -401,11 +408,16 @@ namespace SSRSMigrate.Forms
                         status.Item = folderItem;
                         status.FromPath = folderItem.Path;
 
+                        this.mLogger.Debug("MigrationWorker - BEFORE FolderItem.FromPath = {0}; SourceRootPath = {1}", status.FromPath, this.mSourceRootPath);
+                        this.mLogger.Debug("MigrationWorker - BEFORE FolderItem.FromPath = {0}; DestinationRootPath = {1}", status.FromPath, this.mDestinationRootPath);
+
                         // Get the destination path for this item (e.g. '/SSRSMigrate_AW_Tests/Data Sources' to '/SSRSMigrate_AW_Destination/Data Sources'
                         string destItemPath = SSRSUtil.GetFullDestinationPathForItem(
                             this.mSourceRootPath,
                             this.mDestinationRootPath,
                             folderItem.Path);
+
+                        this.mLogger.Debug("MigrationWorker - AFTER FolderItem.FromPath = {0}; destItemPath = {1}", status.FromPath, destItemPath);
 
                         folderItem.Path = destItemPath;
                         status.ToPath = destItemPath;
