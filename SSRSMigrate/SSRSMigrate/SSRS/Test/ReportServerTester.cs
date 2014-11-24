@@ -48,8 +48,14 @@ namespace SSRSMigrate.SSRS.Test
                 else
                 {
                     status.Success = false;
-                    status.Error = "Item not returned.";
+
+                    status.Error = string.Format("Item '{0}' does not exist or you do not have permission.", path);
                 }
+
+                this.mLogger.Info("Test status = {0}", status.Success);
+
+                if (!status.Success)
+                    this.mLogger.Info("Error = {0}", status.Error);
 
                 return status;
             }
@@ -95,6 +101,11 @@ namespace SSRSMigrate.SSRS.Test
                     status.Success = false;
                     status.Error = error;
                 }
+
+                this.mLogger.Info("Test status = {0}", status.Success);
+
+                if (!status.Success)
+                    this.mLogger.Info("Error = {0}", status.Error);
 
                 return status;
             }

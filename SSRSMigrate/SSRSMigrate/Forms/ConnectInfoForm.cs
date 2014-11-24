@@ -729,7 +729,7 @@ namespace SSRSMigrate.Forms
                 IReportServerTester tester =
                     this.mKernel.Get<IReportServerTesterFactory>().GetTester<ReportServerTester>(version);
 
-                ConnectionTestStatus status = tester.ReadTest("/");
+                ConnectionTestStatus status = tester.ReadTest(this.txtSrcPath.Text);
 
                 if (status.Success)
                 {
@@ -746,14 +746,14 @@ namespace SSRSMigrate.Forms
                 }
                 else
                 {
-                    string msg = string.Format("Testing source connection to '{0}' using path '{1}' failed:\n\r{2}",
+                    string msg = string.Format("Testing source connection to '{0}' using path '{1}' failed: {2}",
                         status.ServerAddress,
                         status.Path,
                         status.Error);
 
                     this.mLogger.Warn(msg);
 
-                    MessageBox.Show(string.Format("Read test failed:\n{0}", status.Error),
+                    MessageBox.Show(string.Format("Read test failed:\n\n{0}", status.Error),
                         "Test Failed",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
@@ -804,10 +804,10 @@ namespace SSRSMigrate.Forms
                 MessageBoxIcon icon = MessageBoxIcon.None;
                 
                 string readMsg = string.Format("Read test {0}", readStatus.Success == true ? "was successful." : string.Format("failed:\n{0}", readStatus.Error));
-                string readLogMsg = string.Format("Read test {0}", readStatus.Success == true ? "was successful." : string.Format("failed:\n{0}", readStatus.Error));
+                string readLogMsg = string.Format("Read test {0}", readStatus.Success == true ? "was successful." : string.Format("failed: {0}", readStatus.Error));
 
                 string writeMsg = string.Format("Write test {0}", writeStatus.Success == true ? "was successful." : string.Format("failed:\n{0}", writeStatus.Error));
-                string writeLogMsg = string.Format("Write test {0}", writeStatus.Success == true ? "was successful." : string.Format("failed:\n{0}", writeStatus.Error));
+                string writeLogMsg = string.Format("Write test {0}", writeStatus.Success == true ? "was successful." : string.Format("failed: {0}", writeStatus.Error));
 
                 msg = string.Format("{0}\n\r\n\r{1}", readMsg, writeMsg);
      
