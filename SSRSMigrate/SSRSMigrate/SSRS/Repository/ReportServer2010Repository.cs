@@ -80,6 +80,11 @@ namespace SSRSMigrate.SSRS.Repository
         {
             get { return this.mReportingService.Url; }
         }
+
+        public string RootPath
+        {
+            get { return this.mRootPath; }
+        }
         #endregion
 
         #region Folder Methods
