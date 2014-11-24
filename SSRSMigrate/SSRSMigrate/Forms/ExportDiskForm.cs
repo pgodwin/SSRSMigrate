@@ -334,7 +334,12 @@ namespace SSRSMigrate.Forms
             // Get total count of items in ListView that are checked
             int totalItems = lvItems.Where(lv => lv.Checked == true).Count();
             int progressCounter = 0;
-            int itemsExportedCounter = 0;
+            int reportsExportedCounter = 0;
+            int reportsTotalCount = 0;
+            int foldersExportedCounter = 0;
+            int foldersTotalCount = 0;
+            int dataSourcesExportedCounter = 0;
+            int dataSourcesTotalCount = 0;
 
             // Stop stopwatch after getting the total number of checked items, and log how long it took
             watch.Stop();
@@ -349,6 +354,8 @@ namespace SSRSMigrate.Forms
                               where lv.Group.Name == "foldersGroup" &&
                               lv.Checked == true
                               select (string)lv.Tag;
+
+            foldersTotalCount = folderPaths.Count();
 
             foreach (string folderPath in folderPaths)
             {
@@ -373,7 +380,7 @@ namespace SSRSMigrate.Forms
                             status.ToPath);
                        
                         if (status.Success)
-                            ++itemsExportedCounter;
+                            ++foldersExportedCounter;
                     }
                     else
                         this.mLogger.Warn("ExportItemsWorker - FolderItem for path '{0}' returned NULL.", folderPath);
@@ -394,6 +401,8 @@ namespace SSRSMigrate.Forms
                                   where lv.Group.Name == "dataSourcesGroup" &&
                                   lv.Checked == true
                                   select (string)lv.Tag;
+
+            dataSourcesTotalCount = dataSourcePaths.Count();
 
             foreach (string dataSourcePath in dataSourcePaths)
             {
@@ -418,7 +427,7 @@ namespace SSRSMigrate.Forms
                             status.ToPath);
 
                         if (status.Success)
-                            ++itemsExportedCounter;
+                            ++dataSourcesExportedCounter;
                     }
                     else
                         this.mLogger.Warn("ExportItemsWorker - DataSourceItem for path '{0}' returned NULL.", dataSourcePath);
@@ -427,7 +436,7 @@ namespace SSRSMigrate.Forms
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
                 if (worker != null)
-                    worker.ReportProgress(((++progressCounter*100)/totalItems), status);
+                    worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
                 else
                 {
                     this.mLogger.Warn("ExportItemsWorker - worker is NULL.");
@@ -439,6 +448,8 @@ namespace SSRSMigrate.Forms
                                   where lv.Group.Name == "reportsGroup" &&
                                   lv.Checked == true
                                   select (string)lv.Tag;
+
+            reportsTotalCount = reportPaths.Count();
 
             foreach (string reportPath in reportPaths)
             {
@@ -463,7 +474,7 @@ namespace SSRSMigrate.Forms
                             status.ToPath);
 
                         if (status.Success)
-                            ++itemsExportedCounter;
+                            ++reportsExportedCounter;
                     }
                     else
                         this.mLogger.Warn("ExportItemsWorker - ReportItem for path '{0}' returned NULL.", reportPath);
@@ -483,8 +494,13 @@ namespace SSRSMigrate.Forms
             watch.Stop();
             double averageItem = watch.Elapsed.TotalSeconds / progressCounter;
 
-            string result = string.Format("{0} items exported in {1}h {2}m {3}s (@ {4:0.00} items/s)",
-                itemsExportedCounter,
+            string result = string.Format("{0}/{1} folders, {2}/{3} data sources, {4}/{5} reports exported in {6}h {7}m {8}s (@ {9:0.00} items/s)",
+                foldersExportedCounter,
+                foldersTotalCount,
+                dataSourcesExportedCounter,
+                dataSourcesTotalCount,
+                reportsExportedCounter,
+                reportsTotalCount,
                 watch.Elapsed.Hours,
                 watch.Elapsed.Minutes,
                 watch.Elapsed.Seconds,

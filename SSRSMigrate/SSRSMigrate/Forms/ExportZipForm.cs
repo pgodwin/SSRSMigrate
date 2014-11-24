@@ -390,7 +390,12 @@ namespace SSRSMigrate.Forms
             // Get total count of items in ListView that are checked
             int totalItems = lvItems.Where(lv => lv.Checked == true).Count();
             int progressCounter = 0;
-            int itemsExportedCounter = 0;
+            int reportsExportedCounter = 0;
+            int reportsTotalCount = 0;
+            int foldersExportedCounter = 0;
+            int foldersTotalCount = 0;
+            int dataSourcesExportedCounter = 0;
+            int dataSourcesTotalCount = 0;
 
             // Stop stopwatch after getting the total number of checked items, and log how long it took
             watch.Stop();
@@ -405,6 +410,8 @@ namespace SSRSMigrate.Forms
                               where lv.Group.Name == "foldersGroup" &&
                               lv.Checked == true
                               select (string)lv.Tag;
+
+            foldersTotalCount = folderPaths.Count();
 
             foreach (string folderPath in folderPaths)
             {
@@ -437,7 +444,7 @@ namespace SSRSMigrate.Forms
                                 status.FromPath,
                                 true);
 
-                            ++itemsExportedCounter;
+                            ++foldersExportedCounter;
                         }
                     }
                     else
@@ -459,6 +466,8 @@ namespace SSRSMigrate.Forms
                                   where lv.Group.Name == "dataSourcesGroup" &&
                                   lv.Checked == true
                                   select (string)lv.Tag;
+
+            dataSourcesTotalCount = dataSourcePaths.Count();
 
             foreach (string dataSourcePath in dataSourcePaths)
             {
@@ -491,7 +500,7 @@ namespace SSRSMigrate.Forms
                                 status.FromPath,
                                 false);
 
-                            ++itemsExportedCounter;
+                            ++dataSourcesExportedCounter;
                         }
                     }
                     else
@@ -513,6 +522,8 @@ namespace SSRSMigrate.Forms
                                   where lv.Group.Name == "reportsGroup" &&
                                   lv.Checked == true
                                   select (string)lv.Tag;
+
+            reportsTotalCount = reportPaths.Count();
 
             foreach (string reportPath in reportPaths)
             {
@@ -545,7 +556,7 @@ namespace SSRSMigrate.Forms
                                 status.FromPath,
                                 false);
 
-                            ++itemsExportedCounter;
+                            ++reportsExportedCounter;
                         }
                     }
                     else
@@ -566,8 +577,13 @@ namespace SSRSMigrate.Forms
             watch.Stop();
             double averageItem = watch.Elapsed.TotalSeconds / progressCounter;
 
-            string result = string.Format("{0} items exported in {1}h {2}m {3}s (@ {4:0.00} items/s)",
-                itemsExportedCounter,
+            string result = string.Format("{0}/{1} folders, {2}/{3} data sources, {4}/{5} reports exported in {6}h {7}m {8}s (@ {9:0.00} items/s)",
+                foldersExportedCounter,
+                foldersTotalCount,
+                dataSourcesExportedCounter,
+                dataSourcesTotalCount,
+                reportsExportedCounter,
+                reportsTotalCount,
                 watch.Elapsed.Hours,
                 watch.Elapsed.Minutes,
                 watch.Elapsed.Seconds,

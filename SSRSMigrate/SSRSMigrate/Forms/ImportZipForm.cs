@@ -543,7 +543,12 @@ namespace SSRSMigrate.Forms
             watch.Start();
 
             int progressCounter = 0;
-            int itemsImportedCounter = 0;
+            int reportsImportedCounter = 0;
+            int reportsTotalCount = 0;
+            int foldersImportedCounter = 0;
+            int foldersTotalCount = 0;
+            int dataSourcesImportedCounter = 0;
+            int dataSourcesTotalCount = 0;
            
             // Import folders
             // Get path of ListView items in the folder group that are checked.
@@ -557,6 +562,8 @@ namespace SSRSMigrate.Forms
                         Item = (FolderItem) lv.Tag,
                         ExtractedTo = lv.SubItems[4].Text
                     });
+
+            foldersTotalCount = folderItems.Count();
 
             // Iterate through each item that was checked in the ListView's 'foldersGroup' group
             foreach (var folderItem in folderItems)
@@ -591,7 +598,7 @@ namespace SSRSMigrate.Forms
 
                     status.Success = true;
 
-                    ++itemsImportedCounter;
+                    ++foldersImportedCounter;
                 }
                 catch (ItemAlreadyExistsException er)
                 {
@@ -629,6 +636,8 @@ namespace SSRSMigrate.Forms
                      ExtractedTo = lv.SubItems[4].Text
                  });
 
+            dataSourcesTotalCount = dataSourceItems.Count();
+
             foreach (var dataSourceItem in dataSourceItems)
             {
                 MigrationStatus status = new MigrationStatus()
@@ -661,7 +670,7 @@ namespace SSRSMigrate.Forms
 
                     status.Success = true;
 
-                    ++itemsImportedCounter;
+                    ++dataSourcesImportedCounter;
                 }
                 catch (ItemAlreadyExistsException er)
                 {
@@ -699,6 +708,8 @@ namespace SSRSMigrate.Forms
                      ExtractedTo = lv.SubItems[4].Text
                  });
 
+            reportsTotalCount = reportItems.Count();
+
             foreach (var reportItem in reportItems)
             {
                 MigrationStatus status = new MigrationStatus()
@@ -722,9 +733,9 @@ namespace SSRSMigrate.Forms
                     status.FromPath,
                     status.ToPath);
 
-                if (reportItem.Item.Definition != null)
-                    this.mLogger.Debug("ImportWorker - ReportItem.Definition Before = {0}", 
-                        SSRSUtil.ByteArrayToString(reportItem.Item.Definition));
+                //if (reportItem.Item.Definition != null)
+                //    this.mLogger.Debug("ImportWorker - ReportItem.Definition Before = {0}", 
+                //        SSRSUtil.ByteArrayToString(reportItem.Item.Definition));
 
                 // Update the ReportItem.Definition to point to the new server
                 reportItem.Item.Definition = SSRSUtil.UpdateReportDefinition(
@@ -734,9 +745,9 @@ namespace SSRSMigrate.Forms
                     reportItem.Item.Definition
                     );
 
-                if (reportItem.Item.Definition != null)
-                    this.mLogger.Debug("ImportWorker - ReportItem.Definition After = {0}",
-                        SSRSUtil.ByteArrayToString(reportItem.Item.Definition));
+                // if (reportItem.Item.Definition != null)
+                //    this.mLogger.Debug("ImportWorker - ReportItem.Definition After = {0}",
+                //        SSRSUtil.ByteArrayToString(reportItem.Item.Definition));
 
                 try
                 {
@@ -749,7 +760,7 @@ namespace SSRSMigrate.Forms
 
                     status.Success = true;
 
-                    ++itemsImportedCounter;
+                    ++reportsImportedCounter;
                 }
                 catch (ItemAlreadyExistsException er)
                 {
@@ -778,8 +789,21 @@ namespace SSRSMigrate.Forms
             watch.Stop();
             double averageItem = watch.Elapsed.TotalSeconds / progressCounter;
 
-            string result = string.Format("{0} items imported in {1}h {2}m {3}s (@ {4:0.00} items/s)",
-                itemsImportedCounter,
+            //string result = string.Format("{0}/{1} items imported in {2}h {3}m {4}s (@ {5:0.00} items/s)",
+            //    (foldersMigratedCounter + dataSourcesMigratedCounter + reportsMigratedCounter),
+            //    (foldersTotalCount + dataSourcesTotalCount + reportsTotalCount),
+            //    watch.Elapsed.Hours,
+            //    watch.Elapsed.Minutes,
+            //    watch.Elapsed.Seconds,
+            //    averageItem);
+
+            string result = string.Format("{0}/{1} folders, {2}/{3} data sources, {4}/{5} reports imported in {6}h {7}m {8}s (@ {9:0.00} items/s)",
+                foldersImportedCounter,
+                foldersTotalCount,
+                dataSourcesImportedCounter,
+                dataSourcesTotalCount,
+                reportsImportedCounter,
+                reportsTotalCount,
                 watch.Elapsed.Hours,
                 watch.Elapsed.Minutes,
                 watch.Elapsed.Seconds,

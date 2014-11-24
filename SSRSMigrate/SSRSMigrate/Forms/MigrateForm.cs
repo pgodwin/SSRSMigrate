@@ -366,8 +366,14 @@ namespace SSRSMigrate.Forms
 
             // Start stopwatch to get how long it takes to migrate everything
             watch.Start();
+
             int progressCounter = 0;
-            int itemsMigratedCounter = 0;
+            int reportsMigratedCounter = 0;
+            int reportsTotalCount = 0;
+            int foldersMigratedCounter = 0;
+            int foldersTotalCount = 0;
+            int dataSourcesMigratedCounter = 0;
+            int dataSourcesTotalCount = 0;
 
             // Export folders
             // Get path of ListView items in the folder group that are checked.
@@ -375,6 +381,8 @@ namespace SSRSMigrate.Forms
                               where lv.Group.Name == "foldersGroup" &&
                               lv.Checked == true
                               select (string)lv.Tag;
+
+            foldersTotalCount = folderPaths.Count();
 
             foreach (string folderPath in folderPaths)
             {
@@ -413,7 +421,7 @@ namespace SSRSMigrate.Forms
 
                             status.Success = true;
 
-                            ++itemsMigratedCounter;
+                            ++foldersMigratedCounter;
                         }
                         catch (ItemAlreadyExistsException er)
                         {
@@ -436,7 +444,7 @@ namespace SSRSMigrate.Forms
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
                 if (worker != null)
-                    worker.ReportProgress(((++progressCounter*100)/totalItems), status);
+                    worker.ReportProgress(((++progressCounter * 100) / totalItems), status);
                 else
                 {
                     this.mLogger.Warn("MigrationWorker - worker is NULL.");
@@ -448,6 +456,8 @@ namespace SSRSMigrate.Forms
                                   where lv.Group.Name == "dataSourcesGroup" &&
                                   lv.Checked == true
                                   select (string)lv.Tag;
+
+            dataSourcesTotalCount = dataSourcePaths.Count();
 
             foreach (string dataSourcePath in dataSourcePaths)
             {
@@ -486,7 +496,7 @@ namespace SSRSMigrate.Forms
 
                             status.Success = true;
 
-                            ++itemsMigratedCounter;
+                            ++dataSourcesMigratedCounter;
                         }
                         catch (ItemAlreadyExistsException er)
                         {
@@ -522,6 +532,8 @@ namespace SSRSMigrate.Forms
                               lv.Checked == true
                               select (string)lv.Tag;
 
+            reportsTotalCount = reportPaths.Count();
+
             foreach (string reportPath in reportPaths)
             {
                 ReportItem reportItem = null;
@@ -550,8 +562,8 @@ namespace SSRSMigrate.Forms
 
                         this.mLogger.Debug("MigrationWorker - ReportItem.FromPath = {0}; ToPath = {1}", status.FromPath, status.ToPath);
 
-                        if (reportItem.Definition != null)
-                            this.mLogger.Debug("MigrationWorker - ReportItem.Definition Before = {0}", SSRSUtil.ByteArrayToString(reportItem.Definition));
+                        //if (reportItem.Definition != null)
+                        //    this.mLogger.Debug("MigrationWorker - ReportItem.Definition Before = {0}", SSRSUtil.ByteArrayToString(reportItem.Definition));
 
                         reportItem.Definition = SSRSUtil.UpdateReportDefinition(
                             this.mDestinationServerUrl,
@@ -559,8 +571,8 @@ namespace SSRSMigrate.Forms
                             this.mDestinationRootPath,
                             reportItem.Definition);
 
-                        if (reportItem.Definition != null)
-                            this.mLogger.Debug("MigrationWorker - ReportItem.Definition After = {0}", SSRSUtil.ByteArrayToString(reportItem.Definition));
+                        //if (reportItem.Definition != null)
+                        //    this.mLogger.Debug("MigrationWorker - ReportItem.Definition After = {0}", SSRSUtil.ByteArrayToString(reportItem.Definition));
 
                         try
                         {
@@ -572,7 +584,7 @@ namespace SSRSMigrate.Forms
 
                             status.Success = true;
 
-                            ++itemsMigratedCounter;
+                            ++reportsMigratedCounter;
                         }
                         catch (ItemAlreadyExistsException er)
                         {
@@ -604,10 +616,23 @@ namespace SSRSMigrate.Forms
 
             // Stop stopwatch and get how long it took for the migration to complete successfully
             watch.Stop();
-            double averageItem = watch.Elapsed.TotalSeconds/progressCounter;
+            double averageItem = watch.Elapsed.TotalSeconds / progressCounter;
 
-            string result = string.Format("{0} items migrated in {1}h {2}m {3}s (@ {4:0.00} items/s)",
-                itemsMigratedCounter,
+            //string result = string.Format("{0}/{1} items migrated in {2}h {3}m {4}s (@ {5:0.00} items/s)",
+            //    (foldersMigratedCounter + dataSourcesMigratedCounter + reportsMigratedCounter),
+            //    (foldersTotalCount + dataSourcesTotalCount + reportsTotalCount),
+            //    watch.Elapsed.Hours,
+            //    watch.Elapsed.Minutes,
+            //    watch.Elapsed.Seconds,
+            //    averageItem);
+
+            string result = string.Format("{0}/{1} folders, {2}/{3} data sources, {4}/{5} reports migrated in {6}h {7}m {8}s (@ {9:0.00} items/s)",
+                foldersMigratedCounter,
+                foldersTotalCount,
+                dataSourcesMigratedCounter,
+                dataSourcesTotalCount,
+                reportsMigratedCounter,
+                reportsTotalCount,
                 watch.Elapsed.Hours,
                 watch.Elapsed.Minutes,
                 watch.Elapsed.Seconds,
