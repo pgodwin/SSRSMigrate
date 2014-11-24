@@ -229,7 +229,7 @@ namespace SSRSMigrate.SSRS.Repository
 
             def = SSRSUtil.StringToByteArray(reportDefinition);
 
-            this.mLogger.Debug("GetReportDefinition - Definition = {0}", reportDefinition);
+            //this.mLogger.Debug("GetReportDefinition - Definition = {0}", reportDefinition);
 
             return def;
         }
