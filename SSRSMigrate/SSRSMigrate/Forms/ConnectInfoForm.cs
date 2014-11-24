@@ -739,7 +739,7 @@ namespace SSRSMigrate.Forms
 
                     this.mLogger.Info(msg);
 
-                    MessageBox.Show(msg,
+                    MessageBox.Show("Read test was successful.",
                         "Test Successful",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.None);
@@ -753,7 +753,7 @@ namespace SSRSMigrate.Forms
 
                     this.mLogger.Warn(msg);
 
-                    MessageBox.Show(msg,
+                    MessageBox.Show(string.Format("Read test failed:\n{0}", status.Error),
                         "Test Failed",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
@@ -804,14 +804,25 @@ namespace SSRSMigrate.Forms
                 MessageBoxIcon icon = MessageBoxIcon.None;
                 
                 string readMsg = string.Format("Read test {0}", readStatus.Success == true ? "was successful." : string.Format("failed:\n{0}", readStatus.Error));
+                string readLogMsg = string.Format("Read test {0}", readStatus.Success == true ? "was successful." : string.Format("failed:\n{0}", readStatus.Error));
+
                 string writeMsg = string.Format("Write test {0}", writeStatus.Success == true ? "was successful." : string.Format("failed:\n{0}", writeStatus.Error));
+                string writeLogMsg = string.Format("Write test {0}", writeStatus.Success == true ? "was successful." : string.Format("failed:\n{0}", writeStatus.Error));
 
                 msg = string.Format("{0}\n\r\n\r{1}", readMsg, writeMsg);
-
-                this.mLogger.Info(msg);
-                
+     
                 if (readStatus.Success == false || writeStatus.Success == false)
+                {
                     icon = MessageBoxIcon.Error;
+
+                    this.mLogger.Warn(readLogMsg);
+                    this.mLogger.Warn(writeLogMsg);
+                }
+                else
+                {
+                    this.mLogger.Info(readLogMsg);
+                    this.mLogger.Info(writeLogMsg);
+                }
 
                 MessageBox.Show(msg,
                         "Destination Test",
