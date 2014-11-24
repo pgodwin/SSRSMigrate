@@ -230,6 +230,19 @@ namespace SSRSMigrate.Tests.Utilities
         }
 
         [Test]
+        public void GetFullDestinationPathForItem_FolderChange_CaseInsensitive()
+        {
+            string expected = "http://localhost/ReportServer/SSRSMigrate_NewFolder/Reports/Test Report";
+
+            string actual = SSRSUtil.GetFullDestinationPathForItem(
+                "http://localhost/ReportServer/ssrsmigrate_aw_tests",
+                "http://localhost/ReportServer/SSRSMigrate_NewFolder",
+                "http://localhost/ReportServer/SSRSMigrate_AW_Tests/Reports/Test Report");
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void GetFullDestinationPathForItem_InstanceAndFolderChange()
         {
             string expected = "http://localhost/ReportServer_NEWSERVER/SSRSMigrate_NewFolder/Reports/Test Report";

@@ -123,7 +123,7 @@ namespace SSRSMigrate.Utility
             string name = itemPath.Substring(itemPath.LastIndexOf("/"));
 
             // Replace the source path with the destination path, in the current path of the item to get the destination path
-            System.Text.RegularExpressions.Regex re = new System.Text.RegularExpressions.Regex(sourcePath);
+            System.Text.RegularExpressions.Regex re = new System.Text.RegularExpressions.Regex(sourcePath, RegexOptions.IgnoreCase);
             string itemDestPath = re.Replace(path, destinationPath, 1);
 
             itemDestPath += name;
