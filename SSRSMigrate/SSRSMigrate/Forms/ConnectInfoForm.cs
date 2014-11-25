@@ -264,6 +264,11 @@ namespace SSRSMigrate.Forms
             else
                 destVersion = "2010-DEST";
 
+            // If source server is the same as the destination server and the root paths are the same, throw exception
+            if (this.txtSrcUrl.Text.ToLower() == this.txtDestUrl.Text.ToLower() &&
+                this.txtSrcPath.Text.ToLower() == this.txtDestPath.Text.ToLower())
+                throw new Exception("You cannot migrate to the same path on the same server.");
+
             reader = this.mKernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>(srcVersion);
             writer = this.mKernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>(destVersion);
 
