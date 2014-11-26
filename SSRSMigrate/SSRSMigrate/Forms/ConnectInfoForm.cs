@@ -578,7 +578,7 @@ namespace SSRSMigrate.Forms
                 this.mLoggerFactory);
 
             migrateForm.DebugForm = this.mDebugForm;
-            migrateForm.ShowDialog();
+            migrateForm.Show();
         }
         #endregion
 
@@ -612,7 +612,7 @@ namespace SSRSMigrate.Forms
                 this.mLoggerFactory);
 
             exportDiskForm.DebugForm = this.mDebugForm;
-            exportDiskForm.ShowDialog();
+            exportDiskForm.Show();
         }
         #endregion
 
@@ -651,7 +651,7 @@ namespace SSRSMigrate.Forms
                 fileSystem);
 
             exportZipForm.DebugForm = this.mDebugForm;
-            exportZipForm.ShowDialog();
+            exportZipForm.Show();
         }
         #endregion
 
@@ -693,7 +693,7 @@ namespace SSRSMigrate.Forms
                 fileSystem);
 
             importzipForm.DebugForm = this.mDebugForm;
-            importzipForm.ShowDialog();
+            importzipForm.Show();
         }
 
         private string GetTempExtractPath()
