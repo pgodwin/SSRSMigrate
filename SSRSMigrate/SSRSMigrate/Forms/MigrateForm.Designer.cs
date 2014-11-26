@@ -242,6 +242,7 @@
             // columnHeader3
             // 
             this.columnHeader3.Text = "Status";
+            this.columnHeader3.Width = 152;
             // 
             // MigrateForm
             // 

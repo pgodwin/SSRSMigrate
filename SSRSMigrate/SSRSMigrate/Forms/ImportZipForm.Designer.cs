@@ -122,6 +122,7 @@
             // columnHeader3
             // 
             this.columnHeader3.Text = "Status";
+            this.columnHeader3.Width = 152;
             // 
             // grpSource
             // 
@@ -196,11 +197,12 @@
             // colSrcPath
             // 
             this.colSrcPath.Text = "Path";
-            this.colSrcPath.Width = 387;
+            this.colSrcPath.Width = 181;
             // 
             // colError
             // 
             this.colError.Text = "Error";
+            this.colError.Width = 90;
             // 
             // colZipPath
             // 
