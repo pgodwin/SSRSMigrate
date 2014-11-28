@@ -30,6 +30,7 @@ namespace SSRSMigrate.Forms
         private ILogger mLogger = null;
 
         private DebugForm mDebugForm = null;
+        private SummaryForm mSummaryForm = null;
 
         #region Properties
         public DebugForm DebugForm
@@ -77,7 +78,8 @@ namespace SSRSMigrate.Forms
             this.mDataSourceExporter = dataSourceExporter;
             this.mLoggerFactory = loggerFactory;
 
-            this.mLogger = mLoggerFactory.GetCurrentClassLogger();            
+            this.mLogger = mLoggerFactory.GetCurrentClassLogger();     
+            this.mSummaryForm = new SummaryForm();
         }
 
         #region UI Events
@@ -508,6 +510,10 @@ namespace SSRSMigrate.Forms
 
             this.mLogger.Debug("ExportItemsWorker - {0}", result);
 
+            //TODO Should probably have this in the worker completed handler
+            this.mSummaryForm.SuccessfulItemsCount = foldersExportedCounter + dataSourcesExportedCounter +
+                                                     reportsExportedCounter;
+
             e.Result = result;
         }
 
@@ -542,6 +548,8 @@ namespace SSRSMigrate.Forms
             this.btnSrcRefreshReports.Enabled = true;
             this.btnExport.Enabled = false;
             this.lblStatus.Text = msg;
+
+            this.mSummaryForm.ShowDialog();
         }
 
         private void bw_ExportItems_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -577,6 +585,8 @@ namespace SSRSMigrate.Forms
                     this.lblStatus.Text = string.Format("Failed '{0}': {1}",
                         exportStatus.ToPath,
                         string.Join(",", exportStatus.Errors));
+
+                    this.mSummaryForm.AddFailedItem(exportStatus.FromPath, string.Join(",", exportStatus.Errors));
                 }
             }
             else
