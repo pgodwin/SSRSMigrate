@@ -115,8 +115,6 @@ namespace SSRSMigrate.Wrappers
                     }
                 }
             }
-
-            return null;
         }
 
         internal override void ExtractProgressHandler(object sender, EventArgs e)

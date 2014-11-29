@@ -490,11 +490,16 @@ namespace SSRSMigrate.Forms
                         status.Item = dataSourceItem;
                         status.FromPath = dataSourceItem.Path;
 
+                        this.mLogger.Debug("MigrationWorker - BEFORE DataSourceItem.FromPath = {0}; SourceRootPath = {1}", status.FromPath, this.mSourceRootPath);
+                        this.mLogger.Debug("MigrationWorker - BEFORE DataSourceItem.FromPath = {0}; DestinationRootPath = {1}", status.FromPath, this.mDestinationRootPath);
+
                         // Get the destination path for this item (e.g. '/SSRSMigrate_AW_Tests/Data Sources/AWDataSource' to '/SSRSMigrate_AW_Destination/Data Sources/AWDataSource'
                         string destItemPath = SSRSUtil.GetFullDestinationPathForItem(
                             this.mSourceRootPath,
                             this.mDestinationRootPath,
                             dataSourceItem.Path);
+
+                        this.mLogger.Debug("MigrationWorker - AFTER DataSourceItem.FromPath = {0}; destItemPath = {1}", status.FromPath, destItemPath);
 
                         dataSourceItem.Path = destItemPath;
                         status.ToPath = destItemPath;
@@ -565,28 +570,27 @@ namespace SSRSMigrate.Forms
                         status.Item = reportItem;
                         status.FromPath = reportItem.Path;
 
+                        this.mLogger.Debug("MigrationWorker - BEFORE ReportItem.FromPath = {0}; SourceRootPath = {1}", status.FromPath, this.mSourceRootPath);
+                        this.mLogger.Debug("MigrationWorker - BEFORE ReportItem.FromPath = {0}; DestinationRootPath = {1}", status.FromPath, this.mDestinationRootPath);
+
                         // Get the destination path for this item (e.g. '/SSRSMigrate_AW_Tests/Reports/Company Sales' to '/SSRSMigrate_AW_Destination/Reports/Company Sales'
                         string destItemPath = SSRSUtil.GetFullDestinationPathForItem(
                             this.mSourceRootPath,
                             this.mDestinationRootPath,
                             reportItem.Path);
 
+                        this.mLogger.Debug("MigrationWorker - AFTER ReportItem.FromPath = {0}; destItemPath = {1}", status.FromPath, destItemPath);
+
                         reportItem.Path = destItemPath;
                         status.ToPath = destItemPath;
 
                         this.mLogger.Debug("MigrationWorker - ReportItem.FromPath = {0}; ToPath = {1}", status.FromPath, status.ToPath);
-
-                        //if (reportItem.Definition != null)
-                        //    this.mLogger.Debug("MigrationWorker - ReportItem.Definition Before = {0}", SSRSUtil.ByteArrayToString(reportItem.Definition));
 
                         reportItem.Definition = SSRSUtil.UpdateReportDefinition(
                             this.mDestinationServerUrl,
                             this.mSourceRootPath,
                             this.mDestinationRootPath,
                             reportItem.Definition);
-
-                        //if (reportItem.Definition != null)
-                        //    this.mLogger.Debug("MigrationWorker - ReportItem.Definition After = {0}", SSRSUtil.ByteArrayToString(reportItem.Definition));
 
                         try
                         {
@@ -632,14 +636,6 @@ namespace SSRSMigrate.Forms
             watch.Stop();
             double averageItem = watch.Elapsed.TotalSeconds / progressCounter;
 
-            //string result = string.Format("{0}/{1} items migrated in {2}h {3}m {4}s (@ {5:0.00} items/s)",
-            //    (foldersMigratedCounter + dataSourcesMigratedCounter + reportsMigratedCounter),
-            //    (foldersTotalCount + dataSourcesTotalCount + reportsTotalCount),
-            //    watch.Elapsed.Hours,
-            //    watch.Elapsed.Minutes,
-            //    watch.Elapsed.Seconds,
-            //    averageItem);
-
             string result = string.Format("{0}/{1} folders, {2}/{3} data sources, {4}/{5} reports migrated in {6}h {7}m {8}s (@ {9:0.00} items/s)",
                 foldersMigratedCounter,
                 foldersTotalCount,
@@ -652,7 +648,7 @@ namespace SSRSMigrate.Forms
                 watch.Elapsed.Seconds,
                 averageItem);
 
-            this.mLogger.Debug("MigrationWorker - {0}", result);
+            this.mLogger.Info("MigrationWorker - {0}", result);
 
             e.Result = result;
         }

@@ -401,13 +401,6 @@ namespace SSRSMigrate.Forms
             this.mDebugForm.LogMessage(string.Format("Refreshing item '{0}' in path '{1}'...", itemReadEvent.FileName, itemReadEvent.Path));
         }
 
-        //lstSrcReports Columns:
-        //Name
-        //Path
-        //Error
-        //ZipPath
-        //ExtractedTo
-
         /// <summary>
         /// Adds an item to the ListView for a successfully 'imported' entry.
         /// </summary>
@@ -592,6 +585,8 @@ namespace SSRSMigrate.Forms
                     this.mDestinationRootPath,
                     folderItem.Item.Path);
 
+                this.mLogger.Debug("ImportWorker - Destination path set to '{0}' for folder item '{1}'", destItemPath, folderItem.Item.Path);
+
                 // Update the FolderItem.Path to be the new destination path
                 folderItem.Item.Path = destItemPath;
                 status.ToPath = destItemPath;
@@ -663,6 +658,8 @@ namespace SSRSMigrate.Forms
                     sourceRootPath,
                     this.mDestinationRootPath,
                     dataSourceItem.Item.Path);
+
+                this.mLogger.Debug("ImportWorker - Destination path set to '{0}' for data source item '{1}'", destItemPath, dataSourceItem.Item.Path);
 
                 // Update the FolderItem.Path to be the new destination path
                 dataSourceItem.Item.Path = destItemPath;
@@ -736,6 +733,8 @@ namespace SSRSMigrate.Forms
                     this.mDestinationRootPath,
                     reportItem.Item.Path);
 
+                this.mLogger.Debug("ImportWorker - Destination path set to '{0}' for report item '{1}'", destItemPath, reportItem.Item.Path);
+
                 // Update the FolderItem.Path to be the new destination path
                 reportItem.Item.Path = destItemPath;
                 status.ToPath = destItemPath;
@@ -744,10 +743,6 @@ namespace SSRSMigrate.Forms
                     status.FromPath,
                     status.ToPath);
 
-                //if (reportItem.Item.Definition != null)
-                //    this.mLogger.Debug("ImportWorker - ReportItem.Definition Before = {0}", 
-                //        SSRSUtil.ByteArrayToString(reportItem.Item.Definition));
-
                 // Update the ReportItem.Definition to point to the new server
                 reportItem.Item.Definition = SSRSUtil.UpdateReportDefinition(
                     this.mDestinationServerUrl,
@@ -755,11 +750,7 @@ namespace SSRSMigrate.Forms
                     this.mDestinationRootPath,
                     reportItem.Item.Definition
                     );
-
-                // if (reportItem.Item.Definition != null)
-                //    this.mLogger.Debug("ImportWorker - ReportItem.Definition After = {0}",
-                //        SSRSUtil.ByteArrayToString(reportItem.Item.Definition));
-
+                
                 try
                 {
                     // Write ReportItem to server
@@ -800,14 +791,6 @@ namespace SSRSMigrate.Forms
             watch.Stop();
             double averageItem = watch.Elapsed.TotalSeconds / progressCounter;
 
-            //string result = string.Format("{0}/{1} items imported in {2}h {3}m {4}s (@ {5:0.00} items/s)",
-            //    (foldersMigratedCounter + dataSourcesMigratedCounter + reportsMigratedCounter),
-            //    (foldersTotalCount + dataSourcesTotalCount + reportsTotalCount),
-            //    watch.Elapsed.Hours,
-            //    watch.Elapsed.Minutes,
-            //    watch.Elapsed.Seconds,
-            //    averageItem);
-
             string result = string.Format("{0}/{1} folders, {2}/{3} data sources, {4}/{5} reports imported in {6}h {7}m {8}s (@ {9:0.00} items/s)",
                 foldersImportedCounter,
                 foldersTotalCount,
@@ -820,7 +803,7 @@ namespace SSRSMigrate.Forms
                 watch.Elapsed.Seconds,
                 averageItem);
 
-            this.mLogger.Debug("ImportWorker - {0}", result);
+            this.mLogger.Info("ImportWorker - {0}", result);
 
             e.Result = result;
         }

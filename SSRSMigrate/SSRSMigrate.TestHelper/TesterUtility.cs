@@ -80,8 +80,6 @@ namespace SSRSMigrate.TestHelper
             if (!File.Exists(file2))
                 throw new FileNotFoundException(file2);
 
-            bool result = false;
-
             string[] file1_lines = File.ReadAllLines(file1);
             string[] file2_lines = File.ReadAllLines(file2);
 

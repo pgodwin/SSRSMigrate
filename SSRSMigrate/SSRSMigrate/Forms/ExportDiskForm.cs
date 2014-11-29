@@ -508,7 +508,7 @@ namespace SSRSMigrate.Forms
                 watch.Elapsed.Seconds,
                 averageItem);
 
-            this.mLogger.Debug("ExportItemsWorker - {0}", result);
+            this.mLogger.Info("ExportItemsWorker - {0}", result);
 
             e.Result = result;
         }

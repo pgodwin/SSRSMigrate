@@ -415,6 +415,8 @@ namespace SSRSMigrate.Forms
 
             foldersTotalCount = folderPaths.Count();
 
+            this.mLogger.Debug("ExportItemsWorker - {0} folders in Listview", foldersTotalCount);
+
             foreach (string folderPath in folderPaths)
             {
                 ExportStatus status = null;
@@ -427,6 +429,8 @@ namespace SSRSMigrate.Forms
                     {
                         // Path to where to export folder on disk
                         string saveFilePath = exportPath + SSRSUtil.GetServerPathToPhysicalPath(folderPath);
+
+                        this.mLogger.Debug("ExportItemsWorker - Got save file path of '{0}' for folder item path '{1}'", saveFilePath, folderPath);
 
                         status = this.mFolderExporter.SaveItem(folderItem,
                             saveFilePath,
@@ -471,6 +475,8 @@ namespace SSRSMigrate.Forms
 
             dataSourcesTotalCount = dataSourcePaths.Count();
 
+            this.mLogger.Debug("ExportItemsWorker - {0} data sources in Listview", dataSourcesTotalCount);
+
             foreach (string dataSourcePath in dataSourcePaths)
             {
                 ExportStatus status = null;
@@ -484,6 +490,8 @@ namespace SSRSMigrate.Forms
                         // Path to where to export data source on disk
                         string saveFilePath = exportPath + SSRSUtil.GetServerPathToPhysicalPath(dataSourcePath, "json");
 
+                        this.mLogger.Debug("ExportItemsWorker - Got save file path of '{0}' for data source item path '{1}'", saveFilePath, dataSourcePath);
+                    
                         status = this.mDataSourceExporter.SaveItem(dataSourceItem,
                             saveFilePath,
                             true);
@@ -527,6 +535,8 @@ namespace SSRSMigrate.Forms
 
             reportsTotalCount = reportPaths.Count();
 
+            this.mLogger.Debug("ExportItemsWorker - {0} reports in Listview", reportsTotalCount);
+
             foreach (string reportPath in reportPaths)
             {
                 ExportStatus status = null;
@@ -540,6 +550,8 @@ namespace SSRSMigrate.Forms
                         // Path to where to export report on disk
                         string saveFilePath = exportPath + SSRSUtil.GetServerPathToPhysicalPath(reportPath, "rdl");
 
+                        this.mLogger.Debug("ExportItemsWorker - Got save file path of '{0}' for report item path '{1}'", saveFilePath, reportPath);
+                    
                         status = this.mReportExporter.SaveItem(reportItem,
                             saveFilePath,
                             true);
@@ -591,7 +603,7 @@ namespace SSRSMigrate.Forms
                 watch.Elapsed.Seconds,
                 averageItem);
 
-            this.mLogger.Debug("ExportItemsWorker - {0}", result);
+            this.mLogger.Info("ExportItemsWorker - {0}", result);
 
             e.Result = result;
         }
@@ -658,7 +670,7 @@ namespace SSRSMigrate.Forms
                         exportStatus.ToPath);
 
                     this.mDebugForm.LogMessage(msg);
-                    this.mLogger.Info("ExportItemsProgressChanged - {0}", msg);
+                    this.mLogger.Debug("ExportItemsProgressChanged - {0}", msg);
 
                     this.lblStatus.Text = msg;
 
