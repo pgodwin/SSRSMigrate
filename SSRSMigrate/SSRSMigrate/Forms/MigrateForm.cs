@@ -31,6 +31,7 @@ namespace SSRSMigrate.Forms
         private ILogger mLogger = null;
 
         private DebugForm mDebugForm = null;
+        private SummaryForm mSummaryForm = null;
 
         #region Properties
         public DebugForm DebugForm
@@ -85,6 +86,7 @@ namespace SSRSMigrate.Forms
             this.mLogger.Info("sourceServerUrl: {0}", this.mSourceServerUrl);
             this.mLogger.Info("destinationRootPath: {0}", this.mDestinationRootPath);
             this.mLogger.Info("destinationServerUrl: {0}", this.mDestinationServerUrl);
+            this.mSummaryForm = new SummaryForm();
         }
 
         #region UI Events
@@ -685,6 +687,8 @@ namespace SSRSMigrate.Forms
             this.lblStatus.Text = msg;
             this.btnSrcRefreshReports.Enabled = true;
             this.btnPerformMigration.Enabled = false;
+
+            this.mSummaryForm.ShowDialog();
         }
 
         private void bw_MigrationProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -708,6 +712,13 @@ namespace SSRSMigrate.Forms
                         oItem.ForeColor = Color.Red;
 
                         oItem.ToolTipText = status.Error.Message;
+
+                        this.mSummaryForm.AddFailedItem(item.Path,
+                            status.Error.Message);
+                    }
+                    else
+                    {
+                        this.mSummaryForm.IncrementSuccessfulItemsCount();
                     }
 
                     if (status.Warnings.Length > 0)
@@ -740,6 +751,8 @@ namespace SSRSMigrate.Forms
                     this.mDebugForm.LogMessage(msg);
                     this.mLogger.Info("MigrationProgressChanged - {0}", msg);
                     this.lblStatus.Text = string.Format("Migrated item '{0}'...", item.Path);
+
+                    this.mSummaryForm.IncrementTotalItemsCount();
                 }
                 else
                     this.mLogger.Warn("MigrationProgressChanged - MigrationStatus.Item is NULL for item migrated from '{0}' to '{1}'.", status.FromPath, status.ToPath);

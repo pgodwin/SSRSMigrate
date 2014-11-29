@@ -37,6 +37,7 @@ namespace SSRSMigrate.Forms
 
         private DebugForm mDebugForm = null;
         private bool mExportRan = false;
+        private SummaryForm mSummaryForm = null;
 
         #region Properties
         public DebugForm DebugForm
@@ -98,6 +99,7 @@ namespace SSRSMigrate.Forms
 
             this.mExportOutputTempDirectory = this.GetTemporaryExportOutputFolder("SSRSMigrate_ExportZip");
             this.CreateExportOutputFolder(this.mExportOutputTempDirectory);
+            this.mSummaryForm = new SummaryForm();
         }
 
         private string GetTemporaryExportOutputFolder(string name)
@@ -635,6 +637,8 @@ namespace SSRSMigrate.Forms
             this.btnSrcRefreshReports.Enabled = true;
             this.btnExport.Enabled = true;
             this.lblStatus.Text = msg;
+
+            this.mSummaryForm.ShowDialog();
         }
 
         private void bw_ExportItems_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -657,6 +661,8 @@ namespace SSRSMigrate.Forms
                     this.mLogger.Info("ExportItemsProgressChanged - {0}", msg);
 
                     this.lblStatus.Text = msg;
+
+                    this.mSummaryForm.IncrementSuccessfulItemsCount();
                 }
                 else
                 {
@@ -670,7 +676,11 @@ namespace SSRSMigrate.Forms
                     this.lblStatus.Text = string.Format("Failed '{0}': {1}",
                         exportStatus.ToPath,
                         string.Join(",", exportStatus.Errors));
+
+                    this.mSummaryForm.AddFailedItem(exportStatus.FromPath, string.Join(",", exportStatus.Errors));
                 }
+
+                this.mSummaryForm.IncrementTotalItemsCount();
             }
             else
                 this.mLogger.Warn("ExportItemsProgressChanged - ExportStatus is NULL.");

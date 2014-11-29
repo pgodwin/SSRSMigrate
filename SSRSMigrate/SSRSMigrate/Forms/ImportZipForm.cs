@@ -37,6 +37,7 @@ namespace SSRSMigrate.Forms
         private BackgroundWorker mImportWorker = null;
         private ILogger mLogger = null;
         private DebugForm mDebugForm = null;
+        private SummaryForm mSummaryForm = null;
 
         #region Properties
         public DebugForm DebugForm
@@ -100,6 +101,7 @@ namespace SSRSMigrate.Forms
             this.mFolderItemImporter = folderItemImporter;
             this.mReportItemImporter = reportItemImporter;
             this.mFileSystem = fileSystem;
+            this.mSummaryForm = new SummaryForm();
         }
 
         #region UI Events
@@ -853,6 +855,8 @@ namespace SSRSMigrate.Forms
             this.lblStatus.Text = msg;
             this.btnSrcRefreshReports.Enabled = true;
             this.btnPerformImport.Enabled = false;
+
+            this.mSummaryForm.ShowDialog();
         }
 
         private void bw_ImportProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -874,6 +878,13 @@ namespace SSRSMigrate.Forms
                         oItem.ForeColor = Color.Red;
 
                         oItem.ToolTipText = status.Error.Message;
+
+                        this.mSummaryForm.AddFailedItem(item.Path,
+                            status.Error.Message);
+                    }
+                    else
+                    {
+                        this.mSummaryForm.IncrementSuccessfulItemsCount();
                     }
 
                     if (status.Warnings.Length > 0)
@@ -906,6 +917,8 @@ namespace SSRSMigrate.Forms
                     this.mDebugForm.LogMessage(msg);
                     this.mLogger.Info("ImportProgressChanged - {0}", msg);
                     this.lblStatus.Text = string.Format("Imported item '{0}'...", item.Path);
+
+                    this.mSummaryForm.IncrementTotalItemsCount();
                 }
                 else
                     this.mLogger.Warn("ImportProgressChanged - MigrationStatus.Item is NULL for item imported from '{0}' to '{1}'.", 

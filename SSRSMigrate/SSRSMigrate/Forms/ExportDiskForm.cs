@@ -510,10 +510,6 @@ namespace SSRSMigrate.Forms
 
             this.mLogger.Debug("ExportItemsWorker - {0}", result);
 
-            //TODO Should probably have this in the worker completed handler
-            this.mSummaryForm.SuccessfulItemsCount = foldersExportedCounter + dataSourcesExportedCounter +
-                                                     reportsExportedCounter;
-
             e.Result = result;
         }
 
@@ -572,6 +568,8 @@ namespace SSRSMigrate.Forms
                     this.mLogger.Info("ExportItemsProgressChanged - {0}", msg);
 
                     this.lblStatus.Text = msg;
+
+                    this.mSummaryForm.IncrementSuccessfulItemsCount();
                 }
                 else
                 {
@@ -588,6 +586,8 @@ namespace SSRSMigrate.Forms
 
                     this.mSummaryForm.AddFailedItem(exportStatus.FromPath, string.Join(",", exportStatus.Errors));
                 }
+
+                this.mSummaryForm.IncrementTotalItemsCount();
             }
             else
                 this.mLogger.Warn("ExportItemsProgressChanged - ExportStatus is NULL.");

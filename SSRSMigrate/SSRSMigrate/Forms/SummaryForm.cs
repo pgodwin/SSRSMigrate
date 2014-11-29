@@ -11,14 +11,15 @@ namespace SSRSMigrate.Forms
 {
     public partial class SummaryForm : Form
     {
+        private int mTotalItemCount = 0;
         private int mSuccessfulItemCount = 0;
         private int mFailedItemCount = 0;
         private Dictionary<string, string> mFailedItems = new Dictionary<string, string>();
 
         #region Properties
-        public int SuccessfulItemsCount
+        public int TotalItemsCount
         {
-            set { this.mSuccessfulItemCount = value;  }
+            set { this.mTotalItemCount = value;  }
         }
         #endregion
 
@@ -52,6 +53,12 @@ namespace SSRSMigrate.Forms
 
             this.lstSummary.Items.Add(oFailedItem);
 
+            ListViewItem oTotalItem = new ListViewItem("Total Items:");
+            oTotalItem.SubItems.Add(this.mTotalItemCount.ToString());
+            oTotalItem.Group = this.lstSummary.Groups["lstGrpSummary"];
+
+            this.lstSummary.Items.Add(oTotalItem);
+
             oFailedItem.EnsureVisible();
         }
 
@@ -81,6 +88,16 @@ namespace SSRSMigrate.Forms
 
             this.mFailedItems.Add(item, message);
             this.mFailedItemCount += 1;
+        }
+
+        public void IncrementSuccessfulItemsCount()
+        {
+            this.mSuccessfulItemCount++;
+        }
+
+        public void IncrementTotalItemsCount()
+        {
+            this.mTotalItemCount++;
         }
     }
 }
