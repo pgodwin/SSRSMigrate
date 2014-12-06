@@ -270,6 +270,12 @@ namespace SSRSMigrate.Forms
                 this.txtSrcPath.Text.ToLower() == this.txtDestPath.Text.ToLower())
                 throw new Exception("You cannot migrate to the same path on the same server.");
 
+            // Test the source connection
+            this.TestSourceConnection(true);
+
+            // Test the destination connection
+            this.TestDestinationConnection(true);
+
             reader = this.mKernel.Get<IReportServerReader>(srcVersion);
             writer = this.mKernel.Get<IReportServerWriter>(destVersion);
 
@@ -302,6 +308,9 @@ namespace SSRSMigrate.Forms
             FolderItemExporter folderExporter = null;
             ReportItemExporter reportExporter = null;
 
+            // Test the source connection
+            this.TestSourceConnection(true);
+
             string version = this.GetSourceServerVersion();
 
             reader = this.mKernel.Get<IReportServerReader>(version);
@@ -329,6 +338,9 @@ namespace SSRSMigrate.Forms
             ReportItemExporter reportExporter = null;
             IBundler zipBundler = null;
             IFileSystem fileSystem = null;
+
+            // Test the source connection
+            this.TestSourceConnection(true);
 
             string version = this.GetSourceServerVersion();
 
@@ -363,6 +375,9 @@ namespace SSRSMigrate.Forms
             IItemImporter<FolderItem> folderItemImporter = null;
             IItemImporter<ReportItem> reportItemImporter = null;
             IFileSystem fileSystem = null;
+
+            // Test the source connection
+            this.TestSourceConnection(true);
 
             string version = this.GetDestinationServerVersion();
 
@@ -718,7 +733,7 @@ namespace SSRSMigrate.Forms
             }
         }
 
-        private void TestSourceConnection()
+        private void TestSourceConnection(bool quietSuccessful = false)
         {
             // Save source configuration so it can be loaded by Ninject
             this.Save_SourceConfiguration();
@@ -745,10 +760,11 @@ namespace SSRSMigrate.Forms
 
                     this.mLogger.Info(msg);
 
-                    MessageBox.Show("Read test was successful.",
-                        "Test Successful",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.None);
+                    if (!quietSuccessful)
+                        MessageBox.Show("Read test was successful.",
+                            "Test Successful",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.None);
                 }
                 else
                 {
@@ -785,7 +801,7 @@ namespace SSRSMigrate.Forms
             }
         }
 
-        private void TestDestinationConnection()
+        private void TestDestinationConnection(bool quietSuccessful = false)
         {
             // Save destination configuration so it can be loaded by Ninject
             this.Save_DestinationConfiguration();
@@ -829,10 +845,11 @@ namespace SSRSMigrate.Forms
                     this.mLogger.Info(writeLogMsg);
                 }
 
-                MessageBox.Show(msg,
-                        "Destination Test",
-                        MessageBoxButtons.OK,
-                        icon);
+                if (!quietSuccessful && (readStatus.Success && writeStatus.Success))
+                    MessageBox.Show(msg,
+                            "Destination Test",
+                            MessageBoxButtons.OK,
+                            icon);
 
             }
             catch (Exception er)
