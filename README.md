@@ -47,6 +47,8 @@ By default, logging is set to an information level, which will not include debug
 Normal log messages are written to the SSRSMigrate.log file and errors are written to SSRSMigrateErrors.log.
 
 **Enabling debug level logging**
+
+
 You can enable debug level logging by editing the SSRSMigrate.exe.config file and changing the level value in the 'root' tag to 'DEBUG'.
 
  Default information level logging:
