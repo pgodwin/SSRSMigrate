@@ -6,9 +6,6 @@ using NUnit.Framework;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.TestHelper;
-using Ninject;
-using SSRSMigrate.Factory;
-using Ninject.Extensions.Logging.Log4net;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
 {
@@ -16,8 +13,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
     [CoverageExcludeAttribute]
     class ReportServerReader_ReportTests
     {
-        StandardKernel kernel = null;
-        ReportServerReader reader = null;
+        IReportServerReader reader = null;
 
         #region GetReport - Expected ReportItems
         List<ReportItem> expectedReportItems = null;
@@ -79,19 +75,9 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            var settings = new NinjectSettings()
-            {
-                LoadExtensions = false
-            };
-
-            kernel = new StandardKernel(
-                settings,
-                new Log4NetModule(),
-                new DependencyModule());
-
             SetupExpectedResults();
 
-            reader = kernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>("2010-SRC");
+            reader = TestKernel.Instance.Get<IReportServerReader>("2010-SRC");
         }
 
         [TestFixtureTearDown]

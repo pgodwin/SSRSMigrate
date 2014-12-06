@@ -115,6 +115,7 @@
     <Compile Include="SSRS\Writer\ReportServer2010\ReportServerWriter_FolderTests.cs" />
     <Compile Include="SSRS\Writer\ReportServer2010\ReportServerWriter_ReportTests.cs" />
     <Compile Include="Export_ZipBundler\ZipBundler_Tests.cs" />
+    <Compile Include="TestKernel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

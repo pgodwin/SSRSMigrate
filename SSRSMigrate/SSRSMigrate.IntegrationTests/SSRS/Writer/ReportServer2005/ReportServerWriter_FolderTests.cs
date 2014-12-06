@@ -5,12 +5,9 @@ using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Writer;
-using SSRSMigrate.Factory;
-using Ninject;
 using SSRSMigrate.TestHelper;
 using System.Net;
 using SSRSMigrate.SSRS.Errors;
-using Ninject.Extensions.Logging.Log4net;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
 {
@@ -22,8 +19,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
     [CoverageExcludeAttribute]
     class ReportServerWriter_FolderTests
     {
-        StandardKernel kernel = null;
-        ReportServerWriter writer = null;
+        IReportServerWriter writer = null;
         string outputPath = null;
 
         #region FolderItems
@@ -41,16 +37,6 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         public void TestFixtureSetUp()
         {
             outputPath = Properties.Settings.Default.DestinationPath;
-
-            var settings = new NinjectSettings()
-            {
-                LoadExtensions = false
-            };
-
-            kernel = new StandardKernel(
-                settings,
-                new Log4NetModule(),
-                new DependencyModule());
 
             rootFolderItem = new FolderItem()
             {
@@ -96,7 +82,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
                 rootSubFolderItem,
             };
 
-            writer = kernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>("2005-DEST");
+            writer = TestKernel.Instance.Get<IReportServerWriter>("2005-DEST");
         }
 
         [TestFixtureTearDown]

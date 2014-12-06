@@ -7,10 +7,7 @@ using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.TestHelper;
 using System.Net;
-using Ninject;
-using SSRSMigrate.Factory;
 using SSRSMigrate.SSRS.Errors;
-using Ninject.Extensions.Logging.Log4net;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
 {
@@ -22,8 +19,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
     [CoverageExcludeAttribute]
     class ReportServerWriter_ReportTests
     {
-        StandardKernel kernel = null;
-        ReportServerWriter writer = null;
+        IReportServerWriter writer = null;
         string outputPath = null;
 
         #region Report Items
@@ -130,19 +126,9 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         {
             outputPath = Properties.Settings.Default.DestinationPath;
 
-            var settings = new NinjectSettings()
-            {
-                LoadExtensions = false
-            };
-
-            kernel = new StandardKernel(
-                settings,
-                new Log4NetModule(),
-                new DependencyModule());
-
             SetupReportItems();
 
-            writer = kernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>("2005-DEST");
+            writer = TestKernel.Instance.Get<IReportServerWriter>("2005-DEST");
         }
 
         [TestFixtureTearDown]

@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using Ninject;
 using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.TestHelper;
 using System.Net;
-using SSRSMigrate.Factory;
 using SSRSMigrate.SSRS.Errors;
-using Ninject.Extensions.Logging.Log4net;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
 {
@@ -22,8 +19,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
     [CoverageExcludeAttribute]
     class ReportServerWriter_ReportTests
     {
-        StandardKernel kernel = null;
-        ReportServerWriter writer = null;
+        IReportServerWriter writer = null;
         string outputPath = null;
 
         #region Report Items
@@ -130,19 +126,9 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
         {
             outputPath = Properties.Settings.Default.DestinationPath;
 
-            var settings = new NinjectSettings()
-            {
-                LoadExtensions = false
-            };
-
-            kernel = new StandardKernel(
-                settings,
-                new Log4NetModule(),
-                new DependencyModule());
-
             SetupReportItems();
 
-            writer = kernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>("2010-DEST");
+            writer = TestKernel.Instance.Get<IReportServerWriter>("2010-DEST");
         }
 
         [TestFixtureTearDown]

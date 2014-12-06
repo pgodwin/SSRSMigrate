@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using Ninject;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Exporter;
 using System.IO;
@@ -12,8 +11,6 @@ using Newtonsoft.Json;
 using SSRSMigrate.Status;
 using SSRSMigrate.TestHelper;
 using SSRSMigrate.Utility;
-using SSRSMigrate.Factory;
-using Ninject.Extensions.Logging.Log4net;
 
 namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2010
 {
@@ -21,8 +18,7 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2010
     [CoverageExcludeAttribute]
     class ExportEverythingTests
     {
-        StandardKernel kernel = null;
-        ReportServerReader reader = null;
+        IReportServerReader reader = null;
 
         // Item Exporters
         ReportItemExporter reportExporter = null;
@@ -63,26 +59,16 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2010
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            var settings = new NinjectSettings()
-            {
-                LoadExtensions = false
-            };
-
-            kernel = new StandardKernel(
-                settings,
-                new Log4NetModule(),
-                new DependencyModule());
-
             EnvironmentSetup();
             outputPath = GetOutPutPath();
             SetupExpectedValues();
 
             // Create the IItemExporter objects
-            reportExporter = kernel.Get<ReportItemExporter>();
-            dataSourceExporter = kernel.Get<DataSourceItemExporter>();
-            folderExporter = kernel.Get<FolderItemExporter>();
+            reportExporter = TestKernel.Instance.Get<ReportItemExporter>();
+            dataSourceExporter = TestKernel.Instance.Get<DataSourceItemExporter>();
+            folderExporter = TestKernel.Instance.Get<FolderItemExporter>();
 
-            reader = kernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>("2010-SRC");
+            reader = TestKernel.Instance.Get<IReportServerReader>("2010-SRC");
         }
 
         [TestFixtureTearDown]

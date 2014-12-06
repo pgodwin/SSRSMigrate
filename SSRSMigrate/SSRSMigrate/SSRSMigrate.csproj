@@ -115,14 +115,6 @@
     <Compile Include="Exporter\Writer\IExportWriter.cs" />
     <Compile Include="Exporter\IItemExporter.cs" />
     <Compile Include="Exporter\ReportItemExporter.cs" />
-    <Compile Include="Factory\IReportServerReaderFactory.cs" />
-    <Compile Include="Factory\IReportServerRepositoryFactory.cs" />
-    <Compile Include="Factory\IReportServerTesterFactory.cs" />
-    <Compile Include="Factory\IReportServerWriterFactory.cs" />
-    <Compile Include="Factory\ReportServerReaderFactory.cs" />
-    <Compile Include="Factory\ReportServerRepositoryFactory.cs" />
-    <Compile Include="Factory\ReportServerTesterFactory.cs" />
-    <Compile Include="Factory\ReportServerWriterFactory.cs" />
     <Compile Include="Forms\ConnectInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -2,14 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Ninject.Extensions.Logging.Log4net;
 using NUnit.Framework;
-using System.Web.Services.Protocols;
-using SSRSMigrate.ReportServer2005;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
-using Ninject;
-using SSRSMigrate.Factory;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
 {
@@ -17,8 +12,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
     [CoverageExcludeAttribute]
     class ReportServerReader_DataSourceTests
     {
-        StandardKernel kernel = null;
-        ReportServerReader reader = null;
+        IReportServerReader reader = null;
 
         #region GetDataSources - Expected DataSourceItems
         List<DataSourceItem> expectedDataSourceItems = null;
@@ -31,16 +25,6 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            var settings = new NinjectSettings()
-            {
-                LoadExtensions = false
-            };
-
-            kernel = new StandardKernel(
-                settings, 
-                new Log4NetModule(),
-                new DependencyModule());
-
             // Setup expected DataSourceItems
             expectedDataSourceItems = new List<DataSourceItem>()
             {
@@ -86,7 +70,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
                 },
             };
 
-            reader = kernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>("2005-SRC");
+            reader = TestKernel.Instance.Get<IReportServerReader>("2005-SRC");
         }
 
         [TestFixtureTearDown]

@@ -9,7 +9,6 @@ using SSRSMigrate.Bundler;
 using SSRSMigrate.Enum;
 using SSRSMigrate.Errors;
 using SSRSMigrate.Exporter;
-using SSRSMigrate.Factory;
 using SSRSMigrate.Importer;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Reader;
@@ -41,6 +40,8 @@ namespace SSRSMigrate.Forms
                 settings,
                 new Log4NetModule(),
                 new ReportServerRepositoryModule());
+
+            //this.mKernel.Load<FuncModule>();
 
             this.mLoggerFactory = this.mKernel.Get<ILoggerFactory>();
             this.mFileSystem = this.mKernel.Get<IFileSystem>();
@@ -269,8 +270,8 @@ namespace SSRSMigrate.Forms
                 this.txtSrcPath.Text.ToLower() == this.txtDestPath.Text.ToLower())
                 throw new Exception("You cannot migrate to the same path on the same server.");
 
-            reader = this.mKernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>(srcVersion);
-            writer = this.mKernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>(destVersion);
+            reader = this.mKernel.Get<IReportServerReader>(srcVersion);
+            writer = this.mKernel.Get<IReportServerWriter>(destVersion);
 
             // Check source and destination server versions through the reader and writer
             SSRSVersion sourceVersion = reader.GetSqlServerVersion();
@@ -296,14 +297,14 @@ namespace SSRSMigrate.Forms
             // Save configuration
             this.Save_SourceConfiguration();
 
-            ReportServerReader reader = null;
+            IReportServerReader reader = null;
             DataSourceItemExporter dataSourceExporter = null;
             FolderItemExporter folderExporter = null;
             ReportItemExporter reportExporter = null;
 
             string version = this.GetSourceServerVersion();
 
-            reader = this.mKernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>(version);
+            reader = this.mKernel.Get<IReportServerReader>(version);
 
             dataSourceExporter = this.mKernel.Get<DataSourceItemExporter>();
             folderExporter = this.mKernel.Get<FolderItemExporter>();
@@ -322,7 +323,7 @@ namespace SSRSMigrate.Forms
             // Save configuration
             this.Save_SourceConfiguration();
 
-            ReportServerReader reader = null;
+            IReportServerReader reader = null;
             DataSourceItemExporter dataSourceExporter = null;
             FolderItemExporter folderExporter = null;
             ReportItemExporter reportExporter = null;
@@ -331,7 +332,7 @@ namespace SSRSMigrate.Forms
 
             string version = this.GetSourceServerVersion();
 
-            reader = this.mKernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>(version);
+            reader = this.mKernel.Get<IReportServerReader>(version);
 
             dataSourceExporter = this.mKernel.Get<DataSourceItemExporter>();
             folderExporter = this.mKernel.Get<FolderItemExporter>();
@@ -365,7 +366,8 @@ namespace SSRSMigrate.Forms
 
             string version = this.GetDestinationServerVersion();
 
-            writer = this.mKernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>(version);
+            writer = this.mKernel.Get<IReportServerWriter>(version);
+
             zipBundleReader = this.mKernel.Get<IBundleReader>();
 
             // Set properties for IBundleReader
@@ -598,7 +600,7 @@ namespace SSRSMigrate.Forms
 
         private void PerformExportToDisk(string sourceRootPath,
             string destinationPath,
-            ReportServerReader reader,
+            IReportServerReader reader,
             FolderItemExporter folderExporter,
             ReportItemExporter reportExporter,
             DataSourceItemExporter dataSourceExporter)
@@ -632,7 +634,7 @@ namespace SSRSMigrate.Forms
 
         private void PerformExportToZip(string sourceRootPath,
             string destinationFilename,
-            ReportServerReader reader,
+            IReportServerReader reader,
             FolderItemExporter folderExporter,
             ReportItemExporter reportExporter,
             DataSourceItemExporter dataSourceExporter,
@@ -731,8 +733,7 @@ namespace SSRSMigrate.Forms
 
             try
             {
-                IReportServerTester tester =
-                    this.mKernel.Get<IReportServerTesterFactory>().GetTester<ReportServerTester>(version);
+                IReportServerTester tester = this.mKernel.Get<IReportServerTester>(version);
 
                 ConnectionTestStatus status = tester.ReadTest(this.txtSrcPath.Text);
 
@@ -799,8 +800,7 @@ namespace SSRSMigrate.Forms
 
             try
             {
-                IReportServerTester tester =
-                    this.mKernel.Get<IReportServerTesterFactory>().GetTester<ReportServerTester>(version);
+                IReportServerTester tester = this.mKernel.Get<IReportServerTester>(version);
 
                 ConnectionTestStatus readStatus = tester.ReadTest("/");
                 ConnectionTestStatus writeStatus = tester.WriteTest("/", Guid.NewGuid().ToString("N"));

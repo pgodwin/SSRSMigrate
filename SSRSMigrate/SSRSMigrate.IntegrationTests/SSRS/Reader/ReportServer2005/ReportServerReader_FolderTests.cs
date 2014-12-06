@@ -5,10 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
-using Ninject;
-using SSRSMigrate.Factory;
 using SSRSMigrate.SSRS.Errors;
-using Ninject.Extensions.Logging.Log4net;
 
 public class CoverageExcludeAttribute : System.Attribute { }
 
@@ -18,8 +15,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
     [CoverageExcludeAttribute]
     class ReportServerReader_FolderTests
     {
-        StandardKernel kernel = null;
-        ReportServerReader reader = null;
+        IReportServerReader reader = null;
 
         #region GetFolders - Expected FolderItems
         FolderItem expectedFolderItem = null;
@@ -33,16 +29,6 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            var settings = new NinjectSettings()
-            {
-                LoadExtensions = false
-            };
-
-            kernel = new StandardKernel(
-                settings,
-                new Log4NetModule(),
-                new DependencyModule());
-
             // Setup expected FolderItems
             expectedFolderItem = new FolderItem()
             {
@@ -65,7 +51,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
                 }
             };
 
-            reader = kernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>("2005-SRC");
+            reader = TestKernel.Instance.Get<IReportServerReader>("2005-SRC");
         }
 
         [TestFixtureTearDown]

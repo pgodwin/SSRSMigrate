@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using Ninject;
-using Ninject.Extensions.Logging.Log4net;
 using NUnit.Framework;
 using SSRSMigrate.Importer;
 using SSRSMigrate.SSRS.Item;
@@ -17,7 +11,6 @@ namespace SSRSMigrate.IntegrationTests.Importer
     [CoverageExcludeAttribute]
     class DataSourceItemImporter_Tests
     {
-        private StandardKernel kernel = null;
         private DataSourceItemImporter importer = null;
 
         #region Test Data
@@ -62,17 +55,7 @@ namespace SSRSMigrate.IntegrationTests.Importer
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            var settings = new NinjectSettings()
-            {
-                LoadExtensions = false
-            };
-
-            kernel = new StandardKernel(
-                settings,
-                new Log4NetModule(),
-                new DependencyModule());
-
-            importer = kernel.Get<DataSourceItemImporter>();
+            importer = TestKernel.Instance.Get<DataSourceItemImporter>();
         }
 
         [TestFixtureTearDown]

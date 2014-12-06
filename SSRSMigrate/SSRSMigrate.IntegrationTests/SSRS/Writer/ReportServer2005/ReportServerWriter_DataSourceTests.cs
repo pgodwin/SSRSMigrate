@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
-using Ninject;
 using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.SSRS.Item;
-using SSRSMigrate.Factory;
 using SSRSMigrate.TestHelper;
 using System.Net;
 using SSRSMigrate.SSRS.Errors;
-using Ninject.Extensions.Logging.Log4net;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
 {
@@ -22,8 +17,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
     [CoverageExcludeAttribute]
     class ReportServerWriter_DataSourceTests
     {
-        StandardKernel kernel = null;
-        ReportServerWriter writer = null;
+        IReportServerWriter writer = null;
         string outputPath = null;
 
         #region DataSourceItems
@@ -40,16 +34,6 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
         public void TestFixtureSetUp()
         {
             outputPath = Properties.Settings.Default.DestinationPath;
-
-            var settings = new NinjectSettings()
-            {
-                LoadExtensions = false
-            };
-
-            kernel = new StandardKernel(
-                settings,
-                new Log4NetModule(),
-                new DependencyModule());
 
             // Setup DataSourceItems
             dataSourceItems = new List<DataSourceItem>()
@@ -216,7 +200,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
             };
 
 
-            writer = kernel.Get<IReportServerWriterFactory>().GetWriter<ReportServerWriter>("2005-DEST");
+            writer = TestKernel.Instance.Get<IReportServerWriter>("2005-DEST");
         }
 
         [TestFixtureTearDown]

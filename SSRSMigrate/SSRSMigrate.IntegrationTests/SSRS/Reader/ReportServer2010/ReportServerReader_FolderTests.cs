@@ -4,14 +4,8 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using SSRSMigrate.SSRS.Reader;
-using SSRSMigrate.ReportServer2010;
-using System.Net;
-using SSRSMigrate.SSRS.Repository;
-using Ninject;
 using SSRSMigrate.SSRS.Item;
-using SSRSMigrate.Factory;
 using SSRSMigrate.SSRS.Errors;
-using Ninject.Extensions.Logging.Log4net;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
 {
@@ -19,8 +13,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
     [CoverageExcludeAttribute]
     class ReportServerReader_FolderTests
     {
-        StandardKernel kernel = null;
-        ReportServerReader reader = null;
+        IReportServerReader reader = null;
 
         #region GetFolders - Expected FolderItems
         FolderItem expectedFolderItem = null;
@@ -34,16 +27,6 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            var settings = new NinjectSettings()
-            {
-                LoadExtensions = false
-            };
-
-            kernel = new StandardKernel(
-                settings,
-                new Log4NetModule(),
-                new DependencyModule());
-
             // Setup expected FolderItems
             expectedFolderItem = new FolderItem()
             {
@@ -66,7 +49,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
                 }
             };
 
-            reader = kernel.Get<IReportServerReaderFactory>().GetReader<ReportServerReader>("2010-SRC");
+            reader = TestKernel.Instance.Get<IReportServerReader>("2010-SRC");
         }
 
         [TestFixtureTearDown]

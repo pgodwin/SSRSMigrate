@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
+using Ninject;
 using Ninject.Modules;
 using Ninject.Activation;
 using SSRSMigrate.Bundler;
@@ -11,10 +12,10 @@ using System.Net;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.ReportServer2010;
 using SSRSMigrate.SSRS.Reader;
+using SSRSMigrate.SSRS.Test;
 using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.Exporter.Writer;
 using SSRSMigrate.Exporter;
-using SSRSMigrate.Factory;
 using SSRSMigrate.DataMapper;
 using SSRSMigrate.Wrappers;
 
@@ -47,40 +48,50 @@ namespace SSRSMigrate.IntegrationTests
                 .InSingletonScope()
                 .Named("2010-DEST");
 
-            // Bind IReportServerRepositoryFactory
-            this.Bind<IReportServerRepositoryFactory>()
-                .To<ReportServerRepositoryFactory>();
-
-            // Bind IReportServerReaderFactory
-            this.Bind<IReportServerReaderFactory>()
-                .To<ReportServerReaderFactory>();
-
-            // Bind IReportServerWriterFactory
-            this.Bind<IReportServerWriterFactory>()
-                .To<ReportServerWriterFactory>();
-
             // Bind IReportServerReader
             this.Bind<IReportServerReader>()
                 .To<ReportServerReader>()
-                .InSingletonScope()
-                .Named("2005-SRC");
+                .Named("2005-SRC")
+                .WithConstructorArgument("repository", c => c.Kernel.Get<IReportServerRepository>("2005-SRC"));
 
             this.Bind<IReportServerReader>()
                 .To<ReportServerReader>()
-                .InSingletonScope()
-                .Named("2010-SRC");
+                .Named("2010-SRC")
+                .WithConstructorArgument("repository", c => c.Kernel.Get<IReportServerRepository>("2010-SRC"));
 
             // Bind IReportServerWriter
             this.Bind<IReportServerWriter>()
                 .To<ReportServerWriter>()
-                .InSingletonScope()
-                .Named("2005-DEST");
+                .Named("2005-DEST")
+                .WithConstructorArgument("repository", c => c.Kernel.Get<IReportServerRepository>("2005-DEST"));
 
             this.Bind<IReportServerWriter>()
                 .To<ReportServerWriter>()
-                .InSingletonScope()
-                .Named("2010-DEST");
+                .Named("2010-DEST")
+                .WithConstructorArgument("repository", c => c.Kernel.Get<IReportServerRepository>("2010-DEST"));
 
+            // Bind IReportServerTester
+            this.Bind<IReportServerTester>()
+                .To<ReportServerTester>()
+                .Named("2005-SRC")
+                .WithConstructorArgument("repository", c => c.Kernel.Get<IReportServerRepository>("2005-SRC"));
+
+            this.Bind<IReportServerTester>()
+                .To<ReportServerTester>()
+                .Named("2010-SRC")
+                .WithConstructorArgument("repository", c => c.Kernel.Get<IReportServerRepository>("2010-SRC"));
+
+            this.Bind<IReportServerTester>()
+                .To<ReportServerTester>()
+                .Named("2005-DEST")
+                .WithConstructorArgument("repository", c => c.Kernel.Get<IReportServerRepository>("2005-DEST"));
+
+            this.Bind<IReportServerTester>()
+                .To<ReportServerTester>()
+                .Named("2010-DEST")
+                .WithConstructorArgument("repository", c => c.Kernel.Get<IReportServerRepository>("2010-DEST"));
+
+            // Bind IFileSystem
             this.Bind<IFileSystem>().To<FileSystem>();
 
             // Bind ISerializeWrapper
