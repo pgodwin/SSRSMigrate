@@ -1,0 +1,1 @@
+rs -i Setup2008.vb -s http://localhost/Reportserver_SQL2008/

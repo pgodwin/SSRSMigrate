@@ -1,0 +1,1 @@
+rs -i Setup2008R2.vb -s http://localhost/Reportserver

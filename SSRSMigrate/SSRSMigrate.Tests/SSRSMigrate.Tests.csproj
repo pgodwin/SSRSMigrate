@@ -143,6 +143,9 @@
     <None Include="Test AW Reports\2010\Store Contacts.rdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Test AW Reports\Setup\Setup2008.bat" />
+    <None Include="Test AW Reports\Setup\Setup2008R2.bat" />
+    <None Include="Test AW Reports\Setup\Setup2012.bat" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SSRSMigrate.TestHelper\SSRSMigrate.TestHelper.csproj">
@@ -154,7 +157,11 @@
       <Name>SSRSMigrate</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Test AW Reports\Setup\Setup2008.vb" />
+    <Content Include="Test AW Reports\Setup\Setup2008R2.vb" />
+    <Content Include="Test AW Reports\Setup\Setup2012.vb" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
