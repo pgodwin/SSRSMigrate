@@ -115,7 +115,7 @@ namespace SSRSMigrate.SSRS.Writer
                 throw new ArgumentNullException("reportItem");
 
             // Verify that the report's path is valid
-            if (!this.mReportRepository.ValidatePath(reportItem.Path))
+            if (!this.mReportRepository.ValidateItemPath(reportItem.Path))
                 throw new InvalidPathException(reportItem.Path);
 
             // Get the report's name and path to its parent folder
@@ -141,7 +141,7 @@ namespace SSRSMigrate.SSRS.Writer
             for (int i = 0; i < reportItems.Count(); i++)
             {
                 // Verify that the report's path is valid
-                if (!this.mReportRepository.ValidatePath(reportItems[i].Path))
+                if (!this.mReportRepository.ValidateItemPath(reportItems[i].Path))
                     throw new InvalidPathException(reportItems[i].Path);
 
                 // Get the report's name and path to its parent folder

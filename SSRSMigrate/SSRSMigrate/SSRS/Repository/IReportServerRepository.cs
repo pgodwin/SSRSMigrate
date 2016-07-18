@@ -36,6 +36,7 @@ namespace SSRSMigrate.SSRS.Repository
 
         // Misc.
         bool ValidatePath(string path);
+        bool ValidateItemPath(string itemPath);
         SSRSVersion GetSqlServerVersion();
 
         // Items

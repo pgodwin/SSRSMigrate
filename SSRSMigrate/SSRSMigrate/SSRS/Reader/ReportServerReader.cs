@@ -91,7 +91,7 @@ namespace SSRSMigrate.SSRS.Reader
 
             this.mLogger.Debug("GetReport - reportPath = {0}", reportPath);
 
-            if (!this.mReportRepository.ValidatePath(reportPath))
+            if (!this.mReportRepository.ValidateItemPath(reportPath))
                 throw new InvalidPathException(reportPath);
 
             ReportItem report = this.mReportRepository.GetReport(reportPath);
