@@ -581,6 +581,29 @@ namespace SSRSMigrate.SSRS.Repository
             return isValidPath;
         }
 
+        public bool ValidateItemPath(string itemPath)
+        {
+            if (string.IsNullOrEmpty(itemPath))
+                return false;
+
+            bool isValidPath = true;
+
+            string parentPath = itemPath.Substring(0, itemPath.LastIndexOf('/') + 1);
+
+            this.mLogger.Debug("ValidateItemPath - path = {0}", parentPath);
+
+            if (parentPath.IndexOfAny(this.mInvalidPathChars.ToCharArray()) >= 0)
+                isValidPath = false;
+            else if (parentPath.Length > this.mPathMaxLength)
+                isValidPath = false;
+            else
+                isValidPath = true;
+
+            this.mLogger.Debug("ValidateItemPath - isValidPath = {0}", isValidPath);
+
+            return isValidPath;
+        }
+
         public SSRSVersion GetSqlServerVersion()
         {
             this.mReportingService.ServerInfoHeaderValue  = new ServerInfoHeader();
