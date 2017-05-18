@@ -205,6 +205,37 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
             reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
                .Returns(() => false);
 
+            // Setup IReportServerRepository.ValidateItemPath Mocks
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(reportItem_CompanySales.Path))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(reportItem_SalesOrderDetail.Path))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(reportItem_StoreContacts.Path))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(reportItem_AlreadyExists.Path))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(reportItem_NullDefinition.Path))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(reportItem_Error.Path))
+                .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(null))
+               .Returns(() => false);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(""))
+               .Returns(() => false);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(reportItem_InvalidPath.Path))
+               .Returns(() => false);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
+               .Returns(() => false);
+
             MockLogger logger = new MockLogger();
 
             writer = new ReportServerWriter(reportServerRepositoryMock.Object, logger);

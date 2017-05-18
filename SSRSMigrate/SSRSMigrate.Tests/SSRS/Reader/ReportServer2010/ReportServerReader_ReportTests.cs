@@ -157,18 +157,6 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
             reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests Doesnt Exist"))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests/Reports/Report Doesnt Exist"))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(expectedReportItem.Path))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests/Reports/Sales Order Detail"))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests/Reports/Store Contacts"))
-              .Returns(() => true);
-
             reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
                .Returns(() => false);
 
@@ -177,6 +165,25 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
 
             reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
                .Returns(() => false);
+
+            // Setup IReportServerRepository.ValidateItemPath Mocks
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests"))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests Doesnt Exist"))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests/Reports/Report Doesnt Exist"))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(expectedReportItem.Path))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests/Reports/Sales Order Detail"))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests/Reports/Store Contacts"))
+              .Returns(() => true);
 
             MockLogger logger = new MockLogger();
 

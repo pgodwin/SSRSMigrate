@@ -180,6 +180,25 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2005
             reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
                .Returns(() => false);
 
+            // Setup IReportServerRepository.ValidateItemPath Mocks
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests"))
+               .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests Doesnt Exist"))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests/Reports/Report Doesnt Exist"))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(expectedReportItem.Path))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests/Reports/Sales Order Detail"))
+              .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests/Reports/Store Contacts"))
+              .Returns(() => true);
+
             MockLogger logger = new MockLogger();
 
             reader = new ReportServerReader(reportServerRepositoryMock.Object, logger);
