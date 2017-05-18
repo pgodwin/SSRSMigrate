@@ -176,6 +176,8 @@ namespace SSRSMigrate.Utility
                     case "12.0":
                     case "12.00":
                         return SSRSVersion.SqlServer2014;
+                    case "13.0":
+                        return SSRSVersion.SqlServer2016;
                     default:
                         return SSRSVersion.Unknown;
                 }

@@ -35,6 +35,7 @@
             this.rdoMethodExportZip = new System.Windows.Forms.RadioButton();
             this.rdoMethodDirect = new System.Windows.Forms.RadioButton();
             this.grpDestServer = new System.Windows.Forms.GroupBox();
+            this.btnDestTest = new System.Windows.Forms.Button();
             this.cbkDestOverwrite = new System.Windows.Forms.CheckBox();
             this.cboDestVersion = new System.Windows.Forms.ComboBox();
             this.txtDestPath = new System.Windows.Forms.TextBox();
@@ -74,12 +75,11 @@
             this.txtSrcPath = new System.Windows.Forms.TextBox();
             this.cboSrcVersion = new System.Windows.Forms.ComboBox();
             this.grpSrcServer = new System.Windows.Forms.GroupBox();
+            this.btnSrcTest = new System.Windows.Forms.Button();
             this.grpImportZip = new System.Windows.Forms.GroupBox();
             this.btnImportZipBrowse = new System.Windows.Forms.Button();
             this.txtImportZipFilename = new System.Windows.Forms.TextBox();
             this.lblImportZipFilename = new System.Windows.Forms.Label();
-            this.btnSrcTest = new System.Windows.Forms.Button();
-            this.btnDestTest = new System.Windows.Forms.Button();
             this.grpMigrateMethod.SuspendLayout();
             this.grpDestServer.SuspendLayout();
             this.grpExportZip.SuspendLayout();
@@ -188,6 +188,16 @@
             this.grpDestServer.TabStop = false;
             this.grpDestServer.Text = "Destination Server";
             // 
+            // btnDestTest
+            // 
+            this.btnDestTest.Location = new System.Drawing.Point(262, 178);
+            this.btnDestTest.Name = "btnDestTest";
+            this.btnDestTest.Size = new System.Drawing.Size(53, 23);
+            this.btnDestTest.TabIndex = 29;
+            this.btnDestTest.Text = "Test";
+            this.btnDestTest.UseVisualStyleBackColor = true;
+            this.btnDestTest.Click += new System.EventHandler(this.btnDestTest_Click);
+            // 
             // cbkDestOverwrite
             // 
             this.cbkDestOverwrite.AutoSize = true;
@@ -206,7 +216,8 @@
             "SQL Server 2008",
             "SQL Server 2008 R2",
             "SQL Server 2012",
-            "SQL Server 2014"});
+            "SQL Server 2014",
+            "SQL Server 2016"});
             this.cboDestVersion.Location = new System.Drawing.Point(113, 46);
             this.cboDestVersion.Name = "cboDestVersion";
             this.cboDestVersion.Size = new System.Drawing.Size(146, 21);
@@ -534,7 +545,8 @@
             "SQL Server 2008",
             "SQL Server 2008 R2",
             "SQL Server 2012",
-            "SQL Server 2014"});
+            "SQL Server 2014",
+            "SQL Server 2016"});
             this.cboSrcVersion.Location = new System.Drawing.Point(113, 46);
             this.cboSrcVersion.Name = "cboSrcVersion";
             this.cboSrcVersion.Size = new System.Drawing.Size(146, 21);
@@ -563,6 +575,16 @@
             this.grpSrcServer.TabIndex = 1;
             this.grpSrcServer.TabStop = false;
             this.grpSrcServer.Text = "Source Server";
+            // 
+            // btnSrcTest
+            // 
+            this.btnSrcTest.Location = new System.Drawing.Point(280, 179);
+            this.btnSrcTest.Name = "btnSrcTest";
+            this.btnSrcTest.Size = new System.Drawing.Size(53, 23);
+            this.btnSrcTest.TabIndex = 28;
+            this.btnSrcTest.Text = "Test";
+            this.btnSrcTest.UseVisualStyleBackColor = true;
+            this.btnSrcTest.Click += new System.EventHandler(this.btnSrcTest_Click);
             // 
             // grpImportZip
             // 
@@ -602,26 +624,6 @@
             this.lblImportZipFilename.Size = new System.Drawing.Size(67, 13);
             this.lblImportZipFilename.TabIndex = 0;
             this.lblImportZipFilename.Text = "Zip filename:";
-            // 
-            // btnSrcTest
-            // 
-            this.btnSrcTest.Location = new System.Drawing.Point(280, 179);
-            this.btnSrcTest.Name = "btnSrcTest";
-            this.btnSrcTest.Size = new System.Drawing.Size(53, 23);
-            this.btnSrcTest.TabIndex = 28;
-            this.btnSrcTest.Text = "Test";
-            this.btnSrcTest.UseVisualStyleBackColor = true;
-            this.btnSrcTest.Click += new System.EventHandler(this.btnSrcTest_Click);
-            // 
-            // btnDestTest
-            // 
-            this.btnDestTest.Location = new System.Drawing.Point(262, 178);
-            this.btnDestTest.Name = "btnDestTest";
-            this.btnDestTest.Size = new System.Drawing.Size(53, 23);
-            this.btnDestTest.TabIndex = 29;
-            this.btnDestTest.Text = "Test";
-            this.btnDestTest.UseVisualStyleBackColor = true;
-            this.btnDestTest.Click += new System.EventHandler(this.btnDestTest_Click);
             // 
             // ConnectInfoForm
             // 
