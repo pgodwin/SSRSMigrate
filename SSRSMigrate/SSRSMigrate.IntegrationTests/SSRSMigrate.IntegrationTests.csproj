@@ -122,6 +122,7 @@
     <None Include="Configs\example.config" />
     <None Include="Configs\local.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
