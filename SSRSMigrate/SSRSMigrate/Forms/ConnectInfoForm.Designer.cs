@@ -222,6 +222,7 @@
             this.cboDestVersion.Name = "cboDestVersion";
             this.cboDestVersion.Size = new System.Drawing.Size(146, 21);
             this.cboDestVersion.TabIndex = 27;
+            this.cboDestVersion.SelectedIndexChanged += new System.EventHandler(this.cboDestVersion_SelectedIndexChanged);
             // 
             // txtDestPath
             // 
@@ -551,6 +552,7 @@
             this.cboSrcVersion.Name = "cboSrcVersion";
             this.cboSrcVersion.Size = new System.Drawing.Size(146, 21);
             this.cboSrcVersion.TabIndex = 27;
+            this.cboSrcVersion.SelectedIndexChanged += new System.EventHandler(this.cboSrcVersion_SelectedIndexChanged);
             // 
             // grpSrcServer
             // 

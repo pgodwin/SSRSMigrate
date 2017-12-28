@@ -193,13 +193,35 @@ namespace SSRSMigrate.Forms
             }
         }
 
+        private void cboSrcVersion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.cboSrcVersion.SelectedIndex == 0)
+            {
+                MessageBox.Show(
+                    "SQL Server 2008 support is now deprecated in this application. " + Environment.NewLine + Environment.NewLine +
+                    "Migrating from/to SQL Server 2008 is no longer tested. It _should_ work but integration tests are no longer maintained.",
+                    "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void cboDestVersion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.cboDestVersion.SelectedIndex == 0)
+            {
+                MessageBox.Show(
+                    "SQL Server 2008 support is now deprecated in this application. " + Environment.NewLine + Environment.NewLine +
+                    "Migrating from/to SQL Server 2008 is no longer tested. It _should_ work but integration tests are no longer maintained.",
+                    "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
         private void ConnectInfoForm_Load(object sender, EventArgs e)
         {
             // Setup form default values
             this.cboSrcDefaultCred.SelectedIndex = 0;
-            this.cboSrcVersion.SelectedIndex = 0;
+            this.cboSrcVersion.SelectedIndex = 1;
             this.cboDestDefaultCred.SelectedIndex = 0;
-            this.cboDestVersion.SelectedIndex = 0;
+            this.cboDestVersion.SelectedIndex = 1;
 
             // Start with Server-to-Server migration checked
             this.rdoMethodDirect.Checked = true;
@@ -862,6 +884,7 @@ namespace SSRSMigrate.Forms
                     MessageBoxIcon.Error);
             }
         }
+
         #endregion
     }
 }
