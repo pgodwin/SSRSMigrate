@@ -119,12 +119,33 @@ namespace SSRSMigrate.Utility
                     destinationPath = destinationPath.Substring(0, destinationPath.LastIndexOf("/"));
 
             // Get the item's path, up until the item name, which would be the current parent path of the item
-            string path = itemPath.Substring(0, itemPath.LastIndexOf("/"));
+            string path = string.Empty;
+
+            // Handle item paths that are at the root in SSRS (e.g. /Report)
+            if (itemPath.LastIndexOf("/") == 0)
+            {
+                path = itemPath.Substring(0, itemPath.LastIndexOf("/") + 1);
+            }
+            else 
+            {
+                path = itemPath.Substring(0, itemPath.LastIndexOf("/"));
+            }
+
             string name = itemPath.Substring(itemPath.LastIndexOf("/"));
 
             // Replace the source path with the destination path, in the current path of the item to get the destination path
             System.Text.RegularExpressions.Regex re = new System.Text.RegularExpressions.Regex(sourcePath, RegexOptions.IgnoreCase);
-            string itemDestPath = re.Replace(path, destinationPath, 1);
+
+            string itemDestPath = string.Empty;
+
+            if (sourcePath.Equals("/") && !path.EndsWith("/"))
+            {
+                itemDestPath = re.Replace(path, destinationPath + "/", 1);
+            }
+            else
+            {
+                itemDestPath = re.Replace(path, destinationPath, 1);
+            }
 
             itemDestPath += name;
 

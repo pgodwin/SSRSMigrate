@@ -204,6 +204,32 @@ namespace SSRSMigrate.Tests.Utilities
 
         #region SSRSUtil.GetFullDestinationPathForItem Tests
         [Test]
+        public void GetFullDestinationPathForItem_RootFoldertoNonRootFolder()
+        {
+            string expected = "/TEST/Test_Report";
+
+            string actual = SSRSUtil.GetFullDestinationPathForItem(
+                "/",
+                "/TEST",
+                "/Test_Report");
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetFullDestinationPathForItem_RootFoldertoNonRootFolder_WithSubItem()
+        {
+            string expected = "/TEST/Test_Folder/Test_Report";
+
+            string actual = SSRSUtil.GetFullDestinationPathForItem(
+                "/",
+                "/TEST",
+                "/Test_Folder/Test_Report");
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void GetFullDestinationPathForItem_InstanceChange()
         {
             string expected = "http://localhost/ReportServer_NEWSERVER/SSRSMigrate_AW_Tests/Reports/Test Report";
