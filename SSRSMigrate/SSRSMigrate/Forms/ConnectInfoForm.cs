@@ -607,11 +607,15 @@ namespace SSRSMigrate.Forms
             IReportServerReader reader,
             IReportServerWriter writer)
         {
+            //TODO This is dumb. Should be resolving all of the forms from the IoC kernel but I don't feel like refactoring atm...
+            DataSourceEditForm dataSourceEditForm = this.mKernel.Get<DataSourceEditForm>();
+
             MigrateForm migrateForm = new MigrateForm(
                 sourceRootPath,
                 sourceServerUrl,
                 destinationRootPath,
                 destinationServerUrl,
+                dataSourceEditForm,
                 reader, 
                 writer, 
                 this.mLoggerFactory);

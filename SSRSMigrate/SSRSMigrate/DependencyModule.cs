@@ -13,6 +13,7 @@ using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Exporter.Writer;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.DataMapper;
+using SSRSMigrate.Forms;
 using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate
@@ -115,6 +116,9 @@ namespace SSRSMigrate
             this.Bind<IBundleReader>().To<ZipBundleReader>()
                 .WithConstructorArgument("fileName", GetImportZipFileName)
                 .WithConstructorArgument("unpackDirectory", GetImportZipUnpackDirectory);
+
+            // Bind DataSourceEditForm
+            this.Bind<DataSourceEditForm>().To<DataSourceEditForm>();
         }
 
         private string GetImportZipFileName(IContext context)

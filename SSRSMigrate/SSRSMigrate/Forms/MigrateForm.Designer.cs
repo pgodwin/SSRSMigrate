@@ -53,6 +53,8 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.editDataSourceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.grpSource.SuspendLayout();
             this.mnuSourceItems.SuspendLayout();
@@ -158,22 +160,25 @@
             // mnuSourceItems
             // 
             this.mnuSourceItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editDataSourceToolStripMenuItem,
+            this.toolStripSeparator1,
             this.checkAllToolStripMenuItem,
             this.uncheckAllToolStripMenuItem});
             this.mnuSourceItems.Name = "mnuSourceItems";
-            this.mnuSourceItems.Size = new System.Drawing.Size(138, 48);
+            this.mnuSourceItems.Size = new System.Drawing.Size(170, 98);
+            this.mnuSourceItems.Opening += new System.ComponentModel.CancelEventHandler(this.mnuSourceItems_Opening);
             // 
             // checkAllToolStripMenuItem
             // 
             this.checkAllToolStripMenuItem.Name = "checkAllToolStripMenuItem";
-            this.checkAllToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.checkAllToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.checkAllToolStripMenuItem.Text = "Check All";
             this.checkAllToolStripMenuItem.Click += new System.EventHandler(this.checkAllToolStripMenuItem_Click);
             // 
             // uncheckAllToolStripMenuItem
             // 
             this.uncheckAllToolStripMenuItem.Name = "uncheckAllToolStripMenuItem";
-            this.uncheckAllToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.uncheckAllToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.uncheckAllToolStripMenuItem.Text = "Uncheck All";
             this.uncheckAllToolStripMenuItem.Click += new System.EventHandler(this.uncheckAllToolStripMenuItem_Click);
             // 
@@ -244,6 +249,18 @@
             this.columnHeader3.Text = "Status";
             this.columnHeader3.Width = 152;
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
+            // 
+            // editDataSourceToolStripMenuItem
+            // 
+            this.editDataSourceToolStripMenuItem.Name = "editDataSourceToolStripMenuItem";
+            this.editDataSourceToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.editDataSourceToolStripMenuItem.Text = "Edit Data Source...";
+            this.editDataSourceToolStripMenuItem.Click += new System.EventHandler(this.editDataSourceToolStripMenuItem_Click);
+            // 
             // MigrateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -289,6 +306,8 @@
         private System.Windows.Forms.ToolStripMenuItem checkAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem uncheckAllToolStripMenuItem;
         private System.Windows.Forms.Button btnDebug;
+        private System.Windows.Forms.ToolStripMenuItem editDataSourceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 

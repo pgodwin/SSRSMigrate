@@ -32,6 +32,7 @@ namespace SSRSMigrate.Forms
 
         private DebugForm mDebugForm = null;
         private SummaryForm mSummaryForm = null;
+        private DataSourceEditForm mDataSourceEditForm;
 
         #region Properties
         public DebugForm DebugForm
@@ -45,6 +46,7 @@ namespace SSRSMigrate.Forms
             string sourceServerUrl,
             string destinationRootPath,
             string destinationServerUrl,
+            DataSourceEditForm dataSourceEditForm,
             IReportServerReader reader,
             IReportServerWriter writer,
             ILoggerFactory loggerFactory)
@@ -61,6 +63,9 @@ namespace SSRSMigrate.Forms
             if (string.IsNullOrEmpty(sourceServerUrl))
                 throw new ArgumentException("sourceServerUrl");
 
+            if (dataSourceEditForm == null)
+                throw new ArgumentNullException("dataSourceEditForm");
+
             if (reader == null)
                 throw new ArgumentNullException("reader");
 
@@ -76,6 +81,7 @@ namespace SSRSMigrate.Forms
             this.mSourceServerUrl = sourceServerUrl;
             this.mDestinationRootPath = destinationRootPath;
             this.mDestinationServerUrl = destinationServerUrl;
+            this.mDataSourceEditForm = dataSourceEditForm;
             this.mReportServerReader = reader;
             this.mReportServerWriter = writer;
             this.mLoggerFactory = loggerFactory;
@@ -150,16 +156,6 @@ namespace SSRSMigrate.Forms
         private void btnSrcRefreshReports_Click(object sender, EventArgs e)
         {
             this.SourceRefreshReports();
-        }
-
-        private void checkAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.lstSrcReports.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = true);
-        }
-
-        private void uncheckAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.lstSrcReports.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = false);
         }
 
         private void btnDebug_Click(object sender, EventArgs e)
@@ -286,7 +282,7 @@ namespace SSRSMigrate.Forms
 
             ListViewItem oItem = new ListViewItem(item.Name);
             oItem.Checked = true;
-            oItem.Tag = item.Path;
+            oItem.Tag = item;
             oItem.SubItems.Add(item.Path);
 
             // Assign to proper ListViewGroup
@@ -389,7 +385,7 @@ namespace SSRSMigrate.Forms
             var folderPaths = from lv in lvItems
                               where lv.Group.Name == "foldersGroup" &&
                               lv.Checked == true
-                              select (string)lv.Tag;
+                              select ((FolderItem)lv.Tag).Path;
 
             foldersTotalCount = folderPaths.Count();
 
@@ -466,15 +462,17 @@ namespace SSRSMigrate.Forms
             }
 
             // Export data sources
-            var dataSourcePaths = from lv in lvItems
+            var dataSources = from lv in lvItems
                                   where lv.Group.Name == "dataSourcesGroup" &&
                                   lv.Checked == true
-                                  select (string)lv.Tag;
+                                  select (DataSourceItem)lv.Tag;
 
-            dataSourcesTotalCount = dataSourcePaths.Count();
+            dataSourcesTotalCount = dataSources.Count();
 
-            foreach (string dataSourcePath in dataSourcePaths)
+            foreach (DataSourceItem dataSource in dataSources)
             {
+                string dataSourcePath = dataSource.Path;
+
                 DataSourceItem dataSourceItem = null;
                 MigrationStatus status = new MigrationStatus()
                 {
@@ -489,6 +487,12 @@ namespace SSRSMigrate.Forms
                     {
                         status.Item = dataSourceItem;
                         status.FromPath = dataSourceItem.Path;
+
+                        // Update the DataSource if it was changed via 'Edit Data Source...'
+                        if (!dataSourceItem.Equals(dataSource))
+                        {
+                            dataSourceItem = dataSource;
+                        }
 
                         this.mLogger.Debug("MigrationWorker - BEFORE DataSourceItem.FromPath = {0}; SourceRootPath = {1}", status.FromPath, this.mSourceRootPath);
                         this.mLogger.Debug("MigrationWorker - BEFORE DataSourceItem.FromPath = {0}; DestinationRootPath = {1}", status.FromPath, this.mDestinationRootPath);
@@ -549,7 +553,7 @@ namespace SSRSMigrate.Forms
             var reportPaths = from lv in lvItems
                               where lv.Group.Name == "reportsGroup" &&
                               lv.Checked == true
-                              select (string)lv.Tag;
+                              select ((ReportItem)lv.Tag).Path;
 
             reportsTotalCount = reportPaths.Count();
 
@@ -756,6 +760,88 @@ namespace SSRSMigrate.Forms
 
             progressBar.Value = e.ProgressPercentage;
             progressBar.Maximum = 100;
+        }
+        #endregion
+
+        #region Context Menu Methods
+        private void checkAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.lstSrcReports.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = true);
+        }
+
+        private void uncheckAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.lstSrcReports.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = false);
+        }
+
+        private void mnuSourceItems_Opening(object sender, CancelEventArgs e)
+        {
+            if (this.lstSrcReports.SelectedItems.Count < 1 || this.lstSrcReports.SelectedItems.Count > 1)
+            {
+                editDataSourceToolStripMenuItem.Enabled = false;
+            }
+            else
+            {
+                ListViewItem selectedItem = this.lstSrcReports.SelectedItems[0];
+
+                if (selectedItem != null)
+                {
+                    if (selectedItem.Tag != null)
+                    {
+                        if (selectedItem.Tag is DataSourceItem)
+                        {
+                            editDataSourceToolStripMenuItem.Enabled = true;
+
+                            return;
+                        }
+                    }
+                }
+            }
+
+            editDataSourceToolStripMenuItem.Enabled = false;
+
+        }
+
+        private void editDataSourceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.lstSrcReports.SelectedItems.Count != 1)
+            {
+                return;
+            }
+
+            ListViewItem selectedItem = this.lstSrcReports.SelectedItems[0];
+
+            if (selectedItem != null)
+            {
+                if (selectedItem.Tag != null)
+                {
+                    if (selectedItem.Tag is DataSourceItem)
+                    {
+                        DataSourceItem dataSourceItem = selectedItem.Tag as DataSourceItem;
+
+                        this.mDataSourceEditForm.DataSourceItem = dataSourceItem;
+                        DialogResult dr = this.mDataSourceEditForm.ShowDialog(this);
+
+                        if (dr == DialogResult.OK)
+                        {
+                            DataSourceItem newDataSourceItem = this.mDataSourceEditForm.DataSourceItem;
+
+                            selectedItem.Tag = newDataSourceItem;
+
+                            // Change the ListViewItem color for data sources that were edited.
+                            selectedItem.BackColor = Color.GreenYellow;
+                            selectedItem.ForeColor = Color.Black;
+
+                            this.mLogger.Info("Edited_DataSource - Name: {0}; ConnectString: {1}", newDataSourceItem.Path, newDataSourceItem.ConnectString);
+
+                            this.mDebugForm.LogMessage(
+                                string.Format("Edited DataSource '{0}'.", newDataSourceItem.Path));
+                        }
+
+                        this.mDataSourceEditForm.Hide();
+                    }
+                }
+            }
         }
         #endregion
     }
