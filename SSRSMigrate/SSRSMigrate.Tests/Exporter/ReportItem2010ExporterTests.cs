@@ -10,6 +10,7 @@ using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.Status;
 using SSRSMigrate.TestHelper;
 using System.IO;
+using SSRSMigrate.TestHelper.Logging;
 
 namespace SSRSMigrate.Tests.Exporter
 {
@@ -40,6 +41,7 @@ namespace SSRSMigrate.Tests.Exporter
             };
 
             exportWriterMock = new Mock<IExportWriter>();
+            var logger = new MockLogger();
 
             exportWriterMock.Setup(e => e.Save(It.IsAny<string>(), It.IsAny<byte[]>(), true));
 
@@ -47,14 +49,15 @@ namespace SSRSMigrate.Tests.Exporter
             exportWriterMock.Setup(e => e.Save(expectedReportItemFileName, It.IsAny<byte[]>(), false))
                 .Throws(new IOException(string.Format("File '{0}' already exists.", expectedReportItemFileName)));
 
-            exporter = new ReportItemExporter(exportWriterMock.Object);
+            exporter = new ReportItemExporter(exportWriterMock.Object, logger);
         }
 
         #region Constructor Tests
         [Test]
         public void Constructor_Succeed()
         {
-            ReportItemExporter reportItemExporter = new ReportItemExporter(exportWriterMock.Object);
+            var logger = new MockLogger();
+            ReportItemExporter reportItemExporter = new ReportItemExporter(exportWriterMock.Object, logger);
 
             Assert.NotNull(reportItemExporter);
         }
@@ -62,10 +65,12 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void Constructor_NullIExportWriter()
         {
+            var logger = new MockLogger();
+
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    ReportItemExporter reportItemExporter = new ReportItemExporter(null);
+                    ReportItemExporter reportItemExporter = new ReportItemExporter(null, logger);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: exportWriter"));

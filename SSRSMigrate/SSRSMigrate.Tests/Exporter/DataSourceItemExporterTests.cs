@@ -10,6 +10,7 @@ using SSRSMigrate.Exporter.Writer;
 using Newtonsoft.Json;
 using System.IO;
 using SSRSMigrate.Status;
+using SSRSMigrate.TestHelper.Logging;
 using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate.Tests.Exporter
@@ -89,6 +90,7 @@ namespace SSRSMigrate.Tests.Exporter
             
             exportWriterMock = new Mock<IExportWriter>();
             serializeWrapperMock = new Mock<ISerializeWrapper>();
+            var logger = new MockLogger();
 
             // Mock IExporter.Save any argument with overwrite = True
             exportWriterMock.Setup(e => e.Save(It.IsAny<string>(), It.IsAny<string>(), true));
@@ -101,7 +103,7 @@ namespace SSRSMigrate.Tests.Exporter
             serializeWrapperMock.Setup(s => s.SerializeObject(dataSourceItem))
                 .Returns(() => expectedDataSourceItemJson);
 
-            exporter = new DataSourceItemExporter(exportWriterMock.Object, serializeWrapperMock.Object);
+            exporter = new DataSourceItemExporter(exportWriterMock.Object, serializeWrapperMock.Object, logger);
         }
 
         [TestFixtureTearDown]
@@ -126,7 +128,9 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void Constructor_Succeed()
         {
-            DataSourceItemExporter dataSourceExporter = new DataSourceItemExporter(exportWriterMock.Object, serializeWrapperMock.Object);
+            var logger = new MockLogger();
+
+            DataSourceItemExporter dataSourceExporter = new DataSourceItemExporter(exportWriterMock.Object, serializeWrapperMock.Object, logger);
 
             Assert.NotNull(dataSourceExporter);
         }
@@ -137,10 +141,12 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void Constructor_NullIExportWriter()
         {
+            var logger = new MockLogger();
+
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    DataSourceItemExporter dataSourceExporter = new DataSourceItemExporter(null, serializeWrapperMock.Object);
+                    DataSourceItemExporter dataSourceExporter = new DataSourceItemExporter(null, serializeWrapperMock.Object, logger);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: exportWriter"));
@@ -153,10 +159,12 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void Constructor_NullISerializeWrapper()
         {
+            var logger = new MockLogger();
+
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    DataSourceItemExporter dataSourceExporter = new DataSourceItemExporter(exportWriterMock.Object, null);
+                    DataSourceItemExporter dataSourceExporter = new DataSourceItemExporter(exportWriterMock.Object, null, logger);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: serializeWrapper"));

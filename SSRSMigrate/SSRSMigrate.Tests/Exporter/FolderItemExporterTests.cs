@@ -9,6 +9,7 @@ using SSRSMigrate.Exporter;
 using SSRSMigrate.SSRS.Item;
 using System.IO;
 using SSRSMigrate.Status;
+using SSRSMigrate.TestHelper.Logging;
 
 namespace SSRSMigrate.Tests.Exporter
 {
@@ -35,13 +36,15 @@ namespace SSRSMigrate.Tests.Exporter
 
             exportWriterMock = new Mock<IExportWriter>();
 
+            var logger = new MockLogger();
+
             exportWriterMock.Setup(e => e.Save(It.IsAny<string>(), It.IsAny<string>(), true));
 
             // Mock IExporter.Save where the directory exists but overwrite = false
             exportWriterMock.Setup(e => e.Save(expectedFolderItemFileName, false))
                 .Throws(new IOException(string.Format("Directory '{0}' already exists.", expectedFolderItemFileName)));
 
-            exporter = new FolderItemExporter(exportWriterMock.Object);
+            exporter = new FolderItemExporter(exportWriterMock.Object, logger);
         }
 
         [TestFixtureTearDown]
@@ -64,7 +67,9 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void Constructor_Succeed()
         {
-            FolderItemExporter dataSourceExporter = new FolderItemExporter(exportWriterMock.Object);
+            var logger = new MockLogger();
+
+            FolderItemExporter dataSourceExporter = new FolderItemExporter(exportWriterMock.Object, logger);
 
             Assert.NotNull(dataSourceExporter);
         }
@@ -72,10 +77,12 @@ namespace SSRSMigrate.Tests.Exporter
         [Test]
         public void Constructor_NullIExportWriter()
         {
+            var logger = new MockLogger();
+
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
-                    FolderItemExporter dataSourceExporter = new FolderItemExporter(null);
+                    FolderItemExporter dataSourceExporter = new FolderItemExporter(null, logger);
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: exportWriter"));
