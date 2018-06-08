@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Folders", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Data Sources", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Reports", System.Windows.Forms.HorizontalAlignment.Left);
@@ -52,9 +53,12 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.mnuSourceItems = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editDataSourceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.grpSource.SuspendLayout();
             this.statusStrip.SuspendLayout();
+            this.mnuSourceItems.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -169,6 +173,7 @@
             this.colError,
             this.colZipPath,
             this.colExtractedTo});
+            this.lstSrcReports.ContextMenuStrip = this.mnuSourceItems;
             this.lstSrcReports.FullRowSelect = true;
             this.lstSrcReports.GridLines = true;
             listViewGroup4.Header = "Folders";
@@ -235,6 +240,21 @@
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(100, 16);
             // 
+            // mnuSourceItems
+            // 
+            this.mnuSourceItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editDataSourceToolStripMenuItem});
+            this.mnuSourceItems.Name = "mnuSourceItems";
+            this.mnuSourceItems.Size = new System.Drawing.Size(170, 26);
+            this.mnuSourceItems.Opening += new System.ComponentModel.CancelEventHandler(this.mnuSourceItems_Opening);
+            // 
+            // editDataSourceToolStripMenuItem
+            // 
+            this.editDataSourceToolStripMenuItem.Name = "editDataSourceToolStripMenuItem";
+            this.editDataSourceToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.editDataSourceToolStripMenuItem.Text = "Edit Data Source...";
+            this.editDataSourceToolStripMenuItem.Click += new System.EventHandler(this.editDataSourceToolStripMenuItem_Click);
+            // 
             // ImportZipForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -254,6 +274,7 @@
             this.grpSource.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.mnuSourceItems.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -279,5 +300,7 @@
         private System.Windows.Forms.ColumnHeader colError;
         private System.Windows.Forms.ColumnHeader colZipPath;
         private System.Windows.Forms.ColumnHeader colExtractedTo;
+        private System.Windows.Forms.ContextMenuStrip mnuSourceItems;
+        private System.Windows.Forms.ToolStripMenuItem editDataSourceToolStripMenuItem;
     }
 }

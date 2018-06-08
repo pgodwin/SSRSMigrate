@@ -723,10 +723,14 @@ namespace SSRSMigrate.Forms
             IItemImporter<ReportItem> reportItemImporter,
             IFileSystem fileSystem)
         {
+
+            DataSourceEditForm dataSourceEditForm = this.mKernel.Get<DataSourceEditForm>();
+
             ImportZipForm importzipForm = new ImportZipForm(
                 sourceFilename,
                 destinationRootPath,
                 destinationServerUrl,
+                dataSourceEditForm,
                 zipBundleReader,
                 writer,
                 this.mLoggerFactory,

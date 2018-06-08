@@ -38,6 +38,7 @@ namespace SSRSMigrate.Forms
         private ILogger mLogger = null;
         private DebugForm mDebugForm = null;
         private SummaryForm mSummaryForm = null;
+        private DataSourceEditForm mDataSourceEditForm;
 
         #region Properties
         public DebugForm DebugForm
@@ -50,6 +51,7 @@ namespace SSRSMigrate.Forms
             string sourceFileName,
             string destinationRootPath,
             string destinationServerUrl,
+            DataSourceEditForm dataSourceEditForm,
             IBundleReader bundleReader,
             IReportServerWriter writer,
             ILoggerFactory loggerFactory,
@@ -66,6 +68,9 @@ namespace SSRSMigrate.Forms
 
             if (string.IsNullOrEmpty(destinationServerUrl))
                 throw new ArgumentException("destinationServerUrl");
+
+            if (dataSourceEditForm == null)
+                throw new ArgumentNullException("dataSourceEditForm");
 
             if (bundleReader == null)
                 throw new ArgumentNullException("bundleReader");
@@ -93,6 +98,7 @@ namespace SSRSMigrate.Forms
             this.mSourceFileName = sourceFileName;
             this.mDestinationRootPath = destinationRootPath;
             this.mDestinationServerUrl = destinationServerUrl;
+            this.mDataSourceEditForm = dataSourceEditForm;
             this.mBundleReader = bundleReader;
             this.mReportServerWriter = writer;
             this.mLoggerFactory = loggerFactory;
@@ -913,5 +919,78 @@ namespace SSRSMigrate.Forms
             progressBar.Maximum = 100;
         }
         #endregion
+
+        #region Context Menu Methods
+        private void mnuSourceItems_Opening(object sender, CancelEventArgs e)
+        {
+            if (this.lstSrcReports.SelectedItems.Count < 1 || this.lstSrcReports.SelectedItems.Count > 1)
+            {
+                editDataSourceToolStripMenuItem.Enabled = false;
+            }
+            else
+            {
+                ListViewItem selectedItem = this.lstSrcReports.SelectedItems[0];
+
+                if (selectedItem != null)
+                {
+                    if (selectedItem.Tag != null)
+                    {
+                        if (selectedItem.Tag is DataSourceItem)
+                        {
+                            editDataSourceToolStripMenuItem.Enabled = true;
+
+                            return;
+                        }
+                    }
+                }
+            }
+
+            editDataSourceToolStripMenuItem.Enabled = false;
+        }
+
+        private void editDataSourceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.lstSrcReports.SelectedItems.Count != 1)
+            {
+                return;
+            }
+
+            ListViewItem selectedItem = this.lstSrcReports.SelectedItems[0];
+
+            if (selectedItem != null)
+            {
+                if (selectedItem.Tag != null)
+                {
+                    if (selectedItem.Tag is DataSourceItem)
+                    {
+                        DataSourceItem dataSourceItem = selectedItem.Tag as DataSourceItem;
+
+                        this.mDataSourceEditForm.DataSourceItem = dataSourceItem;
+                        DialogResult dr = this.mDataSourceEditForm.ShowDialog(this);
+
+                        if (dr == DialogResult.OK)
+                        {
+                            DataSourceItem newDataSourceItem = this.mDataSourceEditForm.DataSourceItem;
+
+                            selectedItem.Tag = newDataSourceItem;
+
+                            // Change the ListViewItem color for data sources that were edited.
+                            selectedItem.BackColor = Color.GreenYellow;
+                            selectedItem.ForeColor = Color.Black;
+
+                            this.mLogger.Info("Edited_DataSource - Name: {0}; ConnectString: {1}", newDataSourceItem.Path, newDataSourceItem.ConnectString);
+
+                            this.mDebugForm.LogMessage(
+                                string.Format("Edited DataSource '{0}'.", newDataSourceItem.Path));
+                        }
+
+                        this.mDataSourceEditForm.Hide();
+                    }
+                }
+            }
+        }
+        #endregion
+
+        
     }
 }
