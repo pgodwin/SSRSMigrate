@@ -405,6 +405,8 @@ namespace SSRSMigrate.Forms
 
             writer = this.mKernel.Get<IReportServerWriter>(version);
 
+            writer.Overwrite = this.cbkDestOverwrite.Checked;
+
             zipBundleReader = this.mKernel.Get<IBundleReader>();
 
             // Set properties for IBundleReader
