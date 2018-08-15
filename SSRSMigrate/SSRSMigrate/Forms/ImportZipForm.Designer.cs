@@ -50,32 +50,35 @@
             this.colError = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colZipPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colExtractedTo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.mnuSourceItems = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editDataSourceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.mnuSourceItems = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.editDataSourceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.grpSource.SuspendLayout();
-            this.statusStrip.SuspendLayout();
             this.mnuSourceItems.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.btnPerformImport);
             this.groupBox1.Controls.Add(this.lstDestReports);
-            this.groupBox1.Location = new System.Drawing.Point(610, 12);
+            this.groupBox1.Location = new System.Drawing.Point(482, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(592, 513);
+            this.groupBox1.Size = new System.Drawing.Size(443, 500);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Destination Server";
             // 
             // btnPerformImport
             // 
+            this.btnPerformImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnPerformImport.Enabled = false;
-            this.btnPerformImport.Location = new System.Drawing.Point(432, 484);
+            this.btnPerformImport.Location = new System.Drawing.Point(18, 465);
             this.btnPerformImport.Name = "btnPerformImport";
             this.btnPerformImport.Size = new System.Drawing.Size(138, 23);
             this.btnPerformImport.TabIndex = 16;
@@ -108,7 +111,7 @@
             this.lstDestReports.MultiSelect = false;
             this.lstDestReports.Name = "lstDestReports";
             this.lstDestReports.ShowItemToolTips = true;
-            this.lstDestReports.Size = new System.Drawing.Size(552, 453);
+            this.lstDestReports.Size = new System.Drawing.Size(403, 440);
             this.lstDestReports.TabIndex = 15;
             this.lstDestReports.UseCompatibleStateImageBehavior = false;
             this.lstDestReports.View = System.Windows.Forms.View.Details;
@@ -130,20 +133,24 @@
             // 
             // grpSource
             // 
+            this.grpSource.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpSource.Controls.Add(this.btnDebug);
             this.grpSource.Controls.Add(this.btnSrcRefreshReports);
             this.grpSource.Controls.Add(this.lstSrcReports);
             this.grpSource.Location = new System.Drawing.Point(12, 12);
             this.grpSource.Name = "grpSource";
-            this.grpSource.Size = new System.Drawing.Size(592, 513);
+            this.grpSource.Size = new System.Drawing.Size(464, 500);
             this.grpSource.TabIndex = 3;
             this.grpSource.TabStop = false;
             this.grpSource.Text = "Source Archive";
             // 
             // btnDebug
             // 
+            this.btnDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnDebug.Image = global::SSRSMigrate.Properties.Resources.bug_go;
-            this.btnDebug.Location = new System.Drawing.Point(21, 478);
+            this.btnDebug.Location = new System.Drawing.Point(21, 465);
             this.btnDebug.Name = "btnDebug";
             this.btnDebug.Size = new System.Drawing.Size(32, 23);
             this.btnDebug.TabIndex = 17;
@@ -153,7 +160,7 @@
             // btnSrcRefreshReports
             // 
             this.btnSrcRefreshReports.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSrcRefreshReports.Location = new System.Drawing.Point(435, 478);
+            this.btnSrcRefreshReports.Location = new System.Drawing.Point(307, 465);
             this.btnSrcRefreshReports.Name = "btnSrcRefreshReports";
             this.btnSrcRefreshReports.Size = new System.Drawing.Size(138, 23);
             this.btnSrcRefreshReports.TabIndex = 15;
@@ -189,7 +196,7 @@
             this.lstSrcReports.Location = new System.Drawing.Point(21, 19);
             this.lstSrcReports.MultiSelect = false;
             this.lstSrcReports.Name = "lstSrcReports";
-            this.lstSrcReports.Size = new System.Drawing.Size(552, 453);
+            this.lstSrcReports.Size = new System.Drawing.Size(424, 440);
             this.lstSrcReports.TabIndex = 14;
             this.lstSrcReports.UseCompatibleStateImageBehavior = false;
             this.lstSrcReports.View = System.Windows.Forms.View.Details;
@@ -217,29 +224,6 @@
             // 
             this.colExtractedTo.Text = "Extracted To";
             // 
-            // statusStrip
-            // 
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblStatus,
-            this.progressBar});
-            this.statusStrip.Location = new System.Drawing.Point(0, 537);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1206, 22);
-            this.statusStrip.TabIndex = 5;
-            this.statusStrip.Text = "statusStrip1";
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(1089, 17);
-            this.lblStatus.Spring = true;
-            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // progressBar
-            // 
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(100, 16);
-            // 
             // mnuSourceItems
             // 
             this.mnuSourceItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -255,11 +239,34 @@
             this.editDataSourceToolStripMenuItem.Text = "Edit Data Source...";
             this.editDataSourceToolStripMenuItem.Click += new System.EventHandler(this.editDataSourceToolStripMenuItem_Click);
             // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblStatus,
+            this.progressBar});
+            this.statusStrip.Location = new System.Drawing.Point(0, 515);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(937, 22);
+            this.statusStrip.TabIndex = 5;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(820, 17);
+            this.lblStatus.Spring = true;
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // progressBar
+            // 
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(100, 16);
+            // 
             // ImportZipForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1206, 559);
+            this.ClientSize = new System.Drawing.Size(937, 537);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grpSource);
@@ -272,9 +279,9 @@
             this.Load += new System.EventHandler(this.ImportZipForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.grpSource.ResumeLayout(false);
+            this.mnuSourceItems.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.mnuSourceItems.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

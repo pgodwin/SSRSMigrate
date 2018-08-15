@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Folders", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Data Sources", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Reports", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Folders", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup("Data Sources", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup6 = new System.Windows.Forms.ListViewGroup("Reports", System.Windows.Forms.HorizontalAlignment.Left);
             this.grpSource = new System.Windows.Forms.GroupBox();
             this.btnSrcRefreshReports = new System.Windows.Forms.Button();
             this.lstSrcReports = new System.Windows.Forms.ListView();
@@ -52,11 +52,14 @@
             // 
             // grpSource
             // 
+            this.grpSource.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpSource.Controls.Add(this.btnSrcRefreshReports);
             this.grpSource.Controls.Add(this.lstSrcReports);
             this.grpSource.Location = new System.Drawing.Point(12, 12);
             this.grpSource.Name = "grpSource";
-            this.grpSource.Size = new System.Drawing.Size(592, 513);
+            this.grpSource.Size = new System.Drawing.Size(532, 397);
             this.grpSource.TabIndex = 2;
             this.grpSource.TabStop = false;
             this.grpSource.Text = "Source Server";
@@ -64,7 +67,7 @@
             // btnSrcRefreshReports
             // 
             this.btnSrcRefreshReports.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSrcRefreshReports.Location = new System.Drawing.Point(435, 478);
+            this.btnSrcRefreshReports.Location = new System.Drawing.Point(375, 362);
             this.btnSrcRefreshReports.Name = "btnSrcRefreshReports";
             this.btnSrcRefreshReports.Size = new System.Drawing.Size(138, 23);
             this.btnSrcRefreshReports.TabIndex = 15;
@@ -84,20 +87,20 @@
             this.lstSrcReports.ContextMenuStrip = this.mnuSourceItems;
             this.lstSrcReports.FullRowSelect = true;
             this.lstSrcReports.GridLines = true;
-            listViewGroup1.Header = "Folders";
-            listViewGroup1.Name = "foldersGroup";
-            listViewGroup2.Header = "Data Sources";
-            listViewGroup2.Name = "dataSourcesGroup";
-            listViewGroup3.Header = "Reports";
-            listViewGroup3.Name = "reportsGroup";
+            listViewGroup4.Header = "Folders";
+            listViewGroup4.Name = "foldersGroup";
+            listViewGroup5.Header = "Data Sources";
+            listViewGroup5.Name = "dataSourcesGroup";
+            listViewGroup6.Header = "Reports";
+            listViewGroup6.Name = "reportsGroup";
             this.lstSrcReports.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1,
-            listViewGroup2,
-            listViewGroup3});
+            listViewGroup4,
+            listViewGroup5,
+            listViewGroup6});
             this.lstSrcReports.Location = new System.Drawing.Point(21, 19);
             this.lstSrcReports.MultiSelect = false;
             this.lstSrcReports.Name = "lstSrcReports";
-            this.lstSrcReports.Size = new System.Drawing.Size(552, 453);
+            this.lstSrcReports.Size = new System.Drawing.Size(492, 337);
             this.lstSrcReports.TabIndex = 14;
             this.lstSrcReports.UseCompatibleStateImageBehavior = false;
             this.lstSrcReports.View = System.Windows.Forms.View.Details;
@@ -139,16 +142,16 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus,
             this.progressBar});
-            this.statusStrip.Location = new System.Drawing.Point(0, 562);
+            this.statusStrip.Location = new System.Drawing.Point(0, 446);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(619, 22);
+            this.statusStrip.Size = new System.Drawing.Size(559, 22);
             this.statusStrip.TabIndex = 3;
             this.statusStrip.Text = "statusStrip1";
             // 
             // lblStatus
             // 
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(502, 17);
+            this.lblStatus.Size = new System.Drawing.Size(442, 17);
             this.lblStatus.Spring = true;
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -159,9 +162,10 @@
             // 
             // btnExport
             // 
+            this.btnExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExport.Enabled = false;
             this.btnExport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExport.Location = new System.Drawing.Point(517, 531);
+            this.btnExport.Location = new System.Drawing.Point(457, 415);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(87, 24);
             this.btnExport.TabIndex = 4;
@@ -171,8 +175,9 @@
             // 
             // btnDebug
             // 
+            this.btnDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnDebug.Image = global::SSRSMigrate.Properties.Resources.bug_go;
-            this.btnDebug.Location = new System.Drawing.Point(12, 531);
+            this.btnDebug.Location = new System.Drawing.Point(12, 415);
             this.btnDebug.Name = "btnDebug";
             this.btnDebug.Size = new System.Drawing.Size(32, 23);
             this.btnDebug.TabIndex = 17;
@@ -183,7 +188,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(619, 584);
+            this.ClientSize = new System.Drawing.Size(559, 468);
             this.Controls.Add(this.btnDebug);
             this.Controls.Add(this.btnExport);
             this.Controls.Add(this.statusStrip);

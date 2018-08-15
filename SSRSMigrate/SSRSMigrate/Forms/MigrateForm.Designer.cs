@@ -45,6 +45,8 @@
             this.colSrcName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colSrcPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.mnuSourceItems = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editDataSourceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.checkAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uncheckAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -53,8 +55,6 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.editDataSourceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.grpSource.SuspendLayout();
             this.mnuSourceItems.SuspendLayout();
@@ -66,16 +66,16 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus,
             this.progressBar});
-            this.statusStrip.Location = new System.Drawing.Point(0, 547);
+            this.statusStrip.Location = new System.Drawing.Point(0, 515);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1216, 22);
+            this.statusStrip.Size = new System.Drawing.Size(937, 22);
             this.statusStrip.TabIndex = 0;
             this.statusStrip.Text = "statusStrip1";
             // 
             // lblStatus
             // 
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(1099, 17);
+            this.lblStatus.Size = new System.Drawing.Size(820, 17);
             this.lblStatus.Spring = true;
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -86,20 +86,24 @@
             // 
             // grpSource
             // 
+            this.grpSource.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpSource.Controls.Add(this.btnDebug);
             this.grpSource.Controls.Add(this.btnSrcRefreshReports);
             this.grpSource.Controls.Add(this.lstSrcReports);
-            this.grpSource.Location = new System.Drawing.Point(12, 12);
+            this.grpSource.Location = new System.Drawing.Point(12, 9);
             this.grpSource.Name = "grpSource";
-            this.grpSource.Size = new System.Drawing.Size(592, 513);
+            this.grpSource.Size = new System.Drawing.Size(462, 503);
             this.grpSource.TabIndex = 1;
             this.grpSource.TabStop = false;
             this.grpSource.Text = "Source Server";
             // 
             // btnDebug
             // 
+            this.btnDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnDebug.Image = global::SSRSMigrate.Properties.Resources.bug_go;
-            this.btnDebug.Location = new System.Drawing.Point(21, 478);
+            this.btnDebug.Location = new System.Drawing.Point(21, 468);
             this.btnDebug.Name = "btnDebug";
             this.btnDebug.Size = new System.Drawing.Size(32, 23);
             this.btnDebug.TabIndex = 17;
@@ -109,7 +113,7 @@
             // btnSrcRefreshReports
             // 
             this.btnSrcRefreshReports.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSrcRefreshReports.Location = new System.Drawing.Point(435, 478);
+            this.btnSrcRefreshReports.Location = new System.Drawing.Point(305, 468);
             this.btnSrcRefreshReports.Name = "btnSrcRefreshReports";
             this.btnSrcRefreshReports.Size = new System.Drawing.Size(138, 23);
             this.btnSrcRefreshReports.TabIndex = 15;
@@ -142,7 +146,7 @@
             this.lstSrcReports.Location = new System.Drawing.Point(21, 19);
             this.lstSrcReports.MultiSelect = false;
             this.lstSrcReports.Name = "lstSrcReports";
-            this.lstSrcReports.Size = new System.Drawing.Size(552, 453);
+            this.lstSrcReports.Size = new System.Drawing.Size(422, 443);
             this.lstSrcReports.TabIndex = 14;
             this.lstSrcReports.UseCompatibleStateImageBehavior = false;
             this.lstSrcReports.View = System.Windows.Forms.View.Details;
@@ -165,8 +169,20 @@
             this.checkAllToolStripMenuItem,
             this.uncheckAllToolStripMenuItem});
             this.mnuSourceItems.Name = "mnuSourceItems";
-            this.mnuSourceItems.Size = new System.Drawing.Size(170, 98);
+            this.mnuSourceItems.Size = new System.Drawing.Size(170, 76);
             this.mnuSourceItems.Opening += new System.ComponentModel.CancelEventHandler(this.mnuSourceItems_Opening);
+            // 
+            // editDataSourceToolStripMenuItem
+            // 
+            this.editDataSourceToolStripMenuItem.Name = "editDataSourceToolStripMenuItem";
+            this.editDataSourceToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.editDataSourceToolStripMenuItem.Text = "Edit Data Source...";
+            this.editDataSourceToolStripMenuItem.Click += new System.EventHandler(this.editDataSourceToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
             // 
             // checkAllToolStripMenuItem
             // 
@@ -184,19 +200,22 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.btnPerformMigration);
             this.groupBox1.Controls.Add(this.lstDestReports);
-            this.groupBox1.Location = new System.Drawing.Point(610, 12);
+            this.groupBox1.Location = new System.Drawing.Point(480, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(592, 513);
+            this.groupBox1.Size = new System.Drawing.Size(443, 500);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Destination Server";
             // 
             // btnPerformMigration
             // 
+            this.btnPerformMigration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnPerformMigration.Enabled = false;
-            this.btnPerformMigration.Location = new System.Drawing.Point(432, 484);
+            this.btnPerformMigration.Location = new System.Drawing.Point(18, 465);
             this.btnPerformMigration.Name = "btnPerformMigration";
             this.btnPerformMigration.Size = new System.Drawing.Size(138, 23);
             this.btnPerformMigration.TabIndex = 16;
@@ -229,7 +248,7 @@
             this.lstDestReports.MultiSelect = false;
             this.lstDestReports.Name = "lstDestReports";
             this.lstDestReports.ShowItemToolTips = true;
-            this.lstDestReports.Size = new System.Drawing.Size(552, 453);
+            this.lstDestReports.Size = new System.Drawing.Size(403, 440);
             this.lstDestReports.TabIndex = 15;
             this.lstDestReports.UseCompatibleStateImageBehavior = false;
             this.lstDestReports.View = System.Windows.Forms.View.Details;
@@ -249,23 +268,11 @@
             this.columnHeader3.Text = "Status";
             this.columnHeader3.Width = 152;
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
-            // 
-            // editDataSourceToolStripMenuItem
-            // 
-            this.editDataSourceToolStripMenuItem.Name = "editDataSourceToolStripMenuItem";
-            this.editDataSourceToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
-            this.editDataSourceToolStripMenuItem.Text = "Edit Data Source...";
-            this.editDataSourceToolStripMenuItem.Click += new System.EventHandler(this.editDataSourceToolStripMenuItem_Click);
-            // 
             // MigrateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1216, 569);
+            this.ClientSize = new System.Drawing.Size(937, 537);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grpSource);
             this.Controls.Add(this.statusStrip);
