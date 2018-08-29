@@ -217,7 +217,8 @@
             "SQL Server 2008 R2",
             "SQL Server 2012",
             "SQL Server 2014",
-            "SQL Server 2016"});
+            "SQL Server 2016",
+            "SQL Server 2017"});
             this.cboDestVersion.Location = new System.Drawing.Point(113, 46);
             this.cboDestVersion.Name = "cboDestVersion";
             this.cboDestVersion.Size = new System.Drawing.Size(146, 21);
@@ -547,7 +548,8 @@
             "SQL Server 2008 R2",
             "SQL Server 2012",
             "SQL Server 2014",
-            "SQL Server 2016"});
+            "SQL Server 2016",
+            "SQL Server 2017"});
             this.cboSrcVersion.Location = new System.Drawing.Point(113, 46);
             this.cboSrcVersion.Name = "cboSrcVersion";
             this.cboSrcVersion.Size = new System.Drawing.Size(146, 21);
