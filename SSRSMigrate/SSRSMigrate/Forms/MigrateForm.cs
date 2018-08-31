@@ -389,6 +389,9 @@ namespace SSRSMigrate.Forms
 
             foldersTotalCount = folderPaths.Count();
 
+            this.mLogger.Debug("MigrationWorker - Folder migration START!");
+            this.mLogger.Debug("MigrationWorker - Migrating {0} folders...", foldersTotalCount);
+
             foreach (string folderPath in folderPaths)
             {
                 FolderItem folderItem = null;
@@ -461,6 +464,8 @@ namespace SSRSMigrate.Forms
                 }
             }
 
+            this.mLogger.Debug("MigrationWorker - Folder migration END!");
+
             // Export data sources
             var dataSources = from lv in lvItems
                                   where lv.Group.Name == "dataSourcesGroup" &&
@@ -468,6 +473,9 @@ namespace SSRSMigrate.Forms
                                   select (DataSourceItem)lv.Tag;
 
             dataSourcesTotalCount = dataSources.Count();
+
+            this.mLogger.Debug("MigrationWorker - DataSource migration START!");
+            this.mLogger.Debug("MigrationWorker - Migrating {0} datasources...", dataSourcesTotalCount);
 
             foreach (DataSourceItem dataSource in dataSources)
             {
@@ -479,6 +487,8 @@ namespace SSRSMigrate.Forms
                     Success = false
                 };
 
+                this.mLogger.Info("MigrationWorker - Start migration of DataSource '{0}'...", dataSourcePath);
+
                 if (!string.IsNullOrEmpty(dataSourcePath))
                 {
                     dataSourceItem = this.mReportServerReader.GetDataSource(dataSourcePath);
@@ -489,9 +499,15 @@ namespace SSRSMigrate.Forms
                         status.FromPath = dataSourceItem.Path;
 
                         // Update the DataSource if it was changed via 'Edit Data Source...'
+                        this.mLogger.Debug("MigrationWorker - Checking DataSource equality between source and destination...");
                         if (!dataSourceItem.Equals(dataSource))
                         {
+                            this.mLogger.Debug("MigrationWorker - DataSources are not equal");
                             dataSourceItem = dataSource;
+                        }
+                        else
+                        {
+                            this.mLogger.Debug("MigrationWorker - DataSources are equal.");
                         }
 
                         this.mLogger.Debug("MigrationWorker - BEFORE DataSourceItem.FromPath = {0}; SourceRootPath = {1}", status.FromPath, this.mSourceRootPath);
@@ -536,9 +552,17 @@ namespace SSRSMigrate.Forms
                         }
                     }
                     else
+                    {
                         this.mLogger.Warn("MigrationWorker - DataSourceItem for path '{0}' returned NULL.", dataSourcePath);
-                }
+                    }
 
+                    this.mLogger.Info("MigrationWorker - End migration of DataSource '{0}'...", dataSourcePath);
+                }
+                else
+                {
+                    this.mLogger.Warn("MigrationWorker - DataSource.Path is NULL or empty or '{0}'; skipping...", dataSource.Name);
+                }
+                
                 // Always report progress, even if a ListViewItem has an empty path and even if the item isn't retrieved by ReportServerReader.
                 // This will keep the progress bar value from suddenly jumping up several values.
                 if (worker != null)
@@ -549,6 +573,8 @@ namespace SSRSMigrate.Forms
                 }
             }
 
+            this.mLogger.Debug("MigrationWorker - DataSource migration END!");
+
             // Export reports
             var reportPaths = from lv in lvItems
                               where lv.Group.Name == "reportsGroup" &&
@@ -556,6 +582,9 @@ namespace SSRSMigrate.Forms
                               select ((ReportItem)lv.Tag).Path;
 
             reportsTotalCount = reportPaths.Count();
+
+            this.mLogger.Debug("MigrationWorker - Report migration START!");
+            this.mLogger.Debug("MigrationWorker - Migrating {0} reports...", reportsTotalCount);
 
             foreach (string reportPath in reportPaths)
             {
@@ -635,6 +664,8 @@ namespace SSRSMigrate.Forms
                     this.mLogger.Warn("MigrationWorker - worker is NULL.");
                 }
             }
+
+            this.mLogger.Debug("MigrationWorker - Report migration END!");
 
             // Stop stopwatch and get how long it took for the migration to complete successfully
             watch.Stop();
