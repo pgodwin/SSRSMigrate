@@ -398,8 +398,8 @@ namespace SSRSMigrate.Forms
             IItemImporter<ReportItem> reportItemImporter = null;
             IFileSystem fileSystem = null;
 
-            // Test the source connection
-            this.TestSourceConnection(true);
+            // Test the destination connection
+            this.TestDestinationConnection(true);
 
             string version = this.GetDestinationServerVersion();
 
