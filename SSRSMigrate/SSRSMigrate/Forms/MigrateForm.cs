@@ -603,6 +603,12 @@ namespace SSRSMigrate.Forms
                         status.Item = reportItem;
                         status.FromPath = reportItem.Path;
 
+                        this.mLogger.Debug(
+                            "MigrationWorker - Getting destination path for '{0}' using source path root '{1}' and destination root path '{2}'...",
+                            reportItem.Path,
+                            this.mSourceRootPath,
+                            this.mDestinationRootPath);
+
                         this.mLogger.Debug("MigrationWorker - BEFORE ReportItem.FromPath = {0}; SourceRootPath = {1}", status.FromPath, this.mSourceRootPath);
                         this.mLogger.Debug("MigrationWorker - BEFORE ReportItem.FromPath = {0}; DestinationRootPath = {1}", status.FromPath, this.mDestinationRootPath);
 

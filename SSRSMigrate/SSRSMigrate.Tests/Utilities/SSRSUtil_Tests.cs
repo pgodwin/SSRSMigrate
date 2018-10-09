@@ -424,6 +424,19 @@ namespace SSRSMigrate.Tests.Utilities
 
             Assert.That(ex.Message, Is.EqualTo("itemPath"));
         }
+
+        [Test]
+        public void GetFullDestinationPathForItem_DoesntStartWithSlashAndDoesntContainSlash()
+        {
+            string expected = "Test Report";
+
+            string actual = SSRSUtil.GetFullDestinationPathForItem(
+                "/Folder",
+                "/Folder2",
+                "Test Report");
+
+            Assert.AreEqual(expected, actual);
+        }
         #endregion
 
         #region SSRSUtil.GetSqlServerVersion Tests

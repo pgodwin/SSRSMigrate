@@ -733,6 +733,12 @@ namespace SSRSMigrate.Forms
                     FromPath = reportItem.ExtractedTo
                 };
 
+                this.mLogger.Debug(
+                    "ImportWorker - Getting destination path for '{0}' using source path root '{1}' and destination root path '{2}'...",
+                    reportItem.Item.Path,
+                    sourceRootPath,
+                    this.mDestinationRootPath);
+
                 // Get the destination path for this item (e.g. '/SSRSMigrate_AW_Tests_Destination/Reports/Company Sales'
                 string destItemPath = SSRSUtil.GetFullDestinationPathForItem(
                     sourceRootPath,
