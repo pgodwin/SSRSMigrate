@@ -80,6 +80,9 @@
             this.btnImportZipBrowse = new System.Windows.Forms.Button();
             this.txtImportZipFilename = new System.Windows.Forms.TextBox();
             this.lblImportZipFilename = new System.Windows.Forms.Label();
+            this.chkExecuteScript = new System.Windows.Forms.CheckBox();
+            this.txtScriptPath = new System.Windows.Forms.TextBox();
+            this.btnBrowseScript = new System.Windows.Forms.Button();
             this.grpMigrateMethod.SuspendLayout();
             this.grpDestServer.SuspendLayout();
             this.grpExportZip.SuspendLayout();
@@ -97,7 +100,7 @@
             this.grpMigrateMethod.Controls.Add(this.rdoMethodDirect);
             this.grpMigrateMethod.Location = new System.Drawing.Point(12, 12);
             this.grpMigrateMethod.Name = "grpMigrateMethod";
-            this.grpMigrateMethod.Size = new System.Drawing.Size(189, 227);
+            this.grpMigrateMethod.Size = new System.Drawing.Size(189, 291);
             this.grpMigrateMethod.TabIndex = 0;
             this.grpMigrateMethod.TabStop = false;
             this.grpMigrateMethod.Text = "Migration Method";
@@ -165,6 +168,9 @@
             // 
             // grpDestServer
             // 
+            this.grpDestServer.Controls.Add(this.btnBrowseScript);
+            this.grpDestServer.Controls.Add(this.txtScriptPath);
+            this.grpDestServer.Controls.Add(this.chkExecuteScript);
             this.grpDestServer.Controls.Add(this.btnDestTest);
             this.grpDestServer.Controls.Add(this.cbkDestOverwrite);
             this.grpDestServer.Controls.Add(this.cboDestVersion);
@@ -183,7 +189,7 @@
             this.grpDestServer.Controls.Add(this.lblDestUrl);
             this.grpDestServer.Location = new System.Drawing.Point(568, 12);
             this.grpDestServer.Name = "grpDestServer";
-            this.grpDestServer.Size = new System.Drawing.Size(350, 227);
+            this.grpDestServer.Size = new System.Drawing.Size(350, 291);
             this.grpDestServer.TabIndex = 2;
             this.grpDestServer.TabStop = false;
             this.grpDestServer.Text = "Destination Server";
@@ -340,7 +346,7 @@
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(799, 250);
+            this.btnConnect.Location = new System.Drawing.Point(801, 309);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(117, 31);
             this.btnConnect.TabIndex = 3;
@@ -353,9 +359,9 @@
             this.grpExportZip.Controls.Add(this.btnExportZipFileBrowse);
             this.grpExportZip.Controls.Add(this.txtExportZipFilename);
             this.grpExportZip.Controls.Add(this.lblExportZipFilename);
-            this.grpExportZip.Location = new System.Drawing.Point(567, 12);
+            this.grpExportZip.Location = new System.Drawing.Point(567, 13);
             this.grpExportZip.Name = "grpExportZip";
-            this.grpExportZip.Size = new System.Drawing.Size(350, 227);
+            this.grpExportZip.Size = new System.Drawing.Size(350, 290);
             this.grpExportZip.TabIndex = 29;
             this.grpExportZip.TabStop = false;
             this.grpExportZip.Text = "Export to ZIP Archive";
@@ -392,9 +398,9 @@
             this.grpExportDisk.Controls.Add(this.btnExportDiskFolderBrowse);
             this.grpExportDisk.Controls.Add(this.txtExportDiskFolderName);
             this.grpExportDisk.Controls.Add(this.lblExportDiskFolderName);
-            this.grpExportDisk.Location = new System.Drawing.Point(567, 12);
+            this.grpExportDisk.Location = new System.Drawing.Point(567, 13);
             this.grpExportDisk.Name = "grpExportDisk";
-            this.grpExportDisk.Size = new System.Drawing.Size(350, 227);
+            this.grpExportDisk.Size = new System.Drawing.Size(350, 290);
             this.grpExportDisk.TabIndex = 31;
             this.grpExportDisk.TabStop = false;
             this.grpExportDisk.Text = "Export to disk";
@@ -597,7 +603,7 @@
             this.grpImportZip.Controls.Add(this.lblImportZipFilename);
             this.grpImportZip.Location = new System.Drawing.Point(207, 13);
             this.grpImportZip.Name = "grpImportZip";
-            this.grpImportZip.Size = new System.Drawing.Size(350, 227);
+            this.grpImportZip.Size = new System.Drawing.Size(350, 290);
             this.grpImportZip.TabIndex = 33;
             this.grpImportZip.TabStop = false;
             this.grpImportZip.Text = "Import from ZIP archive";
@@ -629,11 +635,41 @@
             this.lblImportZipFilename.TabIndex = 0;
             this.lblImportZipFilename.Text = "Zip filename:";
             // 
+            // chkExecuteScript
+            // 
+            this.chkExecuteScript.AutoSize = true;
+            this.chkExecuteScript.Location = new System.Drawing.Point(21, 227);
+            this.chkExecuteScript.Name = "chkExecuteScript";
+            this.chkExecuteScript.Size = new System.Drawing.Size(95, 17);
+            this.chkExecuteScript.TabIndex = 30;
+            this.chkExecuteScript.Text = "Execute Script";
+            this.chkExecuteScript.UseVisualStyleBackColor = true;
+            this.chkExecuteScript.CheckedChanged += new System.EventHandler(this.chkExecuteScript_CheckedChanged);
+            // 
+            // txtScriptPath
+            // 
+            this.txtScriptPath.Location = new System.Drawing.Point(21, 251);
+            this.txtScriptPath.Name = "txtScriptPath";
+            this.txtScriptPath.Size = new System.Drawing.Size(282, 20);
+            this.txtScriptPath.TabIndex = 31;
+            this.txtScriptPath.Visible = false;
+            // 
+            // btnBrowseScript
+            // 
+            this.btnBrowseScript.Location = new System.Drawing.Point(309, 248);
+            this.btnBrowseScript.Name = "btnBrowseScript";
+            this.btnBrowseScript.Size = new System.Drawing.Size(24, 23);
+            this.btnBrowseScript.TabIndex = 32;
+            this.btnBrowseScript.Text = "...";
+            this.btnBrowseScript.UseVisualStyleBackColor = true;
+            this.btnBrowseScript.Visible = false;
+            this.btnBrowseScript.Click += new System.EventHandler(this.btnBrowseScript_Click);
+            // 
             // ConnectInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(933, 288);
+            this.ClientSize = new System.Drawing.Size(933, 350);
             this.Controls.Add(this.grpImportZip);
             this.Controls.Add(this.grpExportDisk);
             this.Controls.Add(this.grpExportZip);
@@ -717,5 +753,8 @@
         private System.Windows.Forms.Label lblImportZipFilename;
         private System.Windows.Forms.Button btnSrcTest;
         private System.Windows.Forms.Button btnDestTest;
+        private System.Windows.Forms.Button btnBrowseScript;
+        private System.Windows.Forms.TextBox txtScriptPath;
+        private System.Windows.Forms.CheckBox chkExecuteScript;
     }
 }

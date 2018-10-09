@@ -7,7 +7,7 @@ This should make my job and those that I work with easier.
 
 Requirements
 -----
-This application requires .NET Framework 3.5
+This application requires .NET Framework 4.5
 
 Features
 -----

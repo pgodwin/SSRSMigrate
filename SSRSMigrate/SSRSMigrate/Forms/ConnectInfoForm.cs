@@ -15,6 +15,7 @@ using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Test;
 using SSRSMigrate.SSRS.Writer;
 using Ninject.Extensions.Logging;
+using SSRSMigrate.ScriptEngine;
 
 namespace SSRSMigrate.Forms
 {
@@ -609,9 +610,12 @@ namespace SSRSMigrate.Forms
             IReportServerReader reader,
             IReportServerWriter writer)
         {
-            //TODO This is dumb. Should be resolving all of the forms from the IoC kernel but I don't feel like refactoring atm...
             DataSourceEditForm dataSourceEditForm = this.mKernel.Get<DataSourceEditForm>();
 
+            // Resolve PythonEngine from kernel
+            PythonEngine engine = this.mKernel.Get<PythonEngine>();
+
+            //TODO This is dumb. Should be resolving all of the forms from the IoC kernel but I don't feel like refactoring atm...
             MigrateForm migrateForm = new MigrateForm(
                 sourceRootPath,
                 sourceServerUrl,
@@ -620,7 +624,34 @@ namespace SSRSMigrate.Forms
                 dataSourceEditForm,
                 reader, 
                 writer, 
-                this.mLoggerFactory);
+                this.mLoggerFactory,
+                engine);
+
+            // If 'Execute Script' is checked, load script
+            if (chkExecuteScript.Checked)
+            {
+                try
+                {
+                    string scriptFile = txtScriptPath.Text;
+
+                    mLogger.Info("Loading script '{0}'...", scriptFile);
+
+                    migrateForm.LoadScript(scriptFile);
+
+                    mLogger.Info("Script '{0}' loaded!", scriptFile);
+                }
+                catch (Exception er)
+                {
+                    mLogger.Error(er, "Error loading script");
+
+                    MessageBox.Show(er.Message, 
+                        "Error Loading Script",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+
+                    return;
+                }
+            }
 
             migrateForm.DebugForm = this.mDebugForm;
             migrateForm.Show();
@@ -895,6 +926,50 @@ namespace SSRSMigrate.Forms
             }
         }
 
+        #endregion
+
+        #region Script Methods
+        private void btnBrowseScript_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openDialog = new OpenFileDialog();
+
+            openDialog.Title = "Locate script to execute";
+            openDialog.Filter = "Python Script files (*.py)|*.py|All files (*.*)|*.*";
+            openDialog.FilterIndex = 1;
+            openDialog.RestoreDirectory = true;
+            openDialog.InitialDirectory = mFileSystem.Path.Combine(mFileSystem.Path.GetDirectoryName(Application.ExecutablePath), "scripts");
+
+            if (openDialog.ShowDialog() == DialogResult.OK)
+            {
+                string scriptFile = openDialog.FileName;
+
+                if (!mFileSystem.File.Exists(scriptFile))
+                {
+                    MessageBox.Show("Script not found.",
+                        "Script Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+
+                    return;
+                }
+
+                txtScriptPath.Text = scriptFile;
+            } 
+        }
+
+        private void chkExecuteScript_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkExecuteScript.Checked)
+            {
+                txtScriptPath.Visible = true;
+                btnBrowseScript.Visible = true;
+            }
+            else
+            {
+                txtScriptPath.Visible = false;
+                btnBrowseScript.Visible = false;
+            }
+        }
         #endregion
     }
 }

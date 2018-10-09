@@ -9,6 +9,7 @@ using SSRSMigrate.SSRS.Writer;
 using Ninject.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using SSRSMigrate.ScriptEngine;
 using SSRSMigrate.Utility;
 using SSRSMigrate.SSRS.Errors;
 using SSRSMigrate.Status;
@@ -18,6 +19,8 @@ namespace SSRSMigrate.Forms
     [CoverageExclude]
     public partial class MigrateForm : Form
     {
+        private const string cScriptClassName = "Plugin";
+
         private readonly IReportServerReader mReportServerReader = null;
         private readonly IReportServerWriter mReportServerWriter = null;
         private readonly ILoggerFactory mLoggerFactory = null;
@@ -34,6 +37,9 @@ namespace SSRSMigrate.Forms
         private SummaryForm mSummaryForm = null;
         private DataSourceEditForm mDataSourceEditForm;
 
+        // PythonEngine
+        private readonly PythonEngine mEngine;
+
         #region Properties
         public DebugForm DebugForm
         {
@@ -49,7 +55,8 @@ namespace SSRSMigrate.Forms
             DataSourceEditForm dataSourceEditForm,
             IReportServerReader reader,
             IReportServerWriter writer,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            PythonEngine pythonEngine)
         {
             if (string.IsNullOrEmpty(sourceRootPath))
                 throw new ArgumentException("sourceRootPath");
@@ -75,6 +82,9 @@ namespace SSRSMigrate.Forms
             if (loggerFactory == null)
                 throw new ArgumentNullException("loggerFactory");
 
+            if (pythonEngine == null)
+                throw new ArgumentNullException("pythonEngine");
+
             InitializeComponent();
 
             this.mSourceRootPath = sourceRootPath;
@@ -85,7 +95,7 @@ namespace SSRSMigrate.Forms
             this.mReportServerReader = reader;
             this.mReportServerWriter = writer;
             this.mLoggerFactory = loggerFactory;
-
+            this.mEngine = pythonEngine;
             this.mLogger = mLoggerFactory.GetCurrentClassLogger();
 
             this.mLogger.Info("sourceRootPath: {0}", this.mSourceRootPath);
@@ -93,6 +103,12 @@ namespace SSRSMigrate.Forms
             this.mLogger.Info("destinationRootPath: {0}", this.mDestinationRootPath);
             this.mLogger.Info("destinationServerUrl: {0}", this.mDestinationServerUrl);
             this.mSummaryForm = new SummaryForm();
+        }
+
+        public void LoadScript(string scriptFile)
+        {
+            //TODO Should load the python engine script here so it can be called in the other methods
+            this.mEngine.Load(scriptFile, cScriptClassName);
         }
 
         #region UI Events
@@ -167,7 +183,7 @@ namespace SSRSMigrate.Forms
         }
         #endregion
 
-        #region Source Source Reports Methods
+        #region Refresh Source Reports Methods
         private void SourceRefreshReports()
         {
             this.lstSrcReports.Items.Clear();
@@ -177,12 +193,22 @@ namespace SSRSMigrate.Forms
                 this.btnSrcRefreshReports.Enabled = false;
                 this.btnPerformMigration.Enabled = false;
                 this.mSourceRefreshWorker.RunWorkerAsync(this.mSourceRootPath);
+
+                if (this.mEngine.Loaded)
+                {
+                    this.mEngine.CallMethod("OnSourceRefresh_Start", this.mSourceRootPath);
+                }
             }
             catch (Exception er)
             {
                 string msg = string.Format("Error getting list of items from '{0}' on server '{1}'.",
                     this.mSourceRootPath,
                     this.mSourceServerUrl);
+
+                if (this.mEngine.Loaded)
+                {
+                    this.mEngine.CallMethod("OnSourceRefresh_StartError", er, msg);
+                }
 
                 this.mDebugForm.LogMessage(msg, er);
 
@@ -222,6 +248,11 @@ namespace SSRSMigrate.Forms
             {
                 msg = string.Format("Cancelled. {0}", e.Result);
 
+                if (this.mEngine.Loaded)
+                {
+                    this.mEngine.CallMethod("OnSourceRefresh_CompletedCancelled", msg);
+                }
+
                 this.mDebugForm.LogMessage(msg);
             }
             else if ((e.Error != null))
@@ -231,6 +262,11 @@ namespace SSRSMigrate.Forms
                 this.mLogger.Error(e.Error, "Error during item refresh");
 
                 this.mDebugForm.LogMessage(msg, e.Error);
+
+                if (this.mEngine.Loaded)
+                {
+                    this.mEngine.CallMethod("OnSourceRefresh_CompletedError", e.Error, msg);
+                }
 
                 MessageBox.Show(msg,
                     "Refresh Error",
@@ -245,6 +281,11 @@ namespace SSRSMigrate.Forms
                 //  and there are items to migrate
                 if (this.lstSrcReports.Items.Count > 0)
                     this.btnPerformMigration.Enabled = true;
+
+                if (this.mEngine.Loaded)
+                {
+                    this.mEngine.CallMethod("OnSourceRefresh_Completed", this.lstSrcReports.Items.Count);
+                }
 
                 this.mDebugForm.LogMessage(msg);
             }
@@ -287,11 +328,32 @@ namespace SSRSMigrate.Forms
 
             // Assign to proper ListViewGroup
             if (item.GetType() == typeof(FolderItem))
+            {
                 oItem.Group = this.lstSrcReports.Groups["foldersGroup"];
+
+                if (this.mEngine.Loaded)
+                {
+                    this.mEngine.CallMethod("OnSourceRefresh_FolderFound", item);
+                }
+            }
             else if (item.GetType() == typeof(DataSourceItem))
+            {
                 oItem.Group = this.lstSrcReports.Groups["dataSourcesGroup"];
+
+                if (this.mEngine.Loaded)
+                {
+                    this.mEngine.CallMethod("OnSourceRefresh_DataSourceFound", item);
+                }
+            }
             else if (item.GetType() == typeof(ReportItem))
+            {
                 oItem.Group = this.lstSrcReports.Groups["reportsGroup"];
+
+                if (this.mEngine.Loaded)
+                {
+                    this.mEngine.CallMethod("OnSourceRefresh_ReportFound", item);
+                }
+            }
 
             this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
             this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
@@ -334,10 +396,20 @@ namespace SSRSMigrate.Forms
                 this.btnSrcRefreshReports.Enabled = false;
 
                 this.mMigrationWorker.RunWorkerAsync(this.mDestinationRootPath);
+
+                if (this.mEngine.Loaded)
+                {
+                    this.mEngine.CallMethod("OnMigration_Start", this.mSourceRootPath, this.mDestinationRootPath);
+                }
             }
             catch (Exception er)
             {
                 this.mLogger.Fatal(er, "Error migrating items.");
+
+                if (this.mEngine.Loaded)
+                {
+                    this.mEngine.CallMethod("OnMigration_StartError", er, er.Message);
+                }
 
                 MessageBox.Show(
                     string.Format("Error migrating items to '{0}':\n\r{1}", this.mDestinationRootPath, er.Message),
@@ -435,6 +507,11 @@ namespace SSRSMigrate.Forms
                             status.Success = true;
 
                             ++foldersMigratedCounter;
+
+                            if (this.mEngine.Loaded)
+                            {
+                                this.mEngine.CallMethod("OnMigration_FolderItem", folderItem, status);
+                            }
                         }
                         catch (ItemAlreadyExistsException er)
                         {
@@ -536,6 +613,11 @@ namespace SSRSMigrate.Forms
                             status.Success = true;
 
                             ++dataSourcesMigratedCounter;
+
+                            if (this.mEngine.Loaded)
+                            {
+                                this.mEngine.CallMethod("OnMigration_DataSourceItem", dataSourceItem, status);
+                            }
                         }
                         catch (ItemAlreadyExistsException er)
                         {
@@ -636,6 +718,11 @@ namespace SSRSMigrate.Forms
                             status.Success = true;
 
                             ++reportsMigratedCounter;
+
+                            if (this.mEngine.Loaded)
+                            {
+                                this.mEngine.CallMethod("OnMigration_ReportItem", reportItem, status);
+                            }
                         }
                         catch (ItemAlreadyExistsException er)
                         {
@@ -695,6 +782,11 @@ namespace SSRSMigrate.Forms
             if ((e.Cancelled == true))
             {
                 msg = string.Format("Cancelled.");
+
+                if (this.mEngine.Loaded)
+                {
+                    this.mEngine.CallMethod("OnMigration_Completed", msg);
+                }
             }
             else if ((e.Error != null))
             {
@@ -704,6 +796,11 @@ namespace SSRSMigrate.Forms
 
                 this.mDebugForm.LogMessage(msg, e.Error);
 
+                if (this.mEngine.Loaded)
+                {
+                    this.mEngine.CallMethod("OnMigration_Completed", msg);
+                }
+
                 MessageBox.Show(msg,
                     "Migration Error",
                     MessageBoxButtons.OK,
@@ -712,6 +809,11 @@ namespace SSRSMigrate.Forms
             else
             {
                 msg = string.Format("Completed. {0}", e.Result);
+
+                if (this.mEngine.Loaded)
+                {
+                    this.mEngine.CallMethod("OnMigration_Completed", msg);
+                }
             }
 
             this.mLogger.Info("Migration completed: {0}", msg);

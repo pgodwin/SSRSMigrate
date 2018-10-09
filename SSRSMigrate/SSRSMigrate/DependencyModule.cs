@@ -14,6 +14,7 @@ using SSRSMigrate.Exporter.Writer;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.DataMapper;
 using SSRSMigrate.Forms;
+using SSRSMigrate.ScriptEngine;
 using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate
@@ -119,6 +120,9 @@ namespace SSRSMigrate
 
             // Bind DataSourceEditForm
             this.Bind<DataSourceEditForm>().To<DataSourceEditForm>();
+
+            // Bind PythonEngine
+            this.Bind<PythonEngine>().ToSelf();
         }
 
         private string GetImportZipFileName(IContext context)

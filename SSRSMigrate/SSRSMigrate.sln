@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSRSMigrate", "SSRSMigrate\SSRSMigrate.csproj", "{FE393906-2F99-492D-919E-16FC0E63DEED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSRSMigrate.Tests", "SSRSMigrate.Tests\SSRSMigrate.Tests.csproj", "{B903485C-F040-4319-A264-AEBF9A7179FA}"
@@ -8,6 +10,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSRSMigrate.IntegrationTests", "SSRSMigrate.IntegrationTests\SSRSMigrate.IntegrationTests.csproj", "{E2C847EB-D1E7-4987-8D8E-221BE0F8E699}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSRSMigrate.TestHelper", "SSRSMigrate.TestHelper\SSRSMigrate.TestHelper.csproj", "{2D4048B0-2696-4384-A843-04A67300DEFD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample Scripts", "Sample Scripts", "{5C8C33CB-88DA-48D2-B52C-04FA3E3587C4}"
+	ProjectSection(SolutionItems) = preProject
+		Sample.py = Sample.py
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
