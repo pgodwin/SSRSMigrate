@@ -27,9 +27,9 @@ namespace SSRSMigrate.ScriptEngine
         #region Private Variables
         private readonly IFileSystem mFileSystem;
         private readonly ILogger mLogger;
-        //private readonly IReportServerReader mReportServerReader;
-        //private readonly IReportServerWriter mReportServerWriter;
-        //private readonly IReportServerRepository mReportServerRepository;
+        private readonly IReportServerReader mReportServerReader;
+        private readonly IReportServerWriter mReportServerWriter;
+        private readonly IReportServerRepository mReportServerRepository;
 
         private AppDomain mAppDomain;
         private Microsoft.Scripting.Hosting.ScriptEngine mScriptEngine;
@@ -101,20 +101,20 @@ namespace SSRSMigrate.ScriptEngine
         #endregion
 
         public PythonEngine(
-            //IReportServerReader reportServerReader,
-            //IReportServerWriter reportServerWriter,
-            //IReportServerRepository reportServerRepository,
+            IReportServerReader reportServerReader,
+            IReportServerWriter reportServerWriter,
+            IReportServerRepository reportServerRepository,
             IFileSystem fileSystem,
             ILogger logger)
         {
-            //if (reportServerReader == null)
-            //    throw new ArgumentNullException("reportServerReader");
+            if (reportServerReader == null)
+                throw new ArgumentNullException("reportServerReader");
 
-            //if (reportServerWriter == null)
-            //    throw new ArgumentNullException("reportServerWriter");
+            if (reportServerWriter == null)
+                throw new ArgumentNullException("reportServerWriter");
 
-            //if (reportServerRepository == null)
-            //    throw new ArgumentNullException("reportServerRepository");
+            if (reportServerRepository == null)
+                throw new ArgumentNullException("reportServerRepository");
 
             if (fileSystem == null)
                 throw new ArgumentNullException("fileSystem");
@@ -122,9 +122,9 @@ namespace SSRSMigrate.ScriptEngine
             if (logger == null)
                 throw new ArgumentNullException("logger");
 
-           // this.mReportServerReader = reportServerReader;
-            //this.mReportServerWriter = reportServerWriter;
-            //this.mReportServerRepository = reportServerRepository;
+            this.mReportServerReader = reportServerReader;
+            this.mReportServerWriter = reportServerWriter;
+            this.mReportServerRepository = reportServerRepository;
             this.mFileSystem = fileSystem;
             this.mLogger = logger;
 
@@ -158,9 +158,11 @@ namespace SSRSMigrate.ScriptEngine
                 this.mScriptScope.SetVariable("SSRSUtil", DynamicHelpers.GetPythonTypeFromType(typeof (SSRSUtil)));
                 this.mScriptScope.SetVariable("FileSystem", this.mFileSystem);
 
-                //this.mScriptScope.SetVariable("ReportServerReader", this.mReportServerReader);
-                //this.mScriptScope.SetVariable("ReportServerWriter", this.mReportServerWriter);
-                //this.mScriptScope.SetVariable("ReportServerRepository", this.mReportServerRepository);
+                this.mScriptScope.SetVariable("ReportServerReader", this.mReportServerReader);
+                this.mScriptScope.SetVariable("ReportServerWriter", this.mReportServerWriter);
+                this.mScriptScope.SetVariable("ReportServerRepository", this.mReportServerRepository);
+
+                this.mScriptScope.SetVariable("SQLUtil", DynamicHelpers.GetPythonTypeFromType(typeof (SQLUtil)));
 
 
                 CompiledCode compiled = this.mScriptSource.Compile();
@@ -171,6 +173,8 @@ namespace SSRSMigrate.ScriptEngine
                 this.mScriptSource.Execute(this.mScriptScope);
 
                 this.mLoaded = true;
+
+                this.CallMethod("OnLoad");
             }
             catch (SyntaxErrorException er)
             {

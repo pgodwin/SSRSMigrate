@@ -121,6 +121,13 @@ namespace SSRSMigrate.Utility
             // Get the item's path, up until the item name, which would be the current parent path of the item
             string path = string.Empty;
 
+            // For some reason, sometimes people design a report that references a DataSource without a complete path (e.g. 'DataSource' instead of '/Folder/DataSource').
+            // When we encounter this, we cannot exactly change them from the source to the destination path, so we'll just leave them as is
+            if (!itemPath.StartsWith("/") && !itemPath.Contains("/"))
+            {
+                return itemPath;
+            }
+
             // Handle item paths that are at the root in SSRS (e.g. /Report)
             if (itemPath.LastIndexOf("/") == 0)
             {

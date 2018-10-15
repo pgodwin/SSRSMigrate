@@ -312,13 +312,17 @@ namespace SSRSMigrate.Forms
         
             writer.Overwrite = this.cbkDestOverwrite.Checked;
 
+            // Resolve PythonEngine from kernel
+            PythonEngine engine = this.mKernel.Get<PythonEngine>(destVersion);
+
             this.PerformDirectMigrate(
                 this.txtSrcUrl.Text,
                 this.txtSrcPath.Text,
                 this.txtDestUrl.Text,
                 this.txtDestPath.Text, 
                 reader, 
-                writer);
+                writer,
+                engine);
         }
 
         private void ExportToDisk_Connection()
@@ -498,6 +502,19 @@ namespace SSRSMigrate.Forms
 
             if (string.IsNullOrEmpty(this.txtDestPath.Text))
                 this.txtDestPath.Text = "/";
+
+            if (this.chkExecuteScript.Checked)
+            {
+                if (string.IsNullOrEmpty(this.txtScriptPath.Text))
+                {
+                    throw new UserInterfaceInvalidFieldException("script file");
+                }
+
+                if (!this.mFileSystem.File.Exists(this.txtScriptPath.Text))
+                {
+                    throw new UserInterfaceInvalidFieldException("script file");
+                }
+            }
         }
 
         private void UI_ExportDisk_DestinationCheck()
@@ -608,12 +625,10 @@ namespace SSRSMigrate.Forms
             string destinationServerUrl,
             string destinationRootPath, 
             IReportServerReader reader,
-            IReportServerWriter writer)
+            IReportServerWriter writer,
+            PythonEngine engine)
         {
             DataSourceEditForm dataSourceEditForm = this.mKernel.Get<DataSourceEditForm>();
-
-            // Resolve PythonEngine from kernel
-            PythonEngine engine = this.mKernel.Get<PythonEngine>();
 
             //TODO This is dumb. Should be resolving all of the forms from the IoC kernel but I don't feel like refactoring atm...
             MigrateForm migrateForm = new MigrateForm(

@@ -233,6 +233,7 @@
     <Compile Include="Status\ExportStatus.cs" />
     <Compile Include="Status\ImportStatus.cs" />
     <Compile Include="Status\MigrationStatus.cs" />
+    <Compile Include="Utility\SQLUtil.cs" />
     <Compile Include="Utility\SSRSUtil.cs" />
     <Compile Include="Web References\ReportServer2005\Reference.cs">
       <AutoGen>True</AutoGen>

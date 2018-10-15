@@ -194,21 +194,12 @@ namespace SSRSMigrate.Forms
                 this.btnPerformMigration.Enabled = false;
                 this.mSourceRefreshWorker.RunWorkerAsync(this.mSourceRootPath);
 
-                if (this.mEngine.Loaded)
-                {
-                    this.mEngine.CallMethod("OnSourceRefresh_Start", this.mSourceRootPath);
-                }
             }
             catch (Exception er)
             {
                 string msg = string.Format("Error getting list of items from '{0}' on server '{1}'.",
                     this.mSourceRootPath,
                     this.mSourceServerUrl);
-
-                if (this.mEngine.Loaded)
-                {
-                    this.mEngine.CallMethod("OnSourceRefresh_StartError", er, msg);
-                }
 
                 this.mDebugForm.LogMessage(msg, er);
 
@@ -248,11 +239,6 @@ namespace SSRSMigrate.Forms
             {
                 msg = string.Format("Cancelled. {0}", e.Result);
 
-                if (this.mEngine.Loaded)
-                {
-                    this.mEngine.CallMethod("OnSourceRefresh_CompletedCancelled", msg);
-                }
-
                 this.mDebugForm.LogMessage(msg);
             }
             else if ((e.Error != null))
@@ -262,11 +248,6 @@ namespace SSRSMigrate.Forms
                 this.mLogger.Error(e.Error, "Error during item refresh");
 
                 this.mDebugForm.LogMessage(msg, e.Error);
-
-                if (this.mEngine.Loaded)
-                {
-                    this.mEngine.CallMethod("OnSourceRefresh_CompletedError", e.Error, msg);
-                }
 
                 MessageBox.Show(msg,
                     "Refresh Error",
@@ -281,11 +262,6 @@ namespace SSRSMigrate.Forms
                 //  and there are items to migrate
                 if (this.lstSrcReports.Items.Count > 0)
                     this.btnPerformMigration.Enabled = true;
-
-                if (this.mEngine.Loaded)
-                {
-                    this.mEngine.CallMethod("OnSourceRefresh_Completed", this.lstSrcReports.Items.Count);
-                }
 
                 this.mDebugForm.LogMessage(msg);
             }
@@ -330,29 +306,14 @@ namespace SSRSMigrate.Forms
             if (item.GetType() == typeof(FolderItem))
             {
                 oItem.Group = this.lstSrcReports.Groups["foldersGroup"];
-
-                if (this.mEngine.Loaded)
-                {
-                    this.mEngine.CallMethod("OnSourceRefresh_FolderFound", item);
-                }
             }
             else if (item.GetType() == typeof(DataSourceItem))
             {
                 oItem.Group = this.lstSrcReports.Groups["dataSourcesGroup"];
-
-                if (this.mEngine.Loaded)
-                {
-                    this.mEngine.CallMethod("OnSourceRefresh_DataSourceFound", item);
-                }
             }
             else if (item.GetType() == typeof(ReportItem))
             {
                 oItem.Group = this.lstSrcReports.Groups["reportsGroup"];
-
-                if (this.mEngine.Loaded)
-                {
-                    this.mEngine.CallMethod("OnSourceRefresh_ReportFound", item);
-                }
             }
 
             this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
@@ -399,7 +360,7 @@ namespace SSRSMigrate.Forms
 
                 if (this.mEngine.Loaded)
                 {
-                    this.mEngine.CallMethod("OnMigration_Start", this.mSourceRootPath, this.mDestinationRootPath);
+                    this.mEngine.CallMethod("OnMigration_Start", this.mSourceRootPath, this.mDestinationRootPath, null);
                 }
             }
             catch (Exception er)
@@ -408,7 +369,7 @@ namespace SSRSMigrate.Forms
 
                 if (this.mEngine.Loaded)
                 {
-                    this.mEngine.CallMethod("OnMigration_StartError", er, er.Message);
+                    this.mEngine.CallMethod("OnMigration_Start", this.mSourceRootPath, this.mDestinationRootPath, er);
                 }
 
                 MessageBox.Show(
@@ -684,6 +645,12 @@ namespace SSRSMigrate.Forms
                     {
                         status.Item = reportItem;
                         status.FromPath = reportItem.Path;
+
+                        this.mLogger.Debug(
+                            "MigrationWorker - Getting destination path for '{0}' using source path root '{1}' and destination root path '{2}'...",
+                            reportItem.Path,
+                            this.mSourceRootPath,
+                            this.mDestinationRootPath);
 
                         this.mLogger.Debug("MigrationWorker - BEFORE ReportItem.FromPath = {0}; SourceRootPath = {1}", status.FromPath, this.mSourceRootPath);
                         this.mLogger.Debug("MigrationWorker - BEFORE ReportItem.FromPath = {0}; DestinationRootPath = {1}", status.FromPath, this.mDestinationRootPath);

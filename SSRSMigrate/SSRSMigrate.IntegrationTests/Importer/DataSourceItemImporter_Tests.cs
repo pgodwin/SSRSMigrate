@@ -127,7 +127,7 @@ namespace SSRSMigrate.IntegrationTests.Importer
 
             Assert.IsNull(actual);
             Assert.IsFalse(status.Success);
-            Assert.AreEqual("Unexpected end when deserializing object. Path 'Password', line 10, position 20.",
+            Assert.AreEqual("Unexpected end when deserializing object. Path 'Password', line 10, position 19.",
                 status.Error.Message);
         }
         #endregion

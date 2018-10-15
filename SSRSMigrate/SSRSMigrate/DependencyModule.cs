@@ -52,6 +52,16 @@ namespace SSRSMigrate
                 .Named("2010-SRC")
                 .WithConstructorArgument("repository", c => c.Kernel.Get<IReportServerRepository>("2010-SRC"));
 
+            this.Bind<IReportServerReader>()
+                .To<ReportServerReader>()
+                .Named("2005-DEST")
+                .WithConstructorArgument("repository", c => c.Kernel.Get<IReportServerRepository>("2005-DEST"));
+
+            this.Bind<IReportServerReader>()
+                .To<ReportServerReader>()
+                .Named("2010-DEST")
+                .WithConstructorArgument("repository", c => c.Kernel.Get<IReportServerRepository>("2010-DEST"));
+
             // Bind IReportServerWriter
             this.Bind<IReportServerWriter>()
                 .To<ReportServerWriter>()
@@ -122,7 +132,17 @@ namespace SSRSMigrate
             this.Bind<DataSourceEditForm>().To<DataSourceEditForm>();
 
             // Bind PythonEngine
-            this.Bind<PythonEngine>().ToSelf();
+            this.Bind<PythonEngine>().ToSelf()
+                .Named("2005-DEST")
+                .WithConstructorArgument("reportServerReader", c => c.Kernel.Get<IReportServerReader>("2005-DEST"))
+                .WithConstructorArgument("reportServerWriter", c => c.Kernel.Get<IReportServerWriter>("2005-DEST"))
+                .WithConstructorArgument("reportServerRepository", c => c.Kernel.Get<IReportServerRepository>("2005-DEST"));
+
+            this.Bind<PythonEngine>().ToSelf()
+                .Named("2010-DEST")
+                .WithConstructorArgument("reportServerReader", c => c.Kernel.Get<IReportServerReader>("2010-DEST"))
+                .WithConstructorArgument("reportServerWriter", c => c.Kernel.Get<IReportServerWriter>("2010-DEST"))
+                .WithConstructorArgument("reportServerRepository", c => c.Kernel.Get<IReportServerRepository>("2010-DEST"));
         }
 
         private string GetImportZipFileName(IContext context)
