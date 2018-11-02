@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
@@ -33,7 +34,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         List<ReportItem> actualReportItems = null;
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             // Setup GetReport - Expected ReportItem
@@ -49,7 +50,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
                 ModifiedDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
                 Size = 10,
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2010\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2010\\Company Sales.rdl")))
             };
 
             // Setup GetReports - Expected ReportItems
@@ -68,7 +69,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
                     ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
                     Size = 10,
                     VirtualPath = null,
-                    Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Sales Order Detail.rdl")),
+                    Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Sales Order Detail.rdl"))),
                     SubReports = new List<ReportItem>()
                     {
                         new ReportItem()
@@ -83,7 +84,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
                             ModifiedDate =  DateTime.Parse("7/28/2014 12:06:43 PM"),
                             Size = 10,
                             VirtualPath = null,
-                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Store Contacts.rdl")),
+                            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Store Contacts.rdl"))),
                         }
                     }
                 }
@@ -190,7 +191,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
             reader = new ReportServerReader(reportServerRepositoryMock.Object, logger);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             reader = null;

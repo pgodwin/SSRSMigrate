@@ -27,7 +27,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         List<DataSourceItem> actualDataSourceItems = null;
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             // Setup expected DataSourceItems
@@ -162,7 +162,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
             reader = new ReportServerReader(reportServerRepositoryMock.Object, logger);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             reader = null;

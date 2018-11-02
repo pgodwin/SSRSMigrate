@@ -789,7 +789,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
         }
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             this.SetupTestValues();
@@ -900,7 +900,7 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
                 .Returns(() => bundleSummary);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
         }

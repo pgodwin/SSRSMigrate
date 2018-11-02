@@ -388,7 +388,7 @@ namespace SSRSMigrate.IntegrationTests.Bundler.BundleReader
         }
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             var settings = new NinjectSettings()
@@ -402,7 +402,7 @@ namespace SSRSMigrate.IntegrationTests.Bundler.BundleReader
                 new DependencyModule());
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             

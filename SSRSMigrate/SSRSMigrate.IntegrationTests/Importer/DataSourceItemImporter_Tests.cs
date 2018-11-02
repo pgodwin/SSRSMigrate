@@ -52,13 +52,13 @@ namespace SSRSMigrate.IntegrationTests.Importer
         }
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             importer = TestKernel.Instance.Get<DataSourceItemImporter>();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
         }

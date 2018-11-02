@@ -34,7 +34,7 @@ namespace SSRSMigrate.IntegrationTests.Importer
             Description = null,
             ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
             VirtualPath = null,
-            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
         };
         #endregion
 
@@ -49,7 +49,7 @@ namespace SSRSMigrate.IntegrationTests.Importer
         #endregion
 
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             var settings = new NinjectSettings()
@@ -65,7 +65,7 @@ namespace SSRSMigrate.IntegrationTests.Importer
             importer = kernel.Get<ReportItemImporter>();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
         }

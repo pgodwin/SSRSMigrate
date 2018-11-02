@@ -48,7 +48,7 @@ namespace SSRSMigrate.Tests.Importer
         };
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             loggerMock = new MockLogger();
@@ -81,7 +81,7 @@ namespace SSRSMigrate.Tests.Importer
             importer = new FolderItemImporter(fileSystemMock.Object, loggerMock);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
 

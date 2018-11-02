@@ -28,7 +28,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         List<DataSourceItem> dataSourceItems = null;
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             dataSourceItem = new DataSourceItem()
@@ -231,7 +231,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             writer = new ReportServerWriter(reportServerRepositoryMock.Object, logger);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             writer = null;
@@ -367,7 +367,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                     writer.WriteDataSource(dataSource);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Does.Contain("Invalid path"));
         }
 
         [Test]

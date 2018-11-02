@@ -33,7 +33,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
         List<FolderItem> folderItems = null;
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             outputPath = Properties.Settings.Default.DestinationPath;
@@ -85,7 +85,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
             writer = TestKernel.Instance.Get<IReportServerWriter>("2010-DEST");
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             writer = null;
@@ -244,7 +244,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
                     writer.WriteFolder(folderItem);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Does.Contain("Invalid path"));
         }
         #endregion
 

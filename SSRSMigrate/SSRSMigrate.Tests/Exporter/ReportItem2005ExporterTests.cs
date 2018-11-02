@@ -16,6 +16,7 @@ namespace SSRSMigrate.Tests.Exporter
 {
     [TestFixture]
     [CoverageExcludeAttribute]
+    [Ignore("ReportServer2005 no longer tested.")]
     class ReportItem2005ExporterTests
     {
         ReportItemExporter exporter = null;
@@ -27,7 +28,7 @@ namespace SSRSMigrate.Tests.Exporter
         string expectedReportItemFileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl";
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             reportItem = new ReportItem()
@@ -37,7 +38,7 @@ namespace SSRSMigrate.Tests.Exporter
                 Description = null,
                 ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportPath))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, testReportPath)))
             };
 
             exportWriterMock = new Mock<IExportWriter>();

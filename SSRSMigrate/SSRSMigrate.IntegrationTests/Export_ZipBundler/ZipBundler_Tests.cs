@@ -208,7 +208,7 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
         }
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             var settings = new NinjectSettings()
@@ -222,7 +222,7 @@ namespace SSRSMigrate.IntegrationTests.Export_ZipBundler
                 new DependencyModule());
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
 

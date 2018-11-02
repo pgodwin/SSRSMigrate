@@ -83,7 +83,7 @@ namespace SSRSMigrate.Tests.Exporter
 }";
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             expectedDataSourceItemJson = JsonConvert.SerializeObject(dataSourceItem, Formatting.Indented);
@@ -106,7 +106,7 @@ namespace SSRSMigrate.Tests.Exporter
             exporter = new DataSourceItemExporter(exportWriterMock.Object, serializeWrapperMock.Object, logger);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
         }

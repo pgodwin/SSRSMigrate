@@ -36,7 +36,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
 
         string outputPath = null;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             EnvironmentSetup();
@@ -59,7 +59,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
                 Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
                 Description = "Adventure Works sales by quarter and product category. This report illustrates the use of a tablix data region with nested row groups and column groups. You can drilldown from summary data into detail data by showing and hiding rows. This report also illustrates the use of a logo image and a background image.",
                 ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[0]))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, testReportFiles[0])))
             };
 
             reportItem_StoreContacts = new ReportItem()
@@ -69,7 +69,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
                 Description = "AdventureWorks store contacts. This report is a subreport used in Sales Order Detail to show all contacts for a store. Borderstyle is None so lines do not display in main report.",
                 ID = "18fc782e-dd5f-4c65-95ff-957e1bdc98de",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[2])),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, testReportFiles[2]))),
             };
 
             reportItem_SalesOrderDetail = new ReportItem()
@@ -79,7 +79,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
                 Description = "Detail of an individual Adventure Works order. This report can be accessed as a drillthrough report from the Employee Sales Summary and Territory Sales drilldown report. This report illustrates the use of a free form layout, a table, parameters, a subreport that shows multiple store contacts, and expressions.",
                 ID = "70650568-7dd4-4ef4-aeaa-67502de11b4f",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[1])),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, testReportFiles[1]))),
                 SubReports = new List<ReportItem>()
                 {
                     reportItem_StoreContacts
@@ -97,7 +97,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
             outputPath = GetOutPutPath();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             EnvironmentTearDown();
@@ -146,7 +146,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
             Assert.AreEqual(filePath, actualStatus.ToPath);
             Assert.True(File.Exists(actualStatus.ToPath));
             Assert.Null(actualStatus.Errors);
-            Assert.True(TesterUtility.CompareTextFiles(testReportFiles[0], actualStatus.ToPath));
+            Assert.True(TesterUtility.CompareTextFiles(Path.Combine(TestContext.CurrentContext.TestDirectory, testReportFiles[0]), actualStatus.ToPath));
         }
 
         [Test]
@@ -221,7 +221,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
                 Assert.AreEqual(filePath, actualStatus.ToPath, "ToPath");
                 Assert.True(File.Exists(actualStatus.ToPath), " ToPath.Exists");
                 Assert.Null(actualStatus.Errors);
-                Assert.True(TesterUtility.CompareTextFiles(testReportFiles[i], actualStatus.ToPath), "CompareTextFiles");
+                Assert.True(TesterUtility.CompareTextFiles(Path.Combine(TestContext.CurrentContext.TestDirectory, testReportFiles[i]), actualStatus.ToPath), "CompareTextFiles");
             }
         }
         #endregion

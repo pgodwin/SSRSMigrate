@@ -25,7 +25,7 @@ namespace SSRSMigrate.Tests.Exporter
         string expectedFolderItemFileName = "C:\\temp\\SSRSMigrate_AW_Tests\\Reports";
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             expectedFolderItem = new FolderItem()
@@ -47,7 +47,7 @@ namespace SSRSMigrate.Tests.Exporter
             exporter = new FolderItemExporter(exportWriterMock.Object, logger);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
 

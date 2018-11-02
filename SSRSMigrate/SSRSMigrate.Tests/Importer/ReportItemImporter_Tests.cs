@@ -34,7 +34,7 @@ namespace SSRSMigrate.Tests.Importer
                 Description = null,
                 ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
             };
 
         // Expected data for a Report Item that does not exist on disk
@@ -52,11 +52,11 @@ namespace SSRSMigrate.Tests.Importer
             Description = null,
             ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
             VirtualPath = null,
-            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+            Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
         };
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             loggerMock = new MockLogger();
@@ -97,7 +97,7 @@ namespace SSRSMigrate.Tests.Importer
             importer = new ReportItemImporter(fileSystemMock.Object, loggerMock);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
 

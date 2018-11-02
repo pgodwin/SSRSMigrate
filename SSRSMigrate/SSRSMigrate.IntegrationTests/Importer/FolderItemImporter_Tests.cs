@@ -43,7 +43,7 @@ namespace SSRSMigrate.IntegrationTests.Importer
         }
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             var settings = new NinjectSettings()
@@ -59,7 +59,7 @@ namespace SSRSMigrate.IntegrationTests.Importer
             importer = kernel.Get<FolderItemImporter>();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
         }

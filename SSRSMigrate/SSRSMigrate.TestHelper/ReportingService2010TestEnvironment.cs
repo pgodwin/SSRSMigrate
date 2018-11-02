@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using SSRSMigrate.SSRS.Item;
@@ -10,6 +11,9 @@ namespace SSRSMigrate.TestHelper
 {
     public static class ReportingService2010TestEnvironment
     {
+        // Test path
+        private static string mTestPath = string.Empty;
+
         // Data to create on environment setup
         private static List<FolderItem> SetupFolderItems = new List<FolderItem>()
         {
@@ -56,17 +60,7 @@ namespace SSRSMigrate.TestHelper
             }
         };
 
-        private static List<ReportItem> SetupReportItems = new List<ReportItem>()
-        {
-            // Create a report named 'Report Already Exists' so when we run integration tests that expect
-            //  this report to exist, it does
-            new ReportItem()
-            {
-                Name = "Report Already Exists",
-                Path = "{0}/Reports/Report Already Exists",
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
-            }
-        };
+        private static List<ReportItem> SetupReportItems = new List<ReportItem>();
 
         /// <summary>
         /// Gets the reporting service object.
@@ -103,13 +97,26 @@ namespace SSRSMigrate.TestHelper
     
         public static void SetupEnvironment(string url,
             ICredentials credentials,
-            string path)
+            string path,
+            string testPath)
         {
             if (string.IsNullOrEmpty(url))
                 throw new ArgumentException("url");
 
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
+
+            mTestPath = testPath;
+
+            // Create a report named 'Report Already Exists' so when we run integration tests that expect
+            //  this report to exist, it does
+            SetupReportItems.Add(new ReportItem()
+            {
+                Name = "Report Already Exists",
+                Path = "{0}/Reports/Report Already Exists",
+                Definition = TesterUtility.StringToByteArray(
+                    TesterUtility.LoadRDLFile(Path.Combine(mTestPath, "Test AW Reports\\2005\\Company Sales.rdl")))
+            });
 
             ReportingService2010 service = ReportingService2010TestEnvironment.GetReportingService(url, credentials);
 
