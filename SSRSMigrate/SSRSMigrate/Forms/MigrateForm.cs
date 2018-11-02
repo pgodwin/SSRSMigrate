@@ -360,7 +360,7 @@ namespace SSRSMigrate.Forms
 
                 if (this.mEngine.Loaded)
                 {
-                    this.mEngine.CallMethod("OnMigration_Start", this.mSourceRootPath, this.mDestinationRootPath, null);
+                    this.mEngine.CallMethod("OnMigration_Start", null, this.mSourceRootPath, this.mDestinationRootPath);
                 }
             }
             catch (Exception er)
@@ -369,7 +369,7 @@ namespace SSRSMigrate.Forms
 
                 if (this.mEngine.Loaded)
                 {
-                    this.mEngine.CallMethod("OnMigration_Start", this.mSourceRootPath, this.mDestinationRootPath, er);
+                    this.mEngine.CallMethod("OnMigration_Start", er, this.mSourceRootPath, this.mDestinationRootPath);
                 }
 
                 MessageBox.Show(
@@ -752,7 +752,7 @@ namespace SSRSMigrate.Forms
 
                 if (this.mEngine.Loaded)
                 {
-                    this.mEngine.CallMethod("OnMigration_Completed", msg);
+                    this.mEngine.CallMethod("OnMigration_Completed", new Exception("User cancelled"), msg, this.mSourceRootPath, this.mDestinationRootPath);
                 }
             }
             else if ((e.Error != null))
@@ -765,7 +765,7 @@ namespace SSRSMigrate.Forms
 
                 if (this.mEngine.Loaded)
                 {
-                    this.mEngine.CallMethod("OnMigration_Completed", msg);
+                    this.mEngine.CallMethod("OnMigration_Completed", e.Error, msg, this.mSourceRootPath, this.mDestinationRootPath);
                 }
 
                 MessageBox.Show(msg,
@@ -779,7 +779,7 @@ namespace SSRSMigrate.Forms
 
                 if (this.mEngine.Loaded)
                 {
-                    this.mEngine.CallMethod("OnMigration_Completed", msg);
+                    this.mEngine.CallMethod("OnMigration_Completed", null, msg, this.mSourceRootPath, this.mDestinationRootPath);
                 }
             }
 
