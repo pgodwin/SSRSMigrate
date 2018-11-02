@@ -15,6 +15,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2005
     /// </summary>
     [TestFixture]
     [CoverageExcludeAttribute]
+    [Ignore("ReportServer2005 no longer tested.")]
     class ReportServerWriter_DataSourceTests
     {
         IReportServerWriter writer = null;

@@ -13,6 +13,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
 {
     [TestFixture]
     [CoverageExcludeAttribute]
+    [Ignore("ReportServer2005 no longer tested.")]
     class ReportServerReader_FolderTests
     {
         IReportServerReader reader = null;
