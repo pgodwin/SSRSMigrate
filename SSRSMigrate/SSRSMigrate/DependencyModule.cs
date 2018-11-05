@@ -7,6 +7,8 @@ using SSRSMigrate.ReportServer2010;
 using SSRSMigrate.ReportServer2005;
 using Ninject.Modules;
 using System.Net;
+using log4net;
+using Ninject.Extensions.Logging;
 using SSRSMigrate.SSRS.Test;
 using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.SSRS.Reader;
@@ -136,13 +138,15 @@ namespace SSRSMigrate
                 .Named("2005-DEST")
                 .WithConstructorArgument("reportServerReader", c => c.Kernel.Get<IReportServerReader>("2005-DEST"))
                 .WithConstructorArgument("reportServerWriter", c => c.Kernel.Get<IReportServerWriter>("2005-DEST"))
-                .WithConstructorArgument("reportServerRepository", c => c.Kernel.Get<IReportServerRepository>("2005-DEST"));
+                .WithConstructorArgument("reportServerRepository", c => c.Kernel.Get<IReportServerRepository>("2005-DEST"))
+                .WithConstructorArgument("scriptLogger", c => c.Kernel.Get<ILoggerFactory>().GetLogger("ScriptLogger"));
 
             this.Bind<PythonEngine>().ToSelf()
                 .Named("2010-DEST")
                 .WithConstructorArgument("reportServerReader", c => c.Kernel.Get<IReportServerReader>("2010-DEST"))
                 .WithConstructorArgument("reportServerWriter", c => c.Kernel.Get<IReportServerWriter>("2010-DEST"))
-                .WithConstructorArgument("reportServerRepository", c => c.Kernel.Get<IReportServerRepository>("2010-DEST"));
+                .WithConstructorArgument("reportServerRepository", c => c.Kernel.Get<IReportServerRepository>("2010-DEST"))
+                .WithConstructorArgument("scriptLogger", c => c.Kernel.Get<ILoggerFactory>().GetLogger("ScriptLogger"));
         }
 
         private string GetImportZipFileName(IContext context)

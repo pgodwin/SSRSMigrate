@@ -28,6 +28,7 @@ namespace SSRSMigrate.ScriptEngine
         #region Private Variables
         private readonly IFileSystem mFileSystem;
         private readonly ILogger mLogger;
+        private readonly ILogger mScriptLogger;
         private readonly IReportServerReader mReportServerReader;
         private readonly IReportServerWriter mReportServerWriter;
         private readonly IReportServerRepository mReportServerRepository;
@@ -42,6 +43,7 @@ namespace SSRSMigrate.ScriptEngine
         private bool mDebug = false;
         private string mScriptPath;
         private bool mLoaded = false;
+        
         #endregion
 
         #region Public Properties
@@ -106,7 +108,8 @@ namespace SSRSMigrate.ScriptEngine
             IReportServerWriter reportServerWriter,
             IReportServerRepository reportServerRepository,
             IFileSystem fileSystem,
-            ILogger logger)
+            ILogger logger,
+            ILogger scriptLogger)
         {
             if (reportServerReader == null)
                 throw new ArgumentNullException("reportServerReader");
@@ -123,11 +126,15 @@ namespace SSRSMigrate.ScriptEngine
             if (logger == null)
                 throw new ArgumentNullException("logger");
 
+            if (scriptLogger == null)
+                throw new ArgumentNullException("scriptLogger");
+
             this.mReportServerReader = reportServerReader;
             this.mReportServerWriter = reportServerWriter;
             this.mReportServerRepository = reportServerRepository;
             this.mFileSystem = fileSystem;
             this.mLogger = logger;
+            this.mScriptLogger = scriptLogger;
 
             this.mAppDomain = AppDomain.CreateDomain("sandbox");
             this.mScriptEngine = Python.CreateEngine();
@@ -173,6 +180,8 @@ namespace SSRSMigrate.ScriptEngine
                 this.mScriptSource.Execute(this.mScriptScope);
 
                 this.mLoaded = true;
+
+                this.LogLine(string.Format("Loading script '{0}'...", this.mScriptPath));
 
                 this.CallMethod("OnLoad");
             }
@@ -264,54 +273,22 @@ namespace SSRSMigrate.ScriptEngine
         #region Logging
         public void LogLine(string message)
         {
-            this.mLogger.Info(message);
+            this.mScriptLogger.Info(message);
         }
 
-        public void LogLine(string file, string message)
+        public void LogDebug(string message)
         {
-            if (string.IsNullOrEmpty(file))
-                return;
-
-            using (StreamWriter writer = File.AppendText(file))
-            {
-                writer.WriteLine("{0} - {1}", DateTime.Now, message);
-            }
+            this.mScriptLogger.Debug(message);
         }
 
-        public void LogLineRaw(string file, string message)
+        public void LogWarn(string message)
         {
-            if (string.IsNullOrEmpty(file))
-                return;
-
-            using (StreamWriter writer = File.AppendText(file))
-            {
-                writer.WriteLine("{0}", message);
-            }
+            this.mScriptLogger.Warn(message);
         }
 
-        public void DebugLogLine(string message)
+        public void LogTrace(string message)
         {
-            using (StreamWriter writer = File.AppendText(this.LogPath))
-            {
-                writer.WriteLine("{0} - DEBUG - {1}", DateTime.Now, message);
-            }
-        }
-
-        public void ErrorLogLine(string message)
-        {
-            using (StreamWriter writer = File.AppendText(this.ErrorLogPath))
-            {
-                writer.WriteLine("{0} - {1}", DateTime.Now, message);
-            }
-        }
-
-        public void ErrorLogLine(string message, Exception er)
-        {
-            using (StreamWriter writer = File.AppendText(this.ErrorLogPath))
-            {
-                writer.WriteLine("{0} - {1}", DateTime.Now, message);
-                writer.WriteLine(er.StackTrace);
-            }
+            this.mScriptLogger.Trace(message);
         }
         #endregion
     }
