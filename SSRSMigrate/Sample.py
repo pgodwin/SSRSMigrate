@@ -13,8 +13,7 @@ class Plugin:
 
         SQLUtil.Initialize(self.GetConnectionString)
 
-    def OnMigration_Start(self, sourcePath, destPath, error):
-        # On error the parameter 'error' will not be null.
+    def OnMigration_Start(self, sourcePath, destPath):
         Engine.LogLine("OnMigration_Start - %s" % (sourcePath, ))
 
         count = SQLUtil.ExecuteScalar[int]("SELECT COUNT(*) FROM Table")

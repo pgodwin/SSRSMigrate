@@ -14,6 +14,7 @@ using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.Utility;
+using Exception = System.Exception;
 
 namespace SSRSMigrate.ScriptEngine
 {
@@ -163,8 +164,7 @@ namespace SSRSMigrate.ScriptEngine
                 this.mScriptScope.SetVariable("ReportServerRepository", this.mReportServerRepository);
 
                 this.mScriptScope.SetVariable("SQLUtil", DynamicHelpers.GetPythonTypeFromType(typeof (SQLUtil)));
-
-
+                
                 CompiledCode compiled = this.mScriptSource.Compile();
                 compiled.Execute(this.mScriptScope);
 
@@ -220,6 +220,12 @@ namespace SSRSMigrate.ScriptEngine
             {
                 this.mLogger.Error(er, "Missing member when trying to execute method '{0}'.", method);
             }
+            catch (Exception er)
+            {
+                this.mLogger.Error(er, "Script exception in method '{0}'.", method);
+
+                throw er;
+            }
         }
 
         public dynamic CallFunction(string method, params dynamic[] arguments)
@@ -246,6 +252,12 @@ namespace SSRSMigrate.ScriptEngine
 
                 return null;
             }
+            catch (Exception er)
+            {
+                this.mLogger.Error(er, "Script exception in method '{0}'.", method);
+
+                throw er;
+            }
         }
         #endregion
 
@@ -253,11 +265,6 @@ namespace SSRSMigrate.ScriptEngine
         public void LogLine(string message)
         {
             this.mLogger.Info(message);
-
-            //using (StreamWriter writer = File.AppendText(this.LogPath))
-            //{
-            //    writer.WriteLine("{0} - {1}", DateTime.Now, message);
-            //}
         }
 
         public void LogLine(string file, string message)
