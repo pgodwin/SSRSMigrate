@@ -32,4 +32,4 @@ class Plugin:
     def OnMigration_ReportItem(self, item, status):
         Engine.LogLine("OnMigration_ReportItem - %s" % (item.Path, ))
 
-        SQLUtil.ExecuteNonQuery("UPDATE Table SET Path=%s WHERE Path=%s" % (source.ToPath, source.FromPath))
+        SQLUtil.ExecuteNonQuery("UPDATE Table SET Path='%s' WHERE Path='%s'" % (source.ToPath, source.FromPath))
