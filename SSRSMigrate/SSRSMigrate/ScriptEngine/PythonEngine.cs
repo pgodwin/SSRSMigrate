@@ -194,6 +194,9 @@ namespace SSRSMigrate.ScriptEngine
                    this.mFileSystem.Path.GetFileName(script),
                    error);
 
+                this.mLogger.Error(er, "Script syntax error");
+                this.mScriptLogger.Error(er, "Script syntax error");
+
                 throw new Exception(msg, er);
             }
         }
@@ -228,10 +231,12 @@ namespace SSRSMigrate.ScriptEngine
             catch (MissingMemberException er)
             {
                 this.mLogger.Error(er, "Missing member when trying to execute method '{0}'.", method);
+                this.mScriptLogger.Error(er, "Missing member when trying to execute method '{0}'.", method);
             }
             catch (Exception er)
             {
                 this.mLogger.Error(er, "Script exception in method '{0}'.", method);
+                this.mScriptLogger.Error(er, "Script exception in method '{0}'.", method);
 
                 throw er;
             }
@@ -258,12 +263,14 @@ namespace SSRSMigrate.ScriptEngine
             catch (MissingMemberException er)
             {
                 this.mLogger.Error(er, "Missing member when trying to execute method '{0}'.", method);
+                this.mScriptLogger.Error(er, "Missing member when trying to execute method '{0}'.", method);
 
                 return null;
             }
             catch (Exception er)
             {
                 this.mLogger.Error(er, "Script exception in method '{0}'.", method);
+                this.mScriptLogger.Error(er, "Script exception in method '{0}'.", method);
 
                 throw er;
             }
