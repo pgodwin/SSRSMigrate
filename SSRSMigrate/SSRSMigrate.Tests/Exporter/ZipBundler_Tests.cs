@@ -279,7 +279,7 @@ namespace SSRSMigrate.Tests.Exporter
         }
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             this.SetUpValues();
@@ -403,7 +403,7 @@ namespace SSRSMigrate.Tests.Exporter
                 .Returns(() => expectedSummaryNoData);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             zipBundler = null;

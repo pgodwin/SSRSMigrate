@@ -13,6 +13,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
 {
     [TestFixture]
     [CoverageExcludeAttribute]
+    [Ignore("ReportServer2005 no longer tested.")]
     class ReportServerReader_FolderTests
     {
         IReportServerReader reader = null;
@@ -26,7 +27,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         List<FolderItem> actualFolderItems = null;
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             // Setup expected FolderItems
@@ -54,7 +55,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
             reader = TestKernel.Instance.Get<IReportServerReader>("2005-SRC");
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             reader = null;
@@ -165,12 +166,9 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         }
 
         [Test]
-        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
-            ExpectedMessage = "The item '/SSRSMigrate_AW_Tests Doesnt Exist' cannot be found", 
-            MatchType = MessageMatch.Contains)]
         public void GetFolders_PathDoesntExist()
         {
-            List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_AW_Tests Doesnt Exist");
+            Assert.That(() => reader.GetFolders("/SSRSMigrate_AW_Tests Doesnt Exist"), Throws.TypeOf<System.Web.Services.Protocols.SoapException>());
         }
 
         [Test]
@@ -233,15 +231,9 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
             Assert.That(ex.Message, Is.EqualTo("Value cannot be null.\r\nParameter name: progressReporter"));
         }
 
-        [Test]
-        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
-            ExpectedMessage = "The item '/SSRSMigrate_AW_Tests Doesnt Exist' cannot be found",
-            MatchType = MessageMatch.Contains)]
         public void GetFolders_UsingDelegate_PathDoesntExist()
         {
-            reader.GetFolders("/SSRSMigrate_AW_Tests Doesnt Exist", GetFolders_Reporter);
-
-            Assert.AreEqual(expectedFolderItems.Count(), actualFolderItems.Count());
+            Assert.That(() => reader.GetFolders("/SSRSMigrate_AW_Tests Doesnt Exist", GetFolders_Reporter), Throws.TypeOf<System.Web.Services.Protocols.SoapException>());
         }
 
         [Test]

@@ -26,7 +26,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
 
         string outputPath = null;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             EnvironmentSetup();
@@ -65,7 +65,7 @@ namespace SSRSMigrate.IntegrationTests.Exporter
             outputPath = GetOutPutPath();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             EnvironmentTearDown();

@@ -22,7 +22,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         List<DataSourceItem> actualDataSourceItems = null;
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             // Setup expected DataSourceItems
@@ -73,7 +73,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
             reader = TestKernel.Instance.Get<IReportServerReader>("2010-SRC");
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             reader = null;
@@ -188,16 +188,12 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         }
 
         [Test]
-        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
-            ExpectedMessage = "The item '/SSRSMigrate_AW_Tests Doesnt Exist' cannot be found",
-            MatchType = MessageMatch.Contains)]
         public void GetDataSources_PathDoesntExist()
         {
             string path = "/SSRSMigrate_AW_Tests Doesnt Exist";
 
-            List<DataSourceItem> actual = reader.GetDataSources(path);
 
-            Assert.IsNull(actual);
+            Assert.That(() => reader.GetDataSources(path), Throws.TypeOf<System.Web.Services.Protocols.SoapException>());
         }
         #endregion
 
@@ -249,16 +245,11 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         }
 
         [Test]
-        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
-            ExpectedMessage = "The item '/SSRSMigrate_AW_Tests Doesnt Exist' cannot be found",
-            MatchType = MessageMatch.Contains)]
         public void GetDataSources_UsingDelegate_PathDoesntExist()
         {
             string path = "/SSRSMigrate_AW_Tests Doesnt Exist";
 
-            reader.GetDataSources(path, GetDataSources_Reporter);
-
-            Assert.IsFalse(actualDataSourceItems.Any());
+            Assert.That(() => reader.GetDataSources(path, GetDataSources_Reporter), Throws.TypeOf<System.Web.Services.Protocols.SoapException>());
         }
 
         public void GetDataSources_Reporter(DataSourceItem dataSource)

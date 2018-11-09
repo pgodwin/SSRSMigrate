@@ -56,7 +56,7 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2010
         List<FolderItem> actualFolderItems = null;
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             EnvironmentSetup();
@@ -71,7 +71,7 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2010
             reader = TestKernel.Instance.Get<IReportServerReader>("2010-SRC");
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             EnvironmentTearDown();
@@ -107,7 +107,7 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2010
                 Description = "Adventure Works sales by quarter and product category. This report illustrates the use of a tablix data region with nested row groups and column groups. You can drilldown from summary data into detail data by showing and hiding rows. This report also illustrates the use of a logo image and a background image.",
                 ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[0]))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, testReportFiles[0])))
             };
 
             expectedReportItem_StoreContacts = new ReportItem()
@@ -117,7 +117,7 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2010
                 Description = "AdventureWorks store contacts. This report is a subreport used in Sales Order Detail to show all contacts for a store. Borderstyle is None so lines do not display in main report.",
                 ID = "18fc782e-dd5f-4c65-95ff-957e1bdc98de",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[2])),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, testReportFiles[2]))),
             };
 
             expectedReportItem_SalesOrderDetail = new ReportItem()
@@ -127,7 +127,7 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2010
                 Description = "Detail of an individual Adventure Works order. This report can be accessed as a drillthrough report from the Employee Sales Summary and Territory Sales drilldown report. This report illustrates the use of a free form layout, a table, parameters, a subreport that shows multiple store contacts, and expressions.",
                 ID = "70650568-7dd4-4ef4-aeaa-67502de11b4f",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(testReportFiles[1])),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, testReportFiles[1]))),
                 SubReports = new List<ReportItem>()
                 {
                     expectedReportItem_StoreContacts
@@ -293,9 +293,9 @@ namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2010
             }
 
             // The exported reports file matches the expected file
-            Assert.True(TesterUtility.CompareTextFiles(testReportFiles[0], outputPath + "\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl"));
-            Assert.True(TesterUtility.CompareTextFiles(testReportFiles[1], outputPath + "\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl"));
-            Assert.True(TesterUtility.CompareTextFiles(testReportFiles[2], outputPath + "\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl"));
+            Assert.True(TesterUtility.CompareTextFiles(Path.Combine(TestContext.CurrentContext.TestDirectory, testReportFiles[0]), outputPath + "\\SSRSMigrate_AW_Tests\\Reports\\Company Sales.rdl"));
+            Assert.True(TesterUtility.CompareTextFiles(Path.Combine(TestContext.CurrentContext.TestDirectory, testReportFiles[1]), outputPath + "\\SSRSMigrate_AW_Tests\\Reports\\Sales Order Detail.rdl"));
+            Assert.True(TesterUtility.CompareTextFiles(Path.Combine(TestContext.CurrentContext.TestDirectory, testReportFiles[2]), outputPath + "\\SSRSMigrate_AW_Tests\\Reports\\Store Contacts.rdl"));
         }
 
         private void GetReports_Reporter(ReportItem reportItem)

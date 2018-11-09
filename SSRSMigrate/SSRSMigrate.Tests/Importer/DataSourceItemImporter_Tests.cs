@@ -107,7 +107,7 @@ namespace SSRSMigrate.Tests.Importer
 		""Password"": null,";
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             loggerMock = new MockLogger();
@@ -151,7 +151,7 @@ namespace SSRSMigrate.Tests.Importer
             importer = new DataSourceItemImporter(serializeWrapperMock.Object, fileSystemMock.Object, loggerMock);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             

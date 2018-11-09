@@ -33,7 +33,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
         DataSourceItem emptyPathDataSourceItem = null;
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             outputPath = Properties.Settings.Default.DestinationPath;
@@ -206,7 +206,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
             writer = TestKernel.Instance.Get<IReportServerWriter>("2010-DEST");
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             writer = null;
@@ -232,7 +232,8 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
             ReportingService2010TestEnvironment.SetupEnvironment(
                 Properties.Settings.Default.ReportServer2008R2WebServiceUrl,
                 CredentialCache.DefaultNetworkCredentials,
-                outputPath);
+                outputPath,
+                TestContext.CurrentContext.TestDirectory);
         }
 
         private void TeardownEnvironment()
@@ -369,7 +370,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
                     writer.WriteDataSource(dataSource);
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Does.Contain("Invalid path"));
         }
         #endregion
 
@@ -514,7 +515,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
                     writer.WriteDataSources(items.ToArray());
                 });
 
-            Assert.That(ex.Message, Is.StringContaining("Invalid path"));
+            Assert.That(ex.Message, Does.Contain("Invalid path"));
         }
         #endregion
     }

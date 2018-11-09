@@ -29,7 +29,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         List<FolderItem> actualFolderItems = null;
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             // Setup expected FolderItems
@@ -130,7 +130,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader
             reader = new ReportServerReader(reportServerRepositoryMock.Object, logger);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             reader = null;

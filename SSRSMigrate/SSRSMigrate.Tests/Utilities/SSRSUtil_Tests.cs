@@ -429,12 +429,10 @@ namespace SSRSMigrate.Tests.Utilities
         public void GetFullDestinationPathForItem_DoesntStartWithSlashAndDoesntContainSlash()
         {
             string expected = "Test Report";
-
             string actual = SSRSUtil.GetFullDestinationPathForItem(
                 "/Folder",
                 "/Folder2",
                 "Test Report");
-
             Assert.AreEqual(expected, actual);
         }
         #endregion

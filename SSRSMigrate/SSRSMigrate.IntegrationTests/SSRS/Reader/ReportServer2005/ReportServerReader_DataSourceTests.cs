@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web.Services.Protocols;
 using NUnit.Framework;
 using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.SSRS.Item;
@@ -10,6 +11,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
 {
     [TestFixture]
     [CoverageExcludeAttribute]
+    [Ignore("ReportServer2005 no longer tested.")]
     class ReportServerReader_DataSourceTests
     {
         IReportServerReader reader = null;
@@ -22,7 +24,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         List<DataSourceItem> actualDataSourceItems = null;
         #endregion
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             // Setup expected DataSourceItems
@@ -34,7 +36,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
                     VirtualPath = null,
                     Name = "AWDataSource",
                     Path = "/SSRSMigrate_AW_Tests/Data Sources/AWDataSource",
-                    ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
+                    ConnectString = "Data Source=(local);Initial Catalog=AdventureWorks2008",
                     CredentialsRetrieval = "Integrated",
                     Enabled = true,
                     EnabledSpecified = true,
@@ -54,7 +56,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
                     VirtualPath = null,
                     Name = "Test Data Source",
                     Path = "/SSRSMigrate_AW_Tests/Data Sources/Test Data Source",
-                    ConnectString = "Data Source=(local)\\SQL2008;Initial Catalog=AdventureWorks2008",
+                    ConnectString = "Data Source=(local);Initial Catalog=AdventureWorks2008",
                     CredentialsRetrieval = "Integrated",
                     Enabled = true,
                     EnabledSpecified = true,
@@ -73,7 +75,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
             reader = TestKernel.Instance.Get<IReportServerReader>("2005-SRC");
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             reader = null;
@@ -188,16 +190,11 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         }
 
         [Test]
-        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
-            ExpectedMessage = "The item '/SSRSMigrate_AW_Tests Doesnt Exist' cannot be found",
-            MatchType = MessageMatch.Contains)]
         public void GetDataSources_PathDoesntExist()
         {
             string path = "/SSRSMigrate_AW_Tests Doesnt Exist";
 
-            List<DataSourceItem> actual = reader.GetDataSources(path);
-
-            Assert.IsNull(actual);
+            Assert.That(() => reader.GetDataSources(path), Throws.TypeOf<System.Web.Services.Protocols.SoapException>());
         }
         #endregion
 
@@ -249,16 +246,11 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         }
 
         [Test]
-        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
-            ExpectedMessage = "The item '/SSRSMigrate_AW_Tests Doesnt Exist' cannot be found",
-            MatchType = MessageMatch.Contains)]
         public void GetDataSources_UsingDelegate_PathDoesntExist()
         {
             string path = "/SSRSMigrate_AW_Tests Doesnt Exist";
 
-            reader.GetDataSources(path, GetDataSources_Reporter);
-
-            Assert.IsFalse(actualDataSourceItems.Any());
+            Assert.That(() =>  reader.GetDataSources(path, GetDataSources_Reporter), Throws.TypeOf<System.Web.Services.Protocols.SoapException>());
         }
 
         public void GetDataSources_Reporter(DataSourceItem dataSource)

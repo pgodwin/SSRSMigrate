@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
@@ -15,6 +16,7 @@ using SSRSMigrate.TestHelper.Logging;
 namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
 {
     [TestFixture]
+    [Ignore("ReportServer2005 no longer tested.")]
     class ReportServerWriter_ReportTests
     {
         ReportServerWriter writer = null;
@@ -44,7 +46,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 ModifiedDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
                 Size = 10,
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
             };
 
             reportItem_StoreContacts = new ReportItem()
@@ -59,7 +61,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 ModifiedDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
                 Size = 10,
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Store Contacts.rdl")),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Store Contacts.rdl"))),
             };
 
             reportItem_SalesOrderDetail = new ReportItem()
@@ -74,7 +76,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 ModifiedDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
                 Size = 10,
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Sales Order Detail.rdl")),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Sales Order Detail.rdl"))),
                 SubReports = new List<ReportItem>()
                 {
                     reportItem_StoreContacts
@@ -88,7 +90,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
             };
 
             reportItem_InvalidPath = new ReportItem()
@@ -98,7 +100,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
             };
 
             reportItem_NullDefinition = new ReportItem()
@@ -123,7 +125,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 ModifiedDate = DateTime.Parse("7/28/2014 12:06:43 PM"),
                 Size = 10,
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
             };
 
             reportItems = new List<ReportItem>()
@@ -134,7 +136,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
             };
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             SetupReportItems();
@@ -241,7 +243,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
             writer = new ReportServerWriter(reportServerRepositoryMock.Object, logger);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             writer = null;
@@ -317,7 +319,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
             };
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -339,7 +341,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
             };
 
             ArgumentException ex = Assert.Throws<ArgumentException>(
@@ -361,7 +363,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
             };
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
@@ -383,7 +385,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
             };
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
@@ -505,7 +507,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
             };
 
             List<ReportItem> items = new List<ReportItem>()
@@ -534,7 +536,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
             };
 
             List<ReportItem> items = new List<ReportItem>()
@@ -563,7 +565,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
             };
 
             List<ReportItem> items = new List<ReportItem>()
@@ -592,7 +594,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
             };
 
             List<ReportItem> items = new List<ReportItem>()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
@@ -11,6 +12,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
 {
     [TestFixture]
     [CoverageExcludeAttribute]
+    [Ignore("ReportServer2005 no longer tested.")]
     class ReportServerReader_ReportTests
     {
         IReportServerReader reader = null;
@@ -36,7 +38,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
                 Description = "Adventure Works sales by quarter and product category. This report illustrates the use of a tablix data region with nested row groups and column groups. You can drilldown from summary data into detail data by showing and hiding rows. This report also illustrates the use of a logo image and a background image.",
                 ID = "16d599e6-9c87-4ebc-b45b-5a47e3c73746",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Company Sales.rdl"))
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Company Sales.rdl")))
             };
 
             expectedReportItem_StoreContacts = new ReportItem()
@@ -46,7 +48,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
                 Description = "AdventureWorks store contacts. This report is a subreport used in Sales Order Detail to show all contacts for a store. Borderstyle is None so lines do not display in main report.",
                 ID = "18fc782e-dd5f-4c65-95ff-957e1bdc98de",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Store Contacts.rdl")),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Store Contacts.rdl"))),
             };
             
             expectedReportItem_SalesOrderDetail = new ReportItem()
@@ -56,7 +58,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
                 Description = "Detail of an individual Adventure Works order. This report can be accessed as a drillthrough report from the Employee Sales Summary and Territory Sales drilldown report. This report illustrates the use of a free form layout, a table, parameters, a subreport that shows multiple store contacts, and expressions.",
                 ID = "70650568-7dd4-4ef4-aeaa-67502de11b4f",
                 VirtualPath = null,
-                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile("Test AW Reports\\2005\\Sales Order Detail.rdl")),
+                Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2005\\Sales Order Detail.rdl"))),
                 SubReports = new List<ReportItem>()
                 {
                     expectedReportItem_StoreContacts
@@ -72,7 +74,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
             };
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             SetupExpectedResults();
@@ -80,7 +82,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
             reader = TestKernel.Instance.Get<IReportServerReader>("2005-SRC");
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             reader = null;
@@ -184,18 +186,12 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
             Assert.That(ex.Message, Is.EqualTo("path"));
         }
 
-        [Test]
-        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
-            ExpectedMessage = "The item '/SSRSMigrate_AW_Tests Doesnt Exist' cannot be found",
-            MatchType = MessageMatch.Contains)]
-        
+        [Test]        
         public void GetReports_PathDoesntExist()
         {
             string path = "/SSRSMigrate_AW_Tests Doesnt Exist";
 
-            List<ReportItem> actual = reader.GetReports(path);
-
-            Assert.IsNull(actual);
+            Assert.That(() => reader.GetReports(path), Throws.TypeOf<System.Web.Services.Protocols.SoapException>());
         }
         #endregion
 
@@ -248,16 +244,11 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
         }
 
         [Test]
-        [ExpectedException(typeof(System.Web.Services.Protocols.SoapException),
-            ExpectedMessage = "The item '/SSRSMigrate_AW_Tests Doesnt Exist' cannot be found",
-            MatchType = MessageMatch.Contains)]
         public void GetReports_UsingDelegate_PathDoesntExist()
         {
             string path = "/SSRSMigrate_AW_Tests Doesnt Exist";
 
-            reader.GetReports(path, GetReports_Reporter);
-
-            Assert.IsFalse(actualReportItems.Any());
+            Assert.That(() => reader.GetReports(path, GetReports_Reporter), Throws.TypeOf<System.Web.Services.Protocols.SoapException>());
         }
 
         public void GetReports_Reporter(ReportItem report)
