@@ -135,6 +135,7 @@
     <Compile Include="Importer\FolderItemImporter_Tests.cs" />
     <Compile Include="Importer\ReportItemImporter_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PythonEngine\PythonEngine_Tests.cs" />
     <Compile Include="SSRS\Reader\ReportServer2010\ReportServerReader_ReportTests.cs" />
     <Compile Include="SSRS\Reader\ReportServerReaderTests.cs" />
     <Compile Include="SSRS\Reader\ReportServerReader_DataSourceTests.cs" />

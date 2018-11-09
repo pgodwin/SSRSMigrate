@@ -158,7 +158,10 @@ namespace SSRSMigrate.ScriptEngine
             {
                 this.mScriptPath = script;
 
-                this.mScriptSource = this.mScriptEngine.CreateScriptSourceFromFile(script);
+                string scriptContent = this.mFileSystem.File.ReadAllText(this.mScriptPath);
+
+                this.mScriptSource = this.mScriptEngine.CreateScriptSourceFromString(scriptContent);
+
                 this.mScriptScope = this.mScriptEngine.CreateScope();
 
                 this.mScriptScope.SetVariable("Engine", this);
@@ -204,12 +207,15 @@ namespace SSRSMigrate.ScriptEngine
         #region Script Engine Methods
         public void SetGlobalVariable(string name, object value)
         {
-            this.mScriptScope.SetVariable(name, value);
+           this.mScriptScope.SetVariable(name, value);
         }
 
         public dynamic GetGlobalVariable(string name)
         {
-            return this.mScriptScope.GetVariable(name);
+            if (this.mScriptScope.ContainsVariable(name))
+                return this.mScriptScope.GetVariable(name);
+            else
+                return null;
         }
 
         public void CallMethod(string method, params dynamic[] arguments)
@@ -220,18 +226,21 @@ namespace SSRSMigrate.ScriptEngine
 
                 if (this.mScriptClass != null)
                 {
-                    object instance = ops.GetMember(this.mScriptClass, method);
-
-                    if (instance != null)
+                    if (ops.ContainsMember(this.mScriptClass, method))
                     {
-                        ops.InvokeMember(this.mScriptClass, method, arguments);
+                        object instance = ops.GetMember(this.mScriptClass, method);
+
+                        if (instance != null)
+                        {
+                            ops.InvokeMember(this.mScriptClass, method, arguments);
+                        }
+                    }
+                    else
+                    {
+                        this.mLogger.Error("Missing member when trying to execute method '{0}'.", method);
+                        this.mScriptLogger.Error("Missing member when trying to execute method '{0}'.", method);
                     }
                 }
-            }
-            catch (MissingMemberException er)
-            {
-                this.mLogger.Error(er, "Missing member when trying to execute method '{0}'.", method);
-                this.mScriptLogger.Error(er, "Missing member when trying to execute method '{0}'.", method);
             }
             catch (Exception er)
             {
@@ -250,20 +259,22 @@ namespace SSRSMigrate.ScriptEngine
 
                 if (this.mScriptClass != null)
                 {
-                    object instance = ops.GetMember(this.mScriptClass, method);
-
-                    if (instance != null)
+                    if (ops.ContainsMember(this.mScriptClass, method))
                     {
-                        ops.InvokeMember(this.mScriptClass, method, arguments);
-                    }
-                }
+                        object instance = ops.GetMember(this.mScriptClass, method);
 
-                return null;
-            }
-            catch (MissingMemberException er)
-            {
-                this.mLogger.Error(er, "Missing member when trying to execute method '{0}'.", method);
-                this.mScriptLogger.Error(er, "Missing member when trying to execute method '{0}'.", method);
+                        if (instance != null)
+                        {
+                            return ops.InvokeMember(this.mScriptClass, method, arguments);
+                        }
+                    }
+                    else
+                    {
+                        this.mLogger.Error("Missing member when trying to execute method '{0}'.", method);
+                        this.mScriptLogger.Error("Missing member when trying to execute method '{0}'.", method);
+                    }
+                    
+                }
 
                 return null;
             }
