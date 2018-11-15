@@ -17,7 +17,6 @@ using IronPython.Runtime.Exceptions;
 
 namespace SSRSMigrate.Forms
 {
-    [CoverageExclude]
     public partial class MigrateForm : Form
     {
         private const string cScriptClassName = "Plugin";

@@ -16,7 +16,6 @@ using Ninject.Extensions.Logging;
 
 namespace SSRSMigrate.Forms
 {
-    [CoverageExclude]
     public partial class ExportZipForm : Form
     {
         private readonly IReportServerReader mReportServerReader = null;

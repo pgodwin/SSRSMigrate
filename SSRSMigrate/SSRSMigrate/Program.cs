@@ -2,11 +2,8 @@
 using System.Windows.Forms;
 using SSRSMigrate.Forms;
 
-public class CoverageExcludeAttribute : System.Attribute { }
-
 namespace SSRSMigrate
 {
-    [CoverageExcludeAttribute]
     static class Program
     {
         /// <summary>

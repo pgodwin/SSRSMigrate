@@ -13,7 +13,6 @@ using Ninject.Extensions.Logging;
 
 namespace SSRSMigrate.Forms
 {
-    [CoverageExclude]
     public partial class ExportDiskForm : Form
     {
         private readonly IReportServerReader mReportServerReader = null;

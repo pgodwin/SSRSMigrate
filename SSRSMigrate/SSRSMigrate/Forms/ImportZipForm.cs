@@ -19,7 +19,6 @@ using SSRSMigrate.Utility;
 
 namespace SSRSMigrate.Forms
 {
-    [CoverageExclude]
     public partial class ImportZipForm : Form
     {
         private readonly IBundleReader mBundleReader = null;
