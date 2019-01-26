@@ -173,5 +173,4 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 
-SSRSMigrate/SSRSMigrate.IntegrationTests/Configs/local.config
 SSRSMigrate/SSRSMigrate.sln.GhostDoc.xml
