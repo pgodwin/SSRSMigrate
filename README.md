@@ -1,6 +1,6 @@
 SSRSMigrate
 ========
-[![Build status](https://ci.appveyor.com/api/projects/status/bvj8gbpf8400t689?svg=true)](https://ci.appveyor.com/project/jpann/ssrsmigrate) [![](https://img.shields.io/appveyor/tests/jpann/SSRSMigrate.svg)](https://ci.appveyor.com/project/jpann/ssrsmigrate/build/tests)
+[![Build status](https://ci.appveyor.com/api/projects/status/bvj8gbpf8400t689?svg=true)](https://ci.appveyor.com/project/jpann/ssrsmigrate) [![](https://img.shields.io/appveyor/tests/jpann/SSRSMigrate.svg)](https://ci.appveyor.com/project/jpann/ssrsmigrate/build/tests) ![](https://img.shields.io/github/license/jpann/SSRSMigrate.svg)
 
 Goal of this project is to have a utility that will allow you to easily migrate reports from one Microsoft SQL Reporting Services (SSRS) server to another or from one root folder in SSRS to another folder.
 
@@ -16,7 +16,7 @@ Features
 #### Server-to-Server migration
 This method directly migrates all folders, data sources and report items contained within the specified path on the source server to the specified path on the destination server. 
 
-The path specified for the destination server will contain all items from the path on the source server. For example, if you migrate path '/SourceProject' from the source server to the path '/DestinationProject' on the destination server, everything that is contained within '/SourceProject' will be created on the destination server under '/DestinationProject', so your source report of '/SourceProject/My Report' will now be '/DestinationProject/My Report' on the destination server.
+The path specified for the destination server will contain all items from the path on the source server. For example, if you migrate path `/SourceProject` from the source server to the path `/DestinationProject` on the destination server, Reports/Data Sources/Folders contained within `/SourceProject` will be created on the destination server under `/DestinationProject`, so your source report of `/SourceProject/My Report` will now be `/DestinationProject/My Report` on the destination server.
 
 The report and data source definitions that are migrated will be updated to point to the new paths on the destination server during this process.
 
@@ -37,7 +37,7 @@ The ZIP archive is created using a format specifically used by the 'Import from 
 #### Import from ZIP archive
 This method imports all folders, data sources and report items contained within the specified ZIP archive to the path specified on the destination server.
 
-The path specified for the destination server will contain all items from the archive For example, if the archive was created by exporting the path '/SourceProject' and you import to the path '/DestinationProject' on the destination server, everything that is contained within '/SourceProject' will be created on the destination server under '/DestinationProject', so your source report of '/SourceProject/My Report' will now be '/DestinationProject/My Report' on the destination server.
+The path specified for the destination server will contain all items from the archive For example, if the archive was created by exporting the path `/SourceProject` and you import to the path `/DestinationProject` on the destination server, everything that is contained within `/SourceProject` will be created on the destination server under `/DestinationProject`, so your source report of `/SourceProject/My Report` will now be `/DestinationProject/My Report` on the destination server.
 
 The report and data source definitions that are migrated will be updated to point to the new paths on the destination server during this process.
 
@@ -50,24 +50,23 @@ Normal log messages are written to the SSRSMigrate.log file and errors are writt
 **Enabling debug level logging**
 
 
-You can enable debug level logging by editing the SSRSMigrate.exe.config file and changing the level value in the 'root' tag to 'DEBUG'.
+You can enable debug level logging by editing the SSRSMigrate.exe.config file and changing the level value in the `root` tag to `DEBUG`.
 
  Default information level logging:
-
+```
        <root>
           <level value="INFO" />
           <appender-ref ref="LogFileAppender" />
           <appender-ref ref="ErrorFileAppender" />
         </root>
- 
+ ```
 
  Change the 'value' attribute to 'DEBUG':
-  
-
+```
       <root>
           <level value="DEBUG" />
           <appender-ref ref="LogFileAppender" />
           <appender-ref ref="ErrorFileAppender" />
         </root>
-
+```
 
