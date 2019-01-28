@@ -1,0 +1,46 @@
+version: 1.1.0.{build}-{branch}
+
+branches:
+  only:
+    - master
+
+skip_non_tags: true
+
+image: Visual Studio 2015
+
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: AJDys/cqsvuZXdgzUl8LtTV8KLZ8CsXaniFYLTGU+R7DrYi1bg/5tH9jEiN6HnWG
+
+before_build:
+  - nuget restore "SSRSMigrate\SSRSMigrate.sln"
+
+build:
+  project: SSRSMigrate\SSRSMigrate.sln
+  verbosity: minimal
+
+  test:
+  assemblies:
+    except:
+      - **\SSRSMigrate.IntegrationTests.dll
+
+test_script:
+- ps: >-
+	nuget install NUnit.ConsoleRunner -OutputDirectory packages -Version 3.9.0
+    nuget install OpenCover -OutputDirectory packages -Version 4.6.519
+    dotnet tool install coveralls.net --version 1.0.0 --tool-path tools
+
+    .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[*]*" -target:"packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe" -targetargs:"/domain:single SSRSMigrate\SSRSMigrate\SSRSMigrate.Tests\bin\Debug\SSRSMigrate.Tests.dll" -output:coverage.xml
+    
+	$coveralls = (Resolve-Path "packages/coveralls.net.*/tools/csmacnz.coveralls.exe").ToString()
+    
+    $env:APPVEYOR_BUILD_NUMBER
+    
+    & $coveralls --opencover -i coverage.xml --repoToken $env:COVERALLS_REPO_TOKEN --useRelativePaths --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_BUILD_NUMBER --serviceName appveyor

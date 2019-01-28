@@ -50,7 +50,7 @@ Normal log messages are written to the SSRSMigrate.log file and errors are writt
 **Enabling debug level logging**
 
 
-You can enable debug level logging by editing the SSRSMigrate.exe.config file and changing the level value in the `root` tag to `DEBUG`.
+You can enable debug level logging by editing the SSRSMigrate.exe.config file and changing the level `value` in the `root` tag to `DEBUG`.
 
  Default information level logging:
 ```
@@ -61,7 +61,7 @@ You can enable debug level logging by editing the SSRSMigrate.exe.config file an
         </root>
  ```
 
- Change the 'value' attribute to 'DEBUG':
+ Change the `value` attribute to `DEBUG`:
 ```
       <root>
           <level value="DEBUG" />
