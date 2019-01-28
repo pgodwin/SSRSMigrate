@@ -29,7 +29,7 @@ build:
   test:
   assemblies:
     except:
-      - **\SSRSMigrate.IntegrationTests.dll
+      - SSRSMigrate.IntegrationTests.dll
 
 test_script:
 - ps: >-
