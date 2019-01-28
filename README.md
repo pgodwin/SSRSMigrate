@@ -1,6 +1,6 @@
 SSRSMigrate
 ========
-[![Build status](https://ci.appveyor.com/api/projects/status/bvj8gbpf8400t689?svg=true)](https://ci.appveyor.com/project/jpann/ssrsmigrate) [![](https://img.shields.io/appveyor/tests/jpann/SSRSMigrate.svg)](https://ci.appveyor.com/project/jpann/ssrsmigrate/build/tests) ![](https://img.shields.io/github/license/jpann/SSRSMigrate.svg)
+[![Build status](https://ci.appveyor.com/api/projects/status/bvj8gbpf8400t689?svg=true)](https://ci.appveyor.com/project/jpann/ssrsmigrate) [![](https://img.shields.io/appveyor/tests/jpann/SSRSMigrate.svg)](https://ci.appveyor.com/project/jpann/ssrsmigrate/build/tests) [![Coverage Status](https://coveralls.io/repos/github/jpann/SSRSMigrate/badge.svg?branch=master)](https://coveralls.io/github/jpann/SSRSMigrate?branch=master) ![](https://img.shields.io/github/license/jpann/SSRSMigrate.svg)
 
 Goal of this project is to have a utility that will allow you to easily migrate reports from one Microsoft SQL Reporting Services (SSRS) server to another or from one root folder in SSRS to another folder.
 
