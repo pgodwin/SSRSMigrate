@@ -26,12 +26,12 @@ build:
   project: SSRSMigrate\SSRSMigrate.sln
   verbosity: minimal
 
-  test:
+test:
   assemblies:
     except:
       - SSRSMigrate.IntegrationTests.dll
 
-test_script:
+after_test:
 	- cmd:nuget install NUnit.ConsoleRunner -OutputDirectory packages -Version 3.9.0
 	- cmd:nuget install OpenCover -OutputDirectory packages -Version 4.6.519
 	- cmd:dotnet tool install coveralls.net --version 1.0.0 --tool-path tools
