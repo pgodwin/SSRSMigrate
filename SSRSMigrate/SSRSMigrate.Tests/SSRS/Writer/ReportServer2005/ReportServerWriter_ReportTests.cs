@@ -16,6 +16,7 @@ using SSRSMigrate.TestHelper.Logging;
 namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2005
 {
     [TestFixture]
+    [CoverageExcludeAttribute]
     [Ignore("ReportServer2005 no longer tested.")]
     class ReportServerWriter_ReportTests
     {
