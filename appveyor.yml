@@ -19,8 +19,10 @@ before_build:
   nuget restore "SSRSMigrate\SSRSMigrate.sln"
 
 configuration:
-  - Debug
   - Release
+
+platform:
+  - x86
 
 build:
   project: SSRSMigrate\SSRSMigrate.sln
@@ -35,11 +37,12 @@ after_test:
   - nuget install NUnit.ConsoleRunner -OutputDirectory packages -Version 3.9.0
   - nuget install OpenCover -OutputDirectory packages -Version 4.6.519
   - dotnet tool install coveralls.net --version 1.0.0 --tool-path tools
-  - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[SSRSMigrate.Tests*]*" -target:".\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe" -targetargs:"/domain:single SSRSMigrate\SSRSMigrate.Tests\bin\Debug\SSRSMigrate.Tests.dll" -output:coverage.xml
+  - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[SSRSMigrate.Tests*]*" -target:".\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe" -targetargs:"/domain:single SSRSMigrate\SSRSMigrate.Tests\bin\%CONFIGURATION%\SSRSMigrate.Tests.dll" -output:coverage.xml
   - .\tools\csmacnz.coveralls.exe --opencover -i coverage.xml --repoToken %COVERALLS_REPO_TOKEN%
 
 after_build:
-  - 7z a SSRSMigrate-%APPVEYOR_BUILD_VERSION%.zip SSRSMigrate\SSRSMigrate\bin\%CONFIGURATION%\*.* -x!*.pdb -x!*.vhost.*
+  - cd SSRSMigrate\SSRSMigrate\bin\%CONFIGURATION%\
+  - 7z a SSRSMigrate-%APPVEYOR_BUILD_VERSION%.zip *.* -x!*.pdb -x!*.vhost.*
 
 artifacts:
   - path: SSRSMigrate-%APPVEYOR_BUILD_VERSION%.zip
