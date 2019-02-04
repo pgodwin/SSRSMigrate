@@ -22,9 +22,6 @@ configuration:
   - Debug
   - Release
 
-platform:
-  - x86
-
 build:
   project: SSRSMigrate\SSRSMigrate.sln
   verbosity: minimal
@@ -39,7 +36,6 @@ after_test:
   - nuget install NUnit.ConsoleRunner -OutputDirectory packages -Version 3.9.0
   - nuget install OpenCover -OutputDirectory packages -Version 4.6.519
   - dotnet tool install coveralls.net --version 1.0.0 --tool-path tools
-  - cmd: echo %CONFIGURATION%
   - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[SSRSMigrate.Tests*]*" -target:".\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe" -targetargs:"/domain:single SSRSMigrate\SSRSMigrate.Tests\bin\%CONFIGURATION%\SSRSMigrate.Tests.dll" -output:coverage.xml
   - .\tools\csmacnz.coveralls.exe --opencover -i coverage.xml --repoToken %COVERALLS_REPO_TOKEN%
 
