@@ -55,6 +55,8 @@ artifacts:
     name: SSRSMigrate
 
 deploy:
+  tag: $(APPVEYOR_REPO_TAG_NAME)
+  release: $(APPVEYOR_REPO_TAG_NAME)
   - provider: GitHub
     auth_token:
       secure: EXRr3SxM7c0kVhOc5HAyMr4gUaCJA11QE/RbTNrqYil9WXKDqoQoigCfdD6ZjhDX # encrypted token from GitHub
@@ -62,6 +64,7 @@ deploy:
     description: SSRSMigrate build %APPVEYOR_BUILD_VERSION%.
     draft: false
     prerelease: false
-    tag: v$(APPVEYOR_BUILD_VERSION)
+    tag: $(APPVEYOR_REPO_TAG_NAME)
     on:
+      appveyor_repo_tag: true
       branch: master                # release from master branch only
