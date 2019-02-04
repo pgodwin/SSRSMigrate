@@ -5,9 +5,6 @@ version: 1.1.0.{build}-{branch}
 
 skip_tags: true
 
-install:
-  - choco install gitversion.portable -pre -y
-
 skip_commits:
   files:
     - '**/*.md'
@@ -28,7 +25,6 @@ environment:
 
 before_build:
   - nuget restore "SSRSMigrate\SSRSMigrate.sln"
-  - ps: gitversion /l console /output buildserver /updateAssemblyInfo
 
 configuration:
   - Debug
@@ -52,20 +48,20 @@ after_test:
 
 after_build:
   - cmd: cd SSRSMigrate\SSRSMigrate\bin\%CONFIGURATION%\
-  - cmd: 7z a C:\projects\ssrsmigrate\SSRSMigrate-%GitVersion_MajorMinorPatch%.zip *.* -x!*.pdb -x!*.vhost.*
+  - cmd: 7z a C:\projects\ssrsmigrate\SSRSMigrate-%APPVEYOR_BUILD_VERSION%.zip *.* -x!*.pdb -x!*.vhost.*
 
 artifacts:
-  - path: SSRSMigrate-%GitVersion_MajorMinorPatch%.zip
+  - path: SSRSMigrate-%APPVEYOR_BUILD_VERSION%.zip
     name: SSRSMigrate
 
 deploy:
   - provider: GitHub
     auth_token:
       secure: EXRr3SxM7c0kVhOc5HAyMr4gUaCJA11QE/RbTNrqYil9WXKDqoQoigCfdD6ZjhDX # encrypted token from GitHub
-    artifact: SSRSMigrate-$(GitVersion_MajorMinorPatch).zip          
+    artifact: SSRSMigrate-$(APPVEYOR_BUILD_VERSION).zip          
     description: SSRSMigrate build %APPVEYOR_BUILD_VERSION%.
     draft: false
-    prerelease: true
-    tag: $(GitVersion_MajorMinorPatch)
+    prerelease: false
+    tag: $(APPVEYOR_BUILD_VERSION)
     on:
       branch: master                # release from master branch only
