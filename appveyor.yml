@@ -35,15 +35,17 @@ test:
       - SSRSMigrate.IntegrationTests.dll
 
 after_test:
+  - cd %APPVEYOR_BUILD_FOLDER%
   - nuget install NUnit.ConsoleRunner -OutputDirectory packages -Version 3.9.0
   - nuget install OpenCover -OutputDirectory packages -Version 4.6.519
   - dotnet tool install coveralls.net --version 1.0.0 --tool-path tools
+  - cmd: echo %CONFIGURATION%
   - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[SSRSMigrate.Tests*]*" -target:".\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe" -targetargs:"/domain:single SSRSMigrate\SSRSMigrate.Tests\bin\%CONFIGURATION%\SSRSMigrate.Tests.dll" -output:coverage.xml
   - .\tools\csmacnz.coveralls.exe --opencover -i coverage.xml --repoToken %COVERALLS_REPO_TOKEN%
 
 after_build:
   - cmd: cd SSRSMigrate\SSRSMigrate\bin\%CONFIGURATION%\
-  - cmd: 7z a SSRSMigrate-%APPVEYOR_BUILD_VERSION%.zip *.* -x!*.pdb -x!*.vhost.*
+  - cmd: 7z a C:\projects\ssrsmigrate\SSRSMigrate-%APPVEYOR_BUILD_VERSION%.zip *.* -x!*.pdb -x!*.vhost.*
 
 artifacts:
   - path: SSRSMigrate-%APPVEYOR_BUILD_VERSION%.zip
