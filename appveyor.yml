@@ -20,7 +20,6 @@ before_build:
 
 configuration:
   - Debug
-  - Release
 
 build:
   project: SSRSMigrate\SSRSMigrate.sln
