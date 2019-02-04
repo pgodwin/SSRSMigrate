@@ -62,6 +62,6 @@ deploy:
     description: SSRSMigrate build %APPVEYOR_BUILD_VERSION%.
     draft: false
     prerelease: false
-    tag: $(APPVEYOR_BUILD_VERSION)
+    tag: v$(APPVEYOR_BUILD_VERSION)
     on:
       branch: master                # release from master branch only
