@@ -76,6 +76,6 @@ deploy:
   draft: false
   prerelease: false
   tag: $(appveyor_repo_tag_name)
-    on:
-      branch: master                # release from master branch only
-      APPVEYOR_REPO_TAG: true       # deploy on tag push only
+  on:
+    branch: master                # release from master branch only
+    APPVEYOR_REPO_TAG: true       # deploy on tag push only
