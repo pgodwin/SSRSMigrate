@@ -3,7 +3,7 @@ init:
 
 version: 1.1.0.{build}-{branch}
 
-skip_tags: true
+skip_non_tags: true
 
 skip_commits:
   files:
@@ -18,6 +18,17 @@ assembly_info:
   assembly_version: '{version}'
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
+
+init: 
+  - ps: >-
+      if ($env:APPVEYOR_REPO_TAG -eq "true") 
+      { 
+        Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME" 
+      }
+      else
+      {
+        Update-AppveyorBuild -Version "dev-$($env:APPVEYOR_REPO_COMMIT.substring(0,7))"
+      }
 
 environment:
   COVERALLS_REPO_TOKEN:
@@ -55,16 +66,15 @@ artifacts:
     name: SSRSMigrate
 
 deploy:
-  tag: $(APPVEYOR_REPO_TAG_NAME)
-  release: $(APPVEYOR_REPO_TAG_NAME)
+  release: SSRSMigrate-v$(appveyor_repo_tag_name)
   - provider: GitHub
     auth_token:
       secure: EXRr3SxM7c0kVhOc5HAyMr4gUaCJA11QE/RbTNrqYil9WXKDqoQoigCfdD6ZjhDX # encrypted token from GitHub
     artifact: SSRSMigrate-$(APPVEYOR_BUILD_VERSION).zip          
-    description: SSRSMigrate build %APPVEYOR_BUILD_VERSION%.
+    description: SSRSMigrate build $(APPVEYOR_BUILD_VERSION).
     draft: false
     prerelease: false
-    tag: $(APPVEYOR_REPO_TAG_NAME)
+    tag: $(appveyor_repo_tag_name)
     on:
-      appveyor_repo_tag: true
       branch: master                # release from master branch only
+      APPVEYOR_REPO_TAG: true       # deploy on tag push only
