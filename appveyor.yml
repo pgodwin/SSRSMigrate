@@ -60,7 +60,7 @@ artifacts:
     name: SSRSMigrate
 
 deploy:
-  release: SSRSMigrate-v$(appveyor_repo_tag_name)
+  release: SSRSMigrate-$(appveyor_repo_tag_name)
   description: SSRSMigrate build $(APPVEYOR_BUILD_VERSION).
   provider: GitHub
   auth_token:
