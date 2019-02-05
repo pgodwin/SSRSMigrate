@@ -1,5 +1,14 @@
 init:
-- git config --global core.autocrlf false
+  - git config --global core.autocrlf false
+  - ps: >-
+        if ($env:APPVEYOR_REPO_TAG -eq "true") 
+        { 
+          Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME" 
+        }
+        else
+        {
+          Update-AppveyorBuild -Version "dev-$($env:APPVEYOR_REPO_COMMIT.substring(0,7))"
+        }
 
 version: 1.1.0.{build}-{branch}
 
@@ -25,15 +34,7 @@ assembly_info:
   assembly_informational_version: '{version}'
 
 init: 
-  - ps: >-
-      if ($env:APPVEYOR_REPO_TAG -eq "true") 
-      { 
-        Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME" 
-      }
-      else
-      {
-        Update-AppveyorBuild -Version "dev-$($env:APPVEYOR_REPO_COMMIT.substring(0,7))"
-      }
+  
 
 environment:
   COVERALLS_REPO_TOKEN:
