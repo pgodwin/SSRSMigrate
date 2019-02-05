@@ -96,7 +96,7 @@
       - '**/*.md'
       - '**/.rdl'
 
-  version: 1.1.{build}-develop
+  version: develop-{build}
 
   assembly_info:
     patch: true
@@ -146,16 +146,16 @@
     - path: SSRSMigrate-v%APPVEYOR_BUILD_VERSION%.zip
       name: SSRSMigrate
 
-  deploy:
-    release: SSRSMigrate-v$(APPVEYOR_BUILD_VERSION)
-    description: SSRSMigrate build v$(APPVEYOR_BUILD_VERSION).
-    provider: GitHub
-    auth_token:
-      secure: EXRr3SxM7c0kVhOc5HAyMr4gUaCJA11QE/RbTNrqYil9WXKDqoQoigCfdD6ZjhDX # encrypted token from GitHub
-    artifact: SSRSMigrate-v$(APPVEYOR_BUILD_VERSION).zip
-    draft: false
-    prerelease: true
-    tag: $(APPVEYOR_BUILD_VERSION)
-    on:
-      branch: 
-        - develop # release from develop branch only
+#  deploy:
+#    release: SSRSMigrate-v$(APPVEYOR_BUILD_VERSION)
+#    description: SSRSMigrate build v$(APPVEYOR_BUILD_VERSION).
+#    provider: GitHub
+#    auth_token:
+#      secure: EXRr3SxM7c0kVhOc5HAyMr4gUaCJA11QE/RbTNrqYil9WXKDqoQoigCfdD6ZjhDX # encrypted token from GitHub
+#    artifact: SSRSMigrate-v$(APPVEYOR_BUILD_VERSION).zip
+#    draft: false
+#    prerelease: true
+#    tag: $(APPVEYOR_BUILD_VERSION)
+#    on:
+#      branch: 
+#        - develop # release from develop branch only
