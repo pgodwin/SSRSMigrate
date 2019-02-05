@@ -10,8 +10,6 @@ init:
           Update-AppveyorBuild -Version "dev-$($env:APPVEYOR_REPO_COMMIT.substring(0,7))"
         }
 
-version: 1.1.0.{build}-{branch}
-
 skip_non_tags: true
 
 skip_commits:
@@ -32,9 +30,6 @@ assembly_info:
   assembly_version: '{version}'
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
-
-init: 
-  
 
 environment:
   COVERALLS_REPO_TOKEN:
