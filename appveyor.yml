@@ -70,5 +70,7 @@ deploy:
   prerelease: false
   tag: $(appveyor_repo_tag_name)
   on:
-    branch: master                # release from master branch only
+    branch: 
+      - master                # release from master branch only
+      - /^v\d+\.\d+\.\d+$/
     APPVEYOR_REPO_TAG: true       # deploy on tag push only
