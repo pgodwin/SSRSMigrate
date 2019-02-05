@@ -158,4 +158,4 @@
     tag: $(APPVEYOR_BUILD_VERSION)
     on:
       branch: 
-        - master # release from master branch only
+        - develop # release from develop branch only
