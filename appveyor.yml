@@ -50,6 +50,9 @@ test:
     except:
       - SSRSMigrate.IntegrationTests.dll
 
+test_script:
+  - nunit3-console "C:\projects\ssrsmigrate\SSRSMigrate\SSRSMigrate.Tests\bin\%CONFIGURATION%\SSRSMigrate.Tests.dll" --x86
+
 after_test:
   - cd %APPVEYOR_BUILD_FOLDER%
   - nuget install NUnit.ConsoleRunner -OutputDirectory packages -Version 3.9.0
