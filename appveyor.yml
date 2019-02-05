@@ -1,11 +1,11 @@
-image: Visual Studio 2015
-
 # configuration for 'master' branch only.
 # Build in Release node and deploy to GitHub
--
+- 
   branches:
     only:
       - master
+
+  image: Visual Studio 2015
 
   skip_non_tags: false
   skip_tags: true
@@ -85,6 +85,8 @@ image: Visual Studio 2015
   branches:
     only:
       - develop
+
+  image: Visual Studio 2015
 
   skip_non_tags: false
   skip_tags: true
