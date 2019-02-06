@@ -52,7 +52,7 @@ namespace SSRSMigrate.Tests.PythonEngine
         pass
 
     def OnLoad(self):
-        Engine.LogLine(""OnLoad_Test"")";
+        Logger.Info(""OnLoad_Test"")";
 
             fileSystemMock.Setup(fs => fs.File.Exists(scriptFile))
                 .Returns(true);
@@ -83,7 +83,7 @@ namespace SSRSMigrate.Tests.PythonEngine
         pass
 
     def OnLoad(self):
-        Engine.LogLine(""OnLoad_Test"")";
+        Logger.Info(""OnLoad_Test"")";
 
             fileSystemMock.Setup(fs => fs.File.Exists(scriptFile))
                 .Returns(true);
@@ -122,7 +122,7 @@ namespace SSRSMigrate.Tests.PythonEngine
         pass
 
     def TestMethod(self, variable):
-        Engine.LogLine(variable)";
+        Logger.Info(variable)";
 
             fileSystemMock.Setup(fs => fs.File.Exists(scriptFile))
                 .Returns(true);
@@ -327,5 +327,6 @@ namespace SSRSMigrate.Tests.PythonEngine
 
             Assert.AreEqual(expected, actual);
         }
+
     }
 }

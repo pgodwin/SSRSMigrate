@@ -20,11 +20,6 @@ namespace SSRSMigrate.ScriptEngine
 {
     public class PythonEngine: MarshalByRefObject
     {
-        #region Constants
-        private const string cLogFile = "ScriptLog.txt";
-        private const string cErrorLogFile = "ScriptErrors.txt";
-        #endregion
-
         #region Private Variables
         private readonly IFileSystem mFileSystem;
         private readonly ILogger mLogger;
@@ -84,22 +79,6 @@ namespace SSRSMigrate.ScriptEngine
         {
             get { return this.mDebug; }
             set { this.mDebug = value; }
-        }
-
-        public string LogPath
-        {
-            get
-            {
-                return this.mFileSystem.Path.Combine(this.mEnginePath, cLogFile);
-            }
-        }
-
-        public string ErrorLogPath
-        {
-            get
-            {
-                return this.mFileSystem.Path.Combine(this.mEnginePath, cErrorLogFile);
-            }
         }
         #endregion
 
@@ -164,8 +143,6 @@ namespace SSRSMigrate.ScriptEngine
 
                 this.mScriptScope = this.mScriptEngine.CreateScope();
 
-                this.mScriptScope.SetVariable("Engine", this);
-
                 this.mScriptScope.SetVariable("SSRSUtil", DynamicHelpers.GetPythonTypeFromType(typeof (SSRSUtil)));
                 this.mScriptScope.SetVariable("FileSystem", this.mFileSystem);
 
@@ -174,6 +151,7 @@ namespace SSRSMigrate.ScriptEngine
                 this.mScriptScope.SetVariable("ReportServerRepository", this.mReportServerRepository);
 
                 this.mScriptScope.SetVariable("SQLUtil", DynamicHelpers.GetPythonTypeFromType(typeof (SQLUtil)));
+                this.mScriptScope.SetVariable("Logger", this.mScriptLogger);
                 
                 CompiledCode compiled = this.mScriptSource.Compile();
                 compiled.Execute(this.mScriptScope);
@@ -184,7 +162,7 @@ namespace SSRSMigrate.ScriptEngine
 
                 this.mLoaded = true;
 
-                this.LogLine(string.Format("Loading script '{0}'...", this.mScriptPath));
+                this.mScriptLogger.Info("Loading script '{0}'...", this.mScriptPath);
 
                 this.CallMethod("OnLoad");
             }
@@ -285,28 +263,6 @@ namespace SSRSMigrate.ScriptEngine
 
                 throw er;
             }
-        }
-        #endregion
-
-        #region Logging
-        public void LogLine(string message)
-        {
-            this.mScriptLogger.Info(message);
-        }
-
-        public void LogDebug(string message)
-        {
-            this.mScriptLogger.Debug(message);
-        }
-
-        public void LogWarn(string message)
-        {
-            this.mScriptLogger.Warn(message);
-        }
-
-        public void LogTrace(string message)
-        {
-            this.mScriptLogger.Trace(message);
         }
         #endregion
     }

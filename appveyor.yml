@@ -98,12 +98,13 @@
 
   version: develop-{build}
 
-  assembly_info:
-    patch: true
-    file: '**\AssemblyInfo.*'
-    assembly_version: '{version}'
-    assembly_file_version: '{version}'
-    assembly_informational_version: '{version}'
+# Don't patch assemblies for development versions
+#  assembly_info:
+#    patch: true
+#    file: '**\AssemblyInfo.*'
+#    assembly_version: '1.1.{build}'
+#    assembly_file_version: '{version}'
+#    assembly_informational_version: '{version}'
 
   environment:
     COVERALLS_REPO_TOKEN:
