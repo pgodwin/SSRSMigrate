@@ -102,7 +102,7 @@
 #  assembly_info:
 #    patch: true
 #    file: '**\AssemblyInfo.*'
-#    assembly_version: '1.1.{build}'
+#    assembly_version: '{version}'
 #    assembly_file_version: '{version}'
 #    assembly_informational_version: '{version}'
 
@@ -141,22 +141,22 @@
   
   after_build:
     - cmd: cd SSRSMigrate\SSRSMigrate\bin\%CONFIGURATION%\
-    - cmd: 7z a C:\projects\ssrsmigrate\SSRSMigrate-v%APPVEYOR_BUILD_VERSION%.zip *.* -x!*.pdb -x!*.vhost.*
+    - cmd: 7z a C:\projects\ssrsmigrate\SSRSMigrate-%APPVEYOR_BUILD_VERSION%.zip *.* -x!*.pdb -x!*.vhost.*
 
   artifacts:
-    - path: SSRSMigrate-v%APPVEYOR_BUILD_VERSION%.zip
+    - path: SSRSMigrate-%APPVEYOR_BUILD_VERSION%.zip
       name: SSRSMigrate
 
-#  deploy:
-#    release: SSRSMigrate-v$(APPVEYOR_BUILD_VERSION)
-#    description: SSRSMigrate build v$(APPVEYOR_BUILD_VERSION).
-#    provider: GitHub
-#    auth_token:
-#      secure: EXRr3SxM7c0kVhOc5HAyMr4gUaCJA11QE/RbTNrqYil9WXKDqoQoigCfdD6ZjhDX # encrypted token from GitHub
-#    artifact: SSRSMigrate-v$(APPVEYOR_BUILD_VERSION).zip
-#    draft: false
-#    prerelease: true
-#    tag: $(APPVEYOR_BUILD_VERSION)
-#    on:
-#      branch: 
-#        - develop # release from develop branch only
+  deploy:
+    release: SSRSMigrate-$(APPVEYOR_BUILD_VERSION)
+    description: SSRSMigrate development build version $(APPVEYOR_BUILD_VERSION).
+    provider: GitHub
+    auth_token:
+      secure: EXRr3SxM7c0kVhOc5HAyMr4gUaCJA11QE/RbTNrqYil9WXKDqoQoigCfdD6ZjhDX # encrypted token from GitHub
+    artifact: SSRSMigrate-$(APPVEYOR_BUILD_VERSION).zip
+    draft: false
+    prerelease: true
+    tag: $(APPVEYOR_BUILD_VERSION)
+    on:
+      branch: 
+        - develop # release from develop branch only
