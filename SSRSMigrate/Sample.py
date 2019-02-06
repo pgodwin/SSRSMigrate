@@ -20,7 +20,7 @@ class Plugin:
 
         Engine.LogLine("Count: %s" % (count, ))
 
-    def OnMigration_Completed(self, msg, sourcePath, destPath):
+    def OnMigration_Completed(self, er, msg, sourcePath, destPath):
         Engine.LogLine("OnMigration_Completed - %s; migrated from %s to %s" % (msg, sourcePath, destPath))
 
     def OnMigration_FolderItem(self, item, status):
