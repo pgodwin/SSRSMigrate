@@ -157,7 +157,7 @@ namespace SSRSMigrate.Tests.PythonEngine
         pass
 
     def OnLoad(self):
-        Engine.LogLine(""OnLoad"")";
+        Logger.Info(""OnLoad"")";
 
             fileSystemMock.Setup(fs => fs.File.Exists(scriptFile))
                 .Returns(true);
