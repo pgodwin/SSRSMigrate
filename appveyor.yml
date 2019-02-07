@@ -31,8 +31,13 @@
   configuration:
     - Release
 
+  platform:
+    - x86
+    - Any CPU
+
   init:
     - git config --global core.autocrlf false
+    - ps: $env:MY_PLATFORM=$env:PLATFORM.REPLACE(" ", "")
 
   before_build:
     - nuget restore "SSRSMigrate\SSRSMigrate.sln"
@@ -53,22 +58,22 @@
         - ConnectsToSSRS
 
   test_script:
-    - nunit3-console "C:\projects\ssrsmigrate\SSRSMigrate\SSRSMigrate.Tests\bin\%CONFIGURATION%\SSRSMigrate.Tests.dll" "C:\projects\ssrsmigrate\SSRSMigrate\SSRSMigrate.IntegrationTests\bin\%CONFIGURATION%\SSRSMigrate.IntegrationTests.dll" --where cat!=ConnectsToSSRS --x86
+    - nunit3-console "C:\projects\ssrsmigrate\SSRSMigrate\SSRSMigrate.Tests\bin\%CONFIGURATION%\SSRSMigrate.Tests.dll" "C:\projects\ssrsmigrate\SSRSMigrate\SSRSMigrate.IntegrationTests\bin\%CONFIGURATION%\SSRSMigrate.IntegrationTests.dll" --where cat!=ConnectsToSSRS
 
   after_test:
     - cd %APPVEYOR_BUILD_FOLDER%
     - nuget install NUnit.ConsoleRunner -OutputDirectory packages -Version 3.9.0
     - nuget install OpenCover -OutputDirectory packages -Version 4.6.519
     - dotnet tool install coveralls.net --version 1.0.0 --tool-path tools
-    - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[SSRSMigrate.Tests*]*" -target:".\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe" -targetargs:"/domain:single SSRSMigrate\SSRSMigrate.Tests\bin\%CONFIGURATION%\SSRSMigrate.Tests.dll SSRSMigrate\SSRSMigrate.IntegrationTests\bin\%CONFIGURATION%\SSRSMigrate.IntegrationTests.dll --where cat!=ConnectsToSSRS --x86" -output:coverage.xml
+    - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[SSRSMigrate.Tests*]*" -target:".\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe" -targetargs:"/domain:single SSRSMigrate\SSRSMigrate.Tests\bin\%CONFIGURATION%\SSRSMigrate.Tests.dll SSRSMigrate\SSRSMigrate.IntegrationTests\bin\%CONFIGURATION%\SSRSMigrate.IntegrationTests.dll --where cat!=ConnectsToSSRS" -output:coverage.xml
     - .\tools\csmacnz.coveralls.exe --opencover -i coverage.xml --repoToken %COVERALLS_REPO_TOKEN%
 
   after_build:
     - cmd: cd SSRSMigrate\SSRSMigrate\bin\%CONFIGURATION%\
-    - cmd: 7z a C:\projects\ssrsmigrate\SSRSMigrate-v%APPVEYOR_BUILD_VERSION%.zip *.* -x!*.pdb -x!*.vhost.*
+    - cmd: 7z a C:\projects\ssrsmigrate\SSRSMigrate-v%APPVEYOR_BUILD_VERSION%_%MY_PLATFORM%.zip *.* -x!*.pdb -x!*.vhost.*
 
   artifacts:
-    - path: SSRSMigrate-v%APPVEYOR_BUILD_VERSION%.zip
+    - path: SSRSMigrate-v%APPVEYOR_BUILD_VERSION%_%MY_PLATFORM%.zip
       name: SSRSMigrate
 
   deploy:
@@ -77,7 +82,7 @@
     provider: GitHub
     auth_token:
       secure: EXRr3SxM7c0kVhOc5HAyMr4gUaCJA11QE/RbTNrqYil9WXKDqoQoigCfdD6ZjhDX # encrypted token from GitHub
-    artifact: SSRSMigrate-v$(APPVEYOR_BUILD_VERSION).zip
+    artifact: /SSRSMigrate-v.*\.zip/
     draft: false
     prerelease: false
     tag: $(APPVEYOR_BUILD_VERSION)
