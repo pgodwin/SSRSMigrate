@@ -138,7 +138,8 @@ namespace SSRSMigrate.Utility
                 path = itemPath.Substring(0, itemPath.LastIndexOf("/"));
             }
 
-            string name = itemPath.Substring(itemPath.LastIndexOf("/"));
+            // Get the item's name, this would be everything after the last / in the itemPath
+            string name = itemPath.Substring(itemPath.LastIndexOf("/") + 1);
 
             // Replace the source path with the destination path, in the current path of the item to get the destination path
             System.Text.RegularExpressions.Regex re = new System.Text.RegularExpressions.Regex(sourcePath, RegexOptions.IgnoreCase);
@@ -152,6 +153,13 @@ namespace SSRSMigrate.Utility
             else
             {
                 itemDestPath = re.Replace(path, destinationPath, 1);
+            }
+
+            // In some situations the destination path no longer ends in /, so we add it.
+            // This is a kludge and I should refactor this entire method, but not today...
+            if (!itemDestPath.EndsWith("/"))
+            {
+                itemDestPath += "/";
             }
 
             itemDestPath += name;

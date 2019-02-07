@@ -204,6 +204,19 @@ namespace SSRSMigrate.Tests.Utilities
 
         #region SSRSUtil.GetFullDestinationPathForItem Tests
         [Test]
+        public void GetFullDestinationPathForItem_RootFolderToRootFolder()
+        {
+            string expected = "/Test_Report";
+
+            string actual = SSRSUtil.GetFullDestinationPathForItem(
+                "/",
+                "/",
+                "/Test_Report");
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void GetFullDestinationPathForItem_RootFoldertoNonRootFolder()
         {
             string expected = "/TEST/Test_Report";
