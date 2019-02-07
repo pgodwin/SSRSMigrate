@@ -81,82 +81,82 @@
 
 # configuration for 'develop' branch only.
 # Build in Debug mode and don't deploy.
--
-  branches:
-    only:
-      - develop
+# -
+#   branches:
+#     only:
+#       - develop
 
-  image: Visual Studio 2015
+#   image: Visual Studio 2015
 
-  skip_non_tags: false
-  skip_tags: true
+#   skip_non_tags: false
+#   skip_tags: true
 
-  skip_commits:
-    files:
-      - '**/*.md'
-      - '**/.rdl'
+#   skip_commits:
+#     files:
+#       - '**/*.md'
+#       - '**/.rdl'
 
-  version: develop-{build}
+#   version: develop-{build}
 
-# Don't patch assemblies for development versions
-#  assembly_info:
-#    patch: true
-#    file: '**\AssemblyInfo.*'
-#    assembly_version: '{version}'
-#    assembly_file_version: '{version}'
-#    assembly_informational_version: '{version}'
+# # Don't patch assemblies for development versions
+# #  assembly_info:
+# #    patch: true
+# #    file: '**\AssemblyInfo.*'
+# #    assembly_version: '{version}'
+# #    assembly_file_version: '{version}'
+# #    assembly_informational_version: '{version}'
 
-  environment:
-    COVERALLS_REPO_TOKEN:
-      secure: kv0pn7M34ca0KP8NlRekeusUa+Uj325NlZOhMNnK1EPW2cudunWXbZ/igtRouTnC
+#   environment:
+#     COVERALLS_REPO_TOKEN:
+#       secure: kv0pn7M34ca0KP8NlRekeusUa+Uj325NlZOhMNnK1EPW2cudunWXbZ/igtRouTnC
 
-  configuration:
-    - Debug
+#   configuration:
+#     - Debug
 
-  init:
-    - git config --global core.autocrlf false
+#   init:
+#     - git config --global core.autocrlf false
 
-  before_build:
-    - nuget restore "SSRSMigrate\SSRSMigrate.sln"
+#   before_build:
+#     - nuget restore "SSRSMigrate\SSRSMigrate.sln"
 
-  build:
-    project: SSRSMigrate\SSRSMigrate.sln
-    verbosity: minimal
+#   build:
+#     project: SSRSMigrate\SSRSMigrate.sln
+#     verbosity: minimal
 
-  test:
-    assemblies:
-      except:
-        - SSRSMigrate.IntegrationTests.dll
+#   test:
+#     assemblies:
+#       except:
+#         - SSRSMigrate.IntegrationTests.dll
 
-  test_script:
-    - nunit3-console "C:\projects\ssrsmigrate\SSRSMigrate\SSRSMigrate.Tests\bin\%CONFIGURATION%\SSRSMigrate.Tests.dll" --x86
+#   test_script:
+#     - nunit3-console "C:\projects\ssrsmigrate\SSRSMigrate\SSRSMigrate.Tests\bin\%CONFIGURATION%\SSRSMigrate.Tests.dll" --x86
 
-  after_test:
-    - cd %APPVEYOR_BUILD_FOLDER%
-    - nuget install NUnit.ConsoleRunner -OutputDirectory packages -Version 3.9.0
-    - nuget install OpenCover -OutputDirectory packages -Version 4.6.519
-    - dotnet tool install coveralls.net --version 1.0.0 --tool-path tools
-    - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[SSRSMigrate.Tests*]*" -target:".\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe" -targetargs:"/domain:single SSRSMigrate\SSRSMigrate.Tests\bin\%CONFIGURATION%\SSRSMigrate.Tests.dll --x86" -output:coverage.xml
-    - .\tools\csmacnz.coveralls.exe --opencover -i coverage.xml --repoToken %COVERALLS_REPO_TOKEN%
+#   after_test:
+#     - cd %APPVEYOR_BUILD_FOLDER%
+#     - nuget install NUnit.ConsoleRunner -OutputDirectory packages -Version 3.9.0
+#     - nuget install OpenCover -OutputDirectory packages -Version 4.6.519
+#     - dotnet tool install coveralls.net --version 1.0.0 --tool-path tools
+#     - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[SSRSMigrate.Tests*]*" -target:".\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe" -targetargs:"/domain:single SSRSMigrate\SSRSMigrate.Tests\bin\%CONFIGURATION%\SSRSMigrate.Tests.dll --x86" -output:coverage.xml
+#     - .\tools\csmacnz.coveralls.exe --opencover -i coverage.xml --repoToken %COVERALLS_REPO_TOKEN%
   
-  after_build:
-    - cmd: cd SSRSMigrate\SSRSMigrate\bin\%CONFIGURATION%\
-    - cmd: 7z a C:\projects\ssrsmigrate\SSRSMigrate-%APPVEYOR_BUILD_VERSION%.zip *.* -x!*.pdb -x!*.vhost.*
+#   after_build:
+#     - cmd: cd SSRSMigrate\SSRSMigrate\bin\%CONFIGURATION%\
+#     - cmd: 7z a C:\projects\ssrsmigrate\SSRSMigrate-%APPVEYOR_BUILD_VERSION%.zip *.* -x!*.pdb -x!*.vhost.*
 
-  artifacts:
-    - path: SSRSMigrate-%APPVEYOR_BUILD_VERSION%.zip
-      name: SSRSMigrate
+#   artifacts:
+#     - path: SSRSMigrate-%APPVEYOR_BUILD_VERSION%.zip
+#       name: SSRSMigrate
 
-  deploy:
-    release: SSRSMigrate-$(APPVEYOR_BUILD_VERSION)
-    description: SSRSMigrate development build version $(APPVEYOR_BUILD_VERSION).
-    provider: GitHub
-    auth_token:
-      secure: EXRr3SxM7c0kVhOc5HAyMr4gUaCJA11QE/RbTNrqYil9WXKDqoQoigCfdD6ZjhDX # encrypted token from GitHub
-    artifact: SSRSMigrate-$(APPVEYOR_BUILD_VERSION).zip
-    draft: false
-    prerelease: true
-    tag: $(APPVEYOR_BUILD_VERSION)
-    on:
-      branch: 
-        - develop # release from develop branch only
+#   deploy:
+#     release: SSRSMigrate-$(APPVEYOR_BUILD_VERSION)
+#     description: SSRSMigrate development build version $(APPVEYOR_BUILD_VERSION).
+#     provider: GitHub
+#     auth_token:
+#       secure: EXRr3SxM7c0kVhOc5HAyMr4gUaCJA11QE/RbTNrqYil9WXKDqoQoigCfdD6ZjhDX # encrypted token from GitHub
+#     artifact: SSRSMigrate-$(APPVEYOR_BUILD_VERSION).zip
+#     draft: false
+#     prerelease: true
+#     tag: $(APPVEYOR_BUILD_VERSION)
+#     on:
+#       branch: 
+#         - develop # release from develop branch only
