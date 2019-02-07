@@ -16,7 +16,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
     /// These integration tests will write ReportItems to a ReportingService2010 endpoint.
     /// The ReportItem objects used are already 'converted' to contain the destination information.
     /// </summary>
-    [TestFixture]
+    [TestFixture, Category("ConnectsToSSRS")]
     [CoverageExcludeAttribute]
     class ReportServerWriter_ReportTests
     {

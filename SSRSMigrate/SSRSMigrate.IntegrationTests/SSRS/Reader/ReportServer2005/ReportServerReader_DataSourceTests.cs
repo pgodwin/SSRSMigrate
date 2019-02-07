@@ -9,7 +9,7 @@ using SSRSMigrate.SSRS.Item;
 
 namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
 {
-    [TestFixture]
+    [TestFixture, Category("ConnectsToSSRS")]
     [CoverageExcludeAttribute]
     [Ignore("ReportServer2005 no longer tested.")]
     class ReportServerReader_DataSourceTests

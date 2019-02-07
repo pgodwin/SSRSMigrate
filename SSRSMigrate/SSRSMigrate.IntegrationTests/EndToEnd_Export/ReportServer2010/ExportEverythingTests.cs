@@ -14,7 +14,7 @@ using SSRSMigrate.Utility;
 
 namespace SSRSMigrate.IntegrationTests.EndToEnd_Export.ReportServer2010
 {
-    [TestFixture]
+    [TestFixture, Category("ConnectsToSSRS")]
     [CoverageExcludeAttribute]
     class ExportEverythingTests
     {

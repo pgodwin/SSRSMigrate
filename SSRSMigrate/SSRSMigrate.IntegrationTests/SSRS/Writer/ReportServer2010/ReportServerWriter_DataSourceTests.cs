@@ -16,7 +16,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
     /// These integration tests will write DataSourceItems to a ReportingService2010 endpoint.
     /// The DataSourceItem objects used are already 'converted' to contain the destination information.
     /// </summary>
-    [TestFixture]
+    [TestFixture, Category("ConnectsToSSRS")]
     [CoverageExcludeAttribute]
     class ReportServerWriter_DataSourceTests
     {

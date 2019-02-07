@@ -11,7 +11,7 @@ public class CoverageExcludeAttribute : System.Attribute { }
 
 namespace SSRSMigrate.Tests.Utilities
 {
-    [TestFixture]
+    [TestFixture, Category("good")]
     [CoverageExcludeAttribute]
     class SSRSUtil_Tests
     {
