@@ -4,7 +4,7 @@ SSRSMigrate ![](https://img.shields.io/github/license/jpann/SSRSMigrate.svg)
 | Master  |      Develop      |
 |----------|:-------------:|
 | [![Build status](https://ci.appveyor.com/api/projects/status/bvj8gbpf8400t689/branch/master?svg=true)](https://ci.appveyor.com/project/jpann/ssrsmigrate/branch/master) |  [![Build status](https://ci.appveyor.com/api/projects/status/uu89i57ty3enww0q?svg=true)](https://ci.appveyor.com/project/jpann/ssrsmigrate-iwr95)|
-| ![](https://img.shields.io/appveyor/tests/jpann/SSRSMigrate/master.svg?style=flat) |    ![](https://img.shields.io/appveyor/tests/jpann/SSRSMigrate/develop.svg?style=flat)   |
+| ![](https://img.shields.io/appveyor/tests/jpann/SSRSMigrate/master.svg?style=flat) |    ![](https://img.shields.io/appveyor/tests/jpann/ssrsmigrate-iwr95/develop.svg?style=flat)   |
 | [![Coverage Status](https://coveralls.io/repos/github/jpann/SSRSMigrate/badge.svg?branch=master)](https://coveralls.io/github/jpann/SSRSMigrate?branch=master)  | [![Coverage Status](https://coveralls.io/repos/github/jpann/SSRSMigrate/badge.svg?branch=develop)](https://coveralls.io/github/jpann/SSRSMigrate?branch=develop)  | 
 | ![](https://img.shields.io/github/release/jpann/SSRSMigrate.svg?style=flat) | ![](https://img.shields.io/github/release-pre/jpann/SSRSMigrate.svg?style=flat) |
 
