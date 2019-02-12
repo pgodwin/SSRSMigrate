@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SSRSMigrate.Enum;
 using SSRSMigrate.SSRS.Item;
 using Ninject.Extensions.Logging;
+using SSRSMigrate.SSRS.Item.Proxy;
 
 namespace SSRSMigrate.SSRS.Repository
 {
@@ -24,7 +25,7 @@ namespace SSRSMigrate.SSRS.Repository
         byte[] GetReportDefinition(string reportPath);
         ReportItem GetReport(string reportPath);
         List<ReportItem> GetReports(string path);
-        IEnumerable<ReportItem> GetReportsList(string path);
+        IEnumerable<ReportItem> GetReportsLazy(string path);
         List<ReportItem> GetSubReports(string reportDefinition);
         string[] WriteReport(string reportPath, ReportItem reportItem, bool overwrite);
 

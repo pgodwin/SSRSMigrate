@@ -296,6 +296,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptEngine\PythonEngine.cs" />
     <Compile Include="SSRS\Errors\Exceptions.cs" />
+    <Compile Include="SSRS\Item\Proxy\ReportItemDiskProxy.cs" />
+    <Compile Include="SSRS\Item\Proxy\ReportItemProxy.cs" />
     <Compile Include="SSRS\Test\ConnectionTestStatus.cs" />
     <Compile Include="SSRS\Test\IReportServerTester.cs" />
     <Compile Include="SSRS\Item\DataSourceItem.cs" />

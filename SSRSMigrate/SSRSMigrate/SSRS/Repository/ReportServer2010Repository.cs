@@ -11,6 +11,7 @@ using SSRSMigrate.SSRS.Errors;
 using Ninject;
 using Ninject.Extensions.Logging;
 using SSRSMigrate.Enum;
+using SSRSMigrate.SSRS.Item.Proxy;
 
 namespace SSRSMigrate.SSRS.Repository
 {
@@ -262,7 +263,10 @@ namespace SSRSMigrate.SSRS.Repository
                 this.mLogger.Debug("GetReport - Found item = {0}", item.Path);
 
                 byte[] def = this.GetReportDefinition(item.Path);
-                return this.mDataMapper.GetReport(item, def);
+                var reportItem = this.mDataMapper.GetReport(item);
+                reportItem.Definition = def;
+
+                return reportItem;
             }
 
             this.mLogger.Debug("GetReport - No item found.");
@@ -287,7 +291,10 @@ namespace SSRSMigrate.SSRS.Repository
                     this.mLogger.Debug("GetReports - Found item = {0}", item.Path);
 
                     byte[] def = this.GetReportDefinition(item.Path);
-                    reportItems.Add(this.mDataMapper.GetReport(item, def));
+                    var reportItem = this.mDataMapper.GetReport(item);
+                    reportItem.Definition = def;
+
+                    reportItems.Add(reportItem);
                 }
 
                 return reportItems;
@@ -298,23 +305,36 @@ namespace SSRSMigrate.SSRS.Repository
             return null;
         }
 
-        public IEnumerable<ReportItem> GetReportsList(string path)
+        public IEnumerable<ReportItem> GetReportsLazy(string path)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path");
 
-            this.mLogger.Debug("GetReports2 - path = {0}", path);
+            this.mLogger.Debug("GetReportsLazy - path = {0}", path);
 
-            var items = this.GetItemsList<ReportItem>(path, "Report", r => 
+            var items = this.GetItemsList<ReportItemProxy>(path, "Report", r => 
+            {
+                this.mLogger.Debug("GetReportsLazy - Found item = {0}", r.Path);
+
+                var report = new ReportItemProxy(this)
                 {
-                    this.mLogger.Debug("GetReports2 - Found item = {0}", r.Path);
+                    Name = r.Name,
+                    Path = r.Path,
+                    CreatedBy = r.CreatedBy,
+                    CreationDate = r.CreationDate,
+                    Description = r.Description,
+                    ID = r.ID,
+                    ModifiedBy = r.ModifiedBy,
+                    ModifiedDate = r.ModifiedDate,
+                    Size = r.Size,
+                    VirtualPath = r.VirtualPath
+                };
 
-                    byte[] def = this.GetReportDefinition(r.Path);
-                    return this.mDataMapper.GetReport(r, def);
-                });
+                return report;
+            });
 
             if (items != null)
-                foreach (ReportItem item in items)
+                foreach (ReportItemProxy item in items)
                     yield return item;
         }
 
@@ -352,7 +372,8 @@ namespace SSRSMigrate.SSRS.Repository
                         if (subReportItem != null)
                         {
                             byte[] def = this.GetReportDefinition(subReportItem.Path);
-                            ReportItem subReport = this.mDataMapper.GetReport(subReportItem, def);
+                            ReportItem subReport = this.mDataMapper.GetReport(subReportItem);
+                            subReport.Definition = def;
 
                             string subReportDefinition = SSRSUtil.ByteArrayToString(subReport.Definition);
 

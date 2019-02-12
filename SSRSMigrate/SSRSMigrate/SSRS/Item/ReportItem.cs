@@ -4,7 +4,7 @@ namespace SSRSMigrate.SSRS.Item
 {
     public class ReportItem : ReportServerItem
     {
-        public byte[] Definition { get; set; }
+        public virtual byte[] Definition { get; set; }
         public List<ReportItem> SubReports { get; set; }
 
         public ReportItem()

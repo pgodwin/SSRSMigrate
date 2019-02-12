@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Abstractions;
 using Ninject.Extensions.Logging;
 using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.SSRS.Item.Proxy;
 using SSRSMigrate.Status;
 
 namespace SSRSMigrate.Importer
@@ -37,7 +38,6 @@ namespace SSRSMigrate.Importer
 
             string token = "\\Export\\";
 
-            byte[] data = this.mFileSystem.File.ReadAllBytes(filename);
             string diskPath = this.mFileSystem.Path.GetDirectoryName(filename);
             Exception error = null;
             bool success = true;
@@ -68,11 +68,11 @@ namespace SSRSMigrate.Importer
 
                 this.mLogger.Debug("ImportItem - path = {0}", path);
 
-                item = new ReportItem()
+                // Lazy load the ReportItem's RDL from disk when it is actually accessed.
+                item = new ReportItemDiskProxy(filename, mFileSystem)
                 {
                     Name = name,
-                    Path = path,
-                    Definition = data
+                    Path = path
                 };
             }
             catch (Exception er)

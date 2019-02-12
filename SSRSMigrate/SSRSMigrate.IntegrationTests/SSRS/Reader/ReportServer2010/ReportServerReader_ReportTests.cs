@@ -157,7 +157,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2010
         {
             string path = "/SSRSMigrate_AW_Tests";
 
-            List<ReportItem> actual = reader.GetReports(path);
+            var actual = reader.GetReports(path);
 
             Assert.AreEqual(expectedReportItems.Count(), actual.Count());
         }

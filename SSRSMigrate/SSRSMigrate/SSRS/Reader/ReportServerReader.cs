@@ -125,7 +125,7 @@ namespace SSRSMigrate.SSRS.Reader
             if (!this.mReportRepository.ValidatePath(path))
                 throw new InvalidPathException(path);
 
-            var reports = this.mReportRepository.GetReportsList(path);
+            var reports = this.mReportRepository.GetReportsLazy(path);
 
             foreach (ReportItem report in reports)
             {

@@ -13,6 +13,7 @@ using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Status;
 using SSRSMigrate.Utility;
 using Ninject.Extensions.Logging;
+using SSRSMigrate.SSRS.Item.Proxy;
 
 namespace SSRSMigrate.Forms
 {
@@ -230,13 +231,13 @@ namespace SSRSMigrate.Forms
             string path = (string)e.Argument;
 
             // Get folders from the specified path and add them to the Reports ListView control
-            this.mReportServerReader.GetFolders(path, ReportsReader_Reporter);
+            this.mReportServerReader.GetFolders(path, ReportsReader_FolderReporter);
 
             // Get data sources from the specified path and add them to the Reports ListView control
-            this.mReportServerReader.GetDataSources(path, ReportsReader_Reporter);
+            this.mReportServerReader.GetDataSources(path, ReportsReader_DataSourceReporter);
 
             // Get reports from the specified path and add them to the Reports ListView control
-            this.mReportServerReader.GetReports(path, ReportsReader_Reporter);
+            this.mReportServerReader.GetReports(path, ReportsReader_ReportReporter);
         }
 
         private void bw_SourceRefreshReportsCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -287,12 +288,12 @@ namespace SSRSMigrate.Forms
             progressBar.Maximum = 100;
             progressBar.ToolTipText = report.Name;
         }
-
-        private void ReportsReader_Reporter(ReportServerItem item)
+        
+        private void ReportsReader_FolderReporter(ReportServerItem item)
         {
             if (item == null)
             {
-                this.mLogger.Warn("ReportsReader_Reporter - item contains a NULL value.");
+                this.mLogger.Warn("ReportsReader_FolderReporter - item contains a NULL value.");
 
                 return;
             }
@@ -304,12 +305,63 @@ namespace SSRSMigrate.Forms
             oItem.SubItems.Add(item.Path);
 
             // Assign to proper ListViewGroup
-            if (item.GetType() == typeof(FolderItem))
-                oItem.Group = this.lstSrcReports.Groups["foldersGroup"];
-            else if (item.GetType() == typeof(DataSourceItem))
-                oItem.Group = this.lstSrcReports.Groups["dataSourcesGroup"];
-            else if (item.GetType() == typeof(ReportItem))
-                oItem.Group = this.lstSrcReports.Groups["reportsGroup"];
+            oItem.Group = this.lstSrcReports.Groups["foldersGroup"];
+
+            this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
+            this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
+
+            this.lblStatus.Text = string.Format("Refreshing item '{0}'...", item.Path);
+
+            this.mLogger.Debug("Refreshing item '{0}'...", item.Path);
+
+            this.mDebugForm.LogMessage(string.Format("Refreshing item '{0}'...", item.Path));
+        }
+
+        private void ReportsReader_DataSourceReporter(ReportServerItem item)
+        {
+            if (item == null)
+            {
+                this.mLogger.Warn("ReportsReader_DataSourceReporter - item contains a NULL value.");
+
+                return;
+            }
+
+            ListViewItem oItem = new ListViewItem(item.Name);
+            oItem.Checked = true;
+            //oItem.Tag = item;
+            oItem.Tag = item.Path;
+            oItem.SubItems.Add(item.Path);
+
+            // Assign to proper ListViewGroup
+            oItem.Group = this.lstSrcReports.Groups["dataSourcesGroup"];
+
+            this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
+            this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));
+
+            this.lblStatus.Text = string.Format("Refreshing item '{0}'...", item.Path);
+
+            this.mLogger.Debug("Refreshing item '{0}'...", item.Path);
+
+            this.mDebugForm.LogMessage(string.Format("Refreshing item '{0}'...", item.Path));
+        }
+
+        private void ReportsReader_ReportReporter(ReportServerItem item)
+        {
+            if (item == null)
+            {
+                this.mLogger.Warn("ReportsReader_ReportReporter - item contains a NULL value.");
+
+                return;
+            }
+
+            ListViewItem oItem = new ListViewItem(item.Name);
+            oItem.Checked = true;
+            //oItem.Tag = item;
+            oItem.Tag = item.Path;
+            oItem.SubItems.Add(item.Path);
+
+            // Assign to proper ListViewGroup
+            oItem.Group = this.lstSrcReports.Groups["reportsGroup"];
 
             this.lstSrcReports.Invoke(new Action(() => this.lstSrcReports.Items.Add(oItem)));
             this.lstSrcReports.Invoke(new Action(() => oItem.EnsureVisible()));

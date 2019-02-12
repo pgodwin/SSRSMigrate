@@ -13,6 +13,7 @@ using SSRSMigrate.Bundler.Events;
 using SSRSMigrate.Importer;
 using SSRSMigrate.SSRS.Errors;
 using SSRSMigrate.SSRS.Item;
+using SSRSMigrate.SSRS.Item.Proxy;
 using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.Status;
 using SSRSMigrate.Utility;
@@ -896,7 +897,7 @@ namespace SSRSMigrate.Forms
                         oItem.Group = this.lstDestReports.Groups["foldersGroup"];
                     else if (item.GetType() == typeof(DataSourceItem))
                         oItem.Group = this.lstDestReports.Groups["dataSourcesGroup"];
-                    else if (item.GetType() == typeof(ReportItem))
+                    else if (item.GetType() == typeof(ReportItem) || item.GetType() == typeof(ReportItemDiskProxy))
                         oItem.Group = this.lstDestReports.Groups["reportsGroup"];
 
                     this.lstDestReports.Items.Add(oItem);

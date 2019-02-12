@@ -57,13 +57,10 @@ namespace SSRSMigrate.DataMapper
             return ds;
         }
 
-        public ReportItem GetReport(CatalogItem item, byte[] definition)
+        public ReportItem GetReport(CatalogItem item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
-
-            if (definition == null)
-                throw new ArgumentNullException("definition");
 
             ReportItem report = new ReportItem();
 
@@ -77,11 +74,10 @@ namespace SSRSMigrate.DataMapper
             report.ModifiedDate = item.ModifiedDate;
             report.Size = item.Size;
             report.VirtualPath = item.VirtualPath;
-            report.Definition = definition;
 
             return report;
         }
-
+        
         public FolderItem GetFolder(CatalogItem item)
         {
             if (item == null)

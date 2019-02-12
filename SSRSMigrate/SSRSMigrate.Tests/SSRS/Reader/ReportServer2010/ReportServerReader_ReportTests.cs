@@ -11,6 +11,7 @@ using Moq;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.SSRS.Errors;
 using System.Text.RegularExpressions;
+using SSRSMigrate.SSRS.Item.Proxy;
 using SSRSMigrate.TestHelper.Logging;
 
 namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
@@ -37,8 +38,11 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
+            // Setup IReportServerRepository mock
+            var reportServerRepositoryMock = new Mock<IReportServerRepository>();
+
             // Setup GetReport - Expected ReportItem
-            expectedReportItem = new ReportItem()
+            expectedReportItem = new ReportItemProxy(reportServerRepositoryMock.Object)
             {
                 Name = "Company Sales",
                 Path = "/SSRSMigrate_AW_Tests/Reports/Company Sales",
@@ -57,7 +61,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
             expectedReportItems = new List<ReportItem>()
             {
                 expectedReportItem,
-                new ReportItem()
+                new ReportItemProxy(reportServerRepositoryMock.Object)
                 {
                     Name = "Sales Order Detail",
                     Path = "/SSRSMigrate_AW_Tests/Reports/Sales Order Detail",
@@ -89,9 +93,6 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
                     }
                 }
             };
-
-            // Setup IReportServerRepository mock
-            var reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
             // Setup IReportServerRepository.GetReportDefinition Mocks
             reportServerRepositoryMock.Setup(r => r.GetReportDefinition(null))
@@ -138,18 +139,18 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
             reportServerRepositoryMock.Setup(r => r.GetReports("/SSRSMigrate_AW_Tests Doesnt Exist"))
                 .Returns(() => new List<ReportItem>());
 
-            // Setup IReportServerRepository.GetReportsList Mocks
-            reportServerRepositoryMock.Setup(r => r.GetReportsList(null))
+            // Setup IReportServerRepository.GetReportsLazy Mocks
+            reportServerRepositoryMock.Setup(r => r.GetReportsLazy(null))
                .Throws(new ArgumentException("path"));
 
-            reportServerRepositoryMock.Setup(r => r.GetReportsList(""))
+            reportServerRepositoryMock.Setup(r => r.GetReportsLazy(""))
                 .Throws(new ArgumentException("path"));
 
-            reportServerRepositoryMock.Setup(r => r.GetReportsList("/SSRSMigrate_AW_Tests"))
+            reportServerRepositoryMock.Setup(r => r.GetReportsLazy("/SSRSMigrate_AW_Tests"))
                .Returns(() => expectedReportItems);
 
-            reportServerRepositoryMock.Setup(r => r.GetReportsList("/SSRSMigrate_AW_Tests Doesnt Exist"))
-                .Returns(() => new List<ReportItem>());
+            reportServerRepositoryMock.Setup(r => r.GetReportsLazy("/SSRSMigrate_AW_Tests Doesnt Exist"))
+                .Returns(() => new List<ReportItemProxy>());
 
             // Setup IReportServerRepository.ValidatePath Mocks
             reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests"))
@@ -287,7 +288,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReports()
         {
-            List<ReportItem> actual = reader.GetReports("/SSRSMigrate_AW_Tests");
+            var actual = reader.GetReports("/SSRSMigrate_AW_Tests");
 
             Assert.NotNull(actual);
             Assert.AreEqual(expectedReportItems.Count(), actual.Count());
@@ -320,7 +321,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReports_PathDoesntExist()
         {
-            List<ReportItem> actual = reader.GetReports("/SSRSMigrate_AW_Tests Doesnt Exist");
+            var actual = reader.GetReports("/SSRSMigrate_AW_Tests Doesnt Exist");
 
             Assert.NotNull(actual);
             Assert.AreEqual(0, actual.Count());
@@ -341,7 +342,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         }
         #endregion
 
-        #region GetReportsList Tests
+        #region GetReports Using Delegate Reporter Tests
         [Test]
         public void GetReports_UsingDelegate()
         {
