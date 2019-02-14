@@ -84,10 +84,10 @@
         cd ${env:APPVEYOR_BUILD_FOLDER}
         .\packages\GitReleaseNotes.Portable.0.7.1\tools\GitReleaseNotes.exe . /OutputFile ReleaseNotes.md;
         ${env:release_description} = ( Get-Content -LiteralPath ReleaseNotes.md -Encoding UTF8 ) -join "`n";
-
+        ${env:release_description} = ${env:release_description} + ".";
   deploy:
     release: SSRSMigrate-v$(APPVEYOR_BUILD_VERSION)
-    description: $(APPVEYOR_BUILD_VERSION)\n$(release_description)
+    description: SSRSMigrate release v$(APPVEYOR_BUILD_VERSION)\n$(release_description)
     provider: GitHub
     auth_token:
       secure: EXRr3SxM7c0kVhOc5HAyMr4gUaCJA11QE/RbTNrqYil9WXKDqoQoigCfdD6ZjhDX # encrypted token from GitHub
