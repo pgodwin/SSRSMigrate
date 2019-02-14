@@ -58,18 +58,18 @@
         - ConnectsToSSRS
 
   test_script:
-    - nunit3-console "C:\projects\ssrsmigrate\SSRSMigrate\SSRSMigrate.Tests\bin\%CONFIGURATION%\SSRSMigrate.Tests.dll" "C:\projects\ssrsmigrate\SSRSMigrate\SSRSMigrate.IntegrationTests\bin\%CONFIGURATION%\SSRSMigrate.IntegrationTests.dll" --where cat!=ConnectsToSSRS
+    - nunit3-console "C:\projects\ssrsmigrate\SSRSMigrate\SSRSMigrate.Tests\bin\%MY_PLATFORM%\%CONFIGURATION%\SSRSMigrate.Tests.dll" "C:\projects\ssrsmigrate\SSRSMigrate\SSRSMigrate.IntegrationTests\bin\%MY_PLATFORM%\%CONFIGURATION%\SSRSMigrate.IntegrationTests.dll" --where cat!=ConnectsToSSRS
 
 #  after_test:
 #    - cd %APPVEYOR_BUILD_FOLDER%
 #    - nuget install NUnit.ConsoleRunner -OutputDirectory packages -Version 3.9.0
 #    - nuget install OpenCover -OutputDirectory packages -Version 4.6.519
 #    - dotnet tool install coveralls.net --version 1.0.0 --tool-path tools
-#    - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[SSRSMigrate]* -[SSRSMigrate]*.ReportServer20*.*" -excludebyattribute:*.CoverageExcludeAttribute* -target:".\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe" -targetargs:"/domain:single SSRSMigrate\SSRSMigrate.Tests\bin\%CONFIGURATION%\SSRSMigrate.Tests.dll SSRSMigrate\SSRSMigrate.IntegrationTests\bin\%CONFIGURATION%\SSRSMigrate.IntegrationTests.dll --where cat!=ConnectsToSSRS" -output:coverage.xml
+#    - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[SSRSMigrate]* -[SSRSMigrate]*.ReportServer20*.*" -excludebyattribute:*.CoverageExcludeAttribute* -target:".\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe" -targetargs:"/domain:single SSRSMigrate\SSRSMigrate.Tests\bin\%MY_PLATFORM%\%CONFIGURATION%\SSRSMigrate.Tests.dll SSRSMigrate\SSRSMigrate.IntegrationTests\bin\%MY_PLATFORM%\%CONFIGURATION%\SSRSMigrate.IntegrationTests.dll --where cat!=ConnectsToSSRS" -output:coverage.xml
 #    - .\tools\csmacnz.coveralls.exe --opencover -i coverage.xml --repoToken %COVERALLS_REPO_TOKEN%
 
   after_build:
-    - cmd: cd SSRSMigrate\SSRSMigrate\bin\%CONFIGURATION%\
+    - cmd: cd SSRSMigrate\SSRSMigrate\bin\%MY_PLATFORM%\%CONFIGURATION%\
     - cmd: 7z a C:\projects\ssrsmigrate\SSRSMigrate-v%APPVEYOR_BUILD_VERSION%_%MY_PLATFORM%.zip *.* -x!*.pdb -x!*.vhost.*
 
   artifacts:
