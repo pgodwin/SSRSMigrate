@@ -33,7 +33,7 @@
 
   platform:
     - x86
-    - Any CPU
+    - x64
 
   init:
     - git config --global core.autocrlf false
