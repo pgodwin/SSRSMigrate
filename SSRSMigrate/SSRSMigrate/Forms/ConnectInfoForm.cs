@@ -220,9 +220,9 @@ namespace SSRSMigrate.Forms
         {
             // Setup form default values
             this.cboSrcDefaultCred.SelectedIndex = 0;
-            this.cboSrcVersion.SelectedIndex = 1;
+            this.cboSrcVersion.SelectedIndex = 2;
             this.cboDestDefaultCred.SelectedIndex = 0;
-            this.cboDestVersion.SelectedIndex = 1;
+            this.cboDestVersion.SelectedIndex = 2;
 
             // Start with Server-to-Server migration checked
             this.rdoMethodDirect.Checked = true;

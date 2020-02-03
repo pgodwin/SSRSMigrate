@@ -35,6 +35,9 @@
             this.rdoMethodExportZip = new System.Windows.Forms.RadioButton();
             this.rdoMethodDirect = new System.Windows.Forms.RadioButton();
             this.grpDestServer = new System.Windows.Forms.GroupBox();
+            this.btnBrowseScript = new System.Windows.Forms.Button();
+            this.txtScriptPath = new System.Windows.Forms.TextBox();
+            this.chkExecuteScript = new System.Windows.Forms.CheckBox();
             this.btnDestTest = new System.Windows.Forms.Button();
             this.cbkDestOverwrite = new System.Windows.Forms.CheckBox();
             this.cboDestVersion = new System.Windows.Forms.ComboBox();
@@ -80,9 +83,6 @@
             this.btnImportZipBrowse = new System.Windows.Forms.Button();
             this.txtImportZipFilename = new System.Windows.Forms.TextBox();
             this.lblImportZipFilename = new System.Windows.Forms.Label();
-            this.chkExecuteScript = new System.Windows.Forms.CheckBox();
-            this.txtScriptPath = new System.Windows.Forms.TextBox();
-            this.btnBrowseScript = new System.Windows.Forms.Button();
             this.grpMigrateMethod.SuspendLayout();
             this.grpDestServer.SuspendLayout();
             this.grpExportZip.SuspendLayout();
@@ -194,6 +194,36 @@
             this.grpDestServer.TabStop = false;
             this.grpDestServer.Text = "Destination Server";
             // 
+            // btnBrowseScript
+            // 
+            this.btnBrowseScript.Location = new System.Drawing.Point(309, 248);
+            this.btnBrowseScript.Name = "btnBrowseScript";
+            this.btnBrowseScript.Size = new System.Drawing.Size(24, 23);
+            this.btnBrowseScript.TabIndex = 32;
+            this.btnBrowseScript.Text = "...";
+            this.btnBrowseScript.UseVisualStyleBackColor = true;
+            this.btnBrowseScript.Visible = false;
+            this.btnBrowseScript.Click += new System.EventHandler(this.btnBrowseScript_Click);
+            // 
+            // txtScriptPath
+            // 
+            this.txtScriptPath.Location = new System.Drawing.Point(21, 251);
+            this.txtScriptPath.Name = "txtScriptPath";
+            this.txtScriptPath.Size = new System.Drawing.Size(282, 20);
+            this.txtScriptPath.TabIndex = 31;
+            this.txtScriptPath.Visible = false;
+            // 
+            // chkExecuteScript
+            // 
+            this.chkExecuteScript.AutoSize = true;
+            this.chkExecuteScript.Location = new System.Drawing.Point(21, 227);
+            this.chkExecuteScript.Name = "chkExecuteScript";
+            this.chkExecuteScript.Size = new System.Drawing.Size(95, 17);
+            this.chkExecuteScript.TabIndex = 30;
+            this.chkExecuteScript.Text = "Execute Script";
+            this.chkExecuteScript.UseVisualStyleBackColor = true;
+            this.chkExecuteScript.CheckedChanged += new System.EventHandler(this.chkExecuteScript_CheckedChanged);
+            // 
             // btnDestTest
             // 
             this.btnDestTest.Location = new System.Drawing.Point(262, 178);
@@ -224,7 +254,8 @@
             "SQL Server 2012",
             "SQL Server 2014",
             "SQL Server 2016",
-            "SQL Server 2017"});
+            "SQL Server 2017",
+            "SQL Server 2019"});
             this.cboDestVersion.Location = new System.Drawing.Point(113, 46);
             this.cboDestVersion.Name = "cboDestVersion";
             this.cboDestVersion.Size = new System.Drawing.Size(146, 21);
@@ -250,6 +281,7 @@
             // 
             this.txtDestPassword.Location = new System.Drawing.Point(113, 128);
             this.txtDestPassword.Name = "txtDestPassword";
+            this.txtDestPassword.PasswordChar = '*';
             this.txtDestPassword.Size = new System.Drawing.Size(121, 20);
             this.txtDestPassword.TabIndex = 24;
             // 
@@ -527,6 +559,7 @@
             // 
             this.txtSrcPassword.Location = new System.Drawing.Point(113, 128);
             this.txtSrcPassword.Name = "txtSrcPassword";
+            this.txtSrcPassword.PasswordChar = '*';
             this.txtSrcPassword.Size = new System.Drawing.Size(121, 20);
             this.txtSrcPassword.TabIndex = 24;
             // 
@@ -555,7 +588,8 @@
             "SQL Server 2012",
             "SQL Server 2014",
             "SQL Server 2016",
-            "SQL Server 2017"});
+            "SQL Server 2017",
+            "SQL Server 2019"});
             this.cboSrcVersion.Location = new System.Drawing.Point(113, 46);
             this.cboSrcVersion.Name = "cboSrcVersion";
             this.cboSrcVersion.Size = new System.Drawing.Size(146, 21);
@@ -634,36 +668,6 @@
             this.lblImportZipFilename.Size = new System.Drawing.Size(67, 13);
             this.lblImportZipFilename.TabIndex = 0;
             this.lblImportZipFilename.Text = "Zip filename:";
-            // 
-            // chkExecuteScript
-            // 
-            this.chkExecuteScript.AutoSize = true;
-            this.chkExecuteScript.Location = new System.Drawing.Point(21, 227);
-            this.chkExecuteScript.Name = "chkExecuteScript";
-            this.chkExecuteScript.Size = new System.Drawing.Size(95, 17);
-            this.chkExecuteScript.TabIndex = 30;
-            this.chkExecuteScript.Text = "Execute Script";
-            this.chkExecuteScript.UseVisualStyleBackColor = true;
-            this.chkExecuteScript.CheckedChanged += new System.EventHandler(this.chkExecuteScript_CheckedChanged);
-            // 
-            // txtScriptPath
-            // 
-            this.txtScriptPath.Location = new System.Drawing.Point(21, 251);
-            this.txtScriptPath.Name = "txtScriptPath";
-            this.txtScriptPath.Size = new System.Drawing.Size(282, 20);
-            this.txtScriptPath.TabIndex = 31;
-            this.txtScriptPath.Visible = false;
-            // 
-            // btnBrowseScript
-            // 
-            this.btnBrowseScript.Location = new System.Drawing.Point(309, 248);
-            this.btnBrowseScript.Name = "btnBrowseScript";
-            this.btnBrowseScript.Size = new System.Drawing.Size(24, 23);
-            this.btnBrowseScript.TabIndex = 32;
-            this.btnBrowseScript.Text = "...";
-            this.btnBrowseScript.UseVisualStyleBackColor = true;
-            this.btnBrowseScript.Visible = false;
-            this.btnBrowseScript.Click += new System.EventHandler(this.btnBrowseScript_Click);
             // 
             // ConnectInfoForm
             // 
