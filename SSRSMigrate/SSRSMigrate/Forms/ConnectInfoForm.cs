@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.IO.Abstractions;
 using System.Windows.Forms;
@@ -16,6 +17,7 @@ using SSRSMigrate.SSRS.Test;
 using SSRSMigrate.SSRS.Writer;
 using Ninject.Extensions.Logging;
 using SSRSMigrate.ScriptEngine;
+using SSRSMigrate.SSRS.Repository;
 
 namespace SSRSMigrate.Forms
 {
@@ -194,35 +196,11 @@ namespace SSRSMigrate.Forms
             }
         }
 
-        private void cboSrcVersion_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.cboSrcVersion.SelectedIndex == 0)
-            {
-                MessageBox.Show(
-                    "SQL Server 2008 support is now deprecated in this application. " + Environment.NewLine + Environment.NewLine +
-                    "Migrating from/to SQL Server 2008 is no longer tested. It _should_ work but integration tests are no longer maintained.",
-                    "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
-        private void cboDestVersion_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.cboDestVersion.SelectedIndex == 0)
-            {
-                MessageBox.Show(
-                    "SQL Server 2008 support is now deprecated in this application. " + Environment.NewLine + Environment.NewLine +
-                    "Migrating from/to SQL Server 2008 is no longer tested. It _should_ work but integration tests are no longer maintained.",
-                    "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
         private void ConnectInfoForm_Load(object sender, EventArgs e)
         {
             // Setup form default values
             this.cboSrcDefaultCred.SelectedIndex = 0;
-            this.cboSrcVersion.SelectedIndex = 2;
             this.cboDestDefaultCred.SelectedIndex = 0;
-            this.cboDestVersion.SelectedIndex = 2;
 
             // Start with Server-to-Server migration checked
             this.rdoMethodDirect.Checked = true;
@@ -275,29 +253,30 @@ namespace SSRSMigrate.Forms
             string srcVersion = "2005-SRC";
             string destVersion = "2005-SRC";
 
-            if (this.cboSrcVersion.SelectedIndex > this.cboDestVersion.SelectedIndex)
-                throw new Exception("Source server is newer than destination server.");
-
-            if (this.cboSrcVersion.SelectedIndex == 0)
-                srcVersion = "2005-SRC";
-            else
-                srcVersion = "2010-SRC";
-
-            if (this.cboDestVersion.SelectedIndex == 0)
-                destVersion = "2005-DEST";
-            else
-                destVersion = "2010-DEST";
-
             // If source server is the same as the destination server and the root paths are the same, throw exception
             if (this.txtSrcUrl.Text.ToLower() == this.txtDestUrl.Text.ToLower() &&
                 this.txtSrcPath.Text.ToLower() == this.txtDestPath.Text.ToLower())
                 throw new Exception("You cannot migrate to the same path on the same server.");
 
             // Test the source connection
-            this.TestSourceConnection(true);
+            var sourceSSRSVersion = this.TestSourceConnection(true);
 
             // Test the destination connection
-            this.TestDestinationConnection(true);
+            var destSSRSVersion = this.TestDestinationConnection(true);
+
+            // Check version
+            if ((int)sourceSSRSVersion > (int)destSSRSVersion)
+                throw new Exception("Source server is newer than destination server.");
+
+            if (sourceSSRSVersion < SSRSVersion.SqlServer2008R2)
+                srcVersion = "2005-SRC";
+            else
+                srcVersion = "2010-SRC";
+
+            if ((int)destSSRSVersion < (int)SSRSVersion.SqlServer2008R2)
+                destVersion = "2005-DEST";
+            else
+                destVersion = "2010-DEST";
 
             reader = this.mKernel.Get<IReportServerReader>(srcVersion);
             writer = this.mKernel.Get<IReportServerWriter>(destVersion);
@@ -336,9 +315,15 @@ namespace SSRSMigrate.Forms
             ReportItemExporter reportExporter = null;
 
             // Test the source connection
-            this.TestSourceConnection(true);
+            string version = "2005-SRC";
 
-            string version = this.GetSourceServerVersion();
+            // Test the source connection
+            var sourceSSRSVersion = this.TestSourceConnection(true);
+
+            if ((int)sourceSSRSVersion < (int)SSRSVersion.SqlServer2008R2)
+                version = "2005-SRC";
+            else
+                version = "2010-SRC";
 
             reader = this.mKernel.Get<IReportServerReader>(version);
 
@@ -366,10 +351,15 @@ namespace SSRSMigrate.Forms
             IBundler zipBundler = null;
             IFileSystem fileSystem = null;
 
-            // Test the source connection
-            this.TestSourceConnection(true);
+            string version = "2005-SRC";
 
-            string version = this.GetSourceServerVersion();
+            // Test the source connection
+            var sourceSSRSVersion = this.TestSourceConnection(true);
+
+            if ((int)sourceSSRSVersion < (int)SSRSVersion.SqlServer2008R2)
+                version = "2005-SRC";
+            else
+                version = "2010-SRC";
 
             reader = this.mKernel.Get<IReportServerReader>(version);
 
@@ -404,9 +394,17 @@ namespace SSRSMigrate.Forms
             IFileSystem fileSystem = null;
 
             // Test the destination connection
-            this.TestDestinationConnection(true);
+            //this.TestDestinationConnection(true);
 
-            string version = this.GetDestinationServerVersion();
+            string version = "2010-DEST";
+
+            // Test the destination connection
+            var destSSRSVersion = this.TestDestinationConnection(true);
+
+            if ((int)destSSRSVersion < (int)SSRSVersion.SqlServer2008R2)
+                version = "2005-DEST";
+            else
+                version = "2010-DEST";
 
             writer = this.mKernel.Get<IReportServerWriter>(version);
 
@@ -538,29 +536,29 @@ namespace SSRSMigrate.Forms
                 throw new FileNotFoundException(this.txtImportZipFilename.Text);
         }
 
-        private string GetSourceServerVersion()
-        {
-            string version = "2005-SRC";
+        //private string GetSourceServerVersion()
+        //{
+        //    string version = "2005-SRC";
 
-            if (this.cboSrcVersion.SelectedIndex == 0)
-                version = "2005-SRC";
-            else
-                version = "2010-SRC";
+        //    if (this.cboSrcVersion.SelectedIndex == 0)
+        //        version = "2005-SRC";
+        //    else
+        //        version = "2010-SRC";
 
-            return version;
-        }
+        //    return version;
+        //}
 
-        private string GetDestinationServerVersion()
-        {
-            string version = "2005-DEST";
+        //private string GetDestinationServerVersion()
+        //{
+        //    string version = "2005-DEST";
 
-            if (this.cboDestVersion.SelectedIndex == 0)
-                version = "2005-DEST";
-            else
-                version = "2010-DEST";
+        //    if (this.cboDestVersion.SelectedIndex == 0)
+        //        version = "2005-DEST";
+        //    else
+        //        version = "2010-DEST";
 
-            return version;
-        }
+        //    return version;
+        //}
         #endregion
 
         #region Save connection information from UI to App.config
@@ -576,10 +574,10 @@ namespace SSRSMigrate.Forms
             Properties.Settings.Default.SrcPath = this.txtSrcPath.Text;
             Properties.Settings.Default.SrcUsername = this.txtSrcUsername.Text;
 
-            if (this.cboSrcVersion.SelectedIndex == 0)
-                Properties.Settings.Default.SrcVersion = "2005";
-            else
-                Properties.Settings.Default.SrcVersion = "2010";
+            //if (this.cboSrcVersion.SelectedIndex == 0)
+            //    Properties.Settings.Default.SrcVersion = "2005";
+            //else
+            //    Properties.Settings.Default.SrcVersion = "2010";
 
             Properties.Settings.Default.SrcWebServiceUrl = this.txtSrcUrl.Text;
 
@@ -598,10 +596,10 @@ namespace SSRSMigrate.Forms
             Properties.Settings.Default.DestPath = this.txtDestPath.Text;
             Properties.Settings.Default.DestUsername = this.txtDestUsername.Text;
 
-            if (this.cboDestVersion.SelectedIndex == 0)
-                Properties.Settings.Default.DestVersion = "2005";
-            else
-                Properties.Settings.Default.DestVersion = "2010";
+            //if (this.cboDestVersion.SelectedIndex == 0)
+            //    Properties.Settings.Default.DestVersion = "2005";
+            //else
+            //    Properties.Settings.Default.DestVersion = "2010";
 
             Properties.Settings.Default.DestWebServiceUrl = this.txtDestUrl.Text;
 
@@ -800,6 +798,36 @@ namespace SSRSMigrate.Forms
         }
         #endregion
 
+        #region Get SQL Server Version
+        private SSRSVersion GetSourceSqlServerVersion()
+        {
+            // For getting version, always default to oldest repository
+            string repositoryTag = "2005-SRC";
+
+            var version = SSRSVersion.Unknown;
+
+            IReportServerRepository reportServerRepository = this.mKernel.Get<IReportServerRepository>(repositoryTag);
+
+            version = reportServerRepository.GetSqlServerVersion();
+
+            return version;
+        }
+
+        private SSRSVersion GetDestinationSqlServerVersion()
+        {
+            // For getting version, always default to oldest repository
+            string repositoryTag = "2005-DEST";
+
+            var version = SSRSVersion.Unknown;
+
+            IReportServerRepository reportServerRepository = this.mKernel.Get<IReportServerRepository>(repositoryTag);
+
+            version = reportServerRepository.GetSqlServerVersion();
+
+            return version;
+        }
+        #endregion
+
         #region Test connection 
         private void btnSrcTest_Click(object sender, EventArgs e)
         {
@@ -811,22 +839,26 @@ namespace SSRSMigrate.Forms
             }
         }
 
-        private void TestSourceConnection(bool quietSuccessful = false)
+        private SSRSVersion TestSourceConnection(bool quietSuccessful = false)
         {
             // Save source configuration so it can be loaded by Ninject
             this.Save_SourceConfiguration();
 
-            string version = "2005-SRC";
+            string repositoryTag = "2005-SRC";
+
+            var ssrsVersion = GetSourceSqlServerVersion();
 
             // Get the version to get from the Factory
-            if (this.cboSrcVersion.SelectedIndex == 0)
-                version = "2005-SRC";
+            if ((int)ssrsVersion < (int)SSRSVersion.SqlServer2008R2)
+                repositoryTag = "2005-SRC";
             else
-                version = "2010-SRC";
+                repositoryTag = "2010-SRC";
+
+            this.txtSrcSqlVersion.Text = ssrsVersion.GetAttributeOfType<DescriptionAttribute>().Description; 
 
             try
             {
-                IReportServerTester tester = this.mKernel.Get<IReportServerTester>(version);
+                IReportServerTester tester = this.mKernel.Get<IReportServerTester>(repositoryTag);
 
                 ConnectionTestStatus status = tester.ReadTest(this.txtSrcPath.Text);
 
@@ -858,6 +890,8 @@ namespace SSRSMigrate.Forms
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
                 }
+
+                return ssrsVersion;
             }
             catch (Exception er)
             {
@@ -867,6 +901,8 @@ namespace SSRSMigrate.Forms
                     "Test Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+
+                return ssrsVersion;
             }
         }
 
@@ -879,22 +915,26 @@ namespace SSRSMigrate.Forms
             }
         }
 
-        private void TestDestinationConnection(bool quietSuccessful = false)
+        private SSRSVersion TestDestinationConnection(bool quietSuccessful = false)
         {
             // Save destination configuration so it can be loaded by Ninject
             this.Save_DestinationConfiguration();
 
-            string version = "2005-DEST";
+            string repositoryTag = "2005-DEST";
+
+            var ssrsVersion = GetDestinationSqlServerVersion();
 
             // Get the version to get from the Factory
-            if (this.cboDestVersion.SelectedIndex == 0)
-                version = "2005-DEST";
+            if ((int)ssrsVersion < (int)SSRSVersion.SqlServer2008R2)
+                repositoryTag = "2005-DEST";
             else
-                version = "2010-DEST";
+                repositoryTag = "2010-DEST";
+
+            this.txtDestSqlVersion.Text = ssrsVersion.GetAttributeOfType<DescriptionAttribute>().Description; 
 
             try
             {
-                IReportServerTester tester = this.mKernel.Get<IReportServerTester>(version);
+                IReportServerTester tester = this.mKernel.Get<IReportServerTester>(repositoryTag);
 
                 ConnectionTestStatus readStatus = tester.ReadTest("/");
                 ConnectionTestStatus writeStatus = tester.WriteTest("/", Guid.NewGuid().ToString("N"));
@@ -929,6 +969,7 @@ namespace SSRSMigrate.Forms
                             MessageBoxButtons.OK,
                             icon);
 
+                return ssrsVersion;
             }
             catch (Exception er)
             {
@@ -938,6 +979,8 @@ namespace SSRSMigrate.Forms
                     "Test Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+
+                return ssrsVersion;
             }
         }
 

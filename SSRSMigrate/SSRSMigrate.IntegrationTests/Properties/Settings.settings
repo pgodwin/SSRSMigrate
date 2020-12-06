@@ -6,7 +6,7 @@
       <Value Profile="(Default)">http://localhost/reportserver_sql2008/reportservice2005.asmx</Value>
     </Setting>
     <Setting Name="ReportServer2008R2WebServiceUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://localhost/reportserver/reportservice2010.asmx</Value>
+      <Value Profile="(Default)">http://localhost/ReportServer_SSRS/reportservice2010.asmx</Value>
     </Setting>
     <Setting Name="SourcePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">/SSRSMigrate_AW_Tests</Value>
