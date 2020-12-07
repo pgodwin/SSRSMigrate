@@ -35,6 +35,8 @@
             this.rdoMethodExportZip = new System.Windows.Forms.RadioButton();
             this.rdoMethodDirect = new System.Windows.Forms.RadioButton();
             this.grpDestServer = new System.Windows.Forms.GroupBox();
+            this.txtDestSqlVersion = new System.Windows.Forms.TextBox();
+            this.lblDestSqlVersion = new System.Windows.Forms.Label();
             this.btnBrowseScript = new System.Windows.Forms.Button();
             this.txtScriptPath = new System.Windows.Forms.TextBox();
             this.chkExecuteScript = new System.Windows.Forms.CheckBox();
@@ -52,15 +54,15 @@
             this.lblDestUsername = new System.Windows.Forms.Label();
             this.lblDestDefaultCred = new System.Windows.Forms.Label();
             this.lblDestUrl = new System.Windows.Forms.Label();
-            this.btnConnect = new System.Windows.Forms.Button();
-            this.grpExportZip = new System.Windows.Forms.GroupBox();
-            this.btnExportZipFileBrowse = new System.Windows.Forms.Button();
-            this.txtExportZipFilename = new System.Windows.Forms.TextBox();
-            this.lblExportZipFilename = new System.Windows.Forms.Label();
             this.grpExportDisk = new System.Windows.Forms.GroupBox();
             this.btnExportDiskFolderBrowse = new System.Windows.Forms.Button();
             this.txtExportDiskFolderName = new System.Windows.Forms.TextBox();
             this.lblExportDiskFolderName = new System.Windows.Forms.Label();
+            this.grpExportZip = new System.Windows.Forms.GroupBox();
+            this.btnExportZipFileBrowse = new System.Windows.Forms.Button();
+            this.txtExportZipFilename = new System.Windows.Forms.TextBox();
+            this.lblExportZipFilename = new System.Windows.Forms.Label();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.lblSrcUrl = new System.Windows.Forms.Label();
             this.lblSrcDefaultCred = new System.Windows.Forms.Label();
             this.lblSrcUsername = new System.Windows.Forms.Label();
@@ -74,19 +76,17 @@
             this.txtSrcDomain = new System.Windows.Forms.TextBox();
             this.txtSrcPath = new System.Windows.Forms.TextBox();
             this.grpSrcServer = new System.Windows.Forms.GroupBox();
+            this.txtSrcSqlVersion = new System.Windows.Forms.TextBox();
+            this.lblSrcSqlVersion = new System.Windows.Forms.Label();
             this.btnSrcTest = new System.Windows.Forms.Button();
             this.grpImportZip = new System.Windows.Forms.GroupBox();
             this.btnImportZipBrowse = new System.Windows.Forms.Button();
             this.txtImportZipFilename = new System.Windows.Forms.TextBox();
             this.lblImportZipFilename = new System.Windows.Forms.Label();
-            this.lblDestSqlVersion = new System.Windows.Forms.Label();
-            this.txtDestSqlVersion = new System.Windows.Forms.TextBox();
-            this.txtSrcSqlVersion = new System.Windows.Forms.TextBox();
-            this.lblSrcSqlVersion = new System.Windows.Forms.Label();
             this.grpMigrateMethod.SuspendLayout();
             this.grpDestServer.SuspendLayout();
-            this.grpExportZip.SuspendLayout();
             this.grpExportDisk.SuspendLayout();
+            this.grpExportZip.SuspendLayout();
             this.grpSrcServer.SuspendLayout();
             this.grpImportZip.SuspendLayout();
             this.SuspendLayout();
@@ -171,7 +171,6 @@
             this.grpDestServer.Controls.Add(this.txtDestSqlVersion);
             this.grpDestServer.Controls.Add(this.lblDestSqlVersion);
             this.grpDestServer.Controls.Add(this.btnBrowseScript);
-            this.grpDestServer.Controls.Add(this.grpExportDisk);
             this.grpDestServer.Controls.Add(this.txtScriptPath);
             this.grpDestServer.Controls.Add(this.chkExecuteScript);
             this.grpDestServer.Controls.Add(this.btnDestTest);
@@ -188,12 +187,30 @@
             this.grpDestServer.Controls.Add(this.lblDestUsername);
             this.grpDestServer.Controls.Add(this.lblDestDefaultCred);
             this.grpDestServer.Controls.Add(this.lblDestUrl);
-            this.grpDestServer.Location = new System.Drawing.Point(572, 16);
+            this.grpDestServer.Location = new System.Drawing.Point(572, 12);
             this.grpDestServer.Name = "grpDestServer";
-            this.grpDestServer.Size = new System.Drawing.Size(350, 291);
+            this.grpDestServer.Size = new System.Drawing.Size(350, 295);
             this.grpDestServer.TabIndex = 2;
             this.grpDestServer.TabStop = false;
             this.grpDestServer.Text = "Destination Server";
+            // 
+            // txtDestSqlVersion
+            // 
+            this.txtDestSqlVersion.Enabled = false;
+            this.txtDestSqlVersion.Location = new System.Drawing.Point(113, 199);
+            this.txtDestSqlVersion.Name = "txtDestSqlVersion";
+            this.txtDestSqlVersion.ReadOnly = true;
+            this.txtDestSqlVersion.Size = new System.Drawing.Size(143, 20);
+            this.txtDestSqlVersion.TabIndex = 34;
+            // 
+            // lblDestSqlVersion
+            // 
+            this.lblDestSqlVersion.AutoSize = true;
+            this.lblDestSqlVersion.Location = new System.Drawing.Point(59, 202);
+            this.lblDestSqlVersion.Name = "lblDestSqlVersion";
+            this.lblDestSqlVersion.Size = new System.Drawing.Size(45, 13);
+            this.lblDestSqlVersion.TabIndex = 33;
+            this.lblDestSqlVersion.Text = "Version:";
             // 
             // btnBrowseScript
             // 
@@ -350,24 +367,53 @@
             this.lblDestUrl.TabIndex = 14;
             this.lblDestUrl.Text = "Web Service Url:";
             // 
-            // btnConnect
+            // grpExportDisk
             // 
-            this.btnConnect.Location = new System.Drawing.Point(801, 309);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(117, 31);
-            this.btnConnect.TabIndex = 3;
-            this.btnConnect.Text = "Connect";
-            this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            this.grpExportDisk.Controls.Add(this.btnExportDiskFolderBrowse);
+            this.grpExportDisk.Controls.Add(this.txtExportDiskFolderName);
+            this.grpExportDisk.Controls.Add(this.lblExportDiskFolderName);
+            this.grpExportDisk.Location = new System.Drawing.Point(572, 12);
+            this.grpExportDisk.Name = "grpExportDisk";
+            this.grpExportDisk.Size = new System.Drawing.Size(350, 295);
+            this.grpExportDisk.TabIndex = 31;
+            this.grpExportDisk.TabStop = false;
+            this.grpExportDisk.Text = "Export to disk";
+            this.grpExportDisk.Visible = false;
+            // 
+            // btnExportDiskFolderBrowse
+            // 
+            this.btnExportDiskFolderBrowse.Location = new System.Drawing.Point(303, 23);
+            this.btnExportDiskFolderBrowse.Name = "btnExportDiskFolderBrowse";
+            this.btnExportDiskFolderBrowse.Size = new System.Drawing.Size(24, 23);
+            this.btnExportDiskFolderBrowse.TabIndex = 2;
+            this.btnExportDiskFolderBrowse.Text = "...";
+            this.btnExportDiskFolderBrowse.UseVisualStyleBackColor = true;
+            this.btnExportDiskFolderBrowse.Click += new System.EventHandler(this.btnExportDiskFolderBrowse_Click);
+            // 
+            // txtExportDiskFolderName
+            // 
+            this.txtExportDiskFolderName.Location = new System.Drawing.Point(76, 26);
+            this.txtExportDiskFolderName.Name = "txtExportDiskFolderName";
+            this.txtExportDiskFolderName.Size = new System.Drawing.Size(221, 20);
+            this.txtExportDiskFolderName.TabIndex = 1;
+            // 
+            // lblExportDiskFolderName
+            // 
+            this.lblExportDiskFolderName.AutoSize = true;
+            this.lblExportDiskFolderName.Location = new System.Drawing.Point(19, 29);
+            this.lblExportDiskFolderName.Name = "lblExportDiskFolderName";
+            this.lblExportDiskFolderName.Size = new System.Drawing.Size(39, 13);
+            this.lblExportDiskFolderName.TabIndex = 0;
+            this.lblExportDiskFolderName.Text = "Folder:";
             // 
             // grpExportZip
             // 
             this.grpExportZip.Controls.Add(this.btnExportZipFileBrowse);
             this.grpExportZip.Controls.Add(this.txtExportZipFilename);
             this.grpExportZip.Controls.Add(this.lblExportZipFilename);
-            this.grpExportZip.Location = new System.Drawing.Point(4, 113);
+            this.grpExportZip.Location = new System.Drawing.Point(572, 12);
             this.grpExportZip.Name = "grpExportZip";
-            this.grpExportZip.Size = new System.Drawing.Size(350, 147);
+            this.grpExportZip.Size = new System.Drawing.Size(350, 295);
             this.grpExportZip.TabIndex = 29;
             this.grpExportZip.TabStop = false;
             this.grpExportZip.Text = "Export to ZIP Archive";
@@ -399,45 +445,15 @@
             this.lblExportZipFilename.TabIndex = 0;
             this.lblExportZipFilename.Text = "Filename:";
             // 
-            // grpExportDisk
+            // btnConnect
             // 
-            this.grpExportDisk.Controls.Add(this.btnExportDiskFolderBrowse);
-            this.grpExportDisk.Controls.Add(this.txtExportDiskFolderName);
-            this.grpExportDisk.Controls.Add(this.grpExportZip);
-            this.grpExportDisk.Controls.Add(this.lblExportDiskFolderName);
-            this.grpExportDisk.Location = new System.Drawing.Point(0, 16);
-            this.grpExportDisk.Name = "grpExportDisk";
-            this.grpExportDisk.Size = new System.Drawing.Size(350, 70);
-            this.grpExportDisk.TabIndex = 31;
-            this.grpExportDisk.TabStop = false;
-            this.grpExportDisk.Text = "Export to disk";
-            this.grpExportDisk.Visible = false;
-            // 
-            // btnExportDiskFolderBrowse
-            // 
-            this.btnExportDiskFolderBrowse.Location = new System.Drawing.Point(303, 23);
-            this.btnExportDiskFolderBrowse.Name = "btnExportDiskFolderBrowse";
-            this.btnExportDiskFolderBrowse.Size = new System.Drawing.Size(24, 23);
-            this.btnExportDiskFolderBrowse.TabIndex = 2;
-            this.btnExportDiskFolderBrowse.Text = "...";
-            this.btnExportDiskFolderBrowse.UseVisualStyleBackColor = true;
-            this.btnExportDiskFolderBrowse.Click += new System.EventHandler(this.btnExportDiskFolderBrowse_Click);
-            // 
-            // txtExportDiskFolderName
-            // 
-            this.txtExportDiskFolderName.Location = new System.Drawing.Point(76, 26);
-            this.txtExportDiskFolderName.Name = "txtExportDiskFolderName";
-            this.txtExportDiskFolderName.Size = new System.Drawing.Size(221, 20);
-            this.txtExportDiskFolderName.TabIndex = 1;
-            // 
-            // lblExportDiskFolderName
-            // 
-            this.lblExportDiskFolderName.AutoSize = true;
-            this.lblExportDiskFolderName.Location = new System.Drawing.Point(19, 29);
-            this.lblExportDiskFolderName.Name = "lblExportDiskFolderName";
-            this.lblExportDiskFolderName.Size = new System.Drawing.Size(39, 13);
-            this.lblExportDiskFolderName.TabIndex = 0;
-            this.lblExportDiskFolderName.Text = "Folder:";
+            this.btnConnect.Location = new System.Drawing.Point(805, 313);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(117, 31);
+            this.btnConnect.TabIndex = 3;
+            this.btnConnect.Text = "Connect";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // lblSrcUrl
             // 
@@ -561,12 +577,30 @@
             this.grpSrcServer.Controls.Add(this.lblSrcUsername);
             this.grpSrcServer.Controls.Add(this.lblSrcDefaultCred);
             this.grpSrcServer.Controls.Add(this.lblSrcUrl);
-            this.grpSrcServer.Location = new System.Drawing.Point(207, 13);
+            this.grpSrcServer.Location = new System.Drawing.Point(207, 12);
             this.grpSrcServer.Name = "grpSrcServer";
-            this.grpSrcServer.Size = new System.Drawing.Size(350, 290);
+            this.grpSrcServer.Size = new System.Drawing.Size(359, 295);
             this.grpSrcServer.TabIndex = 1;
             this.grpSrcServer.TabStop = false;
             this.grpSrcServer.Text = "Source Server";
+            // 
+            // txtSrcSqlVersion
+            // 
+            this.txtSrcSqlVersion.Enabled = false;
+            this.txtSrcSqlVersion.Location = new System.Drawing.Point(113, 180);
+            this.txtSrcSqlVersion.Name = "txtSrcSqlVersion";
+            this.txtSrcSqlVersion.ReadOnly = true;
+            this.txtSrcSqlVersion.Size = new System.Drawing.Size(161, 20);
+            this.txtSrcSqlVersion.TabIndex = 36;
+            // 
+            // lblSrcSqlVersion
+            // 
+            this.lblSrcSqlVersion.AutoSize = true;
+            this.lblSrcSqlVersion.Location = new System.Drawing.Point(59, 183);
+            this.lblSrcSqlVersion.Name = "lblSrcSqlVersion";
+            this.lblSrcSqlVersion.Size = new System.Drawing.Size(45, 13);
+            this.lblSrcSqlVersion.TabIndex = 35;
+            this.lblSrcSqlVersion.Text = "Version:";
             // 
             // btnSrcTest
             // 
@@ -583,9 +617,9 @@
             this.grpImportZip.Controls.Add(this.btnImportZipBrowse);
             this.grpImportZip.Controls.Add(this.txtImportZipFilename);
             this.grpImportZip.Controls.Add(this.lblImportZipFilename);
-            this.grpImportZip.Location = new System.Drawing.Point(207, 243);
+            this.grpImportZip.Location = new System.Drawing.Point(207, 12);
             this.grpImportZip.Name = "grpImportZip";
-            this.grpImportZip.Size = new System.Drawing.Size(350, 60);
+            this.grpImportZip.Size = new System.Drawing.Size(359, 295);
             this.grpImportZip.TabIndex = 33;
             this.grpImportZip.TabStop = false;
             this.grpImportZip.Text = "Import from ZIP archive";
@@ -617,50 +651,16 @@
             this.lblImportZipFilename.TabIndex = 0;
             this.lblImportZipFilename.Text = "Zip filename:";
             // 
-            // lblDestSqlVersion
-            // 
-            this.lblDestSqlVersion.AutoSize = true;
-            this.lblDestSqlVersion.Location = new System.Drawing.Point(59, 202);
-            this.lblDestSqlVersion.Name = "lblDestSqlVersion";
-            this.lblDestSqlVersion.Size = new System.Drawing.Size(45, 13);
-            this.lblDestSqlVersion.TabIndex = 33;
-            this.lblDestSqlVersion.Text = "Version:";
-            // 
-            // txtDestSqlVersion
-            // 
-            this.txtDestSqlVersion.Enabled = false;
-            this.txtDestSqlVersion.Location = new System.Drawing.Point(113, 199);
-            this.txtDestSqlVersion.Name = "txtDestSqlVersion";
-            this.txtDestSqlVersion.ReadOnly = true;
-            this.txtDestSqlVersion.Size = new System.Drawing.Size(143, 20);
-            this.txtDestSqlVersion.TabIndex = 34;
-            // 
-            // txtSrcSqlVersion
-            // 
-            this.txtSrcSqlVersion.Enabled = false;
-            this.txtSrcSqlVersion.Location = new System.Drawing.Point(113, 180);
-            this.txtSrcSqlVersion.Name = "txtSrcSqlVersion";
-            this.txtSrcSqlVersion.ReadOnly = true;
-            this.txtSrcSqlVersion.Size = new System.Drawing.Size(161, 20);
-            this.txtSrcSqlVersion.TabIndex = 36;
-            // 
-            // lblSrcSqlVersion
-            // 
-            this.lblSrcSqlVersion.AutoSize = true;
-            this.lblSrcSqlVersion.Location = new System.Drawing.Point(59, 183);
-            this.lblSrcSqlVersion.Name = "lblSrcSqlVersion";
-            this.lblSrcSqlVersion.Size = new System.Drawing.Size(45, 13);
-            this.lblSrcSqlVersion.TabIndex = 35;
-            this.lblSrcSqlVersion.Text = "Version:";
-            // 
             // ConnectInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(933, 350);
+            this.ClientSize = new System.Drawing.Size(930, 353);
             this.Controls.Add(this.grpImportZip);
             this.Controls.Add(this.btnConnect);
+            this.Controls.Add(this.grpExportZip);
             this.Controls.Add(this.grpDestServer);
+            this.Controls.Add(this.grpExportDisk);
             this.Controls.Add(this.grpSrcServer);
             this.Controls.Add(this.grpMigrateMethod);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -673,10 +673,10 @@
             this.grpMigrateMethod.PerformLayout();
             this.grpDestServer.ResumeLayout(false);
             this.grpDestServer.PerformLayout();
-            this.grpExportZip.ResumeLayout(false);
-            this.grpExportZip.PerformLayout();
             this.grpExportDisk.ResumeLayout(false);
             this.grpExportDisk.PerformLayout();
+            this.grpExportZip.ResumeLayout(false);
+            this.grpExportZip.PerformLayout();
             this.grpSrcServer.ResumeLayout(false);
             this.grpSrcServer.PerformLayout();
             this.grpImportZip.ResumeLayout(false);

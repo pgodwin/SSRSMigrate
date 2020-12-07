@@ -13,6 +13,7 @@ using SSRSMigrate.SSRS.Reader;
 using SSRSMigrate.Status;
 using SSRSMigrate.Utility;
 using Ninject.Extensions.Logging;
+using SSRSMigrate.SSRS;
 using SSRSMigrate.SSRS.Item.Proxy;
 
 namespace SSRSMigrate.Forms
@@ -686,8 +687,8 @@ namespace SSRSMigrate.Forms
                 
                 // If the export completed, create the summary and save the ZipBundler
                 string sourceRootPath = this.mSourceRootPath;
-                SSRSVersion sourceVersion = this.mReportServerReader.GetSqlServerVersion();
-                this.mZipBundler.CreateSummary(sourceRootPath, sourceVersion);
+                SqlServerInfo sourceServerInfo = this.mReportServerReader.GetSqlServerVersion();
+                this.mZipBundler.CreateSummary(sourceRootPath, sourceServerInfo.SsrsVersion);
 
                 string filename = this.mZipBundler.Save(this.mExportDestinationFilename);
 

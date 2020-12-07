@@ -24,6 +24,6 @@ namespace SSRSMigrate.SSRS.Writer
         string DeleteItem(ReportServerItem item);
 
         // Misc
-        SSRSVersion GetSqlServerVersion();
+        SqlServerInfo GetSqlServerVersion();
     }
 }

@@ -17,6 +17,7 @@ using SSRSMigrate.SSRS.Test;
 using SSRSMigrate.SSRS.Writer;
 using Ninject.Extensions.Logging;
 using SSRSMigrate.ScriptEngine;
+using SSRSMigrate.SSRS;
 using SSRSMigrate.SSRS.Repository;
 
 namespace SSRSMigrate.Forms
@@ -250,8 +251,6 @@ namespace SSRSMigrate.Forms
 
             IReportServerReader reader = null;
             IReportServerWriter writer = null;
-            string srcVersion = "2005-SRC";
-            string destVersion = "2005-SRC";
 
             // If source server is the same as the destination server and the root paths are the same, throw exception
             if (this.txtSrcUrl.Text.ToLower() == this.txtDestUrl.Text.ToLower() &&
@@ -259,40 +258,30 @@ namespace SSRSMigrate.Forms
                 throw new Exception("You cannot migrate to the same path on the same server.");
 
             // Test the source connection
-            var sourceSSRSVersion = this.TestSourceConnection(true);
+            var sourceSqlServerInfo = this.TestSourceConnection(true);
 
             // Test the destination connection
-            var destSSRSVersion = this.TestDestinationConnection(true);
+            var destSqlSqlServerInfo = this.TestDestinationConnection(true);
 
             // Check version
-            if ((int)sourceSSRSVersion > (int)destSSRSVersion)
+            if ((int)sourceSqlServerInfo.SsrsVersion > (int)destSqlSqlServerInfo.SsrsVersion)
                 throw new Exception("Source server is newer than destination server.");
 
-            if (sourceSSRSVersion < SSRSVersion.SqlServer2008R2)
-                srcVersion = "2005-SRC";
-            else
-                srcVersion = "2010-SRC";
-
-            if ((int)destSSRSVersion < (int)SSRSVersion.SqlServer2008R2)
-                destVersion = "2005-DEST";
-            else
-                destVersion = "2010-DEST";
-
-            reader = this.mKernel.Get<IReportServerReader>(srcVersion);
-            writer = this.mKernel.Get<IReportServerWriter>(destVersion);
+            reader = this.mKernel.Get<IReportServerReader>(sourceSqlServerInfo.RepositoryTag);
+            writer = this.mKernel.Get<IReportServerWriter>(destSqlSqlServerInfo.RepositoryTag);
 
             // Check source and destination server versions through the reader and writer
-            SSRSVersion sourceVersion = reader.GetSqlServerVersion();
-            SSRSVersion destinationVersion = writer.GetSqlServerVersion();
+            SqlServerInfo sourceServerInfo = reader.GetSqlServerVersion();
+            SqlServerInfo destinationServerInfo = writer.GetSqlServerVersion();
 
             // If the destination version is older than the source version, prevent migration.
-            if ((int)destinationVersion < (int)sourceVersion)
+            if ((int)destinationServerInfo.SsrsVersion < (int)sourceServerInfo.SsrsVersion)
                 throw new Exception("Destination server is using an older version of SQL Server than the source server.");
         
             writer.Overwrite = this.cbkDestOverwrite.Checked;
 
             // Resolve PythonEngine from kernel
-            PythonEngine engine = this.mKernel.Get<PythonEngine>(destVersion);
+            PythonEngine engine = this.mKernel.Get<PythonEngine>(destSqlSqlServerInfo.RepositoryTag);
 
             this.PerformDirectMigrate(
                 this.txtSrcUrl.Text,
@@ -315,17 +304,9 @@ namespace SSRSMigrate.Forms
             ReportItemExporter reportExporter = null;
 
             // Test the source connection
-            string version = "2005-SRC";
+            var sourceSqlServerInfo = this.TestSourceConnection(true);
 
-            // Test the source connection
-            var sourceSSRSVersion = this.TestSourceConnection(true);
-
-            if ((int)sourceSSRSVersion < (int)SSRSVersion.SqlServer2008R2)
-                version = "2005-SRC";
-            else
-                version = "2010-SRC";
-
-            reader = this.mKernel.Get<IReportServerReader>(version);
+            reader = this.mKernel.Get<IReportServerReader>(sourceSqlServerInfo.RepositoryTag);
 
             dataSourceExporter = this.mKernel.Get<DataSourceItemExporter>();
             folderExporter = this.mKernel.Get<FolderItemExporter>();
@@ -351,17 +332,10 @@ namespace SSRSMigrate.Forms
             IBundler zipBundler = null;
             IFileSystem fileSystem = null;
 
-            string version = "2005-SRC";
-
             // Test the source connection
-            var sourceSSRSVersion = this.TestSourceConnection(true);
+            var sourceSqlServerInfo = this.TestSourceConnection(true);
 
-            if ((int)sourceSSRSVersion < (int)SSRSVersion.SqlServer2008R2)
-                version = "2005-SRC";
-            else
-                version = "2010-SRC";
-
-            reader = this.mKernel.Get<IReportServerReader>(version);
+            reader = this.mKernel.Get<IReportServerReader>(sourceSqlServerInfo.RepositoryTag);
 
             dataSourceExporter = this.mKernel.Get<DataSourceItemExporter>();
             folderExporter = this.mKernel.Get<FolderItemExporter>();
@@ -394,19 +368,9 @@ namespace SSRSMigrate.Forms
             IFileSystem fileSystem = null;
 
             // Test the destination connection
-            //this.TestDestinationConnection(true);
+            var destSqlSqlServerInfo = this.TestDestinationConnection(true);
 
-            string version = "2010-DEST";
-
-            // Test the destination connection
-            var destSSRSVersion = this.TestDestinationConnection(true);
-
-            if ((int)destSSRSVersion < (int)SSRSVersion.SqlServer2008R2)
-                version = "2005-DEST";
-            else
-                version = "2010-DEST";
-
-            writer = this.mKernel.Get<IReportServerWriter>(version);
+            writer = this.mKernel.Get<IReportServerWriter>(destSqlSqlServerInfo.RepositoryTag);
 
             writer.Overwrite = this.cbkDestOverwrite.Checked;
 
@@ -799,32 +763,38 @@ namespace SSRSMigrate.Forms
         #endregion
 
         #region Get SQL Server Version
-        private SSRSVersion GetSourceSqlServerVersion()
+        private SqlServerInfo GetSourceSqlServerVersion()
         {
             // For getting version, always default to oldest repository
             string repositoryTag = "2005-SRC";
 
-            var version = SSRSVersion.Unknown;
-
             IReportServerRepository reportServerRepository = this.mKernel.Get<IReportServerRepository>(repositoryTag);
 
-            version = reportServerRepository.GetSqlServerVersion();
+             var sourceServerInfo = reportServerRepository.GetSqlServerVersion();
 
-            return version;
+            if ((int)sourceServerInfo.SsrsVersion < (int)SSRSVersion.SqlServer2008R2)
+                sourceServerInfo.RepositoryTag = "2005-SRC";
+            else
+                sourceServerInfo.RepositoryTag = "2010-SRC";
+
+            return sourceServerInfo;
         }
 
-        private SSRSVersion GetDestinationSqlServerVersion()
+        private SqlServerInfo GetDestinationSqlServerVersion()
         {
             // For getting version, always default to oldest repository
             string repositoryTag = "2005-DEST";
 
-            var version = SSRSVersion.Unknown;
-
             IReportServerRepository reportServerRepository = this.mKernel.Get<IReportServerRepository>(repositoryTag);
 
-            version = reportServerRepository.GetSqlServerVersion();
+            var destinationServerInfo = reportServerRepository.GetSqlServerVersion();
 
-            return version;
+            if ((int)destinationServerInfo.SsrsVersion < (int)SSRSVersion.SqlServer2008R2)
+                destinationServerInfo.RepositoryTag = "2005-DEST";
+            else
+                destinationServerInfo.RepositoryTag = "2010-DEST";
+
+            return destinationServerInfo;
         }
         #endregion
 
@@ -839,26 +809,18 @@ namespace SSRSMigrate.Forms
             }
         }
 
-        private SSRSVersion TestSourceConnection(bool quietSuccessful = false)
+        private SqlServerInfo TestSourceConnection(bool quietSuccessful = false)
         {
             // Save source configuration so it can be loaded by Ninject
             this.Save_SourceConfiguration();
 
-            string repositoryTag = "2005-SRC";
+            var sourceServerInfo = GetSourceSqlServerVersion();
 
-            var ssrsVersion = GetSourceSqlServerVersion();
-
-            // Get the version to get from the Factory
-            if ((int)ssrsVersion < (int)SSRSVersion.SqlServer2008R2)
-                repositoryTag = "2005-SRC";
-            else
-                repositoryTag = "2010-SRC";
-
-            this.txtSrcSqlVersion.Text = ssrsVersion.GetAttributeOfType<DescriptionAttribute>().Description; 
+            this.txtSrcSqlVersion.Text = sourceServerInfo.SsrsVersion.GetAttributeOfType<DescriptionAttribute>().Description; 
 
             try
             {
-                IReportServerTester tester = this.mKernel.Get<IReportServerTester>(repositoryTag);
+                IReportServerTester tester = this.mKernel.Get<IReportServerTester>(sourceServerInfo.RepositoryTag);
 
                 ConnectionTestStatus status = tester.ReadTest(this.txtSrcPath.Text);
 
@@ -891,7 +853,7 @@ namespace SSRSMigrate.Forms
                         MessageBoxIcon.Warning);
                 }
 
-                return ssrsVersion;
+                return sourceServerInfo;
             }
             catch (Exception er)
             {
@@ -902,7 +864,7 @@ namespace SSRSMigrate.Forms
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
-                return ssrsVersion;
+                return sourceServerInfo;
             }
         }
 
@@ -915,26 +877,18 @@ namespace SSRSMigrate.Forms
             }
         }
 
-        private SSRSVersion TestDestinationConnection(bool quietSuccessful = false)
+        private SqlServerInfo TestDestinationConnection(bool quietSuccessful = false)
         {
             // Save destination configuration so it can be loaded by Ninject
             this.Save_DestinationConfiguration();
 
-            string repositoryTag = "2005-DEST";
+            var destinationServerInfo = GetDestinationSqlServerVersion();
 
-            var ssrsVersion = GetDestinationSqlServerVersion();
-
-            // Get the version to get from the Factory
-            if ((int)ssrsVersion < (int)SSRSVersion.SqlServer2008R2)
-                repositoryTag = "2005-DEST";
-            else
-                repositoryTag = "2010-DEST";
-
-            this.txtDestSqlVersion.Text = ssrsVersion.GetAttributeOfType<DescriptionAttribute>().Description; 
+            this.txtDestSqlVersion.Text = destinationServerInfo.SsrsVersion.GetAttributeOfType<DescriptionAttribute>().Description; 
 
             try
             {
-                IReportServerTester tester = this.mKernel.Get<IReportServerTester>(repositoryTag);
+                IReportServerTester tester = this.mKernel.Get<IReportServerTester>(destinationServerInfo.RepositoryTag);
 
                 ConnectionTestStatus readStatus = tester.ReadTest("/");
                 ConnectionTestStatus writeStatus = tester.WriteTest("/", Guid.NewGuid().ToString("N"));
@@ -969,7 +923,7 @@ namespace SSRSMigrate.Forms
                             MessageBoxButtons.OK,
                             icon);
 
-                return ssrsVersion;
+                return destinationServerInfo;
             }
             catch (Exception er)
             {
@@ -980,7 +934,7 @@ namespace SSRSMigrate.Forms
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
-                return ssrsVersion;
+                return destinationServerInfo;
             }
         }
 

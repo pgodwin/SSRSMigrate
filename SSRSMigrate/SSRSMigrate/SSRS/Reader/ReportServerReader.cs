@@ -190,7 +190,7 @@ namespace SSRSMigrate.SSRS.Reader
         #endregion
 
         #region Misc
-        public SSRSVersion GetSqlServerVersion()
+        public SqlServerInfo GetSqlServerVersion()
         {
             return this.mReportRepository.GetSqlServerVersion();
         }

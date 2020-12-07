@@ -223,7 +223,7 @@ namespace SSRSMigrate.SSRS.Writer
         #endregion
 
         #region Misc
-        public SSRSVersion GetSqlServerVersion()
+        public SqlServerInfo GetSqlServerVersion()
         {
             return this.mReportRepository.GetSqlServerVersion();
         }

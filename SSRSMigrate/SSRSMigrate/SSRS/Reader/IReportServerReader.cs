@@ -23,7 +23,7 @@ namespace SSRSMigrate.SSRS.Reader
         void GetDataSources(string path, Action<DataSourceItem> progressReporter);
 
         // Misc
-        SSRSVersion GetSqlServerVersion();
+        SqlServerInfo GetSqlServerVersion();
 
     }
 }

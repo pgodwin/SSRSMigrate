@@ -625,14 +625,19 @@ namespace SSRSMigrate.SSRS.Repository
             return isValidPath;
         }
 
-        public SSRSVersion GetSqlServerVersion()
+        public SqlServerInfo GetSqlServerVersion()
         {
             this.mReportingService.ServerInfoHeaderValue  = new ServerInfoHeader();
 
             // Make call to ReportingService2010 endpoint otherwise ServerInfoHeaderValue will be NULL.
             this.mReportingService.ListChildren("/", false);
             
-            return SSRSUtil.GetSqlServerVersion(this.mReportingService.ServerInfoHeaderValue.ReportServerVersion);
+            var sqlServerInfo = SSRSUtil.GetSqlServerVersion(this.mReportingService.ServerInfoHeaderValue.ReportServerVersion);
+
+            this.mLogger.Info("SQL Server version = {0}", sqlServerInfo.FullVersion);
+            this.mLogger.Info("Detected SQL Server version = {0}", sqlServerInfo.SsrsVersion);
+
+            return sqlServerInfo;
         }
         #endregion
 

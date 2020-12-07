@@ -4,6 +4,7 @@ using SSRSMigrate.Enum;
 using SSRSMigrate.ReportServer2005;
 using System.Xml;
 using System.Text.RegularExpressions;
+using SSRSMigrate.SSRS;
 using SSRSMigrate.SSRS.Item;
 
 namespace SSRSMigrate.Utility
@@ -167,7 +168,7 @@ namespace SSRSMigrate.Utility
             return itemDestPath;
         }
 
-        public static SSRSVersion GetSqlServerVersion(ReportingService2005 reportServerConnection)
+        public static SqlServerInfo GetSqlServerVersion(ReportingService2005 reportServerConnection)
         {
             if (reportServerConnection == null)
                 throw new ArgumentNullException("reportServerConnection");
@@ -182,53 +183,71 @@ namespace SSRSMigrate.Utility
         /// </summary>
         /// <param name="versionText">The Reporting Services version string.</param>
         /// <returns></returns>
-        public static SSRSVersion GetSqlServerVersion(string versionText)
+        public static SqlServerInfo GetSqlServerVersion(string versionText)
         {
             // Reference: https://sqlserverbuilds.blogspot.com/
 
             Regex oVersionRe = new Regex(@"Microsoft SQL Server Reporting Services Version (?<version>[0-9]+\.[0-9]+)\.(?<subver>[0-9]*\.*[0-9]*)");
             Match oMatch = oVersionRe.Match(versionText);
 
+            var sqlServerInfo = new SqlServerInfo();
+
             if (oMatch.Success)
             {
                 string sVersion = oMatch.Groups["version"].ToString();
                 string sSubVersion = oMatch.Groups["subver"].ToString();
+
+                sqlServerInfo.Version = sVersion;
+                sqlServerInfo.FullVersion = versionText;
 
                 Console.WriteLine(sVersion);
 
                 switch (sVersion)
                 {
                     case "7.00":
-                        return SSRSVersion.SqlServer7;
+                        sqlServerInfo.SsrsVersion =  SSRSVersion.SqlServer7;
+                        break;
                     case "8.00":
-                        return SSRSVersion.SqlServer2000;
+                        sqlServerInfo.SsrsVersion =  SSRSVersion.SqlServer2000;
+                        break;
                     case "9.00":
-                        return SSRSVersion.SqlServer2005;
+                        sqlServerInfo.SsrsVersion =  SSRSVersion.SqlServer2005;
+                        break;
                     case "10.00":
-                        return SSRSVersion.SqlServer2008;
+                        sqlServerInfo.SsrsVersion =  SSRSVersion.SqlServer2008;
+                        break;
                     case "10.50":
-                        return SSRSVersion.SqlServer2008R2;
+                        sqlServerInfo.SsrsVersion =  SSRSVersion.SqlServer2008R2;
+                        break;
                     case "11.0":
                     case "11.00":
-                        return SSRSVersion.SqlServer2012;
+                        sqlServerInfo.SsrsVersion =  SSRSVersion.SqlServer2012;
+                        break;
                     case "12.0":
                     case "12.00":
-                        return SSRSVersion.SqlServer2014;
+                        sqlServerInfo.SsrsVersion =  SSRSVersion.SqlServer2014;
+                        break;
                     case "13.0":
-                        return SSRSVersion.SqlServer2016;
+                        sqlServerInfo.SsrsVersion =  SSRSVersion.SqlServer2016;
+                        break;
                     case "14.0":
-                        return SSRSVersion.SqlServer2017;
+                        sqlServerInfo.SsrsVersion =  SSRSVersion.SqlServer2017;
+                        break;
                     case "15.0":
                     case "15.00":
-                        return SSRSVersion.SqlServer2019;
+                        sqlServerInfo.SsrsVersion =  SSRSVersion.SqlServer2019;
+                        break;
                     default:
-                        return SSRSVersion.Unknown;
+                        sqlServerInfo.SsrsVersion = SSRSVersion.Unknown;
+                        break;
                 }
             }
             else
             {
-                return SSRSVersion.Unknown;
+                sqlServerInfo.SsrsVersion = SSRSVersion.Unknown;
             }
+
+            return sqlServerInfo;
         }
 
         /// <summary>
