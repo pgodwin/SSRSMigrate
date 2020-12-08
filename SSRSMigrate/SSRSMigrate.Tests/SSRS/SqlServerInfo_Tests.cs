@@ -159,5 +159,55 @@ namespace SSRSMigrate.Tests.SSRS
             Assert.AreEqual(a >= b, true);
         }
         #endregion
+
+        #region ToString Tests
+        [Test]
+        public void SqlServerInfo_ToString()
+        {
+            SqlServerInfo a = new SqlServerInfo()
+            {
+                FullVersion = "Microsoft SQL Server Reporting Services Version 15.00.200.8",
+                Version = "15.00",
+                SsrsVersion = SSRSVersion.SqlServer2019
+            };
+
+            string expected = "SQL Server 2019 - 15.00.200.8";
+            string actual = a.ToString();
+
+            Assert.AreEqual(actual, expected);
+        }
+
+        [Test]
+        public void SqlServerInfo_ToString_Unknown()
+        {
+            SqlServerInfo a = new SqlServerInfo()
+            {
+                FullVersion = "Microsoft SQL Server Reporting Services Version 17.00.200.8",
+                Version = "17.00",
+                SsrsVersion = SSRSVersion.Unknown
+            };
+
+            string expected = "SQL Server Unknown - 17.00.200.8";
+            string actual = a.ToString();
+
+            Assert.AreEqual(actual, expected);
+        }
+
+        [Test]
+        public void SqlServerInfo_ToString_UnknownUnknown()
+        {
+            SqlServerInfo a = new SqlServerInfo()
+            {
+                FullVersion = null,
+                Version = null,
+                SsrsVersion = SSRSVersion.Unknown
+            };
+
+            string expected = "SQL Server Unknown - Unknown";
+            string actual = a.ToString();
+
+            Assert.AreEqual(actual, expected);
+        }
+        #endregion  
     }
 }

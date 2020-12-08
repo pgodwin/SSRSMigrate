@@ -792,7 +792,7 @@ namespace SSRSMigrate.Forms
 
             var sourceServerInfo = GetSourceSqlServerVersion();
 
-            this.txtSrcSqlVersion.Text = sourceServerInfo.SsrsVersion.GetAttributeOfType<DescriptionAttribute>().Description; 
+            this.txtSrcSqlVersion.Text = sourceServerInfo.ToString(); 
 
             try
             {
@@ -860,7 +860,7 @@ namespace SSRSMigrate.Forms
 
             var destinationServerInfo = GetDestinationSqlServerVersion();
 
-            this.txtDestSqlVersion.Text = destinationServerInfo.SsrsVersion.GetAttributeOfType<DescriptionAttribute>().Description; 
+            this.txtDestSqlVersion.Text = destinationServerInfo.ToString(); 
 
             try
             {

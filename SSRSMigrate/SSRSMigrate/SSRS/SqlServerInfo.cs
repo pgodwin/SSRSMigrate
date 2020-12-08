@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using SSRSMigrate.Enum;
 
 namespace SSRSMigrate.SSRS
@@ -9,6 +10,7 @@ namespace SSRSMigrate.SSRS
         public SSRSVersion SsrsVersion { get; set; }
         public string Version { get; set; }
         public string FullVersion { get; set; }
+        public string SubVersion { get; set; }
 
         #region IComparable
         public int CompareTo(SqlServerInfo other)
@@ -84,6 +86,24 @@ namespace SSRSMigrate.SSRS
         public static bool operator != (SqlServerInfo info1, SqlServerInfo info2)
         {
             return info1.CompareTo(info2) != 0;
+        }
+        #endregion
+
+        #region ToString
+        public override string ToString()
+        {
+            string version = "Unknown";
+
+            if (!string.IsNullOrEmpty(this.FullVersion))
+            {
+                version = this.FullVersion.Substring(this.FullVersion.LastIndexOf("Version ") + "Version ".Length);
+            }
+            
+            string text = string.Format("{0} - {1}", 
+                this.SsrsVersion.GetAttributeOfType<DescriptionAttribute>().Description
+                , version);
+
+            return text;
         }
         #endregion
     }

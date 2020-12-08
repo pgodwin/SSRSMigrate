@@ -200,7 +200,7 @@
             this.txtDestSqlVersion.Location = new System.Drawing.Point(113, 199);
             this.txtDestSqlVersion.Name = "txtDestSqlVersion";
             this.txtDestSqlVersion.ReadOnly = true;
-            this.txtDestSqlVersion.Size = new System.Drawing.Size(143, 20);
+            this.txtDestSqlVersion.Size = new System.Drawing.Size(220, 20);
             this.txtDestSqlVersion.TabIndex = 34;
             // 
             // lblDestSqlVersion
@@ -244,7 +244,7 @@
             // 
             // btnDestTest
             // 
-            this.btnDestTest.Location = new System.Drawing.Point(262, 150);
+            this.btnDestTest.Location = new System.Drawing.Point(280, 149);
             this.btnDestTest.Name = "btnDestTest";
             this.btnDestTest.Size = new System.Drawing.Size(53, 23);
             this.btnDestTest.TabIndex = 29;
@@ -266,7 +266,7 @@
             // 
             this.txtDestPath.Location = new System.Drawing.Point(113, 152);
             this.txtDestPath.Name = "txtDestPath";
-            this.txtDestPath.Size = new System.Drawing.Size(143, 20);
+            this.txtDestPath.Size = new System.Drawing.Size(161, 20);
             this.txtDestPath.TabIndex = 26;
             this.txtDestPath.Text = "/";
             // 
@@ -590,7 +590,7 @@
             this.txtSrcSqlVersion.Location = new System.Drawing.Point(113, 180);
             this.txtSrcSqlVersion.Name = "txtSrcSqlVersion";
             this.txtSrcSqlVersion.ReadOnly = true;
-            this.txtSrcSqlVersion.Size = new System.Drawing.Size(161, 20);
+            this.txtSrcSqlVersion.Size = new System.Drawing.Size(220, 20);
             this.txtSrcSqlVersion.TabIndex = 36;
             // 
             // lblSrcSqlVersion

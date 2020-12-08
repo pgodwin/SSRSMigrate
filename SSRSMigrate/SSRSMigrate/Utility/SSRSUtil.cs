@@ -186,6 +186,7 @@ namespace SSRSMigrate.Utility
         public static SqlServerInfo GetSqlServerVersion(string versionText)
         {
             // Reference: https://sqlserverbuilds.blogspot.com/
+            // Example: Microsoft SQL Server Reporting Services Version 16.01.200.8
 
             Regex oVersionRe = new Regex(@"Microsoft SQL Server Reporting Services Version (?<version>[0-9]+\.[0-9]+)\.(?<subver>[0-9]*\.*[0-9]*)");
             Match oMatch = oVersionRe.Match(versionText);
@@ -199,6 +200,7 @@ namespace SSRSMigrate.Utility
 
                 sqlServerInfo.Version = sVersion;
                 sqlServerInfo.FullVersion = versionText;
+                sqlServerInfo.SubVersion = sSubVersion;
 
                 Console.WriteLine(sVersion);
 
