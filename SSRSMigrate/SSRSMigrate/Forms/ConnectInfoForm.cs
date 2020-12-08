@@ -264,7 +264,7 @@ namespace SSRSMigrate.Forms
             var destSqlSqlServerInfo = this.TestDestinationConnection(true);
 
             // Check version
-            if ((int)sourceSqlServerInfo.SsrsVersion > (int)destSqlSqlServerInfo.SsrsVersion)
+            if (sourceSqlServerInfo > destSqlSqlServerInfo)
                 throw new Exception("Source server is newer than destination server.");
 
             reader = this.mKernel.Get<IReportServerReader>(sourceSqlServerInfo.RepositoryTag);
@@ -499,30 +499,6 @@ namespace SSRSMigrate.Forms
             if (!this.mFileSystem.File.Exists(this.txtImportZipFilename.Text))
                 throw new FileNotFoundException(this.txtImportZipFilename.Text);
         }
-
-        //private string GetSourceServerVersion()
-        //{
-        //    string version = "2005-SRC";
-
-        //    if (this.cboSrcVersion.SelectedIndex == 0)
-        //        version = "2005-SRC";
-        //    else
-        //        version = "2010-SRC";
-
-        //    return version;
-        //}
-
-        //private string GetDestinationServerVersion()
-        //{
-        //    string version = "2005-DEST";
-
-        //    if (this.cboDestVersion.SelectedIndex == 0)
-        //        version = "2005-DEST";
-        //    else
-        //        version = "2010-DEST";
-
-        //    return version;
-        //}
         #endregion
 
         #region Save connection information from UI to App.config

@@ -178,6 +178,7 @@
     <Compile Include="SSRS\Reader\ReportServerReader_DataSourceTests.cs" />
     <Compile Include="SSRS\Reader\ReportServerReader_FolderTests.cs" />
     <Compile Include="SSRS\Reader\ReportServer2005\ReportServerReader_ReportTests.cs" />
+    <Compile Include="SSRS\SqlServerInfo_Tests.cs" />
     <Compile Include="SSRS\Writer\ReportServer2005\ReportServerWriter_ReportTests.cs" />
     <Compile Include="SSRS\Writer\ReportServer2010\ReportServerWriter_ReportTests.cs" />
     <Compile Include="SSRS\Writer\ReportServerWriterTests.cs" />
