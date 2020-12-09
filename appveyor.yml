@@ -20,12 +20,19 @@
   environment:
     packageVersion: 1.2
 
+  init:
+    - git config --global core.autocrlf false
+    - ps: $env:MY_PLATFORM=$env:PLATFORM.REPLACE(" ", "")
+    - ps: $env:buildVersion = "$env:packageVersion.$env:appveyor_build_number"
+    - ps: Write-Output $env:buildVersion
+    - ps: Update-AppveyorBuild -Version $env:buildVersion
+
   assembly_info:
     patch: true
     file: '**\AssemblyInfo.*'
-    assembly_version: '{buildVersion}'
-    assembly_file_version: '{buildVersion}'
-    assembly_informational_version: '{buildVersion}'
+    assembly_version: '$(buildVersion)'
+    assembly_file_version: '$(buildVersion)'
+    assembly_informational_version: '{$(buildVersion)'
 
 #  environment:
 #    COVERALLS_REPO_TOKEN:
@@ -37,13 +44,6 @@
   platform:
     - x86
     - x64
-
-  init:
-    - git config --global core.autocrlf false
-    - ps: $env:MY_PLATFORM=$env:PLATFORM.REPLACE(" ", "")
-    - ps: $env:buildVersion = "$env:packageVersion.$env:appveyor_build_number"
-    - ps: $env:developVersion = "$env:packageVersion-develop-$env:appveyor_build_number"
-    - ps: Update-AppveyorBuild -Version $env:buildVersion
 
   install:
     - nuget install GitReleaseNotes.Portable -OutputDirectory %APPVEYOR_BUILD_FOLDER%\packages -Version 0.7.1
@@ -146,9 +146,9 @@
   assembly_info:
     patch: true
     file: '**\AssemblyInfo.*'
-    assembly_version: '{buildVersion}'
-    assembly_file_version: '{buildVersion}'
-    assembly_informational_version: '{buildVersion}'
+    assembly_version: '$(buildVersion)'
+    assembly_file_version: '$(buildVersion)'
+    assembly_informational_version: '$(developVersion)'
 
   install:
     - nuget install GitReleaseNotes.Portable -OutputDirectory %APPVEYOR_BUILD_FOLDER%\packages -Version 0.7.1
