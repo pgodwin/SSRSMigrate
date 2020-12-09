@@ -139,6 +139,8 @@
     - ps: $env:MY_PLATFORM=$env:PLATFORM.REPLACE(" ", "")
     - ps: $env:buildVersion = "$env:packageVersion.$env:appveyor_build_number"
     - ps: $env:developVersion = "$env:packageVersion-develop-$env:appveyor_build_number"
+    - ps: Write-Output $env:buildVersion
+    - ps: Write-Output $env:developVersion
     - ps: Update-AppveyorBuild -Version $env:buildVersion
 
   assembly_info:
