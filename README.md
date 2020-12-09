@@ -3,9 +3,10 @@ SSRSMigrate ![](https://img.shields.io/github/license/jpann/SSRSMigrate.svg) [![
 
 | Master  |      Develop      |
 |----------|:-------------:|
-| [![Build status](https://ci.appveyor.com/api/projects/status/bvj8gbpf8400t689/branch/master?svg=true)](https://ci.appveyor.com/project/jpann/ssrsmigrate/branch/master) |  [![Build status](https://ci.appveyor.com/api/projects/status/uu89i57ty3enww0q?svg=true)](https://ci.appveyor.com/project/jpann/ssrsmigrate-iwr95)|
-| ![](https://img.shields.io/appveyor/tests/jpann/SSRSMigrate/master.svg?style=flat) |    ![](https://img.shields.io/appveyor/tests/jpann/ssrsmigrate-iwr95/develop.svg?style=flat)   |
-| ![](https://img.shields.io/github/release/jpann/SSRSMigrate.svg?style=flat) | ![](https://img.shields.io/github/release-pre/jpann/SSRSMigrate.svg?style=flat) |
+| [![Build status](https://ci.appveyor.com/api/projects/status/bvj8gbpf8400t689/branch/master?svg=true)](https://ci.appveyor.com/project/jpann/ssrsmigrate/branch/master) |  [![Build status](https://ci.appveyor.com/api/projects/status/bvj8gbpf8400t689/branch/develop?svg=true)](https://ci.appveyor.com/project/jpann/ssrsmigrate/branch/develop)|
+| ![](https://img.shields.io/appveyor/tests/jpann/SSRSMigrate/master.svg?style=flat) |    ![](https://img.shields.io/appveyor/tests/jpann/SSRSMigrate/develop.svg?style=flat)   |
+| ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/jpann/SSRSMigrate?sort=semver) | ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/jpann/SSRSMigrate?include_prereleases&sort=semver) |
+
 
 
 Goal of this project is to have a utility that will allow you to easily migrate reports from one Microsoft SQL Reporting Services (SSRS) server to another or from one root folder in SSRS to another folder.
