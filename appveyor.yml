@@ -190,7 +190,7 @@
   
   deploy:
     release: SSRSMigrate-v$(developVersion)
-    description: SSRSMigrate release v$(developVersion)\n$(release_description)
+    description: SSRSMigrate development release v$(developVersion)\n$(release_description)
     provider: GitHub
     auth_token:
       secure: EXRr3SxM7c0kVhOc5HAyMr4gUaCJA11QE/RbTNrqYil9WXKDqoQoigCfdD6ZjhDX # encrypted token from GitHub
