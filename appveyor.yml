@@ -15,10 +15,10 @@
       - '**/*.md'
       - '**/.rdl'
 
-  version: 1.2.0.{build}
+  version: 1.2.{build}
 
   environment:
-    packageVersion: 1.2.0
+    packageVersion: 1.2
 
   assembly_info:
     patch: true
@@ -122,10 +122,10 @@
       - '**/*.md'
       - '**/.rdl'
 
-  version: 1.2.0.{build}
+  version: 1.2.{build}
 
   environment:
-    packageVersion: 1.2.0
+    packageVersion: 1.2
 
   assembly_info:
     patch: true
@@ -145,6 +145,7 @@
     - git config --global core.autocrlf false
     - ps: $env:MY_PLATFORM=$env:PLATFORM.REPLACE(" ", "")
     - ps: $env:buildVersion = "$env:packageVersion.$env:appveyor_build_number"
+    - echo $env:buildVersion
     - ps: $env:developVersion = "$env:packageVersion-develop-$env:appveyor_build_number"
     - ps: Update-AppveyorBuild -Version $env:buildVersion
 
@@ -194,7 +195,7 @@
       secure: EXRr3SxM7c0kVhOc5HAyMr4gUaCJA11QE/RbTNrqYil9WXKDqoQoigCfdD6ZjhDX # encrypted token from GitHub
     artifact: /SSRSMigrate-v.*\.zip/
     draft: false
-    prerelease: false
+    prerelease: true
     tag: $(developVersion)
     on:
       branch: 
