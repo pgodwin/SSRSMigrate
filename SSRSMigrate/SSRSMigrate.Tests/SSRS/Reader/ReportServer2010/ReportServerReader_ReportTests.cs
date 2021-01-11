@@ -12,6 +12,7 @@ using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.SSRS.Errors;
 using System.Text.RegularExpressions;
 using SSRSMigrate.SSRS.Item.Proxy;
+using SSRSMigrate.SSRS.Validators;
 using SSRSMigrate.TestHelper.Logging;
 
 namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
@@ -40,6 +41,9 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         {
             // Setup IReportServerRepository mock
             var reportServerRepositoryMock = new Mock<IReportServerRepository>();
+
+            // Setup IReportServerPathValidator mock
+            var pathValidatorMock = new Mock<IReportServerPathValidator>();
 
             // Setup GetReport - Expected ReportItem
             expectedReportItem = new ReportItemProxy(reportServerRepositoryMock.Object)
@@ -152,44 +156,38 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
             reportServerRepositoryMock.Setup(r => r.GetReportsLazy("/SSRSMigrate_AW_Tests Doesnt Exist"))
                 .Returns(() => new List<ReportItemProxy>());
 
-            // Setup IReportServerRepository.ValidatePath Mocks
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests"))
+            // Setup IReportserverValidator.Validate Mocks
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests"))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests Doesnt Exist"))
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests Doesnt Exist"))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
+            pathValidatorMock.Setup(r => r.Validate(null))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(""))
+            pathValidatorMock.Setup(r => r.Validate(""))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
+            pathValidatorMock.Setup(r => r.Validate(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
                .Returns(() => false);
 
-            // Setup IReportServerRepository.ValidateItemPath Mocks
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests"))
-               .Returns(() => true);
+            pathValidatorMock.Setup(r => r.Validate(It.Is<string>(s => s.Length > 260)))
+                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests Doesnt Exist"))
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests Doesnt Exist"))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests/Reports/Report Doesnt Exist"))
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests/Reports"))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(expectedReportItem.Path))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests/Reports/Sales Order Detail"))
-              .Returns(() => true);
-
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath("/SSRSMigrate_AW_Tests/Reports/Store Contacts"))
+            string expectedReportItemParentPath = expectedReportItem.Path.Substring(0, expectedReportItem.Path.LastIndexOf('/') + 1);
+            pathValidatorMock.Setup(r => r.Validate(expectedReportItemParentPath))
               .Returns(() => true);
 
             MockLogger logger = new MockLogger();
 
-            reader = new ReportServerReader(reportServerRepositoryMock.Object, logger);
+            reader = new ReportServerReader(reportServerRepositoryMock.Object, logger, pathValidatorMock.Object);
         }
 
         [OneTimeTearDown]
@@ -259,7 +257,7 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReport_InvalidPath()
         {
-            string invalidPath = "/SSRSMigrate_AW_Tests/Reports/Invalid.Report";
+            string invalidPath = "/SSRSMigrate_AW_Tests/Reports.Invalid/Invalid.Report";
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate

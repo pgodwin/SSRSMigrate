@@ -21,8 +21,6 @@ namespace SSRSMigrate.SSRS.Repository
         private readonly ReportingService2005DataMapper mDataMapper;
         private ILogger mLogger = null;
         private string mRootPath = null;
-        private string mInvalidPathChars = ":?;@&=+$,\\*><|.\"";
-        private int mPathMaxLength = 260;
 
         public ReportServer2005Repository(string rootPath,
             ReportingService2005 reportingService,
@@ -65,11 +63,6 @@ namespace SSRSMigrate.SSRS.Repository
         }
 
         #region Properties
-        public string InvalidPathChars
-        {
-            get { return this.mInvalidPathChars; }
-        }
-
         [Inject]
         public ILogger Logger
         {
@@ -577,49 +570,6 @@ namespace SSRSMigrate.SSRS.Repository
         #endregion
 
         #region Misc.
-        public bool ValidatePath(string path)
-        {
-            bool isValidPath = true;
-
-            this.mLogger.Debug("ValidatePath - path = {0}", path);
-
-            if (string.IsNullOrEmpty(path))
-                isValidPath = false;
-            else if (path.IndexOfAny(this.mInvalidPathChars.ToCharArray()) >= 0)
-                isValidPath =  false;
-            else if (path.Length > this.mPathMaxLength)
-                isValidPath =  false;
-            else
-                isValidPath = true;
-
-            this.mLogger.Debug("ValidatePath - isValidPath = {0}", isValidPath);
-
-            return isValidPath;
-        }
-
-        public bool ValidateItemPath(string itemPath)
-        {
-            if (string.IsNullOrEmpty(itemPath))
-                return false;
-
-            bool isValidPath = true;
-
-            string parentPath = itemPath.Substring(0, itemPath.LastIndexOf('/') + 1);
-
-            this.mLogger.Debug("ValidateItemPath - path = {0}", parentPath);
-
-            if (parentPath.IndexOfAny(this.mInvalidPathChars.ToCharArray()) >= 0)
-                isValidPath = false;
-            else if (parentPath.Length > this.mPathMaxLength)
-                isValidPath = false;
-            else
-                isValidPath = true;
-
-            this.mLogger.Debug("ValidateItemPath - isValidPath = {0}", isValidPath);
-
-            return isValidPath;
-        }
-
         public SqlServerInfo GetSqlServerVersion()
         {
             this.mReportingService.ListSecureMethods();

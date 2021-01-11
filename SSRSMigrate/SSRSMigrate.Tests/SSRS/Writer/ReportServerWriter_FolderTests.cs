@@ -9,6 +9,7 @@ using Moq;
 using SSRSMigrate.SSRS.Repository;
 using System.Text.RegularExpressions;
 using SSRSMigrate.SSRS.Errors;
+using SSRSMigrate.SSRS.Validators;
 using SSRSMigrate.TestHelper;
 using SSRSMigrate.TestHelper.Logging;
 
@@ -88,6 +89,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             // Setup IReportServerRepository Mock
             reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
+            // Setup IReportServerPathValidator mock
+            var pathValidatorMock = new Mock<IReportServerPathValidator>();
+
             // IReportServerRepository.CreateFolder Mocks
             reportServerRepositoryMock.Setup(r => r.CreateFolder(null, It.IsAny<string>()))
                 .Throws(new ArgumentException("name"));
@@ -122,41 +126,41 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             reportServerRepositoryMock.Setup(r => r.ItemExists(alreadyExistsFolderItem.Path, "Folder"))
                 .Returns(() => true);
 
-            // IReportServerRepository.ValidatePath Mocks
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(rootFolderItem.Path))
+            // Setup IReportserverValidator.Validate Mocks
+            pathValidatorMock.Setup(r => r.Validate(rootFolderItem.Path))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(rootSubFolderItem.Path))
+            pathValidatorMock.Setup(r => r.Validate(rootSubFolderItem.Path))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportsFolderItem.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportsFolderItem.Path))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportsSubFolderItem.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportsSubFolderItem.Path))
                 .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(rootSubFolderItem.Path))
+            pathValidatorMock.Setup(r => r.Validate(rootSubFolderItem.Path))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(alreadyExistsFolderItem.Path))
+            pathValidatorMock.Setup(r => r.Validate(alreadyExistsFolderItem.Path))
               .Returns(() => true);
 
             // Validate errorFolderItem.Path so we can mock the error returned by IReportServerRepository.CreateFolder
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(errorFolderItem.Path))
+            pathValidatorMock.Setup(r => r.Validate(errorFolderItem.Path))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
+            pathValidatorMock.Setup(r => r.Validate(null))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(""))
+            pathValidatorMock.Setup(r => r.Validate(""))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
+            pathValidatorMock.Setup(r => r.Validate(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
                .Returns(() => false);
 
             MockLogger logger = new MockLogger();
 
-            writer = new ReportServerWriter(reportServerRepositoryMock.Object, logger);
+            writer = new ReportServerWriter(reportServerRepositoryMock.Object, logger, pathValidatorMock.Object);
         }
 
         [OneTimeTearDown]

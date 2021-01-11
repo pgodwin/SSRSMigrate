@@ -97,7 +97,7 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Writer.ReportServer2010
             reportItem_InvalidPath = new ReportItem()
             {
                 Name = "Invalid.Path",
-                Path = string.Format("{0}/Reports./InvalidPath", outputPath),
+                Path = string.Format("{0}/Reports./Invalid.Path", outputPath),
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,

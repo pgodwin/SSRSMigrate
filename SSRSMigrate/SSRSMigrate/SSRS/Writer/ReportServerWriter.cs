@@ -7,6 +7,7 @@ using SSRSMigrate.SSRS.Errors;
 using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.Utility;
 using Ninject.Extensions.Logging;
+using SSRSMigrate.SSRS.Validators;
 
 namespace SSRSMigrate.SSRS.Writer
 {
@@ -15,6 +16,7 @@ namespace SSRSMigrate.SSRS.Writer
         private readonly IReportServerRepository mReportRepository;
         private bool mOverwrite = false;
         private readonly ILogger mLogger = null;
+        private readonly IReportServerPathValidator mPathValidator;
 
         public bool Overwrite
         {
@@ -22,7 +24,7 @@ namespace SSRSMigrate.SSRS.Writer
             set { this.mOverwrite = value; }
         }
 
-        public ReportServerWriter(IReportServerRepository repository, ILogger logger)
+        public ReportServerWriter(IReportServerRepository repository, ILogger logger, IReportServerPathValidator pathValidator)
         {
             if (repository == null)
                 throw new ArgumentNullException("repository");
@@ -30,8 +32,12 @@ namespace SSRSMigrate.SSRS.Writer
             if (logger == null)
                 throw new ArgumentNullException("logger");
 
+            if (pathValidator == null)
+                throw new ArgumentNullException("pathValidator");
+
             this.mReportRepository = repository;
             this.mLogger = logger;
+            this.mPathValidator = pathValidator;
 
             this.mLogger.Debug("Repository.ServerAddress: {0}", this.mReportRepository.ServerAddress);
             this.mLogger.Debug("Repository.RootPath: {0}", this.mReportRepository.RootPath);
@@ -44,12 +50,8 @@ namespace SSRSMigrate.SSRS.Writer
                 throw new ArgumentNullException("folderItem");
 
             // Verify that the folder's path is valid
-            if (!this.mReportRepository.ValidatePath(folderItem.Path))
+            if (!this.mPathValidator.Validate(folderItem.Path))
                 throw new InvalidPathException(folderItem.Path);
-
-            //TODO Check folderItem.HasValidProperties and throw exception
-            //if (!folderItem.HasValidProperties)
-            //    throw new InvalidItemException(string.Format("The item with ID '{0}' has a null or empty name or path value.", folderItem.ID));
 
             // Get the folder's name and path to its parent folder 
             string name = folderItem.Name;
@@ -79,7 +81,7 @@ namespace SSRSMigrate.SSRS.Writer
             for (int i = 0; i < folderItems.Count(); i++)
             {
                 // Verify that the folder's path is valid
-                if (!this.mReportRepository.ValidatePath(folderItems[i].Path))
+                if (!this.mPathValidator.Validate(folderItems[i].Path))
                     throw new InvalidPathException(folderItems[i].Path);
 
                 // Get the folder's name and path to its parent folder 
@@ -115,12 +117,14 @@ namespace SSRSMigrate.SSRS.Writer
                 throw new ArgumentNullException("reportItem");
 
             // Verify that the report's path is valid
-            if (!this.mReportRepository.ValidateItemPath(reportItem.Path))
+            if (!this.mPathValidator.Validate(reportItem.ParentPath))
                 throw new InvalidPathException(reportItem.Path);
 
             // Get the report's name and path to its parent folder
             string name = reportItem.Name;
             string parentPath = SSRSUtil.GetParentPath(reportItem);
+
+            //TODO Validate the report's name using ReportServerItemNameValidator
 
             // Check if a report already exists at the specified path
             if (!this.mOverwrite)
@@ -141,12 +145,14 @@ namespace SSRSMigrate.SSRS.Writer
             for (int i = 0; i < reportItems.Count(); i++)
             {
                 // Verify that the report's path is valid
-                if (!this.mReportRepository.ValidateItemPath(reportItems[i].Path))
+                if (!this.mPathValidator.Validate(reportItems[i].ParentPath))
                     throw new InvalidPathException(reportItems[i].Path);
 
                 // Get the report's name and path to its parent folder
                 string name = reportItems[i].Name;
                 string parentPath = SSRSUtil.GetParentPath(reportItems[i]);
+
+                //TODO Validate the report's name using ReportServerItemNameValidator
 
                 // Check if a report already exists at the specified path
                 if (!this.mOverwrite)
@@ -170,7 +176,8 @@ namespace SSRSMigrate.SSRS.Writer
             if (dataSourceItem == null)
                 throw new ArgumentNullException("dataSourceItem");
 
-            if (!this.mReportRepository.ValidatePath(dataSourceItem.Path))
+            //TODO 1/11/21 jpann - Should we be getting the parent path? Been so long, I don't recall...
+            if (!this.mPathValidator.Validate(dataSourceItem.Path))
                 throw new InvalidPathException(dataSourceItem.Path);
 
             string name = dataSourceItem.Name;
@@ -192,7 +199,8 @@ namespace SSRSMigrate.SSRS.Writer
 
             for (int i = 0; i < dataSourceItems.Count(); i++)
             {
-                if (!this.mReportRepository.ValidatePath(dataSourceItems[i].Path))
+                //TODO 1/11/21 jpann - Should we be getting the parent path? Been so long, I don't recall...
+                if (!this.mPathValidator.Validate(dataSourceItems[i].Path))
                     throw new InvalidPathException(dataSourceItems[i].Path);
 
                 string name = dataSourceItems[i].Name;

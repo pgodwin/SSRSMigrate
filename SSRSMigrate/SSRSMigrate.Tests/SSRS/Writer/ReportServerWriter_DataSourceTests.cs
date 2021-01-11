@@ -9,6 +9,7 @@ using SSRSMigrate.SSRS.Repository;
 using Moq;
 using System.Text.RegularExpressions;
 using SSRSMigrate.SSRS.Errors;
+using SSRSMigrate.SSRS.Validators;
 using SSRSMigrate.TestHelper;
 using SSRSMigrate.TestHelper.Logging;
 
@@ -175,6 +176,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             // Setup IReportServerRepository mock
             var reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
+            // Setup IReportServerPathValidator mock
+            var pathValidatorMock = new Mock<IReportServerPathValidator>();
+
             // Setup IReportServerRepository.WriteDataSource
             reportServerRepositoryMock.Setup(r => r.WriteDataSource(null, It.IsAny<DataSourceItem>(), It.IsAny<bool>()))
                 .Throws(new ArgumentException("dataSourcePath"));
@@ -201,34 +205,34 @@ namespace SSRSMigrate.Tests.SSRS.Writer
             reportServerRepositoryMock.Setup(r => r.ItemExists(alreadyExistsDataSourceItem.Path, "DataSource"))
                 .Returns(() => true);
 
-            // Setup IReportServerRepository.ValidatePath Mocks
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(dataSourceItem.Path))
+            // Setup IReportserverValidator.Validate Mocks
+            pathValidatorMock.Setup(r => r.Validate(dataSourceItem.Path))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(dataSourceTwoItem.Path))
+            pathValidatorMock.Setup(r => r.Validate(dataSourceTwoItem.Path))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(alreadyExistsDataSourceItem.Path))
+            pathValidatorMock.Setup(r => r.Validate(alreadyExistsDataSourceItem.Path))
                .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath("/SSRSMigrate_AW_Tests"))
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests"))
                 .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(errorDataSourceItem.Path))
+            pathValidatorMock.Setup(r => r.Validate(errorDataSourceItem.Path))
                 .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
+            pathValidatorMock.Setup(r => r.Validate(null))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(""))
+            pathValidatorMock.Setup(r => r.Validate(""))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
+            pathValidatorMock.Setup(r => r.Validate(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
                .Returns(() => false);
 
             MockLogger logger = new MockLogger();
 
-            writer = new ReportServerWriter(reportServerRepositoryMock.Object, logger);
+            writer = new ReportServerWriter(reportServerRepositoryMock.Object, logger, pathValidatorMock.Object);
         }
 
         [OneTimeTearDown]

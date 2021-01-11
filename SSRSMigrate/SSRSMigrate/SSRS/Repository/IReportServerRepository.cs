@@ -10,7 +10,6 @@ namespace SSRSMigrate.SSRS.Repository
     public interface IReportServerRepository : IDisposable
     {
         // Properties
-        string InvalidPathChars { get; }
         ILogger Logger { get; set; }
         string ServerAddress { get;  }
         string RootPath { get; }
@@ -36,8 +35,6 @@ namespace SSRSMigrate.SSRS.Repository
         string WriteDataSource(string dataSourcePath, DataSourceItem dataSource, bool overwrite);
 
         // Misc.
-        bool ValidatePath(string path);
-        bool ValidateItemPath(string itemPath);
         SqlServerInfo GetSqlServerVersion();
 
         // Items

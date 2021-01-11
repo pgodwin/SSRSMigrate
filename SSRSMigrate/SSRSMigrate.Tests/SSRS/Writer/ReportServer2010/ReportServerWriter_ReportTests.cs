@@ -11,7 +11,9 @@ using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.SSRS.Repository;
 using Moq;
 using System.Text.RegularExpressions;
+using SSRSMigrate.SSRS.Validators;
 using SSRSMigrate.TestHelper.Logging;
+using SSRSMigrate.Utility;
 
 namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
 {
@@ -95,7 +97,7 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
             reportItem_InvalidPath = new ReportItem()
             {
                 Name = "Invalid.Path",
-                Path = "/SSRSMigrate_AW_Tests/Reports/Invalid.Path",
+                Path = "/SSRSMigrate_AW_Tests/Reports.Invalid/Invalid.Path",
                 Description = null,
                 ID = "5921480a-1b24-4a6e-abbc-f8db116cd24e",
                 VirtualPath = null,
@@ -143,6 +145,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
             // Setup IReportServerRepository mock
             var reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
+            // Setup IReportServerPathValidator mock
+            var pathValidatorMock = new Mock<IReportServerPathValidator>();
+
             // Setup IReportServerRepository.WriteReport Mocks
             reportServerRepositoryMock.Setup(r => r.WriteReport(null, It.IsAny<ReportItem>(), It.IsAny<bool>()))
                 .Throws(new ArgumentException("reportPath"));
@@ -175,71 +180,71 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
             reportServerRepositoryMock.Setup(r => r.ItemExists(reportItem_AlreadyExists.Path, "Report"))
                 .Returns(() => true);
 
-            // Setup IReportServerRepository.ValidatePath Mocks
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_CompanySales.Path))
+            // Setup IReportserverValidator.Validate Mocks
+            pathValidatorMock.Setup(r => r.Validate(reportItem_CompanySales.ParentPath))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_SalesOrderDetail.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportItem_SalesOrderDetail.ParentPath))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_StoreContacts.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportItem_StoreContacts.ParentPath))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_AlreadyExists.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportItem_AlreadyExists.ParentPath))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_NullDefinition.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportItem_NullDefinition.ParentPath))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_Error.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportItem_Error.ParentPath))
                 .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(null))
+            pathValidatorMock.Setup(r => r.Validate(null))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(""))
+            pathValidatorMock.Setup(r => r.Validate(""))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(reportItem_InvalidPath.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportItem_InvalidPath.ParentPath))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidatePath(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
+            pathValidatorMock.Setup(r => r.Validate(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
                .Returns(() => false);
 
             // Setup IReportServerRepository.ValidateItemPath Mocks
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(reportItem_CompanySales.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportItem_CompanySales.ParentPath))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(reportItem_SalesOrderDetail.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportItem_SalesOrderDetail.ParentPath))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(reportItem_StoreContacts.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportItem_StoreContacts.ParentPath))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(reportItem_AlreadyExists.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportItem_AlreadyExists.ParentPath))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(reportItem_NullDefinition.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportItem_NullDefinition.ParentPath))
               .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(reportItem_Error.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportItem_Error.ParentPath))
                 .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(null))
+            pathValidatorMock.Setup(r => r.Validate(null))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(""))
+            pathValidatorMock.Setup(r => r.Validate(""))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(reportItem_InvalidPath.Path))
+            pathValidatorMock.Setup(r => r.Validate(reportItem_InvalidPath.ParentPath))
                .Returns(() => false);
 
-            reportServerRepositoryMock.Setup(r => r.ValidateItemPath(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
+            pathValidatorMock.Setup(r => r.Validate(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
                .Returns(() => false);
 
             MockLogger logger = new MockLogger();
 
-            writer = new ReportServerWriter(reportServerRepositoryMock.Object, logger);
+            writer = new ReportServerWriter(reportServerRepositoryMock.Object, logger, pathValidatorMock.Object);
         }
 
         [OneTimeTearDown]

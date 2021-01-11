@@ -17,6 +17,7 @@ using SSRSMigrate.SSRS.Writer;
 using SSRSMigrate.Exporter.Writer;
 using SSRSMigrate.Exporter;
 using SSRSMigrate.DataMapper;
+using SSRSMigrate.SSRS.Validators;
 using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate.IntegrationTests
@@ -47,6 +48,10 @@ namespace SSRSMigrate.IntegrationTests
                 .ToProvider<DestinationReportServer2010RepositoryProvider>()
                 .InSingletonScope()
                 .Named("2010-DEST");
+
+
+            // Bind IReportServerPathValidator
+            this.Bind<IReportServerPathValidator>().To<ReportServerPathValidator>();
 
             // Bind IReportServerReader
             this.Bind<IReportServerReader>()

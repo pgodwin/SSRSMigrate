@@ -312,6 +312,9 @@
     <Compile Include="SSRS\Reader\ReportServerReader.cs" />
     <Compile Include="SSRS\Repository\ReportServer2010Repository.cs" />
     <Compile Include="SSRS\Repository\ReportServer2005Repository.cs" />
+    <Compile Include="SSRS\Validators\IReportServerPathValidator.cs" />
+    <Compile Include="SSRS\Validators\ReportServerItemNameValidator.cs" />
+    <Compile Include="SSRS\Validators\ReportServerPathValidator.cs" />
     <Compile Include="SSRS\Writer\IReportServerWriter.cs" />
     <Compile Include="SSRS\Writer\ReportServerWriter.cs" />
     <Compile Include="Status\ExportStatus.cs" />

@@ -5,6 +5,7 @@ using SSRSMigrate.SSRS.Item;
 using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.SSRS.Errors;
 using Ninject.Extensions.Logging;
+using SSRSMigrate.SSRS.Validators;
 
 namespace SSRSMigrate.SSRS.Reader
 {
@@ -12,8 +13,9 @@ namespace SSRSMigrate.SSRS.Reader
     {
         private readonly IReportServerRepository mReportRepository;
         private readonly ILogger mLogger = null;
+        private readonly IReportServerPathValidator mPathValidator;
 
-        public ReportServerReader(IReportServerRepository repository, ILogger logger)
+        public ReportServerReader(IReportServerRepository repository, ILogger logger, IReportServerPathValidator pathValidator)
         {
             if (repository == null)
                 throw new ArgumentNullException("repository");
@@ -21,8 +23,12 @@ namespace SSRSMigrate.SSRS.Reader
             if (logger == null)
                 throw new ArgumentNullException("logger");
 
+            if (pathValidator == null)
+                throw new ArgumentNullException("pathValidator");
+
             this.mReportRepository = repository;
             this.mLogger = logger;
+            this.mPathValidator = pathValidator;
 
             this.mLogger.Debug("Repository.ServerAddress: {0}", this.mReportRepository.ServerAddress);
             this.mLogger.Debug("Repository.RootPath: {0}", this.mReportRepository.RootPath);
@@ -36,7 +42,7 @@ namespace SSRSMigrate.SSRS.Reader
 
             this.mLogger.Debug("GetFolder - path = {0}", path);
 
-            if (!this.mReportRepository.ValidatePath(path))
+            if (!this.mPathValidator.Validate(path))
                 throw new InvalidPathException(path);
 
             FolderItem folder = this.mReportRepository.GetFolder(path);
@@ -51,7 +57,7 @@ namespace SSRSMigrate.SSRS.Reader
 
             this.mLogger.Debug("GetFolders - path = {0}", path);
 
-            if (!this.mReportRepository.ValidatePath(path))
+            if (!this.mPathValidator.Validate(path))
                 throw new InvalidPathException(path);
 
             List<FolderItem> folders = this.mReportRepository.GetFolders(path);
@@ -69,7 +75,7 @@ namespace SSRSMigrate.SSRS.Reader
 
             this.mLogger.Debug("GetFolders2 - path = {0}", path);
 
-            if (!this.mReportRepository.ValidatePath(path))
+            if (!this.mPathValidator.Validate(path))
                 throw new InvalidPathException(path);
 
             var folders = this.mReportRepository.GetFolderList(path);
@@ -91,7 +97,12 @@ namespace SSRSMigrate.SSRS.Reader
 
             this.mLogger.Debug("GetReport - reportPath = {0}", reportPath);
 
-            if (!this.mReportRepository.ValidateItemPath(reportPath))
+            if (string.IsNullOrEmpty(reportPath))
+                throw new InvalidPathException(reportPath);
+
+            string parentPath = reportPath.Substring(0, reportPath.LastIndexOf('/') + 1);
+
+            if (!this.mPathValidator.Validate(parentPath))
                 throw new InvalidPathException(reportPath);
 
             ReportItem report = this.mReportRepository.GetReport(reportPath);
@@ -106,7 +117,7 @@ namespace SSRSMigrate.SSRS.Reader
 
             this.mLogger.Debug("GetReports - path = {0}", path);
 
-            if (!this.mReportRepository.ValidatePath(path))
+            if (!this.mPathValidator.Validate(path))
                 throw new InvalidPathException(path);
 
             return this.mReportRepository.GetReports(path);
@@ -122,7 +133,7 @@ namespace SSRSMigrate.SSRS.Reader
 
             this.mLogger.Debug("GetReports2 - path = {0}", path);
 
-            if (!this.mReportRepository.ValidatePath(path))
+            if (!this.mPathValidator.Validate(path))
                 throw new InvalidPathException(path);
 
             var reports = this.mReportRepository.GetReportsLazy(path);
@@ -144,7 +155,8 @@ namespace SSRSMigrate.SSRS.Reader
 
             this.mLogger.Debug("GetDataSource - dataSourcePath = {0}", dataSourcePath);
 
-            if (!this.mReportRepository.ValidatePath(dataSourcePath))
+            //TODO 1/11/21 jpann - Should we be getting the parent path? Been so long, I don't recall...
+            if (!this.mPathValidator.Validate(dataSourcePath))
                 throw new InvalidPathException(dataSourcePath);
 
             DataSourceItem dataSource = this.mReportRepository.GetDataSource(dataSourcePath);
@@ -159,7 +171,7 @@ namespace SSRSMigrate.SSRS.Reader
 
             this.mLogger.Debug("GetDataSources - path = {0}", path);
 
-            if (!this.mReportRepository.ValidatePath(path))
+            if (!this.mPathValidator.Validate(path))
                 throw new InvalidPathException(path);
 
             return this.mReportRepository.GetDataSources(path);
@@ -175,7 +187,7 @@ namespace SSRSMigrate.SSRS.Reader
 
             this.mLogger.Debug("GetDataSources2 - path = {0}", path);
 
-            if (!this.mReportRepository.ValidatePath(path))
+            if (!this.mPathValidator.Validate(path))
                 throw new InvalidPathException(path);
 
             var dataSources = this.mReportRepository.GetDataSourcesList(path);

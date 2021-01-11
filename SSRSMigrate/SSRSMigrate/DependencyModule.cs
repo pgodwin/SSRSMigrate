@@ -17,6 +17,7 @@ using SSRSMigrate.Exporter;
 using SSRSMigrate.DataMapper;
 using SSRSMigrate.Forms;
 using SSRSMigrate.ScriptEngine;
+using SSRSMigrate.SSRS.Validators;
 using SSRSMigrate.Wrappers;
 
 namespace SSRSMigrate
@@ -42,6 +43,9 @@ namespace SSRSMigrate
             this.Bind<IReportServerRepository>()
                .ToProvider<DestinationReportServer2010RepositoryProvider>()
                .Named("2010-DEST");
+
+            // Bind IReportServerPathValidator
+            this.Bind<IReportServerPathValidator>().To<ReportServerPathValidator>();
 
             // Bind IReportServerReader
             this.Bind<IReportServerReader>()
