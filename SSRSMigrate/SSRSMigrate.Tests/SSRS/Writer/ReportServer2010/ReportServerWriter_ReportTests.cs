@@ -305,13 +305,13 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
                 Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2010\\Company Sales.rdl")))
             };
 
-            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+            ArgumentException ex = Assert.Throws<ArgumentException>(
                 delegate
                 {
                     writer.WriteReport(report);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", report.Path)));
+            Assert.That(ex.Message, Is.EqualTo("item.Path"));
         }
 
         [Test]
@@ -327,13 +327,13 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
                 Definition = TesterUtility.StringToByteArray(TesterUtility.LoadRDLFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "Test AW Reports\\2010\\Company Sales.rdl")))
             };
 
-            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+            ArgumentException ex = Assert.Throws<ArgumentException>(
                 delegate
                 {
                     writer.WriteReport(report);
                 });
 
-            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", report.Path)));
+            Assert.That(ex.Message, Is.EqualTo("item.Path"));
         }
 
         [Test]
@@ -607,13 +607,13 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
 
             items.AddRange(reportItems);
 
-            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+            ArgumentException ex = Assert.Throws<ArgumentException>(
                 delegate
                 {
                     writer.WriteReports(items.ToArray());
                 });
-
-            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", report.Path)));
+            
+            Assert.That(ex.Message, Is.EqualTo("item.Path"));
         }
 
         [Test]
@@ -636,13 +636,13 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
 
             items.AddRange(reportItems);
 
-            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+            ArgumentException ex = Assert.Throws<ArgumentException>(
                 delegate
                 {
                     writer.WriteReports(items.ToArray());
                 });
-
-            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", report.Path)));
+            
+            Assert.That(ex.Message, Is.EqualTo("item.Path"));
         }
 
         [Test]

@@ -55,7 +55,8 @@ namespace SSRSMigrate.SSRS.Writer
 
             // Get the folder's name and path to its parent folder 
             string name = folderItem.Name;
-            string parentPath = SSRSUtil.GetParentPath(folderItem);
+            //string parentPath = SSRSUtil.GetParentPath(folderItem);
+            string parentPath = folderItem.ParentPath;
 
             // Check if a folder already exists at the specified path
             if (this.mReportRepository.ItemExists(folderItem.Path, "Folder"))
@@ -86,7 +87,8 @@ namespace SSRSMigrate.SSRS.Writer
 
                 // Get the folder's name and path to its parent folder 
                 string name = folderItems[i].Name;
-                string parentPath = SSRSUtil.GetParentPath(folderItems[i]);
+                //string parentPath = SSRSUtil.GetParentPath(folderItems[i]);
+                string parentPath = folderItems[i].ParentPath;
 
                 // Check if a folder already exists at the specified path
                 if (this.mReportRepository.ItemExists(folderItems[i].Path, "Folder"))
@@ -122,7 +124,8 @@ namespace SSRSMigrate.SSRS.Writer
 
             // Get the report's name and path to its parent folder
             string name = reportItem.Name;
-            string parentPath = SSRSUtil.GetParentPath(reportItem);
+            //string parentPath = SSRSUtil.GetParentPath(reportItem);
+            string parentPath = reportItem.ParentPath;
 
             //TODO Validate the report's name using ReportServerItemNameValidator
 
@@ -150,7 +153,8 @@ namespace SSRSMigrate.SSRS.Writer
 
                 // Get the report's name and path to its parent folder
                 string name = reportItems[i].Name;
-                string parentPath = SSRSUtil.GetParentPath(reportItems[i]);
+                //string parentPath = SSRSUtil.GetParentPath(reportItems[i]);
+                string parentPath = reportItems[i].ParentPath;
 
                 //TODO Validate the report's name using ReportServerItemNameValidator
 
@@ -181,7 +185,8 @@ namespace SSRSMigrate.SSRS.Writer
                 throw new InvalidPathException(dataSourceItem.Path);
 
             string name = dataSourceItem.Name;
-            string parentPath = SSRSUtil.GetParentPath(dataSourceItem);
+            //string parentPath = SSRSUtil.GetParentPath(dataSourceItem);
+            string parentPath = dataSourceItem.ParentPath;
 
             if (!this.mOverwrite)
                 if (this.mReportRepository.ItemExists(dataSourceItem.Path, "DataSource"))
@@ -204,7 +209,8 @@ namespace SSRSMigrate.SSRS.Writer
                     throw new InvalidPathException(dataSourceItems[i].Path);
 
                 string name = dataSourceItems[i].Name;
-                string parentPath = SSRSUtil.GetParentPath(dataSourceItems[i]);
+                //string parentPath = SSRSUtil.GetParentPath(dataSourceItems[i]);
+                string parentPath = dataSourceItems[i].ParentPath;
 
                 if (!this.mOverwrite)
                     if (this.mReportRepository.ItemExists(dataSourceItems[i].Path, "DataSource"))

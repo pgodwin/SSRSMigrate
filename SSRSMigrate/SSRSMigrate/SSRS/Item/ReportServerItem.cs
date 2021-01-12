@@ -19,8 +19,8 @@ namespace SSRSMigrate.SSRS.Item
         {
             get
             {
-                //if (string.IsNullOrEmpty(this.Path))
-                //    throw new ArgumentException("item.Path");
+                if (string.IsNullOrEmpty(this.Path))
+                    throw new ArgumentException("item.Path");
 
                 if (string.IsNullOrEmpty(this.Name))
                     throw new ArgumentException("item.Name");

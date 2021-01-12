@@ -299,42 +299,5 @@ namespace SSRSMigrate.Utility
 
             return physicalPath;
         }
-
-        public static string GetParentPath(ReportServerItem item)
-        {
-            if (item == null)
-                throw new ArgumentNullException("item");
-
-            if (string.IsNullOrEmpty(item.Path))
-                throw new ArgumentException("item.Path");
-
-            if (string.IsNullOrEmpty(item.Name))
-                throw new ArgumentException("item.Name");
-
-            string path = item.Path;
-            string name = item.Name;
-
-            string parentPath = null;
-            if (path == "/")
-                parentPath = path;
-            else
-            {
-                //parentPath = path.Replace(name, "");
-                parentPath = path.Substring(0, path.LastIndexOf(name));
-
-                if (parentPath.EndsWith("/"))
-                {
-                    parentPath = parentPath.Substring(0, parentPath.Length - 1);
-
-                    if (parentPath.EndsWith("/"))
-                        parentPath = parentPath.Substring(0, parentPath.Length - 1);
-                }
-            }
-
-            if (!parentPath.StartsWith("/"))
-                parentPath = "/" + parentPath;
-
-            return parentPath;
-        }
     }
 }
