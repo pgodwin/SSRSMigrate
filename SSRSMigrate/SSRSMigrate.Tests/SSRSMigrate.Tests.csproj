@@ -177,10 +177,8 @@
     <Compile Include="SSRS\Reader\ReportServerReaderTests.cs" />
     <Compile Include="SSRS\Reader\ReportServerReader_DataSourceTests.cs" />
     <Compile Include="SSRS\Reader\ReportServerReader_FolderTests.cs" />
-    <Compile Include="SSRS\Reader\ReportServer2005\ReportServerReader_ReportTests.cs" />
     <Compile Include="SSRS\SqlServerInfo_Tests.cs" />
     <Compile Include="SSRS\Validators\ReportServerPathValidator_Tests.cs" />
-    <Compile Include="SSRS\Writer\ReportServer2005\ReportServerWriter_ReportTests.cs" />
     <Compile Include="SSRS\Writer\ReportServer2010\ReportServerWriter_ReportTests.cs" />
     <Compile Include="SSRS\Writer\ReportServerWriterTests.cs" />
     <Compile Include="SSRS\Writer\ReportServerWriter_DataSourceTests.cs" />
@@ -233,6 +231,7 @@
     <Content Include="Test AW Reports\Setup\Setup2008R2.vb" />
     <Content Include="Test AW Reports\Setup\Setup2012.vb" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
