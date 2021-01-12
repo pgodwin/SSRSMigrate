@@ -20,7 +20,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
     [TestFixture]
     class ReportServerWriter_ReportTests
     {
-        ReportServerWriter writer = null;
+        private ReportServerWriter writer = null;
+        private Mock<IReportServerPathValidator> pathValidatorMock = null;
+        private Mock<IReportServerRepository> reportServerRepositoryMock = null;
 
         #region Report Items
         List<ReportItem> reportItems = null;
@@ -142,109 +144,99 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         {
             SetupReportItems();
 
-            // Setup IReportServerRepository mock
-            var reportServerRepositoryMock = new Mock<IReportServerRepository>();
+            //// Setup IReportServerRepository.WriteReport Mocks
+            //reportServerRepositoryMock.Setup(r => r.WriteReport(null, It.IsAny<ReportItem>(), It.IsAny<bool>()))
+            //    .Throws(new ArgumentException("reportPath"));
 
-            // Setup IReportServerPathValidator mock
-            var pathValidatorMock = new Mock<IReportServerPathValidator>();
+            //reportServerRepositoryMock.Setup(r => r.WriteReport("", It.IsAny<ReportItem>(), It.IsAny<bool>()))
+            //    .Throws(new ArgumentException("reportPath"));
 
-            // Setup IReportServerRepository.WriteReport Mocks
-            reportServerRepositoryMock.Setup(r => r.WriteReport(null, It.IsAny<ReportItem>(), It.IsAny<bool>()))
-                .Throws(new ArgumentException("reportPath"));
+            //reportServerRepositoryMock.Setup(r => r.WriteReport(It.IsAny<string>(), null, It.IsAny<bool>()))
+            //    .Throws(new ArgumentException("reportItem"));
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport("", It.IsAny<ReportItem>(), It.IsAny<bool>()))
-                .Throws(new ArgumentException("reportPath"));
+            //reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_NullDefinition), reportItem_NullDefinition, It.IsAny<bool>()))
+            //    .Throws(new InvalidReportDefinitionException(reportItem_NullDefinition.Path));
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(It.IsAny<string>(), null, It.IsAny<bool>()))
-                .Throws(new ArgumentException("reportItem"));
+            //reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_CompanySales), reportItem_CompanySales, It.IsAny<bool>()))
+            //    .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_NullDefinition), reportItem_NullDefinition, It.IsAny<bool>()))
-                .Throws(new InvalidReportDefinitionException(reportItem_NullDefinition.Path));
+            //reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_SalesOrderDetail), reportItem_SalesOrderDetail, It.IsAny<bool>()))
+            //    .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_CompanySales), reportItem_CompanySales, It.IsAny<bool>()))
-                .Returns(() => null);
+            //reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_StoreContacts), reportItem_StoreContacts, It.IsAny<bool>()))
+            //    .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_SalesOrderDetail), reportItem_SalesOrderDetail, It.IsAny<bool>()))
-                .Returns(() => null);
+            //reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_Error), reportItem_Error, It.IsAny<bool>()))
+            //    .Returns(() => new string[] { string.Format("Error writing report '{0}': Error!", reportItem_Error.Path) });
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_StoreContacts), reportItem_StoreContacts, It.IsAny<bool>()))
-                .Returns(() => null);
+            //reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_AlreadyExists), reportItem_AlreadyExists, true))
+            //    .Returns(() => null);
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_Error), reportItem_Error, It.IsAny<bool>()))
-                .Returns(() => new string[] { string.Format("Error writing report '{0}': Error!", reportItem_Error.Path) });
+            //// Setup IReportServerRepository.ItemExists Mocks
+            //reportServerRepositoryMock.Setup(r => r.ItemExists(reportItem_AlreadyExists.Path, "Report"))
+            //    .Returns(() => true);
 
-            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_AlreadyExists), reportItem_AlreadyExists, true))
-                .Returns(() => null);
+            //// Setup IReportserverValidator.Validate Mocks
+            //pathValidatorMock.Setup(r => r.Validate(reportItem_CompanySales.ParentPath))
+            //  .Returns(() => true);
 
-            // Setup IReportServerRepository.ItemExists Mocks
-            reportServerRepositoryMock.Setup(r => r.ItemExists(reportItem_AlreadyExists.Path, "Report"))
-                .Returns(() => true);
+            //pathValidatorMock.Setup(r => r.Validate(reportItem_SalesOrderDetail.ParentPath))
+            //  .Returns(() => true);
 
-            // Setup IReportserverValidator.Validate Mocks
-            pathValidatorMock.Setup(r => r.Validate(reportItem_CompanySales.ParentPath))
-              .Returns(() => true);
+            //pathValidatorMock.Setup(r => r.Validate(reportItem_StoreContacts.ParentPath))
+            //  .Returns(() => true);
 
-            pathValidatorMock.Setup(r => r.Validate(reportItem_SalesOrderDetail.ParentPath))
-              .Returns(() => true);
+            //pathValidatorMock.Setup(r => r.Validate(reportItem_AlreadyExists.ParentPath))
+            //  .Returns(() => true);
 
-            pathValidatorMock.Setup(r => r.Validate(reportItem_StoreContacts.ParentPath))
-              .Returns(() => true);
+            //pathValidatorMock.Setup(r => r.Validate(reportItem_NullDefinition.ParentPath))
+            //  .Returns(() => true);
 
-            pathValidatorMock.Setup(r => r.Validate(reportItem_AlreadyExists.ParentPath))
-              .Returns(() => true);
+            //pathValidatorMock.Setup(r => r.Validate(reportItem_Error.ParentPath))
+            //    .Returns(() => true);
 
-            pathValidatorMock.Setup(r => r.Validate(reportItem_NullDefinition.ParentPath))
-              .Returns(() => true);
+            //pathValidatorMock.Setup(r => r.Validate(null))
+            //   .Returns(() => false);
 
-            pathValidatorMock.Setup(r => r.Validate(reportItem_Error.ParentPath))
-                .Returns(() => true);
+            //pathValidatorMock.Setup(r => r.Validate(""))
+            //   .Returns(() => false);
 
-            pathValidatorMock.Setup(r => r.Validate(null))
-               .Returns(() => false);
+            //pathValidatorMock.Setup(r => r.Validate(reportItem_InvalidPath.ParentPath))
+            //   .Returns(() => false);
 
-            pathValidatorMock.Setup(r => r.Validate(""))
-               .Returns(() => false);
+            //pathValidatorMock.Setup(r => r.Validate(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
+            //   .Returns(() => false);
 
-            pathValidatorMock.Setup(r => r.Validate(reportItem_InvalidPath.ParentPath))
-               .Returns(() => false);
+            //// Setup IReportServerRepository.ValidateItemPath Mocks
+            //pathValidatorMock.Setup(r => r.Validate(reportItem_CompanySales.ParentPath))
+            //  .Returns(() => true);
 
-            pathValidatorMock.Setup(r => r.Validate(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
-               .Returns(() => false);
+            //pathValidatorMock.Setup(r => r.Validate(reportItem_SalesOrderDetail.ParentPath))
+            //  .Returns(() => true);
 
-            // Setup IReportServerRepository.ValidateItemPath Mocks
-            pathValidatorMock.Setup(r => r.Validate(reportItem_CompanySales.ParentPath))
-              .Returns(() => true);
+            //pathValidatorMock.Setup(r => r.Validate(reportItem_StoreContacts.ParentPath))
+            //  .Returns(() => true);
 
-            pathValidatorMock.Setup(r => r.Validate(reportItem_SalesOrderDetail.ParentPath))
-              .Returns(() => true);
+            //pathValidatorMock.Setup(r => r.Validate(reportItem_AlreadyExists.ParentPath))
+            //  .Returns(() => true);
 
-            pathValidatorMock.Setup(r => r.Validate(reportItem_StoreContacts.ParentPath))
-              .Returns(() => true);
+            //pathValidatorMock.Setup(r => r.Validate(reportItem_NullDefinition.ParentPath))
+            //  .Returns(() => true);
 
-            pathValidatorMock.Setup(r => r.Validate(reportItem_AlreadyExists.ParentPath))
-              .Returns(() => true);
+            //pathValidatorMock.Setup(r => r.Validate(reportItem_Error.ParentPath))
+            //    .Returns(() => true);
 
-            pathValidatorMock.Setup(r => r.Validate(reportItem_NullDefinition.ParentPath))
-              .Returns(() => true);
+            //pathValidatorMock.Setup(r => r.Validate(null))
+            //   .Returns(() => false);
 
-            pathValidatorMock.Setup(r => r.Validate(reportItem_Error.ParentPath))
-                .Returns(() => true);
+            //pathValidatorMock.Setup(r => r.Validate(""))
+            //   .Returns(() => false);
 
-            pathValidatorMock.Setup(r => r.Validate(null))
-               .Returns(() => false);
+            //pathValidatorMock.Setup(r => r.Validate(reportItem_InvalidPath.ParentPath))
+            //   .Returns(() => false);
 
-            pathValidatorMock.Setup(r => r.Validate(""))
-               .Returns(() => false);
-
-            pathValidatorMock.Setup(r => r.Validate(reportItem_InvalidPath.ParentPath))
-               .Returns(() => false);
-
-            pathValidatorMock.Setup(r => r.Validate(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
-               .Returns(() => false);
-
-            MockLogger logger = new MockLogger();
-
-            writer = new ReportServerWriter(reportServerRepositoryMock.Object, logger, pathValidatorMock.Object);
+            //pathValidatorMock.Setup(r => r.Validate(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
+            //   .Returns(() => false);
         }
 
         [OneTimeTearDown]
@@ -256,6 +248,16 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [SetUp]
         public void SetUp()
         {
+            // Setup IReportServerRepository mock
+            reportServerRepositoryMock = new Mock<IReportServerRepository>();
+
+            // Setup IReportServerPathValidator mock
+            pathValidatorMock = new Mock<IReportServerPathValidator>();
+
+            MockLogger logger = new MockLogger();
+
+            writer = new ReportServerWriter(reportServerRepositoryMock.Object, logger, pathValidatorMock.Object);
+
             writer.Overwrite = false; // Reset overwrite property
         }
 
@@ -263,6 +265,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [Test]
         public void WriteReport()
         {
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_CompanySales), reportItem_CompanySales, It.IsAny<bool>()))
+                .Returns(() => null);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_CompanySales.ParentPath))
+                .Returns(() => true);
+
             string[] actual = writer.WriteReport(reportItem_CompanySales);
 
             Assert.Null(actual);
@@ -271,6 +279,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [Test]
         public void WriteReport_AlreadyExists_OverwriteDisallowed()
         {
+            reportServerRepositoryMock.Setup(r => r.ItemExists(reportItem_AlreadyExists.Path, "Report"))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_AlreadyExists.ParentPath))
+                .Returns(() => true);
+
             ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
                 {
@@ -283,6 +297,15 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [Test]
         public void WriteReport_AlreadyExists_OverwriteAllowed()
         {
+            reportServerRepositoryMock.Setup(r => r.ItemExists(reportItem_AlreadyExists.Path, "Report"))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_AlreadyExists.ParentPath))
+                .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_AlreadyExists), reportItem_AlreadyExists, true))
+                .Returns(() => null);
+
             writer.Overwrite = true; // Allow for overwriting of report
 
             string[] actual = writer.WriteReport(reportItem_AlreadyExists);
@@ -292,6 +315,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [Test]
         public void WriteReport_NullReportItem()
         {
+            reportServerRepositoryMock.Setup(r => r.WriteReport(null, It.IsAny<ReportItem>(), It.IsAny<bool>()))
+                .Throws(new ArgumentException("reportPath"));
+
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
@@ -304,6 +330,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [Test]
         public void WriteReport_InvalidReportPath()
         {
+            pathValidatorMock.Setup(r => r.Validate(reportItem_InvalidPath.ParentPath))
+                .Returns(() => false);
+
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
@@ -404,6 +433,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [Test]
         public void WriteReport_ReportItemNullDefinition()
         {
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_NullDefinition), reportItem_NullDefinition, It.IsAny<bool>()))
+                .Throws(new InvalidReportDefinitionException(reportItem_NullDefinition.Path));
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_NullDefinition.ParentPath))
+                .Returns(() => true);
+
             InvalidReportDefinitionException ex = Assert.Throws<InvalidReportDefinitionException>(
                 delegate
                 {
@@ -416,6 +451,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [Test]
         public void WriteReport_ReportItemError()
         {
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_Error), reportItem_Error, It.IsAny<bool>()))
+                .Returns(() => new string[] { string.Format("Error writing report '{0}': Error!", reportItem_Error.Path) });
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_Error.ParentPath))
+                .Returns(() => true);
+
             string[] actual = writer.WriteReport(reportItem_Error);
 
             Assert.NotNull(actual);
@@ -429,6 +470,24 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [Test]
         public void WriteReports()
         {
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_CompanySales), reportItem_CompanySales, It.IsAny<bool>()))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_SalesOrderDetail), reportItem_SalesOrderDetail, It.IsAny<bool>()))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_StoreContacts), reportItem_StoreContacts, It.IsAny<bool>()))
+                .Returns(() => null);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_CompanySales.ParentPath))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_SalesOrderDetail.ParentPath))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_StoreContacts.ParentPath))
+                .Returns(() => true);
+
             string[] actual = writer.WriteReports(reportItems.ToArray());
 
             Assert.AreEqual(0, actual.Count());
@@ -437,6 +496,30 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [Test]
         public void WriteReports_OneOrMoreAlreadyExists_OverwriteDisallowed()
         {
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_CompanySales), reportItem_CompanySales, It.IsAny<bool>()))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_SalesOrderDetail), reportItem_SalesOrderDetail, It.IsAny<bool>()))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_StoreContacts), reportItem_StoreContacts, It.IsAny<bool>()))
+                .Returns(() => null);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_CompanySales.ParentPath))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_SalesOrderDetail.ParentPath))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_StoreContacts.ParentPath))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_AlreadyExists.ParentPath))
+                .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ItemExists(reportItem_AlreadyExists.Path, "Report"))
+                .Returns(() => true);
+
             List<ReportItem> items = new List<ReportItem>()
             {
                 reportItem_AlreadyExists
@@ -456,6 +539,33 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [Test]
         public void WriteReports_OneOrMoreAlreadyExists_OverwriteAllowed()
         {
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_CompanySales), reportItem_CompanySales, It.IsAny<bool>()))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_SalesOrderDetail), reportItem_SalesOrderDetail, It.IsAny<bool>()))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_StoreContacts), reportItem_StoreContacts, It.IsAny<bool>()))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_AlreadyExists), reportItem_AlreadyExists, true))
+                .Returns(() => null);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_CompanySales.ParentPath))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_SalesOrderDetail.ParentPath))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_StoreContacts.ParentPath))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_AlreadyExists.ParentPath))
+                .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ItemExists(reportItem_AlreadyExists.Path, "Report"))
+                .Returns(() => true);
+
             List<ReportItem> items = new List<ReportItem>()
             {
                 reportItem_AlreadyExists
@@ -485,6 +595,18 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [Test]
         public void WriteReports_OneOrMoreInvalidReportPath()
         {
+            pathValidatorMock.Setup(r => r.Validate(reportItem_CompanySales.ParentPath))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_SalesOrderDetail.ParentPath))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_StoreContacts.ParentPath))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_InvalidPath.ParentPath))
+                .Returns(() => false);
+
             List<ReportItem> items = new List<ReportItem>()
             {
                 reportItem_InvalidPath
@@ -620,6 +742,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [Test]
         public void WriteReports_OneOrMoreReportItemNullDefinition()
         {
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_NullDefinition), reportItem_NullDefinition, It.IsAny<bool>()))
+                .Throws(new InvalidReportDefinitionException(reportItem_NullDefinition.Path));
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_NullDefinition.ParentPath))
+                .Returns(() => true);
+
             List<ReportItem> items = new List<ReportItem>()
             {
                 reportItem_NullDefinition
@@ -639,6 +767,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer.ReportServer2010
         [Test]
         public void WriteReports_OneOrMoreReportItemError()
         {
+            reportServerRepositoryMock.Setup(r => r.WriteReport(TesterUtility.GetParentPath(reportItem_Error), reportItem_Error, It.IsAny<bool>()))
+                .Returns(() => new string[] { string.Format("Error writing report '{0}': Error!", reportItem_Error.Path) });
+
+            pathValidatorMock.Setup(r => r.Validate(reportItem_Error.ParentPath))
+                .Returns(() => true);
+
             List<ReportItem> items = new List<ReportItem>()
             {
                 reportItem_Error
