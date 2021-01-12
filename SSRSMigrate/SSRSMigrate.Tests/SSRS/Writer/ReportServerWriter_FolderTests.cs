@@ -18,8 +18,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
     [TestFixture]
     class ReportServerWriter_FolderTests
     {
-        ReportServerWriter writer = null;
-        Mock<IReportServerRepository> reportServerRepositoryMock = null;
+        private ReportServerWriter writer = null;
+        private Mock<IReportServerRepository> reportServerRepositoryMock = null;
+        private Mock<IReportServerPathValidator> pathValidatorMock = null;
 
         #region Folder Items
         FolderItem rootFolderItem = null;
@@ -85,82 +86,6 @@ namespace SSRSMigrate.Tests.SSRS.Writer
                 reportsSubFolderItem,
                 rootSubFolderItem,
             };
-
-            // Setup IReportServerRepository Mock
-            reportServerRepositoryMock = new Mock<IReportServerRepository>();
-
-            // Setup IReportServerPathValidator mock
-            var pathValidatorMock = new Mock<IReportServerPathValidator>();
-
-            // IReportServerRepository.CreateFolder Mocks
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(null, It.IsAny<string>()))
-                .Throws(new ArgumentException("name"));
-
-            reportServerRepositoryMock.Setup(r => r.CreateFolder("", It.IsAny<string>()))
-                .Throws(new ArgumentException("name"));
-
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(It.IsAny<string>(), null))
-                .Throws(new ArgumentException("parentPath"));
-
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(It.IsAny<string>(), ""))
-               .Throws(new ArgumentException("parentPath"));
-
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootFolderItem.Name, TesterUtility.GetParentPath(rootFolderItem)))
-                .Returns(() => null);
-
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsFolderItem.Name, TesterUtility.GetParentPath(reportsFolderItem)))
-                .Returns(() => null);
-
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsSubFolderItem.Name, TesterUtility.GetParentPath(reportsSubFolderItem)))
-                .Returns(() => null);
-
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootSubFolderItem.Name, TesterUtility.GetParentPath(rootSubFolderItem)))
-               .Returns(() => null);
-
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(alreadyExistsFolderItem.Name, TesterUtility.GetParentPath(alreadyExistsFolderItem)))
-               .Returns(() => null);
-
-            reportServerRepositoryMock.Setup(r => r.CreateFolder(errorFolderItem.Name, TesterUtility.GetParentPath(errorFolderItem)))
-                .Returns(() => string.Format("Error writing folder '{0}': Error!", errorFolderItem.Path));
-
-            reportServerRepositoryMock.Setup(r => r.ItemExists(alreadyExistsFolderItem.Path, "Folder"))
-                .Returns(() => true);
-
-            // Setup IReportserverValidator.Validate Mocks
-            pathValidatorMock.Setup(r => r.Validate(rootFolderItem.Path))
-               .Returns(() => true);
-
-            pathValidatorMock.Setup(r => r.Validate(rootSubFolderItem.Path))
-               .Returns(() => true);
-
-            pathValidatorMock.Setup(r => r.Validate(reportsFolderItem.Path))
-               .Returns(() => true);
-
-            pathValidatorMock.Setup(r => r.Validate(reportsSubFolderItem.Path))
-                .Returns(() => true);
-
-            pathValidatorMock.Setup(r => r.Validate(rootSubFolderItem.Path))
-               .Returns(() => true);
-
-            pathValidatorMock.Setup(r => r.Validate(alreadyExistsFolderItem.Path))
-              .Returns(() => true);
-
-            // Validate errorFolderItem.Path so we can mock the error returned by IReportServerRepository.CreateFolder
-            pathValidatorMock.Setup(r => r.Validate(errorFolderItem.Path))
-              .Returns(() => true);
-
-            pathValidatorMock.Setup(r => r.Validate(null))
-               .Returns(() => false);
-
-            pathValidatorMock.Setup(r => r.Validate(""))
-               .Returns(() => false);
-
-            pathValidatorMock.Setup(r => r.Validate(It.Is<string>(s => Regex.IsMatch(s ?? "", "[:?;@&=+$,\\*><|.\"]+") == true)))
-               .Returns(() => false);
-
-            MockLogger logger = new MockLogger();
-
-            writer = new ReportServerWriter(reportServerRepositoryMock.Object, logger, pathValidatorMock.Object);
         }
 
         [OneTimeTearDown]
@@ -172,6 +97,16 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [SetUp]
         public void SetUp()
         {
+            // Setup IReportServerRepository Mock
+            reportServerRepositoryMock = new Mock<IReportServerRepository>();
+
+            // Setup IReportServerPathValidator mock
+            pathValidatorMock = new Mock<IReportServerPathValidator>();
+
+            MockLogger logger = new MockLogger();
+
+            writer = new ReportServerWriter(reportServerRepositoryMock.Object, logger, pathValidatorMock.Object);
+
             writer.Overwrite = false; // Reset allow overwrite before each test
         }
 
@@ -184,6 +119,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolder()
         {
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootFolderItem.Name, TesterUtility.GetParentPath(rootFolderItem)))
+                .Returns(() => null);
+
+            pathValidatorMock.Setup(r => r.Validate(rootFolderItem.Path))
+                .Returns(() => true);
+
             string actual = writer.WriteFolder(rootFolderItem);
 
             Assert.Null(actual);
@@ -192,6 +133,15 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolder_AlreadyExists()
         {
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(alreadyExistsFolderItem.Name, TesterUtility.GetParentPath(alreadyExistsFolderItem)))
+                .Returns(() => null);
+
+            pathValidatorMock.Setup(r => r.Validate(alreadyExistsFolderItem.Path))
+                .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ItemExists(alreadyExistsFolderItem.Path, "Folder"))
+                .Returns(() => true);
+
             ItemAlreadyExistsException ex = Assert.Throws<ItemAlreadyExistsException>(
                 delegate
                 {
@@ -204,6 +154,15 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolder_AlreadyExists_AllowOverwrite()
         {
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(alreadyExistsFolderItem.Name, TesterUtility.GetParentPath(alreadyExistsFolderItem)))
+                .Returns(() => null);
+
+            pathValidatorMock.Setup(r => r.Validate(alreadyExistsFolderItem.Path))
+                .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ItemExists(alreadyExistsFolderItem.Path, "Folder"))
+                .Returns(() => true);
+
             writer.Overwrite = true;
 
             string actual = writer.WriteFolder(alreadyExistsFolderItem);
@@ -228,6 +187,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolder_InvalidPath()
         {
+            pathValidatorMock.Setup(r => r.Validate(invalidPathFolderItem.Path))
+                .Returns(() => false);
+
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
@@ -240,6 +202,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolder_FolderItemNullName()
         {
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests"))
+                .Returns(() => true);
+
             FolderItem folderItem = new FolderItem()
             {
                 Name = null,
@@ -258,6 +223,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolder_FolderItemEmptyName()
         {
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests"))
+                .Returns(() => true);
+
             FolderItem folderItem = new FolderItem()
             {
                 Name = "",
@@ -276,6 +244,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolder_FolderItemNullPath()
         {
+            pathValidatorMock.Setup(r => r.Validate(null))
+                .Returns(() => false);
+
             FolderItem folderItem = new FolderItem()
             {
                 Name = "SSRSMigrate_AW_Tests",
@@ -294,6 +265,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolder_FolderItemEmptyPath()
         {
+            pathValidatorMock.Setup(r => r.Validate(null))
+                .Returns(() => false);
+
             FolderItem folderItem = new FolderItem()
             {
                 Name = "SSRSMigrate_AW_Tests",
@@ -312,6 +286,12 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolder_FolderItemError()
         {
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(errorFolderItem.Name, TesterUtility.GetParentPath(errorFolderItem)))
+                .Returns(() => string.Format("Error writing folder '{0}': Error!", errorFolderItem.Path));
+
+            pathValidatorMock.Setup(r => r.Validate(errorFolderItem.Path))
+                .Returns(() => true);
+
             string actual = writer.WriteFolder(errorFolderItem);
 
             Assert.NotNull(actual);
@@ -323,6 +303,31 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolders()
         {
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootFolderItem.Name, TesterUtility.GetParentPath(rootFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsSubFolderItem.Name, TesterUtility.GetParentPath(reportsSubFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootSubFolderItem.Name, TesterUtility.GetParentPath(rootSubFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsFolderItem.Name, TesterUtility.GetParentPath(rootSubFolderItem)))
+                .Returns(() => null);
+
+            pathValidatorMock.Setup(r => r.Validate(reportsFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(rootFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportsSubFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(rootSubFolderItem.Path))
+                .Returns(() => true);
+
+
             string[] actual = writer.WriteFolders(folderItems.ToArray());
 
             Assert.IsEmpty(actual);
@@ -331,6 +336,36 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolders_OneOrMoreAlreadyExists()
         {
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootFolderItem.Name, TesterUtility.GetParentPath(rootFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsSubFolderItem.Name, TesterUtility.GetParentPath(reportsSubFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootSubFolderItem.Name, TesterUtility.GetParentPath(rootSubFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsFolderItem.Name, TesterUtility.GetParentPath(rootSubFolderItem)))
+                .Returns(() => null);
+
+            pathValidatorMock.Setup(r => r.Validate(reportsFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(rootFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportsSubFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(rootSubFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(alreadyExistsFolderItem.Path))
+                .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ItemExists(alreadyExistsFolderItem.Path, "Folder"))
+                .Returns(() => true);
+
             List<FolderItem> items = new List<FolderItem>();
 
             items.AddRange(folderItems);
@@ -348,6 +383,39 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolders_OneOrMoreAlreadyExists_AllowOverwrite()
         {
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootFolderItem.Name, TesterUtility.GetParentPath(rootFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsSubFolderItem.Name, TesterUtility.GetParentPath(reportsSubFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootSubFolderItem.Name, TesterUtility.GetParentPath(rootSubFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsFolderItem.Name, TesterUtility.GetParentPath(reportsFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(alreadyExistsFolderItem.Name, TesterUtility.GetParentPath(alreadyExistsFolderItem)))
+                .Returns(() => null);
+
+            pathValidatorMock.Setup(r => r.Validate(reportsFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(rootFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportsSubFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(rootSubFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(alreadyExistsFolderItem.Path))
+                .Returns(() => true);
+
+            reportServerRepositoryMock.Setup(r => r.ItemExists(alreadyExistsFolderItem.Path, "Folder"))
+                .Returns(() => true);
+
             List<FolderItem> items = new List<FolderItem>();
 
             items.AddRange(folderItems);
@@ -365,6 +433,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolders_NullFolderItems()
         {
+            pathValidatorMock.Setup(r => r.Validate(null))
+                .Returns(() => false);
+
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
                 delegate
                 {
@@ -377,6 +448,37 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolders_OneOrMoreInvalidPaths()
         {
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootFolderItem.Name, TesterUtility.GetParentPath(rootFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsSubFolderItem.Name, TesterUtility.GetParentPath(reportsSubFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootSubFolderItem.Name, TesterUtility.GetParentPath(rootSubFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsFolderItem.Name, TesterUtility.GetParentPath(rootSubFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(errorFolderItem.Name, TesterUtility.GetParentPath(errorFolderItem)))
+                .Returns(() => string.Format("Error writing folder '{0}': Error!", errorFolderItem.Path));
+
+            pathValidatorMock.Setup(r => r.Validate(reportsFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(rootFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportsSubFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(rootSubFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(errorFolderItem.Path))
+                .Returns(() => true);
+
+
             List<FolderItem> items = new List<FolderItem>();
 
             items.AddRange(folderItems);
@@ -394,6 +496,21 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolders_OneOrMoreNullNames()
         {
+            pathValidatorMock.Setup(r => r.Validate(reportsFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(rootFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportsSubFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(rootSubFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests"))
+                .Returns(() => true);
+
             List<FolderItem> items = new List<FolderItem>();
 
             items.AddRange(folderItems);
@@ -415,6 +532,21 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolders_OneOrMoreEmptyNames()
         {
+            pathValidatorMock.Setup(r => r.Validate(reportsFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(rootFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportsSubFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(rootSubFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests"))
+                .Returns(() => true);
+
             List<FolderItem> items = new List<FolderItem>();
 
             items.AddRange(folderItems);
@@ -436,6 +568,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolders_OneOrMoreNullPaths()
         {
+            pathValidatorMock.Setup(r => r.Validate(null))
+                .Returns(() => false);
+
             FolderItem folderItem = new FolderItem()
             {
                 Name = "SSRSMigrate_AW_Tests",
@@ -461,6 +596,9 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolders_OneOrMoreEmptyPaths()
         {
+            pathValidatorMock.Setup(r => r.Validate(""))
+                .Returns(() => false);
+
             FolderItem folderItem = new FolderItem()
             {
                 Name = "SSRSMigrate_AW_Tests",
@@ -486,6 +624,36 @@ namespace SSRSMigrate.Tests.SSRS.Writer
         [Test]
         public void WriteFolders_OneOrMoreFolderItemError()
         {
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(errorFolderItem.Name, TesterUtility.GetParentPath(errorFolderItem)))
+                .Returns(() => string.Format("Error writing folder '{0}': Error!", errorFolderItem.Path));
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootFolderItem.Name, TesterUtility.GetParentPath(rootFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsSubFolderItem.Name, TesterUtility.GetParentPath(reportsSubFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(rootSubFolderItem.Name, TesterUtility.GetParentPath(rootSubFolderItem)))
+                .Returns(() => null);
+
+            reportServerRepositoryMock.Setup(r => r.CreateFolder(reportsFolderItem.Name, TesterUtility.GetParentPath(rootSubFolderItem)))
+                .Returns(() => null);
+
+            pathValidatorMock.Setup(r => r.Validate(reportsFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(rootFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(reportsSubFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(rootSubFolderItem.Path))
+                .Returns(() => true);
+
+            pathValidatorMock.Setup(r => r.Validate(errorFolderItem.Path))
+                .Returns(() => true);
+
             List<FolderItem> items = new List<FolderItem>()
             {
                 errorFolderItem

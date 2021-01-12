@@ -75,6 +75,16 @@ namespace SSRSMigrate.Tests.SSRS.Validators
 
             Assert.IsFalse(actual);
         }
+
+        [Test]
+        public void InvalidPath_InvalidCharacters2()
+        {
+            string path = "/SSRSMigrate_AW.Tests";
+
+            bool actual = validator.Validate(path);
+
+            Assert.IsFalse(actual);
+        }
         #endregion
 
         #region ValidateName
