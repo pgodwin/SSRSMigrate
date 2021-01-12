@@ -38,15 +38,8 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         private List<ReportItem> actualReportItems = null;
         #endregion
 
-        [OneTimeSetUp]
-        public void TestFixtureSetUp()
+        private void SetupExpectedReports()
         {
-            // Setup IReportServerRepository mock
-            reportServerRepositoryMock = new Mock<IReportServerRepository>();
-
-            // Setup IReportServerPathValidator mock
-            pathValidatorMock = new Mock<IReportServerPathValidator>();
-
             // Setup GetReport - Expected ReportItem
             expectedReportItem = new ReportItemProxy(reportServerRepositoryMock.Object)
             {
@@ -99,34 +92,52 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
                     }
                 }
             };
-            
-            MockLogger logger = new MockLogger();
+        }
 
-            reader = new ReportServerReader(reportServerRepositoryMock.Object, logger, pathValidatorMock.Object);
+        [OneTimeSetUp]
+        public void TestFixtureSetUp()
+        {
+
         }
 
         [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
-            reader = null;
+            
         }
 
         [SetUp]
         public void SetUp()
         {
             actualReportItems = new List<ReportItem>();
+
+            // Setup IReportServerRepository mock
+            reportServerRepositoryMock = new Mock<IReportServerRepository>();
+
+            // Setup IReportServerPathValidator mock
+            pathValidatorMock = new Mock<IReportServerPathValidator>();
+
+            MockLogger logger = new MockLogger();
+
+            reader = new ReportServerReader(reportServerRepositoryMock.Object, logger, pathValidatorMock.Object);
         }
 
         [TearDown]
         public void TearDown()
         {
             actualReportItems = null;
+            expectedReportItems = null;
+            expectedReportItem = null;
+            reader = null;
         }
 
         #region GetReport Tests
         [Test]
         public void GetReport()
         {
+            // Have to do this here because ReportItemProxy requires IReportServerRepository
+            SetupExpectedReports();
+
             reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_AW_Tests/Reports/Company Sales"))
                 .Returns(() => expectedReportItem.Definition);
 
@@ -218,6 +229,9 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReport_WithSubReports()
         {
+            // Have to do this here because ReportItemProxy requires IReportServerRepository
+            SetupExpectedReports();
+
             reportServerRepositoryMock.Setup(r => r.GetReportDefinition("/SSRSMigrate_AW_Tests/Reports/Sales Order Detail"))
                 .Returns(() => expectedReportItems[1].Definition);
 
@@ -242,6 +256,9 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReports()
         {
+            // Have to do this here because ReportItemProxy requires IReportServerRepository
+            SetupExpectedReports();
+
             reportServerRepositoryMock.Setup(r => r.GetReports("/SSRSMigrate_AW_Tests"))
                .Returns(() => expectedReportItems);
 
@@ -315,6 +332,9 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         [Test]
         public void GetReports_UsingDelegate()
         {
+            // Have to do this here because ReportItemProxy requires IReportServerRepository
+            SetupExpectedReports();
+
             reportServerRepositoryMock.Setup(r => r.GetReportsLazy("/SSRSMigrate_AW_Tests"))
                .Returns(() => expectedReportItems);
 
