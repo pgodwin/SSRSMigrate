@@ -23,7 +23,7 @@ namespace SSRSMigrate.Tests.SSRS.Validators
             validator.Logger = logger;
         }
 
-
+        #region ValidatePath
         [Test]
         public void ValidPath()
         {
@@ -75,5 +75,60 @@ namespace SSRSMigrate.Tests.SSRS.Validators
 
             Assert.IsFalse(actual);
         }
+        #endregion
+
+        #region ValidateName
+        [Test]
+        public void ValidName()
+        {
+            string name = "SSRSMigrate_AW_Tests";
+
+            bool actual = validator.ValidateName(name);
+
+            Assert.IsTrue(actual);
+        }
+
+        [Test]
+        public void InvalidName_NULL()
+        {
+            string name = null;
+
+            bool actual = validator.ValidateName(name);
+
+            Assert.IsFalse(actual);
+        }
+
+        [Test]
+        public void InvalidName_Empty()
+        {
+            string name = "";
+
+            bool actual = validator.ValidateName(name);
+
+            Assert.IsFalse(actual);
+        }
+
+        [Test]
+        public void InvalidName_LengthExceeded()
+        {
+            string name = "SSRSMigrate_AW_Tests";
+
+            name += new String('x', 260);
+
+            bool actual = validator.ValidateName(name);
+
+            Assert.IsFalse(actual);
+        }
+
+        [Test]
+        public void InvalidName_InvalidCharacters()
+        {
+            string name = "SSRSMigrate_AW_Tests & Test";
+
+            bool actual = validator.ValidateName(name);
+
+            Assert.IsFalse(actual);
+        }
+        #endregion
     }
 }

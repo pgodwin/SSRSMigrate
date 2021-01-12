@@ -21,29 +21,31 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
     [CoverageExcludeAttribute]
     class ReportServerReader_ReportTests
     {
-        ReportServerReader reader = null;
+        private ReportServerReader reader = null;
+        private Mock<IReportServerPathValidator> pathValidatorMock = null;
+        private Mock<IReportServerRepository> reportServerRepositoryMock = null;
 
         #region GetReports - Expected ReportItem
-        ReportItem expectedReportItem = null;
+        private ReportItem expectedReportItem = null;
         #endregion
 
         #region GetReports - Expected ReportItems
-        List<ReportItem> expectedReportItems = null;
-        string[] expectedReportDefinitions = null;
+        private List<ReportItem> expectedReportItems = null;
+        private string[] expectedReportDefinitions = null;
         #endregion
 
         #region Get Reports - Actual ReportItems
-        List<ReportItem> actualReportItems = null;
+        private List<ReportItem> actualReportItems = null;
         #endregion
 
         [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             // Setup IReportServerRepository mock
-            var reportServerRepositoryMock = new Mock<IReportServerRepository>();
+            reportServerRepositoryMock = new Mock<IReportServerRepository>();
 
             // Setup IReportServerPathValidator mock
-            var pathValidatorMock = new Mock<IReportServerPathValidator>();
+            pathValidatorMock = new Mock<IReportServerPathValidator>();
 
             // Setup GetReport - Expected ReportItem
             expectedReportItem = new ReportItemProxy(reportServerRepositoryMock.Object)
@@ -255,9 +257,23 @@ namespace SSRSMigrate.Tests.SSRS.Reader.ReportServer2010
         }
 
         [Test]
-        public void GetReport_InvalidPath()
+        public void GetReport_InvalidPath_InvalidCharInPath()
         {
-            string invalidPath = "/SSRSMigrate_AW_Tests/Reports.Invalid/Invalid.Report";
+            string invalidPath = "/SSRSMigrate_AW_Tests/Reports.Invalid/Invalid Report";
+
+            InvalidPathException ex = Assert.Throws<InvalidPathException>(
+                delegate
+                {
+                    reader.GetReport(invalidPath);
+                });
+
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
+        }
+
+        [Test]
+        public void GetReport_InvalidPath_NoSlashInPath()
+        {
+            string invalidPath = "My Path";
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate

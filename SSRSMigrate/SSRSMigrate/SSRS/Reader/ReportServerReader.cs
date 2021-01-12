@@ -97,7 +97,7 @@ namespace SSRSMigrate.SSRS.Reader
 
             this.mLogger.Debug("GetReport - reportPath = {0}", reportPath);
 
-            if (string.IsNullOrEmpty(reportPath))
+            if (reportPath.LastIndexOf('/') < 0)
                 throw new InvalidPathException(reportPath);
 
             string parentPath = reportPath.Substring(0, reportPath.LastIndexOf('/') + 1);

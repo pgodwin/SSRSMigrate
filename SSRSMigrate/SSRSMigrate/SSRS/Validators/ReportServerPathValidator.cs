@@ -7,6 +7,7 @@ namespace SSRSMigrate.SSRS.Validators
     {
         private ILogger mLogger = null;
         private string mInvalidPathChars = ":?;@&=+$,\\*><|.\"";
+        private string mInvalidNameChars = ":?;@&=+$,\\*><|.\"/";
         private int mPathMaxLength = 260;
 
         [Inject]
@@ -20,11 +21,16 @@ namespace SSRSMigrate.SSRS.Validators
             get { return this.mInvalidPathChars; }
         }
 
+        public string InvalidNameChars
+        {
+            get { return this.mInvalidNameChars; }
+        }
+
         public bool Validate(string path)
         {
             bool isValidPath = true;
 
-            this.mLogger.Debug("Validate - path = {0}", path);
+            this.mLogger.Debug("Validate - name = {0}", path);
 
             if (string.IsNullOrEmpty(path))
                 isValidPath = false;
@@ -34,6 +40,24 @@ namespace SSRSMigrate.SSRS.Validators
                 isValidPath = false;
 
             this.mLogger.Debug("Validate - isValidPath = {0}", isValidPath);
+
+            return isValidPath;
+        }
+
+        public bool ValidateName(string name)
+        {
+            bool isValidPath = true;
+
+            this.mLogger.Debug("ValidateName - name = {0}", name);
+
+            if (string.IsNullOrEmpty(name))
+                isValidPath = false;
+            else if (name.IndexOfAny(this.mInvalidNameChars.ToCharArray()) >= 0)
+                isValidPath = false;
+            else if (name.Length > this.mPathMaxLength)
+                isValidPath = false;
+
+            this.mLogger.Debug("ValidateName - isValidPath = {0}", isValidPath);
 
             return isValidPath;
         }
