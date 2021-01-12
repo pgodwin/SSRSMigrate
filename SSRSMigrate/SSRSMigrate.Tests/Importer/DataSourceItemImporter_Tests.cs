@@ -114,6 +114,8 @@ namespace SSRSMigrate.Tests.Importer
             fileSystemMock = new Mock<IFileSystem>();
             serializeWrapperMock = new Mock<ISerializeWrapper>();
 
+            //TODO: Move mock setups to each test that actually uses them.
+
             // ISystemIOWrapper.File.ReadAllText Method Mocks
             fileSystemMock.Setup(f => f.File.ReadAllText(expectedAWDataSourceFileName))
                 .Returns(() => expectedAWDataSource);

@@ -54,6 +54,8 @@ namespace SSRSMigrate.Tests.Importer
             loggerMock = new MockLogger();
             fileSystemMock = new Mock<IFileSystem>();
 
+            //TODO: Move mock setups to each test that actually uses them.
+
             // ISystemIOWrapper.Directory.Exists Method Mocks
             fileSystemMock.Setup(f => f.Directory.Exists(expectedFolderItemFileName))
                 .Returns(() => true);

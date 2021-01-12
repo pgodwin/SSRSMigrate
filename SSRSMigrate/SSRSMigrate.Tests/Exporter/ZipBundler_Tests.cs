@@ -288,6 +288,8 @@ namespace SSRSMigrate.Tests.Exporter
             checkSumGenMock = new Mock<ICheckSumGenerator>();
             serializeWrapperMock = new Mock<ISerializeWrapper>();
 
+            //TODO: Move mock setups to each test that actually uses them.
+
             // IZipFileWrapper.AddDirectory Mocks
             zipFileMock.Setup(z => z.AddDirectory(It.IsAny<string>()));
             

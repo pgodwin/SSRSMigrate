@@ -799,6 +799,8 @@ namespace SSRSMigrate.Tests.Bundler.BundlerReader
             fileSystemMock = new Mock<IFileSystem>();
             serializeWrapperMock = new Mock<ISerializeWrapper>();
 
+            //TODO: Move mock setups to each test that actually uses them.
+
             // IZipFileReaderWrapper.UnPack Method Mocks
             // Each time IZipFileReaderWrapper.OnEntryExtracted is called,
             //  get the next ZipEntryReadEvent from the queue and pass that
