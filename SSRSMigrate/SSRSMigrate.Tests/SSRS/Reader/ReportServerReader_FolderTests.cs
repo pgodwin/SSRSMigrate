@@ -19,7 +19,9 @@ namespace SSRSMigrate.Tests.SSRS.Reader
     [CoverageExcludeAttribute]
     class ReportServerReader_FolderTests
     {
-        ReportServerReader reader = null;
+        private ReportServerReader reader = null;
+        private Mock<IReportServerPathValidator> pathValidatorMock = null;
+        private Mock<IReportServerRepository> reportServerRepositoryMock = null;
 
         #region GetFolders - Expected FolderItems
         FolderItem expectedFolderItem = null;
@@ -54,101 +56,34 @@ namespace SSRSMigrate.Tests.SSRS.Reader
                     Path = "/SSRSMigrate_AW_Tests/Data Sources",
                 }
             };
-
-            // Setup IReportServerRepository mock
-            var reportServerRepositoryMock = new Mock<IReportServerRepository>();
-
-            // Setup IReportServerPathValidator mock
-            var pathValidatorMock = new Mock<IReportServerPathValidator>();
-
-            // IReportServerRepository.GetFolder Mocks
-            reportServerRepositoryMock.Setup(r => r.GetFolder(null))
-                .Throws(new ArgumentException("path"));
-
-            reportServerRepositoryMock.Setup(r => r.GetFolder(""))
-                .Throws(new ArgumentException("path"));
-
-            reportServerRepositoryMock.Setup(r => r.GetFolder("/SSRSMigrate_AW_Tests/Reports"))
-                .Returns(() => expectedFolderItem);
-
-            reportServerRepositoryMock.Setup(r => r.GetFolder("/SSRSMigrate_AW_Tests/Doesnt Exist"))
-                .Returns(() => null);
-
-            // IReportServerRepository.GetFolders Mocks
-            reportServerRepositoryMock.Setup(r => r.GetFolders(null))
-                .Throws(new ArgumentException("path"));
-
-            reportServerRepositoryMock.Setup(r => r.GetFolders(""))
-                .Throws(new ArgumentException("path"));
-
-            reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_AW_Tests"))
-                .Returns(() => expectedFolderItems);
-
-            reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_AW_Tests Doesnt Exist"))
-                .Returns(() => new List<FolderItem>());
-
-            // IReportServerRepository.GetFolderList Mocks
-            reportServerRepositoryMock.Setup(r => r.GetFolderList(null))
-                .Throws(new ArgumentException("path"));
-
-            reportServerRepositoryMock.Setup(r => r.GetFolderList(""))
-                .Throws(new ArgumentException("path"));
-
-            reportServerRepositoryMock.Setup(r => r.GetFolderList("/SSRSMigrate_AW_Tests"))
-                .Returns(() => expectedFolderItems);
-
-            reportServerRepositoryMock.Setup(r => r.GetFolderList("/SSRSMigrate_AW_Tests Doesnt Exist"))
-                .Returns(() => new List<FolderItem>());
-
-            // Setup IReportserverValidator.Validate Mocks
-            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests"))
-               .Returns(() => true);
-
-            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests Doesnt Exist"))
-               .Returns(() => true);
-
-            // For IReportServerRepository.GetFolder doesnt exist test
-            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests/Doesnt Exist"))
-               .Returns(() => true);
-
-            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests/Reports"))
-               .Returns(() => true);
-
-            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests/Reports/Sub Folder"))
-               .Returns(() => true);
-
-            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests/Data Sources"))
-               .Returns(() => true);
-
-            pathValidatorMock.Setup(r => r.Validate(null))
-               .Returns(() => false);
-
-            pathValidatorMock.Setup(r => r.Validate(""))
-               .Returns(() => false);
-
-            pathValidatorMock.Setup(r => r.Validate(It.Is<string>(s => Regex.IsMatch(s, "[:?;@&=+$,\\*><|.\"]+") == true)))
-               .Returns(() => false);
-
-            MockLogger logger = new MockLogger();
-
-            reader = new ReportServerReader(reportServerRepositoryMock.Object, logger, pathValidatorMock.Object);
         }
 
         [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
-            reader = null;
+            
         }
 
         [SetUp]
         public void SetUp()
         {
             actualFolderItems = new List<FolderItem>();
+
+            // Setup IReportServerRepository mock
+            reportServerRepositoryMock = new Mock<IReportServerRepository>();
+
+            // Setup IReportServerPathValidator mock
+            pathValidatorMock = new Mock<IReportServerPathValidator>();
+
+            MockLogger logger = new MockLogger();
+
+            reader = new ReportServerReader(reportServerRepositoryMock.Object, logger, pathValidatorMock.Object);
         }
 
         [TearDown]
         public void TearDown()
         {
+            reader = null;
         }
 
         #region GetFolder Tests
@@ -156,6 +91,12 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetFolder()
         {
+            reportServerRepositoryMock.Setup(r => r.GetFolder("/SSRSMigrate_AW_Tests/Reports"))
+                .Returns(() => expectedFolderItem);
+
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests/Reports"))
+                .Returns(() => true);
+
             FolderItem actual = reader.GetFolder("/SSRSMigrate_AW_Tests/Reports");
 
             Assert.NotNull(actual);
@@ -166,6 +107,12 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetFolder_PathDoesntExist()
         {
+            reportServerRepositoryMock.Setup(r => r.GetFolder("/SSRSMigrate_AW_Tests/Doesnt Exist"))
+                .Returns(() => null);
+
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests/Doesnt Exist"))
+                .Returns(() => true);
+
             FolderItem actual = reader.GetFolder("/SSRSMigrate_AW_Tests/Doesnt Exist");
 
             Assert.Null(actual);
@@ -200,6 +147,9 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         {
             string invalidPath = "/SSRSMigrate_AW.Tests";
 
+            pathValidatorMock.Setup(r => r.Validate(invalidPath))
+                .Returns(() => false);
+
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
@@ -214,6 +164,12 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetFolders()
         {
+            reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_AW_Tests"))
+                .Returns(() => expectedFolderItems);
+
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests"))
+                .Returns(() => true);
+
             List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_AW_Tests");
 
             Assert.AreEqual(expectedFolderItems.Count(), actual.Count());
@@ -222,6 +178,12 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetFolders_PathDoesntExist()
         {
+            reportServerRepositoryMock.Setup(r => r.GetFolders("/SSRSMigrate_AW_Tests Doesnt Exist"))
+                .Returns(() => new List<FolderItem>());
+
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests Doesnt Exist"))
+                .Returns(() => true);
+
             List<FolderItem> actual = reader.GetFolders("/SSRSMigrate_AW_Tests Doesnt Exist");
 
             Assert.AreEqual(0, actual.Count());
@@ -256,6 +218,9 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         {
             string invalidPath = "/SSRSMigrate_AW.Tests";
 
+            pathValidatorMock.Setup(r => r.Validate(invalidPath))
+                .Returns(() => false);
+
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
                 {
@@ -270,6 +235,12 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetFolders_UsingDelegate()
         {
+            reportServerRepositoryMock.Setup(r => r.GetFolderList("/SSRSMigrate_AW_Tests"))
+                .Returns(() => expectedFolderItems);
+
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests"))
+                .Returns(() => true);
+
             reader.GetFolders("/SSRSMigrate_AW_Tests", GetFolders_Reporter);
 
             Assert.AreEqual(expectedFolderItems.Count(), actualFolderItems.Count());
@@ -278,6 +249,12 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         [Test]
         public void GetFolders_UsingDelegate_PathDoesntExist()
         {
+            reportServerRepositoryMock.Setup(r => r.GetFolder("/SSRSMigrate_AW_Tests/Doesnt Exist"))
+                .Returns(() => null);
+
+            pathValidatorMock.Setup(r => r.Validate("/SSRSMigrate_AW_Tests Doesnt Exist"))
+                .Returns(() => true);
+
             reader.GetFolders("/SSRSMigrate_AW_Tests Doesnt Exist", GetFolders_Reporter);
 
             Assert.AreEqual(0, actualFolderItems.Count());
@@ -323,6 +300,9 @@ namespace SSRSMigrate.Tests.SSRS.Reader
         public void GetFolders_UsingDelegate_InvalidPath()
         {
             string invalidPath = "/SSRSMigrate_AW.Tests";
+
+            pathValidatorMock.Setup(r => r.Validate(invalidPath))
+                .Returns(() => false);
 
             InvalidPathException ex = Assert.Throws<InvalidPathException>(
                 delegate
