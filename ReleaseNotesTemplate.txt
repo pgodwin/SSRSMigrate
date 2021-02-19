@@ -1,6 +1,5 @@
 {{#each releaseInfos}}
 {{#if @first}}
-# {{FriendlyName}} ({{formatDate When "dd MMMM yyyy"}})
 {{#each issueInfos}}
 - [#{{Number}}]({{IssueUrl}}) - {{Title}}{{#if Labels}} [{{join Labels ", "}}]{{/if}}{{#if IsPulRequest}} contributed by [{{User}}]({{UserUrl}}){{/if}}
 {{/each}}
