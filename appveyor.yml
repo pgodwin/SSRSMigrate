@@ -15,6 +15,7 @@
       - '**/*.md'
       - '**/.rdl'
       - '*/*Template.txt'
+      - '*/.svg'
 
   version: 1.2.{build}
 
@@ -123,6 +124,7 @@
       - '**/*.md'
       - '**/.rdl'
       - '*/*Template.txt'
+      - '*/.svg'
 
   version: 1.2.{build}
 
