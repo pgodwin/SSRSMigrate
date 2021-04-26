@@ -5,7 +5,7 @@ SSRSMigrate ![](https://img.shields.io/github/license/jpann/SSRSMigrate.svg) [![
 |----------|:-------------:|
 | [![Build status](https://ci.appveyor.com/api/projects/status/bvj8gbpf8400t689/branch/master?svg=true)](https://ci.appveyor.com/project/jpann/ssrsmigrate/branch/master) |  [![Build status](https://ci.appveyor.com/api/projects/status/bvj8gbpf8400t689/branch/develop?svg=true)](https://ci.appveyor.com/project/jpann/ssrsmigrate/branch/develop)|
 | ![](https://img.shields.io/appveyor/tests/jpann/SSRSMigrate/master.svg?style=flat) |    ![](https://img.shields.io/appveyor/tests/jpann/SSRSMigrate/develop.svg?style=flat)   |
-| ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/jpann/SSRSMigrate?sort=semver) | ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/jpann/SSRSMigrate?include_prereleases&sort=semver) |
+| ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/jpann/SSRSMigrate?sort=semver) | ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/jpann/SSRSMigrate?include_prereleases) |
 
 
 
