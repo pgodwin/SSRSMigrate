@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.IO.Abstractions;
+using System.Net;
 using System.Windows.Forms;
 using log4net.Config;
 using Ninject;
@@ -205,6 +206,26 @@ namespace SSRSMigrate.Forms
 
             // Start with Server-to-Server migration checked
             this.rdoMethodDirect.Checked = true;
+
+            // #54 Added App.Settings to control enabling Tls11 and Tls12.
+            // Not sure if this will fix the TLS errors or not, but giving it a try since I don't yet have an
+            // environment available to reproduce the issue.
+            if (Properties.Settings.Default.EnableTls11 && Properties.Settings.Default.EnableTls12)
+            {
+                // This will enable Tls 1.2 and Tls 1.1 without disabling the other protocols.
+                System.Net.ServicePointManager.SecurityProtocol |= 
+                    SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            }
+            else if (Properties.Settings.Default.EnableTls11)
+            {
+                // This will enable Tls 1.1 without disabling the other protocols.
+                System.Net.ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11;
+            }
+            else if (Properties.Settings.Default.EnableTls12)
+            {
+                // This will enable Tls 1.2 without disabling the other protocols.
+                System.Net.ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+            }
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
