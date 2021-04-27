@@ -1,5 +1,5 @@
 # configuration for 'master' branch only.
-# Build in Release node and deploy to GitHub
+# Build in Release mode and deploy to GitHub
 - 
   branches:
     only:
@@ -16,6 +16,8 @@
       - '**/.rdl'
       - '*/*Template.txt'
       - '*/.svg'
+      - '**/*.yml'
+      - 'misc/*'
 
   version: 1.2.{build}
 
@@ -108,7 +110,7 @@
         - master # release from master branch only
 
 # configuration for 'develop' branch only.
-# Build in Release node and deploy to GitHub
+# Build in Release mode and deploy to GitHub
 - 
   branches:
     only:
@@ -125,6 +127,8 @@
       - '**/.rdl'
       - '*/*Template.txt'
       - '*/.svg'
+      - '**/*.yml'
+      - 'misc/*'
 
   version: 1.2.{build}
 
@@ -194,7 +198,7 @@
   
   deploy:
     release: SSRSMigrate-v$(developVersion)
-    description: SSRSMigrate development release v$(developVersion)\n$(release_description)
+    description: SSRSMigrate development release v$(developVersion)
     provider: GitHub
     auth_token:
       secure: EXRr3SxM7c0kVhOc5HAyMr4gUaCJA11QE/RbTNrqYil9WXKDqoQoigCfdD6ZjhDX # encrypted token from GitHub
