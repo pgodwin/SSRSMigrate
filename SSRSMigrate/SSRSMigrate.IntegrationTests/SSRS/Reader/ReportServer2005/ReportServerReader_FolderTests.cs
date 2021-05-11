@@ -250,6 +250,17 @@ namespace SSRSMigrate.IntegrationTests.SSRS.Reader.ReportServer2005
             Assert.That(ex.Message, Is.EqualTo(string.Format("Invalid path '{0}'.", invalidPath)));
         }
 
+        [Test]
+        public void GetFolders_UsingDelegate_EmptyFolder()
+        {
+            string invalidPath = "/SSRSMigrate_AW_Tests/Reports/Sub Folder";
+
+            Assert.DoesNotThrow(() =>
+            {
+                reader.GetFolders(invalidPath, GetFolders_Reporter);
+            }, "Value cannot be null.\r\nParameter name: source");
+        }
+
         private void GetFolders_Reporter(FolderItem folderItem)
         {
             actualFolderItems.Add(folderItem);

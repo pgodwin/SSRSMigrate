@@ -153,7 +153,7 @@ namespace SSRSMigrate.SSRS.Repository
                 return this.mDataMapper.GetFolder(folder);
             });
 
-            if (items.Any())
+            if (items != null && items.Any())
                 foreach (FolderItem item in items)
                     yield return item;
         }
@@ -712,7 +712,7 @@ namespace SSRSMigrate.SSRS.Repository
 
             CatalogItem[] items = this.mReportingService.ListChildren(path, true);
 
-            if (items.Any())
+            if (items != null && items.Any())
             {
                 int found = items.Where(item => item.Type == itemType).Select(item => item).Count();
                 this.mLogger.Debug("GetItemsList - Items found = {0}", found);
@@ -738,7 +738,7 @@ namespace SSRSMigrate.SSRS.Repository
 
             CatalogItem[] items = this.mReportingService.ListChildren(path, true);
 
-            if (items.Any())
+            if (items != null && items.Any())
             {
                 int found = items.Where(item => item.Type == itemType).Select(item => item).Count();
                 this.mLogger.Debug("GetItemsList2 - Items found = {0}", found);
