@@ -17,6 +17,10 @@ using SSRSMigrate.Extensions;
 
 namespace SSRSMigrate.SSRS.Repository
 {
+    /// <summary>
+    /// Implements methods for communciating with the ReportingService2010 interface
+    /// </summary>
+    /// <see cref="https://docs.microsoft.com/en-us/dotnet/api/reportservice2010.reportingservice2010?view=sqlserver-2016"/>
     [DefaultEndpointAttribute("reportservice2010.asmx")]
     public class ReportServer2010Repository : IReportServerRepository
     {
@@ -24,6 +28,15 @@ namespace SSRSMigrate.SSRS.Repository
         private readonly ReportingService2010DataMapper mDataMapper;
         private ILogger mLogger = null;
         private string mRootPath = null;
+
+        /// <summary>
+        /// List of properties which can migrate between servers
+        /// </summary>
+        private readonly string[] PropertiesToMigrate = new string[]
+        {
+            "Description", "Hidden"
+        };
+
 
 
         // Used to help with generic creation
@@ -134,7 +147,9 @@ namespace SSRSMigrate.SSRS.Repository
             {
                 this.mLogger.Debug("GetFolder - Found item = {0}", item.Path);
 
-                return this.mDataMapper.GetFolder(item);
+                var folder = this.mDataMapper.GetFolder(item);
+                folder.Properties = this.GetItemProperties(item.Path);
+                return folder;
             }
 
             this.mLogger.Debug("GetFolder - No item found.");
@@ -283,9 +298,7 @@ namespace SSRSMigrate.SSRS.Repository
             {
                 this.mLogger.Debug("GetReport - Found item = {0}", item.Path);
 
-                byte[] def = this.GetReportDefinition(item.Path);
-                var reportItem = this.mDataMapper.GetReport(item);
-                reportItem.Definition = def;
+                ReportItem reportItem = PopulateReportItem(item);
 
                 return reportItem;
             }
@@ -293,6 +306,25 @@ namespace SSRSMigrate.SSRS.Repository
             this.mLogger.Debug("GetReport - No item found.");
 
             return null;
+        }
+
+        private ReportItem PopulateReportItem(CatalogItem item)
+        {
+            var reportPath = item.Path;
+            byte[] def = this.GetReportDefinition(item.Path);
+            var reportItem = this.mDataMapper.GetReport(item);
+            reportItem.Definition = def;
+
+            reportItem.Properties = this.GetItemProperties(reportPath);
+            reportItem.DependsOn = this.GetReportDependencies(reportPath);
+            reportItem.DataSets = this.GetReportDatasets(reportPath);
+            reportItem.Policies = this.GetItemPolicies(reportPath);
+            reportItem.SnapshotOptions = this.GetReportHistoryOptions(reportPath);
+            reportItem.Subscriptions = this.GetSubscriptions(reportPath);
+            reportItem.SubReports = this.GetSubReports(SSRSUtil.ByteArrayToString(def));
+            reportItem.DataSources = this.GetReportDataSources(reportPath);
+
+            return reportItem;
         }
 
         public List<ReportItem> GetReports(string path)
@@ -413,7 +445,9 @@ namespace SSRSMigrate.SSRS.Repository
                     }
                 }
             }
-
+            // Set the Properties for each Sub-Report
+            foreach (var report in subReports)
+                this.SetReportServerItemProperties(report);
             return subReports;
         }
 
@@ -479,7 +513,9 @@ namespace SSRSMigrate.SSRS.Repository
                 this.mLogger.Debug("GetDataSource - Found item = {0}", item.Path);
 
                 DataSourceDefinition def = this.mReportingService.GetDataSourceContents(item.Path);
-                return this.mDataMapper.GetDataSource(item, def);
+                var mappedDataSource = this.mDataMapper.GetDataSource(item, def);
+                this.SetReportServerItemProperties(mappedDataSource);
+                return mappedDataSource;
             }
 
             this.mLogger.Debug("GetDataSource - No item found.");
@@ -504,7 +540,11 @@ namespace SSRSMigrate.SSRS.Repository
                     this.mLogger.Debug("GetDataSources - Found item = {0}", item.Path);
 
                     DataSourceDefinition def = this.mReportingService.GetDataSourceContents(item.Path);
-                    dataSourceItems.Add(this.mDataMapper.GetDataSource(item, def));
+                    //dataSourceItems.Add(this.mDataMapper.GetDataSource(item, def));
+                    var dataSource = this.mDataMapper.GetDataSource(item, def);
+                    dataSource.Properties = this.GetItemProperties(item.Path);
+                    dataSource.Policies = this.GetItemPolicies(item.Path);
+                    dataSourceItems.Add(dataSource);
                 }
 
                 return dataSourceItems;
@@ -527,7 +567,11 @@ namespace SSRSMigrate.SSRS.Repository
                     this.mLogger.Debug("GetDataSourcesList - Found item = {0}", ds.Path);
 
                     DataSourceDefinition def = this.mReportingService.GetDataSourceContents(ds.Path);
-                    return this.mDataMapper.GetDataSource(ds, def);
+                    var dataSource = this.mDataMapper.GetDataSource(ds, def);
+                    dataSource.Properties = this.GetItemProperties(ds.Path);
+                    dataSource.Policies = this.GetItemPolicies(ds.Path);
+                    
+                    return dataSource;
                 });
 
             if (items != null)
@@ -719,7 +763,6 @@ namespace SSRSMigrate.SSRS.Repository
             if (items.Any())
             {
                 this.mLogger.Debug("GetItems - Items found = {0}", items.Count());
-
                 return items.Select(item => item).ToList<CatalogItem>();
             }
             else
@@ -818,7 +861,14 @@ namespace SSRSMigrate.SSRS.Repository
                 try
                 {
                     var references = this.mReportingService.GetItemReferences(reportPath, itemType);
-                    items.AddRange(references.Select(r => this.mDataMapper.GetItemReferenceData(r)));
+                    var mappedReferences = references.Select(r => this.mDataMapper.GetItemReferenceData(r)).ToList();
+                    foreach (var reference in mappedReferences)
+                    {
+                        // TODO: Do we need to check types, Can you have a report, dataset and data source all named "ABC?"
+                        if (!items.Any(r => r.Reference == reference.Reference 
+                                        && r.ReferenceType == reference.ReferenceType))
+                            items.Add(reference);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -826,8 +876,7 @@ namespace SSRSMigrate.SSRS.Repository
                 }
             }
 
-            return items;
-
+            return items.ToList();
         }
 
         public ReportServerItem GetItem(string itemPath)
@@ -841,7 +890,11 @@ namespace SSRSMigrate.SSRS.Repository
 
             var item = items.FirstOrDefault(i => i.Path == itemPath);
             if (item != null)
-                return this.mDataMapper.GetReportServerItem(item);
+            {
+                var reportServerItem = this.mDataMapper.GetReportServerItem(item);
+                this.SetReportServerItemProperties(reportServerItem);
+                return reportServerItem;
+            }
 
             throw new Exception($"Item {itemPath} not found.");
 
@@ -873,20 +926,42 @@ namespace SSRSMigrate.SSRS.Repository
             conditions[1] = typeCondition;
 
             var items = this.mReportingService.FindItems("/", BooleanOperatorEnum.And,
-                                new Property[] { new Property { Name = "Recursive", Value = "True" } }, conditions);
+                            new Property[] { new Property { Name = "Recursive", Value = "True" } }, conditions);
 
             var item = items.FirstOrDefault();
 
             if (item != null)
-                return this.mDataMapper.GetReportServerItem(item);
+            {
+                var reportServerItem = this.mDataMapper.GetReportServerItem(item);
+                this.SetReportServerItemProperties(reportServerItem);
+                return reportServerItem;
+            }
 
             throw new Exception($"Item {reference.Reference} not found.");
         }
 
-        public DatasetItem GetDataset(string itemPath)
+        public DatasetItem GetDataset(string itemPath, string itemName)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(itemPath))
+            {
+                throw new ArgumentException($"'{nameof(itemPath)}' cannot be null or empty.", nameof(itemPath));
+            }
+
+            if (string.IsNullOrEmpty(itemName))
+            {
+                throw new ArgumentException($"'{nameof(itemName)}' cannot be null or empty.", nameof(itemName));
+            }
+
+
+            var item = this.GetItemFromReference(new ItemReferenceDefinition { Name = itemName, Reference = itemPath, ReferenceType = "DataSet" })
+                            .ToDatasetItem();
+
             
+            item.Definition = this.mReportingService.GetItemDefinition(item.Path);
+            item.Policies = this.GetItemPolicies(item.Path);
+            item.Properties = this.GetItemProperties(item.Path);
+
+            return item;
         }
 
         public List<DatasetItem> GetReportDatasets(string reportPath)
@@ -895,16 +970,36 @@ namespace SSRSMigrate.SSRS.Repository
                 throw new ArgumentNullException(nameof(reportPath));
 
             var itemsReferences = GetReportDependencies(reportPath).Where(i => i.ReferenceType == "DataSet");
-            var items = itemsReferences.Select(i=>this.GetItemFromReference(i).ToDatasetItem());
+            var items = itemsReferences.Select(i=>this.GetItemFromReference(i).ToDatasetItem()).ToList();
 
             foreach (var item in items)
             {
-                item.Defintion = this.mReportingService.GetItemDefinition(item.Path);
+                item.Definition = this.mReportingService.GetItemDefinition(item.Path);
+                item.Policies = this.GetItemPolicies(item.Path);
+                item.Properties = this.GetItemProperties(item.Path);
             }
 
-            return items.ToList();
 
-            
+            return items;        
+        }
+
+        /// <summary>
+        /// Returns the data sources for the specified report
+        /// </summary>
+        /// <param name="reportPath"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public List<DataSourceItem> GetReportDataSources(string reportPath)
+        {
+            if (string.IsNullOrEmpty(reportPath))
+                throw new ArgumentNullException(nameof(reportPath));
+
+            var itemsReferences = GetReportDependencies(reportPath).Where(i => i.ReferenceType == "DataSource");
+            var items = itemsReferences.Select(i => this.GetDataSource(i.Reference)).ToList();
+
+            return items;
+
+
         }
 
         public List<PolicyDefinition> GetItemPolicies(string itemPath)
@@ -934,10 +1029,151 @@ namespace SSRSMigrate.SSRS.Repository
             return null;
         }
 
-        public ReportSubscriptionDefinition GetSubscriptions(string reportPath)
+        /// <inheritdoc />
+        public List<ReportSubscriptionDefinition> GetSubscriptions(string reportPath)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(reportPath))
+                throw new ArgumentNullException(nameof(reportPath));
+
+            var subscriptionDefinitions = new List<ReportSubscriptionDefinition>();
+            var subscriptions = this.mReportingService.ListSubscriptions(reportPath);
+            
+            foreach (var sub in subscriptions)
+            {
+                var reportSub = new ReportSubscriptionDefinition();
+                reportSub.SourceObject = sub;
+                                
+                ParameterValueOrFieldReference[] fieldReference = null;
+                string description, status, eventType, matchData = null;
+                ParameterValue[] parameterValue = null;
+                ExtensionSettings extensionSettings = null;
+                ActiveState activeState = null;
+                DataRetrievalPlan dataRetrievalPlan = null;
+                
+                
+
+                // If the subscription is data driven send it back
+                if (sub.IsDataDriven)
+                {
+                    this.mReportingService.GetDataDrivenSubscriptionProperties(
+                        sub.SubscriptionID,
+                        out extensionSettings,
+                        out dataRetrievalPlan,
+                        out description,
+                        out activeState,
+                        out status,
+                        out eventType,
+                        out matchData,
+                        out fieldReference
+                        );
+                }
+                else
+                {
+
+                    this.mReportingService.GetSubscriptionProperties(
+                        sub.SubscriptionID,
+                        out extensionSettings,
+                        out description,
+                        out activeState,
+                        out status,
+                        out eventType,
+                        out matchData,
+                        out parameterValue
+                        );
+                }
+
+                subscriptionDefinitions.Add(reportSub);
+
+            }
+
+            return subscriptionDefinitions;
+            
+
         }
+
+        /// <inheritdoc />
+        public string[] WriteDataSet(string path, DatasetItem datasetItem, bool overwrite)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException(nameof(path));
+
+            if (datasetItem == null)
+                throw new ArgumentNullException(nameof(datasetItem));
+
+            if (datasetItem.Definition == null)
+                throw new InvalidDatasetDefinitionException(path);
+
+            this.mLogger.Debug("WriteSharedDataset - path = {0}; overwrite = {1}",
+               path,
+               overwrite);
+
+            Warning[] warnings;
+
+            this.mReportingService.CreateCatalogItem("DataSet",
+                datasetItem.Name,
+                path,
+                overwrite,
+                datasetItem.Definition,
+                null, // any extra properties on a dataset... you know...description, hidden, etc?
+                out warnings);
+            
+            // Might need to make handling this a bit more generic
+            if (warnings != null)
+                if (warnings.Any())
+                {
+                    for (int i = 0; i < warnings.Count(); i++)
+                        this.mLogger.Warn("WriteSharedDataset - Code: {0}; Name: {1}; Type: {2}; Severity: {3}; Msg: {4}",
+                            warnings[i].Code,
+                            warnings[i].ObjectName,
+                            warnings[i].ObjectType,
+                            warnings[i].Severity,
+                            warnings[i].Message);
+
+                    return warnings.Select(s => string.Format("{0}: {1}", s.Code, s.Message)).ToArray<string>();
+                }
+            return null;
+
+        }
+
         #endregion
+        
+        /// <summary>
+        /// Returns the properties for the specified item path
+        /// </summary>
+        /// <param name="itemPath"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public List<ItemProperty> GetItemProperties(string itemPath)
+        {
+            if (string.IsNullOrEmpty(itemPath))
+                throw new ArgumentNullException(nameof(ItemParameter));
+
+            this.mLogger.Debug("GetProperties - itemPath = {0}",
+              itemPath);
+            
+            var properties = this.mReportingService.GetProperties(itemPath, null);
+            return properties.Select(p => new ItemProperty() { Name = p.Name, Value = p.Value }).ToList();
+        }
+
+        private void SetReportServerItemProperties(ReportServerItem sourceItem)
+        {
+            if (sourceItem == null)
+                throw new ArgumentNullException(nameof(sourceItem));
+
+            sourceItem.Properties = this.GetItemProperties(sourceItem.Path);
+        }
+
+        private List<ReportServer2010.Property> GetMigrationProperties(ReportServerItem reportServerItem)
+        {
+            if (reportServerItem == null)
+                throw new ArgumentNullException(nameof(reportServerItem));
+            if (reportServerItem.Properties == null || reportServerItem.Properties.Count == 0)
+                return null;
+
+            return reportServerItem.Properties
+                .Where(p => PropertiesToMigrate.Contains(p.Name))
+                .Select(p => new ReportServer2010.Property() { Name = p.Name, Value = p.Value })
+                .ToList();
+        }
     }
 }

@@ -15,13 +15,12 @@ namespace SSRSMigrate.SSRS.Item
         public List<DatasetField> Fields { get; set; }
 
         public QueryDefinition QueryDefinition { get; set; }
-        public byte[] Defintion { get; internal set; }
+        public byte[] Definition { get; set; }
 
         public DatasetItem()
         {
             Fields = new List<DatasetField>();
         }
-
         
     }
 }

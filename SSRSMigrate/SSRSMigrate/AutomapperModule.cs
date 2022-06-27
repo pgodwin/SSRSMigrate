@@ -13,7 +13,6 @@ namespace SSRSMigrate
 {
     public class AutoMapperModule : NinjectModule
     {
-        public IKernel Kernel { get; set; }
 
         public override void Load()
         {

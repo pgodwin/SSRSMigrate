@@ -56,6 +56,25 @@ namespace SSRSMigrate.SSRS.Errors
         }
     }
 
+    public class InvalidDatasetDefinitionException : Exception
+    { 
+        public InvalidDatasetDefinitionException()
+             : base(nameof(InvalidDatasetDefinitionException))
+        {
+        }
+
+        public InvalidDatasetDefinitionException(string itemPath)
+            : base($"Invalid Dataset Definition for path '{itemPath}'") 
+        { 
+        }
+
+        public InvalidDatasetDefinitionException(string itemPath, Exception inner)
+            : base($"Invalid Dataset Definition for path '{itemPath}'", inner)
+        {
+        }
+    }
+
+
     public class ItemAlreadyExistsException : Exception
     {
         public ItemAlreadyExistsException()

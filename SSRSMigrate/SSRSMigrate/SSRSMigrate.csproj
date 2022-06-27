@@ -306,11 +306,13 @@
     <Compile Include="ScriptEngine\PythonEngine.cs" />
     <Compile Include="SSRS\Attributes\DefaultEndpointAttribute.cs" />
     <Compile Include="SSRS\Errors\Exceptions.cs" />
-    <Compile Include="SSRS\Item\BaseItem.cs" />
+    <Compile Include="SSRS\Item\BaseSSRSItem.cs" />
+    <Compile Include="SSRS\Item\CacheDefinition.cs" />
     <Compile Include="SSRS\Item\DataDrivenSubscriptionDefinition.cs" />
     <Compile Include="SSRS\Item\DatasetField.cs" />
     <Compile Include="SSRS\Item\DatasetItem.cs" />
     <Compile Include="SSRS\Item\HistoryOptionsDefinition.cs" />
+    <Compile Include="SSRS\Item\ItemProperty.cs" />
     <Compile Include="SSRS\Item\ItemReference.cs" />
     <Compile Include="SSRS\Item\PolicyDefinition.cs" />
     <Compile Include="SSRS\Item\Proxy\ReportItemDiskProxy.cs" />
@@ -331,6 +333,7 @@
     <Compile Include="SSRS\Reader\ReportServerReader.cs" />
     <Compile Include="SSRS\Repository\ReportServer2010Repository.cs" />
     <Compile Include="SSRS\Repository\ReportServer2005Repository.cs" />
+    <Compile Include="SSRS\Tree\Root.cs" />
     <Compile Include="SSRS\Validators\IReportServerPathValidator.cs" />
     <Compile Include="SSRS\Validators\ReportServerPathValidator.cs" />
     <Compile Include="SSRS\Writer\IReportServerWriter.cs" />

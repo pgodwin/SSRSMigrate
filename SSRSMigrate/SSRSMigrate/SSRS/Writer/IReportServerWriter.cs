@@ -25,5 +25,8 @@ namespace SSRSMigrate.SSRS.Writer
 
         // Misc
         SqlServerInfo GetSqlServerVersion();
+        string[] WriteDataset(DatasetItem datasetItem);
+
+        bool ItemExists(string itemPath, string itemType);
     }
 }

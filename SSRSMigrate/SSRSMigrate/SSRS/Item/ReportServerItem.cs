@@ -1,22 +1,69 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SSRSMigrate.SSRS.Item
 {
+    /// <summary>
+    /// Essientially a mapping of CatalogItem 
+    /// </summary>
+    [DebuggerDisplay("Type = {ItemType} / Name = {Name} / Path = {Path}")]
     public class ReportServerItem : BaseSSRSItem
     {
+        /// <summary>
+        /// Gets the name of an item.
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Full path name of an item
+        /// </summary>
         public string Path { get; set; }
+        /// <summary>
+        /// Gets/Sets the name of the user who originally added the item to the Report Server.
+        /// </summary>
         public string CreatedBy { get; set; }
+        /// <summary>
+        /// Gets/Sets the date and time that the item was added to the Report Server.
+        /// </summary>
         public DateTime CreationDate { get; set; }
+
+        /// <summary>
+        /// The description of an item.
+        /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// ID of an item.
+        /// </summary>
         public string ID { get; set; }
+        /// <summary>
+        /// Gets the name of the user who last modified the item.
+        /// </summary>
         public string ModifiedBy { get; set; }
-        public DateTime ModifiedDate { get; set; }
-        public int Size { get; set; }
+        /// <summary>
+        /// Gets the date and time the user last modified the item.
+        /// </summary>
+        public DateTime? ModifiedDate { get; set; }
+        /// <summary>
+        /// Gets the size, in bytes, of an item.
+        /// </summary>
+        public int? Size { get; set; }
+        /// <summary>
+        /// Gets the virtual path of the item.
+        /// </summary>
         public string VirtualPath { get; set; }
 
+        /// <summary>
+        /// Gets the type of the item.
+        /// </summary>
         public string ItemType { get; set; }
+
+        /// <summary>
+        /// An array of Property objects that represent the properties of the specified item.
+        /// </summary>
+        public List<ItemProperty> Properties { get; set; }
 
         public string ParentPath
         {
@@ -77,6 +124,11 @@ namespace SSRSMigrate.SSRS.Item
                     return true;
             }
         }
+
+        /// <summary>
+        /// Policies (or permissions/security settings) for the item.
+        /// </summary>
+        public List<PolicyDefinition> Policies { get; set; } = new List<PolicyDefinition>();
 
         public bool ShouldSerializeHasValidProperties()
         {

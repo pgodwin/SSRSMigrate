@@ -36,6 +36,10 @@ namespace SSRSMigrate.SSRS.Reader
         List<PolicyDefinition> GetItemPolicies(string itemPath);
 
         HistoryOptionsDefinition GetReportHistoryOptions(string itemPath);
+        List<ReportSubscriptionDefinition> GetSubscriptions(string reportPath);
 
+        DatasetItem GetDataSet(string itemPath, string itemName);
+
+        string Url { get; }
     }
 }

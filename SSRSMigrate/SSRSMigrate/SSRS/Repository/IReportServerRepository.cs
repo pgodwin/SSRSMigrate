@@ -49,22 +49,79 @@ namespace SSRSMigrate.SSRS.Repository
         bool ItemExists(string itemPath, string itemType);
         void DeleteItem(string itemPath);
 
+        /// <summary>
+        /// Grabs the items related to a report
+        /// </summary>
+        /// <param name="reportPath"></param>
+        /// <returns></returns>
         List<ItemReferenceDefinition> GetReportDependencies(string reportPath);
 
+        /// <summary>
+        /// Returns the base ReportServerItem for a given parth
+        /// </summary>
+        /// <param name="itemPath"></param>
+        /// <returns></returns>
         ReportServerItem GetItem(string itemPath);
 
+        /// <summary>
+        /// Returns the base ReportServerItem for a given item reference
+        /// </summary>
+        /// <param name="reference"></param>
+        /// <returns></returns>
         ReportServerItem GetItemFromReference(ItemReferenceDefinition reference);
 
-        DatasetItem GetDataset(string itemPath);
+        /// <summary>
+        /// Returns a dataset for the given itemPath
+        /// </summary>
+        /// <param name="itemPath">Path to the item.</param>
+        /// <param name="itemName">Name of the item.</param>
+        /// <returns></returns>
+        DatasetItem GetDataset(string itemPath, string itemName);
 
+        /// <summary>
+        /// Returns the datasets used by a report
+        /// </summary>
+        /// <param name="reportPath"></param>
+        /// <returns></returns>
         List<DatasetItem> GetReportDatasets(string reportPath);
 
+        /// <summary>
+        /// Returns the security policies for an item.
+        /// </summary>
+        /// <param name="reportPath"></param>
+        /// <returns></returns>
         List<PolicyDefinition> GetItemPolicies(string reportPath);
 
+        /// <summary>
+        /// Returns the History.
+        /// </summary>
+        /// <param name="reportPath"></param>
+        /// <returns></returns>
         HistoryOptionsDefinition GetReportHistoryOptions(string reportPath);
 
-        ReportSubscriptionDefinition GetSubscriptions(string reportPath);
+        /// <summary>
+        /// Returns the subscriptions used by a report.
+        /// </summary>
+        /// <param name="reportPath"></param>
+        /// <returns></returns>
+        List<ReportSubscriptionDefinition> GetSubscriptions(string reportPath);
 
+        /// <summary>
+        /// Creates/Writes a datasetItem into the specified path
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="datasetItem"></param>
+        /// <param name="overwrite"></param>
+        /// <returns></returns>
+        string[] WriteDataSet(string path, DatasetItem datasetItem, bool overwrite);
         
+        /// <summary>
+        /// Returns the properties for the specified item path
+        /// </summary>
+        /// <param name="itemPath"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        List<ItemProperty> GetItemProperties(string itemPath);
+        List<DataSourceItem> GetReportDataSources(string reportPath);
     }
 }

@@ -792,7 +792,7 @@ namespace SSRSMigrate.SSRS.Repository
             throw new NotImplementedException();
         }
 
-        public DatasetItem GetDataset(string itemPath)
+        public DatasetItem GetDataset(string itemPath, string itemName)
         {
             throw new NotImplementedException();
         }
@@ -813,6 +813,26 @@ namespace SSRSMigrate.SSRS.Repository
         }
 
         public ReportSubscriptionDefinition GetSubscriptions(string reportPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<ReportSubscriptionDefinition> IReportServerRepository.GetSubscriptions(string reportPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string[] WriteDataSet(string path, DatasetItem datasetItem, bool overwrite)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ItemProperty> GetItemProperties(string itemPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<DataSourceItem> GetReportDataSources(string reportPath)
         {
             throw new NotImplementedException();
         }

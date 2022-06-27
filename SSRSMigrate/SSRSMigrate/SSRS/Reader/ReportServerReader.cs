@@ -7,8 +7,6 @@ using SSRSMigrate.SSRS.Errors;
 using Ninject.Extensions.Logging;
 using SSRSMigrate.SSRS.Validators;
 using System.Linq;
-using SSRSMigrate.ReportServer2010;
-using Newtonsoft.Json;
 
 namespace SSRSMigrate.SSRS.Reader
 {
@@ -38,6 +36,7 @@ namespace SSRSMigrate.SSRS.Reader
         }
 
         #region Folder Methods
+        /// <inheritdoc/>
         public FolderItem GetFolder(string path)
         {
             if (string.IsNullOrEmpty(path))
@@ -53,6 +52,7 @@ namespace SSRSMigrate.SSRS.Reader
             return folder;
         }
 
+        /// <inheritdoc/>
         public List<FolderItem> GetFolders(string path)
         {
             if (string.IsNullOrEmpty(path))
@@ -68,6 +68,7 @@ namespace SSRSMigrate.SSRS.Reader
             return folders;
         }
 
+        /// <inheritdoc/>
         public void GetFolders(string path, Action<FolderItem> progressReporter)
         {
             if (string.IsNullOrEmpty(path))
@@ -93,6 +94,7 @@ namespace SSRSMigrate.SSRS.Reader
         #endregion
 
         #region Report Methods
+        /// <inheritdoc/>
         public ReportItem GetReport(string reportPath)
         {
             if (string.IsNullOrEmpty(reportPath))
@@ -113,6 +115,7 @@ namespace SSRSMigrate.SSRS.Reader
             return report;
         }
 
+        /// <inheritdoc/>
         public List<ReportItem> GetReports(string path)
         {
             if (string.IsNullOrEmpty(path))
@@ -126,6 +129,7 @@ namespace SSRSMigrate.SSRS.Reader
             return this.mReportRepository.GetReports(path);
         }
 
+        /// <inheritdoc/>
         public void GetReports(string path, Action<ReportItem> progressReporter)
         {
             if (string.IsNullOrEmpty(path))
@@ -151,6 +155,8 @@ namespace SSRSMigrate.SSRS.Reader
         #endregion
 
         #region Data Source Methods
+        
+        /// <inheritdoc/>
         public DataSourceItem GetDataSource(string dataSourcePath)
         {
             if (string.IsNullOrEmpty(dataSourcePath))
@@ -167,6 +173,7 @@ namespace SSRSMigrate.SSRS.Reader
             return dataSource;
         }
 
+        /// <inheritdoc/>
         public List<DataSourceItem> GetDataSources(string path)
         {
             if (string.IsNullOrEmpty(path))
@@ -180,6 +187,7 @@ namespace SSRSMigrate.SSRS.Reader
             return this.mReportRepository.GetDataSources(path);
         }
 
+        /// <inheritdoc/>
         public void GetDataSources(string path, Action<DataSourceItem> progressReporter)
         {
             if (string.IsNullOrEmpty(path))
@@ -205,14 +213,21 @@ namespace SSRSMigrate.SSRS.Reader
         #endregion
 
         #region Misc
+
+        /// <inheritdoc/>
         public SqlServerInfo GetSqlServerVersion()
         {
             return this.mReportRepository.GetSqlServerVersion();
         }
+
+        /// <inheritdoc/>
+        public string Url => this.mReportRepository.ServerAddress;
+
         #endregion
 
 
         #region extensions
+        /// <inheritdoc/>
         public List<ItemReferenceDefinition> GetDependencies(string reportPath)
         {
             var items = this.mReportRepository.GetReportDependencies(reportPath);
@@ -221,29 +236,45 @@ namespace SSRSMigrate.SSRS.Reader
 
         }
 
+        /// <inheritdoc/>
         public ReportServerItem GetItemFromReference(ItemReferenceDefinition reference)
         {
             return this.mReportRepository.GetItemFromReference(reference);
         }
 
+        /// <inheritdoc/>
         public ReportServerItem GetItemFromPath(string path)
         {
             return this.mReportRepository.GetItem(path);
         }
 
+        /// <inheritdoc/>
         public List<DatasetItem> GetReportDatasets(string reportPath)
         {
             return this.mReportRepository.GetReportDatasets(reportPath);
         }
 
+        /// <inheritdoc/>
         public List<PolicyDefinition> GetItemPolicies(string itemPath)
         {
             return this.mReportRepository.GetItemPolicies(itemPath);
         }
 
+        /// <inheritdoc/>
         public HistoryOptionsDefinition GetReportHistoryOptions(string itemPath)
         {
             return this.mReportRepository.GetReportHistoryOptions(itemPath);
+        }
+
+        /// <inheritdoc/>
+        public List<ReportSubscriptionDefinition> GetSubscriptions(string reportPath)
+        {
+            return this.mReportRepository.GetSubscriptions(reportPath); 
+        }
+
+        public DatasetItem GetDataSet(string itemPath, string itemName)
+        {
+            return this.mReportRepository.GetDataset(itemPath, itemName);
         }
 
 

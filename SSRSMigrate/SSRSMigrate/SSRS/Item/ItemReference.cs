@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace SSRSMigrate.SSRS.Item
     /// <summary>
     /// Represents a reference to another item on the report server
     /// </summary>
+    [DebuggerDisplay("Name = {Name} / Reference = {Reference}")]
     public class ItemReferenceDefinition : BaseSSRSItem
     {
         /// <summary>

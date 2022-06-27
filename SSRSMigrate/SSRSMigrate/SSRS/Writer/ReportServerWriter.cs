@@ -236,10 +236,37 @@ namespace SSRSMigrate.SSRS.Writer
         }
         #endregion
 
+        #region Dataset Methods
+        public string[] WriteDataset(DatasetItem datasetItem)
+        {
+            if (datasetItem == null)
+                throw new ArgumentNullException(nameof(datasetItem));
+            if (!this.mPathValidator.Validate(datasetItem.Path))
+                throw new InvalidPathException(datasetItem.Path);
+
+            string name = datasetItem.Name;
+            //string parentPath = SSRSUtil.GetParentPath(dataSourceItem);
+            string parentPath = datasetItem.ParentPath;
+
+            if (!this.mOverwrite)
+                if (this.mReportRepository.ItemExists(datasetItem.Path, "DataSet"))
+                    throw new ItemAlreadyExistsException(datasetItem.Path);
+
+            return this.mReportRepository.WriteDataSet(parentPath, datasetItem, this.mOverwrite);
+
+        }
+
+        #endregion
+
         #region Misc
         public SqlServerInfo GetSqlServerVersion()
         {
             return this.mReportRepository.GetSqlServerVersion();
+        }
+
+        public bool ItemExists(string itemPath, string itemType)
+        {
+            return this.mReportRepository.ItemExists(itemPath, itemType);
         }
         #endregion
     }
