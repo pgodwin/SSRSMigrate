@@ -65,6 +65,16 @@ namespace SSRSMigrate.Utility
                 for (int i = 0; i < reportServerUrlNodes.Count; i++)
                     reportServerUrlNodes[i].InnerText = destinationReportServerUrl;
 
+            // Update Shared Daaset References
+            XmlNodeList sharedDataSetNodes = doc.GetElementsByTagName("SharedDataSetReference", "*");
+            for (int i = 0; i < sharedDataSetNodes.Count; i++)
+            {
+                sharedDataSetNodes[i].InnerXml = GetFullDestinationPathForItem(
+                    sourcePath,
+                    destinationPath,
+                    sharedDataSetNodes[i].InnerText);
+            }
+
             // Update SubReports to new path
             XmlNodeList subReportsNode = doc.GetElementsByTagName("Subreport");
 
