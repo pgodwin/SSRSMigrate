@@ -756,7 +756,7 @@ namespace SSRSMigrate.Forms
                     status.ToPath);
 
                 // Update the ReportItem.Definition to point to the new server
-                reportItem.Item.Definition = SSRSUtil.UpdateReportDefinition(
+                reportItem.Item.Definition = SSRSUtil.UpdateDefinitionPaths(
                     this.mDestinationServerUrl,
                     sourceRootPath,
                     this.mDestinationRootPath,

@@ -203,6 +203,25 @@ namespace SSRSMigrate.SSRS.Repository
                     yield return item;
         }
 
+        public string CreateFolder(FolderItem folder)
+        {
+            this.mLogger.Debug("CreateFolder - name = {0}; parentPath = {1}", folder.Name, folder.ParentPath);
+
+            try
+            {
+                var catalogItem = this.mReportingService.CreateFolder(folder.Name, folder.ParentPath, GetMigrationProperties(folder));
+                SetPermissions(catalogItem.Path, folder);
+            }
+            catch (SoapException er)
+            {
+                this.mLogger.Error(er, "CreateFolder - Error creating folder '{0}' in '{1}'", folder.Name, folder.ParentPath);
+
+                return er.Message;
+            }
+
+            return null;
+        }
+
         public string CreateFolder(string name, string parentPath)
         {
             if (string.IsNullOrEmpty(name))
@@ -453,6 +472,8 @@ namespace SSRSMigrate.SSRS.Repository
 
         public string[] WriteReport(string reportPath, ReportItem reportItem, bool overwrite)
         {
+            var stringWarnings = new List<string>();
+
             if (string.IsNullOrEmpty(reportPath))
                 throw new ArgumentException("reportPath");
 
@@ -468,13 +489,15 @@ namespace SSRSMigrate.SSRS.Repository
 
             Warning[] warnings;
 
-            this.mReportingService.CreateCatalogItem("Report",
+            var item = this.mReportingService.CreateCatalogItem("Report",
                 reportItem.Name,
                 reportPath,
                 overwrite,
                 reportItem.Definition,
-                null,
+                GetMigrationProperties(reportItem),
                 out warnings);
+
+
 
             if (warnings != null)
                 if (warnings.Any())
@@ -487,10 +510,16 @@ namespace SSRSMigrate.SSRS.Repository
                             warnings[i].Severity,
                             warnings[i].Message);
 
-                    return warnings.Select(s => string.Format("{0}: {1}", s.Code, s.Message)).ToArray<string>();
+                    stringWarnings.AddRange(warnings.Select(s => string.Format("{0}: {1}", s.Code, s.Message)).ToArray<string>());
                 }
 
+            SetPermissions(item.Path, reportItem);
+
+            if (stringWarnings.Count > 0)
+                return stringWarnings.ToArray();
+
             return null;
+
         }
         #endregion
 
@@ -629,11 +658,13 @@ namespace SSRSMigrate.SSRS.Repository
 
             try
             {
-                this.mReportingService.CreateDataSource(dataSource.Name,
+                var item = this.mReportingService.CreateDataSource(dataSource.Name,
                     dataSourcePath,
                     overwrite,
                     def,
-                    null);
+                    GetMigrationProperties(dataSource));
+
+                SetPermissions(item.Path, dataSource);
             }
             catch (SoapException er)
             {
@@ -1108,15 +1139,16 @@ namespace SSRSMigrate.SSRS.Repository
                overwrite);
 
             Warning[] warnings;
-
-            this.mReportingService.CreateCatalogItem("DataSet",
+            var item = this.mReportingService.CreateCatalogItem("DataSet",
                 datasetItem.Name,
                 path,
                 overwrite,
                 datasetItem.Definition,
-                null, // any extra properties on a dataset... you know...description, hidden, etc?
+                GetMigrationProperties(datasetItem), // any extra properties on a dataset... you know...description, hidden, etc?
                 out warnings);
-            
+
+            SetPermissions(item.Path, datasetItem);
+
             // Might need to make handling this a bit more generic
             if (warnings != null)
                 if (warnings.Any())
@@ -1161,9 +1193,10 @@ namespace SSRSMigrate.SSRS.Repository
                 throw new ArgumentNullException(nameof(sourceItem));
 
             sourceItem.Properties = this.GetItemProperties(sourceItem.Path);
+            sourceItem.Policies = this.GetItemPolicies(sourceItem.Path);
         }
 
-        private List<ReportServer2010.Property> GetMigrationProperties(ReportServerItem reportServerItem)
+        private ReportServer2010.Property[] GetMigrationProperties(ReportServerItem reportServerItem)
         {
             if (reportServerItem == null)
                 throw new ArgumentNullException(nameof(reportServerItem));
@@ -1173,7 +1206,23 @@ namespace SSRSMigrate.SSRS.Repository
             return reportServerItem.Properties
                 .Where(p => PropertiesToMigrate.Contains(p.Name))
                 .Select(p => new ReportServer2010.Property() { Name = p.Name, Value = p.Value })
-                .ToList();
+                .ToArray();
         }
+
+        private void SetPermissions(string itemPath, ReportServerItem item)
+        {
+            var policies = item.Policies
+                       .Where(p => p.InheritFromParent == false)
+                       .Select(p => new Policy
+                       {
+                           GroupUserName = p.GroupUserName,
+                           Roles = p.Roles.Select(r => new Role { Name = r.Name, Description = r.Description }).ToArray()
+                       })
+                       .ToArray();
+            if (policies.Length > 0)
+            this.mReportingService.SetPolicies(itemPath, policies);
+        }
+
+        
     }
 }

@@ -836,6 +836,11 @@ namespace SSRSMigrate.SSRS.Repository
         {
             throw new NotImplementedException();
         }
+
+        public string CreateFolder(FolderItem folder)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

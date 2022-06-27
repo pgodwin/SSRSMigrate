@@ -27,7 +27,7 @@ namespace SSRSMigrate.Utility
         /// destinationPath
         /// </exception>
         /// <exception cref="System.ArgumentNullException">reportDefinition</exception>
-        public static byte[] UpdateReportDefinition(string destinationReportServerUrl, string sourcePath, string destinationPath, byte[] reportDefinition)
+        public static byte[] UpdateDefinitionPaths(string destinationReportServerUrl, string sourcePath, string destinationPath, byte[] reportDefinition)
         {
             if (string.IsNullOrEmpty(destinationReportServerUrl))
                 throw new ArgumentException("destinationReportServerUrl");
@@ -84,6 +84,9 @@ namespace SSRSMigrate.Utility
 
             return Encoding.UTF8.GetBytes(doc.OuterXml);
         }
+
+        
+
 
         /// <summary>
         /// Gets the full destination path for an item by taking the path to the item on the source server and

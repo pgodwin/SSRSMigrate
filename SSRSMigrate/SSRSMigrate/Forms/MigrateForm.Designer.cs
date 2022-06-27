@@ -63,26 +63,28 @@
             // 
             // statusStrip
             // 
+            this.statusStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus,
             this.progressBar});
-            this.statusStrip.Location = new System.Drawing.Point(0, 515);
+            this.statusStrip.Location = new System.Drawing.Point(0, 796);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(937, 22);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
+            this.statusStrip.Size = new System.Drawing.Size(1406, 30);
             this.statusStrip.TabIndex = 0;
             this.statusStrip.Text = "statusStrip1";
             // 
             // lblStatus
             // 
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(820, 17);
+            this.lblStatus.Size = new System.Drawing.Size(1183, 23);
             this.lblStatus.Spring = true;
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // progressBar
             // 
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(100, 16);
+            this.progressBar.Size = new System.Drawing.Size(150, 22);
             // 
             // grpSource
             // 
@@ -92,9 +94,11 @@
             this.grpSource.Controls.Add(this.btnDebug);
             this.grpSource.Controls.Add(this.btnSrcRefreshReports);
             this.grpSource.Controls.Add(this.lstSrcReports);
-            this.grpSource.Location = new System.Drawing.Point(12, 9);
+            this.grpSource.Location = new System.Drawing.Point(18, 14);
+            this.grpSource.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpSource.Name = "grpSource";
-            this.grpSource.Size = new System.Drawing.Size(462, 503);
+            this.grpSource.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpSource.Size = new System.Drawing.Size(693, 774);
             this.grpSource.TabIndex = 1;
             this.grpSource.TabStop = false;
             this.grpSource.Text = "Source Server";
@@ -103,9 +107,10 @@
             // 
             this.btnDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnDebug.Image = global::SSRSMigrate.Properties.Resources.bug_go;
-            this.btnDebug.Location = new System.Drawing.Point(21, 468);
+            this.btnDebug.Location = new System.Drawing.Point(32, 720);
+            this.btnDebug.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnDebug.Name = "btnDebug";
-            this.btnDebug.Size = new System.Drawing.Size(32, 23);
+            this.btnDebug.Size = new System.Drawing.Size(48, 35);
             this.btnDebug.TabIndex = 17;
             this.btnDebug.UseVisualStyleBackColor = true;
             this.btnDebug.Click += new System.EventHandler(this.btnDebug_Click);
@@ -113,9 +118,10 @@
             // btnSrcRefreshReports
             // 
             this.btnSrcRefreshReports.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSrcRefreshReports.Location = new System.Drawing.Point(305, 468);
+            this.btnSrcRefreshReports.Location = new System.Drawing.Point(458, 720);
+            this.btnSrcRefreshReports.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSrcRefreshReports.Name = "btnSrcRefreshReports";
-            this.btnSrcRefreshReports.Size = new System.Drawing.Size(138, 23);
+            this.btnSrcRefreshReports.Size = new System.Drawing.Size(207, 35);
             this.btnSrcRefreshReports.TabIndex = 15;
             this.btnSrcRefreshReports.Text = "Refresh Reports List";
             this.btnSrcRefreshReports.UseVisualStyleBackColor = true;
@@ -143,10 +149,12 @@
             listViewGroup1,
             listViewGroup2,
             listViewGroup3});
-            this.lstSrcReports.Location = new System.Drawing.Point(21, 19);
+            this.lstSrcReports.HideSelection = false;
+            this.lstSrcReports.Location = new System.Drawing.Point(32, 29);
+            this.lstSrcReports.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lstSrcReports.MultiSelect = false;
             this.lstSrcReports.Name = "lstSrcReports";
-            this.lstSrcReports.Size = new System.Drawing.Size(422, 443);
+            this.lstSrcReports.Size = new System.Drawing.Size(631, 679);
             this.lstSrcReports.TabIndex = 14;
             this.lstSrcReports.UseCompatibleStateImageBehavior = false;
             this.lstSrcReports.View = System.Windows.Forms.View.Details;
@@ -163,38 +171,39 @@
             // 
             // mnuSourceItems
             // 
+            this.mnuSourceItems.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.mnuSourceItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.editDataSourceToolStripMenuItem,
             this.toolStripSeparator1,
             this.checkAllToolStripMenuItem,
             this.uncheckAllToolStripMenuItem});
             this.mnuSourceItems.Name = "mnuSourceItems";
-            this.mnuSourceItems.Size = new System.Drawing.Size(170, 76);
+            this.mnuSourceItems.Size = new System.Drawing.Size(228, 106);
             this.mnuSourceItems.Opening += new System.ComponentModel.CancelEventHandler(this.mnuSourceItems_Opening);
             // 
             // editDataSourceToolStripMenuItem
             // 
             this.editDataSourceToolStripMenuItem.Name = "editDataSourceToolStripMenuItem";
-            this.editDataSourceToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.editDataSourceToolStripMenuItem.Size = new System.Drawing.Size(227, 32);
             this.editDataSourceToolStripMenuItem.Text = "Edit Data Source...";
             this.editDataSourceToolStripMenuItem.Click += new System.EventHandler(this.editDataSourceToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(224, 6);
             // 
             // checkAllToolStripMenuItem
             // 
             this.checkAllToolStripMenuItem.Name = "checkAllToolStripMenuItem";
-            this.checkAllToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.checkAllToolStripMenuItem.Size = new System.Drawing.Size(227, 32);
             this.checkAllToolStripMenuItem.Text = "Check All";
             this.checkAllToolStripMenuItem.Click += new System.EventHandler(this.checkAllToolStripMenuItem_Click);
             // 
             // uncheckAllToolStripMenuItem
             // 
             this.uncheckAllToolStripMenuItem.Name = "uncheckAllToolStripMenuItem";
-            this.uncheckAllToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.uncheckAllToolStripMenuItem.Size = new System.Drawing.Size(227, 32);
             this.uncheckAllToolStripMenuItem.Text = "Uncheck All";
             this.uncheckAllToolStripMenuItem.Click += new System.EventHandler(this.uncheckAllToolStripMenuItem_Click);
             // 
@@ -204,9 +213,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.btnPerformMigration);
             this.groupBox1.Controls.Add(this.lstDestReports);
-            this.groupBox1.Location = new System.Drawing.Point(480, 12);
+            this.groupBox1.Location = new System.Drawing.Point(720, 18);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(443, 500);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox1.Size = new System.Drawing.Size(664, 769);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Destination Server";
@@ -215,9 +226,10 @@
             // 
             this.btnPerformMigration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnPerformMigration.Enabled = false;
-            this.btnPerformMigration.Location = new System.Drawing.Point(18, 465);
+            this.btnPerformMigration.Location = new System.Drawing.Point(27, 715);
+            this.btnPerformMigration.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnPerformMigration.Name = "btnPerformMigration";
-            this.btnPerformMigration.Size = new System.Drawing.Size(138, 23);
+            this.btnPerformMigration.Size = new System.Drawing.Size(207, 35);
             this.btnPerformMigration.TabIndex = 16;
             this.btnPerformMigration.Text = "Perform Migration";
             this.btnPerformMigration.UseVisualStyleBackColor = true;
@@ -244,11 +256,13 @@
             listViewGroup4,
             listViewGroup5,
             listViewGroup6});
-            this.lstDestReports.Location = new System.Drawing.Point(18, 19);
+            this.lstDestReports.HideSelection = false;
+            this.lstDestReports.Location = new System.Drawing.Point(27, 29);
+            this.lstDestReports.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lstDestReports.MultiSelect = false;
             this.lstDestReports.Name = "lstDestReports";
             this.lstDestReports.ShowItemToolTips = true;
-            this.lstDestReports.Size = new System.Drawing.Size(403, 440);
+            this.lstDestReports.Size = new System.Drawing.Size(602, 675);
             this.lstDestReports.TabIndex = 15;
             this.lstDestReports.UseCompatibleStateImageBehavior = false;
             this.lstDestReports.View = System.Windows.Forms.View.Details;
@@ -270,13 +284,14 @@
             // 
             // MigrateForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(937, 537);
+            this.ClientSize = new System.Drawing.Size(1406, 826);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grpSource);
             this.Controls.Add(this.statusStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MigrateForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

@@ -747,7 +747,7 @@ namespace SSRSMigrate.Forms
 
                         this.mLogger.Debug("MigrationWorker - ReportItem.FromPath = {0}; ToPath = {1}", status.FromPath, status.ToPath);
 
-                        reportItem.Definition = SSRSUtil.UpdateReportDefinition(
+                        reportItem.Definition = SSRSUtil.UpdateDefinitionPaths(
                             this.mDestinationServerUrl,
                             this.mSourceRootPath,
                             this.mDestinationRootPath,

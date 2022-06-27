@@ -26,6 +26,13 @@ namespace SSRSMigrate.SSRS.Repository
         FolderItem GetFolder(string path);
         List<FolderItem> GetFolders(string path);
         IEnumerable<FolderItem> GetFolderList(string path);
+        
+        /// <summary>
+        /// Creates the specified folder, and any other folders within the path
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="parentPath"></param>
+        /// <returns>Any errors</returns>
         string CreateFolder(string name, string parentPath);
 
         // Reports
@@ -123,5 +130,12 @@ namespace SSRSMigrate.SSRS.Repository
         /// <exception cref="ArgumentNullException"></exception>
         List<ItemProperty> GetItemProperties(string itemPath);
         List<DataSourceItem> GetReportDataSources(string reportPath);
+        
+        /// <summary>
+        /// Creates a folder including properties.
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <returns></returns>
+        string CreateFolder(FolderItem folder);
     }
 }

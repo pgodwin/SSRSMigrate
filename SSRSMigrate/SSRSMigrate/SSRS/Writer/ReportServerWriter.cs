@@ -69,7 +69,8 @@ namespace SSRSMigrate.SSRS.Writer
                     this.mReportRepository.DeleteItem(folderItem.Path);
                 }
 
-            return this.mReportRepository.CreateFolder(name, parentPath);
+            //return this.mReportRepository.CreateFolder(name, parentPath);
+            return this.mReportRepository.CreateFolder(folderItem);
         }
 
         public string[] WriteFolders(FolderItem[] folderItems)
