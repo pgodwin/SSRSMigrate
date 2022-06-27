@@ -25,5 +25,17 @@ namespace SSRSMigrate.SSRS.Reader
         // Misc
         SqlServerInfo GetSqlServerVersion();
 
+        List<ItemReferenceDefinition> GetDependencies(string itemPath);
+
+        ReportServerItem GetItemFromReference(ItemReferenceDefinition reference);
+
+        ReportServerItem GetItemFromPath(string path);
+
+        List<DatasetItem> GetReportDatasets(string reportPath);
+
+        List<PolicyDefinition> GetItemPolicies(string itemPath);
+
+        HistoryOptionsDefinition GetReportHistoryOptions(string itemPath);
+
     }
 }

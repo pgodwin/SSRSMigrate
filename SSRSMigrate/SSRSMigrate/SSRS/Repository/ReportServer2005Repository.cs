@@ -12,15 +12,31 @@ using System.Web.Services.Protocols;
 using SSRSMigrate.SSRS.Errors;
 using Ninject;
 using SSRSMigrate.SSRS.Item.Proxy;
+using SSRSMigrate.SSRS.Attributes;
 
 namespace SSRSMigrate.SSRS.Repository
 {
-    public class ReportServer2005Repository : IReportServerRepository
+    [DefaultEndpointAttribute("reportservice2005.asmx")]
+    public class ReportServer2005Repository : IReportServerRepository    
     {
         private readonly ReportingService2005 mReportingService;
         private readonly ReportingService2005DataMapper mDataMapper;
         private ILogger mLogger = null;
         private string mRootPath = null;
+
+        public ReportServer2005Repository()
+           : this("/", new ReportingService2005(), new ReportingService2005DataMapper())
+        {
+
+        }
+
+        public ReportServer2005Repository(string rootPath,
+            ReportingService2005 reportingService) 
+            : this(rootPath, reportingService, new ReportingService2005DataMapper())
+        {
+
+        }
+
 
         public ReportServer2005Repository(string rootPath,
             ReportingService2005 reportingService,
@@ -78,7 +94,15 @@ namespace SSRSMigrate.SSRS.Repository
         public string RootPath
         {
             get { return this.mRootPath; }
+            set { this.mRootPath = value; }
+
         }
+
+        public SoapHttpClientProtocol SoapClient
+        {
+            get => this.mReportingService;
+        }
+
         #endregion
 
         #region Folder Methods
@@ -256,7 +280,7 @@ namespace SSRSMigrate.SSRS.Repository
                 byte[] def = this.GetReportDefinition(item.Path);
                 var reportItem = this.mDataMapper.GetReport(item);
                 reportItem.Definition = def;
-
+                
                 return reportItem;
             }
 
@@ -751,6 +775,46 @@ namespace SSRSMigrate.SSRS.Repository
 
                 return null;
             }
+        }
+
+        public List<ItemReferenceDefinition> GetReportDependencies(string reportPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ReportServerItem GetItem(string itemPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ReportServerItem GetItemFromReference(ItemReferenceDefinition reference)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DatasetItem GetDataset(string itemPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<DatasetItem> GetReportDatasets(string reportPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<PolicyDefinition> GetItemPolicies(string reportPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public HistoryOptionsDefinition GetReportHistoryOptions(string reportPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ReportSubscriptionDefinition GetSubscriptions(string reportPath)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

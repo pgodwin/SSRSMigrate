@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace SSRSMigrate.SSRS.Item
 {
-    public class ReportServerItem
+    public class ReportServerItem : BaseSSRSItem
     {
         public string Name { get; set; }
         public string Path { get; set; }
@@ -14,6 +15,8 @@ namespace SSRSMigrate.SSRS.Item
         public DateTime ModifiedDate { get; set; }
         public int Size { get; set; }
         public string VirtualPath { get; set; }
+
+        public string ItemType { get; set; }
 
         public string ParentPath
         {
@@ -86,5 +89,7 @@ namespace SSRSMigrate.SSRS.Item
             // Prevent ParentPath from being serialized
             return false;
         }
+
+
     }
 }

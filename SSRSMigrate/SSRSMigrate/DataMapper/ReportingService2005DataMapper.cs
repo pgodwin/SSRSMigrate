@@ -1,11 +1,27 @@
 ﻿using System;
+using System.Linq;
 using SSRSMigrate.ReportServer2005;
 using SSRSMigrate.SSRS.Item;
 
 namespace SSRSMigrate.DataMapper
 {
-    public class ReportingService2005DataMapper : IDataMapper<CatalogItem, DataSourceDefinition>
+    public class ReportingService2005DataMapper : IDataMapper
+        <ReportServer2005.CatalogItem,
+        ReportServer2005.DataSourceDefinition,
+        //ReportServer2005.DataSetDefinition,
+        ReportServer2005.CatalogItem,
+        ItemReferenceDefinition, // ItemReference doesn't exist in 2005 - so we'll cheat and reuse the in-built one
+        ItemReferenceDefinition, // ItemReferenceData doesn't exist in 20015
+        ReportServer2005.QueryDefinition,
+        ReportServer2005.Role,
+        ReportServer2005.Policy,
+        ReportServer2005.ScheduleDefinitionOrReference,
+        ReportServer2005.Subscription
+        >
     {
+        public ReportingService2005DataMapper()
+        {
+        }
 
         public DataSourceItem GetDataSource(CatalogItem item, DataSourceDefinition definition)
         {
@@ -27,6 +43,7 @@ namespace SSRSMigrate.DataMapper
             ds.ModifiedDate = item.ModifiedDate;
             ds.Size = item.Size;
             ds.VirtualPath = item.VirtualPath;
+            ds.ItemType = item.Type.ToString();
 
             ds.ConnectString = definition.ConnectString;
 
@@ -54,6 +71,8 @@ namespace SSRSMigrate.DataMapper
             ds.UserName = definition.UserName;
             ds.WindowsCredentials = definition.WindowsCredentials;
 
+            ds.SourceObject = item;
+
             return ds;
         }
 
@@ -74,6 +93,8 @@ namespace SSRSMigrate.DataMapper
             report.ModifiedDate = item.ModifiedDate;
             report.Size = item.Size;
             report.VirtualPath = item.VirtualPath;
+            report.ItemType = item.Type.ToString();
+            report.SourceObject = item;
 
             return report;
         }
@@ -95,8 +116,147 @@ namespace SSRSMigrate.DataMapper
             folder.Path = item.Path;
             folder.Size = item.Size;
             folder.VirtualPath = item.VirtualPath;
+            folder.ItemType = item.Type.ToString();
+            folder.SourceObject = item;
 
             return folder;
+        }
+
+        public DatasetItem GetDataSet(CatalogItem item)
+        {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+
+            //if (item.Type != ItemTypeEnum.)
+            //    throw new ArgumentException("Item.Type is not a dataset");
+            var datasetItem = new DatasetItem();
+            datasetItem.Name = item.Name;
+            datasetItem.Path = item.Path;
+            datasetItem.CreatedBy = item.CreatedBy;
+            datasetItem.CreationDate = item.CreationDate;
+            datasetItem.Description = item.Description;
+            datasetItem.ID = item.ID;
+            datasetItem.ModifiedBy = item.ModifiedBy;
+            datasetItem.ModifiedDate = item.ModifiedDate;
+            datasetItem.Size = item.Size;
+            datasetItem.VirtualPath = item.VirtualPath;
+            datasetItem.ItemType = item.Type.ToString();
+
+            // TODO - handle properties?
+            datasetItem.SourceObject = item;
+
+            return datasetItem;
+
+        }
+
+        /// <summary>
+        /// There's no such thing as ItemReference in 2005 so just map between the two objects
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public ItemReferenceDefinition GetItemReference(ItemReferenceDefinition item)
+        {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+
+            var itemReference = new ItemReferenceDefinition()
+            { 
+                Name = item.Name,
+                Reference = item.Reference,
+                ReferenceType = item.ReferenceType,
+                SourceObject = item.SourceObject
+            };
+
+            return itemReference;
+        }
+
+        public ItemReferenceDefinition GetItemReferenceData(ItemReferenceDefinition item)
+        {
+            return GetItemReference(item);
+        }
+
+        public SSRS.Item.QueryDefinition GetQueryDefinition(ReportServer2005.QueryDefinition item)
+        {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+
+            var queryDefinition = new SSRS.Item.QueryDefinition()
+            { 
+                SourceObject = item,
+                CommandText = item.CommandText,
+                CommandType = item.CommandType,
+            };
+            if (item.TimeoutSpecified)
+                queryDefinition.Timeout = item.Timeout;
+            else
+                queryDefinition.Timeout = null;
+
+            return queryDefinition;
+        }
+
+        public PolicyDefinition GetPolicy(Policy item, bool inherit)
+        {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+
+            var policyDefinition = new PolicyDefinition()
+            { 
+                GroupUserName = item.GroupUserName,
+                Roles = item.Roles.Select(GetRole).ToList(),
+                SourceObject = item,
+                InheritFromParent = inherit
+            };
+
+            return policyDefinition;
+        }
+
+        public RoleDefinition GetRole(Role item)
+        {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+
+            var roleDefinition = new RoleDefinition()
+            { 
+                SourceObject = item,
+                Description = item.Description,
+                Name = item.Name
+            };
+
+            return roleDefinition;
+        }
+
+        public ReportServerItem GetReportServerItem(CatalogItem item)
+        {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+
+            var serverItem = new ReportServerItem();
+            serverItem.Name = item.Name;
+            serverItem.Path = item.Path;
+            serverItem.CreatedBy = item.CreatedBy;
+            serverItem.CreationDate = item.CreationDate;
+            serverItem.Description = item.Description;
+            serverItem.ID = item.ID;
+            serverItem.ModifiedBy = item.ModifiedBy;
+            serverItem.ModifiedDate = item.ModifiedDate;
+            serverItem.Size = item.Size;
+            serverItem.VirtualPath = item.VirtualPath;
+            serverItem.SourceObject = item;
+            serverItem.ItemType = item.Type.ToString();
+
+            return serverItem;
+
+        }
+
+        public ReportSubscriptionDefinition GetSubscription(Subscription item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public HistoryOptionsDefinition GetHistoryOptionsDefinition(ScheduleDefinitionOrReference item, bool keepSnapshots)
+        {
+            throw new NotImplementedException();
         }
     }
 }

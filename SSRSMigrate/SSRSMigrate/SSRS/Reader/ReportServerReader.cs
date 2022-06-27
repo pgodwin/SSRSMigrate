@@ -6,6 +6,9 @@ using SSRSMigrate.SSRS.Repository;
 using SSRSMigrate.SSRS.Errors;
 using Ninject.Extensions.Logging;
 using SSRSMigrate.SSRS.Validators;
+using System.Linq;
+using SSRSMigrate.ReportServer2010;
+using Newtonsoft.Json;
 
 namespace SSRSMigrate.SSRS.Reader
 {
@@ -207,5 +210,44 @@ namespace SSRSMigrate.SSRS.Reader
             return this.mReportRepository.GetSqlServerVersion();
         }
         #endregion
+
+
+        #region extensions
+        public List<ItemReferenceDefinition> GetDependencies(string reportPath)
+        {
+            var items = this.mReportRepository.GetReportDependencies(reportPath);
+
+            return items;
+
+        }
+
+        public ReportServerItem GetItemFromReference(ItemReferenceDefinition reference)
+        {
+            return this.mReportRepository.GetItemFromReference(reference);
+        }
+
+        public ReportServerItem GetItemFromPath(string path)
+        {
+            return this.mReportRepository.GetItem(path);
+        }
+
+        public List<DatasetItem> GetReportDatasets(string reportPath)
+        {
+            return this.mReportRepository.GetReportDatasets(reportPath);
+        }
+
+        public List<PolicyDefinition> GetItemPolicies(string itemPath)
+        {
+            return this.mReportRepository.GetItemPolicies(itemPath);
+        }
+
+        public HistoryOptionsDefinition GetReportHistoryOptions(string itemPath)
+        {
+            return this.mReportRepository.GetReportHistoryOptions(itemPath);
+        }
+
+
+        #endregion
+
     }
 }

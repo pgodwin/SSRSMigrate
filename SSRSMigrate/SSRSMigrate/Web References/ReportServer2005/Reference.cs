@@ -14,16 +14,16 @@
 #pragma warning disable 1591
 
 namespace SSRSMigrate.ReportServer2005 {
-    using System;
-    using System.Web.Services;
     using System.Diagnostics;
-    using System.Web.Services.Protocols;
+    using System;
     using System.Xml.Serialization;
     using System.ComponentModel;
+    using System.Web.Services.Protocols;
+    using System.Web.Services;
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="ReportingService2005Soap", Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
@@ -679,8 +679,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Can" +
             "celBatch", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void CancelBatch() {
@@ -708,8 +708,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Exe" +
             "cuteBatch", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void ExecuteBatch() {
@@ -799,8 +799,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Del" +
             "eteItem", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void DeleteItem(string Item) {
@@ -830,8 +830,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Mov" +
             "eItem", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void MoveItem(string Item, string Target) {
@@ -929,8 +929,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("ItemNamespaceHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Get" +
             "Properties", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("Values")]
@@ -964,8 +964,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "Properties", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetProperties(string Item, Property[] Properties) {
@@ -1029,8 +1029,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Cre" +
             "ateFolder", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void CreateFolder(string Folder, string Parent, Property[] Properties) {
@@ -1064,8 +1064,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Cre" +
             "ateReport", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("Warnings")]
@@ -1137,8 +1137,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "ReportDefinition", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("Warnings")]
@@ -1172,8 +1172,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Cre" +
             "ateResource", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void CreateResource(string Resource, string Parent, bool Overwrite, [System.Xml.Serialization.XmlElementAttribute(DataType="base64Binary")] byte[] Contents, string MimeType, Property[] Properties) {
@@ -1213,8 +1213,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "ResourceContents", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetResourceContents(string Resource, [System.Xml.Serialization.XmlElementAttribute(DataType="base64Binary")] byte[] Contents, string MimeType) {
@@ -1321,8 +1321,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "ReportParameters", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetReportParameters(string Report, ReportParameter[] Parameters) {
@@ -1354,8 +1354,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Cre" +
             "ateLinkedReport", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void CreateLinkedReport(string Report, string Parent, string Link, Property[] Properties) {
@@ -1423,8 +1423,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "ReportLink", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetReportLink(string Report, string Link) {
@@ -1491,8 +1491,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "ExecutionOptions", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetExecutionOptions(string Report, ExecutionSettingEnum ExecutionSetting, [System.Xml.Serialization.XmlElementAttribute("NoSchedule", typeof(NoSchedule))] [System.Xml.Serialization.XmlElementAttribute("ScheduleDefinition", typeof(ScheduleDefinition))] [System.Xml.Serialization.XmlElementAttribute("ScheduleReference", typeof(ScheduleReference))] ScheduleDefinitionOrReference Item) {
@@ -1559,8 +1559,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "CacheOptions", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetCacheOptions(string Report, bool CacheReport, [System.Xml.Serialization.XmlElementAttribute("ScheduleExpiration", typeof(ScheduleExpiration))] [System.Xml.Serialization.XmlElementAttribute("TimeExpiration", typeof(TimeExpiration))] ExpirationDefinition Item) {
@@ -1627,8 +1627,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Upd" +
             "ateReportExecutionSnapshot", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void UpdateReportExecutionSnapshot(string Report) {
@@ -1658,8 +1658,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Flu" +
             "shCache", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void FlushCache(string Report) {
@@ -1750,8 +1750,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Cre" +
             "ateDataSource", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void CreateDataSource(string DataSource, string Parent, bool Overwrite, DataSourceDefinition Definition, Property[] Properties) {
@@ -1821,8 +1821,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "DataSourceContents", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetDataSourceContents(string DataSource, DataSourceDefinition Definition) {
@@ -1854,8 +1854,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Ena" +
             "bleDataSource", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void EnableDataSource(string DataSource) {
@@ -1885,8 +1885,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Dis" +
             "ableDataSource", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void DisableDataSource(string DataSource) {
@@ -1916,8 +1916,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "ItemDataSources", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetItemDataSources(string Item, DataSource[] DataSources) {
@@ -2013,8 +2013,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Cre" +
             "ateReportHistorySnapshot", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("HistoryID")]
@@ -2047,8 +2047,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "ReportHistoryOptions", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetReportHistoryOptions(string Report, bool EnableManualSnapshotCreation, bool KeepExecutionSnapshots, [System.Xml.Serialization.XmlElementAttribute("NoSchedule", typeof(NoSchedule))] [System.Xml.Serialization.XmlElementAttribute("ScheduleDefinition", typeof(ScheduleDefinition))] [System.Xml.Serialization.XmlElementAttribute("ScheduleReference", typeof(ScheduleReference))] ScheduleDefinitionOrReference Item) {
@@ -2118,8 +2118,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "ReportHistoryLimit", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetReportHistoryLimit(string Report, bool UseSystem, int HistoryLimit) {
@@ -2219,8 +2219,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Del" +
             "eteReportHistorySnapshot", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void DeleteReportHistorySnapshot(string Report, string HistoryID) {
@@ -2288,8 +2288,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Cre" +
             "ateSchedule", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("ScheduleID")]
@@ -2323,8 +2323,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Del" +
             "eteSchedule", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void DeleteSchedule(string ScheduleID) {
@@ -2354,8 +2354,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "ScheduleProperties", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetScheduleProperties(string Name, string ScheduleID, ScheduleDefinition ScheduleDefinition) {
@@ -2483,8 +2483,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Pau" +
             "seSchedule", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void PauseSchedule(string ScheduleID) {
@@ -2514,8 +2514,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Res" +
             "umeSchedule", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void ResumeSchedule(string ScheduleID) {
@@ -2545,8 +2545,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Cre" +
             "ateSubscription", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("SubscriptionID")]
@@ -2588,8 +2588,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Cre" +
             "ateDataDrivenSubscription", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("SubscriptionID")]
@@ -2633,8 +2633,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "SubscriptionProperties", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetSubscriptionProperties(string SubscriptionID, ExtensionSettings ExtensionSettings, string Description, string EventType, string MatchData, ParameterValue[] Parameters) {
@@ -2674,8 +2674,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "DataDrivenSubscriptionProperties", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetDataDrivenSubscriptionProperties(string DataDrivenSubscriptionID, ExtensionSettings ExtensionSettings, DataRetrievalPlan DataRetrievalPlan, string Description, string EventType, string MatchData, ParameterValueOrFieldReference[] Parameters) {
@@ -2796,8 +2796,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Del" +
             "eteSubscription", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void DeleteSubscription(string SubscriptionID) {
@@ -2827,8 +2827,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Pre" +
             "pareQuery", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("DataSettings")]
@@ -3058,8 +3058,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Fir" +
             "eEvent", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void FireEvent(string EventType, string EventData) {
@@ -3155,8 +3155,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Cre" +
             "ateRole", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void CreateRole(string Name, string Description, Task[] Tasks) {
@@ -3190,8 +3190,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Del" +
             "eteRole", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void DeleteRole(string Name) {
@@ -3254,8 +3254,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "RoleProperties", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetRoleProperties(string Name, string Description, Task[] Tasks) {
@@ -3319,8 +3319,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "SystemPolicies", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetSystemPolicies(Policy[] Policies) {
@@ -3383,8 +3383,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "Policies", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetPolicies(string Item, Policy[] Policies) {
@@ -3416,8 +3416,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Inh" +
             "eritParentSecurity", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void InheritParentSecurity(string Item) {
@@ -3573,8 +3573,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Cre" +
             "ateModel", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("Warnings")]
@@ -3644,8 +3644,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "ModelDefinition", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("Warnings")]
@@ -3850,8 +3850,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "ModelItemPolicies", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetModelItemPolicies(string Model, string ModelItemID, Policy[] Policies) {
@@ -3885,8 +3885,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Inh" +
             "eritModelItemParentSecurity", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void InheritModelItemParentSecurity(string Model, string ModelItemID) {
@@ -3918,8 +3918,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Rem" +
             "oveAllModelItemPolicies", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void RemoveAllModelItemPolicies(string Model) {
@@ -3949,8 +3949,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Set" +
             "ModelDrillthroughReports", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void SetModelDrillthroughReports(string Model, string ModelItemID, ModelDrillthroughReport[] Reports) {
@@ -4018,8 +4018,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Gen" +
             "erateModel", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("Warnings")]
@@ -4057,8 +4057,8 @@ namespace SSRSMigrate.ReportServer2005 {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapHeaderAttribute("BatchHeaderValue")]
+        [System.Web.Services.Protocols.SoapHeaderAttribute("ServerInfoHeaderValue", Direction=System.Web.Services.Protocols.SoapHeaderDirection.Out)]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices/Reg" +
             "enerateModel", RequestNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", ResponseNamespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("Warnings")]
@@ -4109,25 +4109,61 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", IsNullable=false)]
-    public partial class BatchHeader : System.Web.Services.Protocols.SoapHeader {
+    public partial class ServerInfoHeader : System.Web.Services.Protocols.SoapHeader {
         
-        private string batchIDField;
+        private string reportServerVersionNumberField;
+        
+        private string reportServerEditionField;
+        
+        private string reportServerVersionField;
+        
+        private string reportServerDateTimeField;
         
         private System.Xml.XmlAttribute[] anyAttrField;
         
         /// <remarks/>
-        public string BatchID {
+        public string ReportServerVersionNumber {
             get {
-                return this.batchIDField;
+                return this.reportServerVersionNumberField;
             }
             set {
-                this.batchIDField = value;
+                this.reportServerVersionNumberField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string ReportServerEdition {
+            get {
+                return this.reportServerEditionField;
+            }
+            set {
+                this.reportServerEditionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string ReportServerVersion {
+            get {
+                return this.reportServerVersionField;
+            }
+            set {
+                this.reportServerVersionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string ReportServerDateTime {
+            get {
+                return this.reportServerDateTimeField;
+            }
+            set {
+                this.reportServerDateTimeField = value;
             }
         }
         
@@ -4144,7 +4180,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4177,7 +4213,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum DrillthroughType {
@@ -4190,7 +4226,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4259,7 +4295,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum ModelItemTypeEnum {
@@ -4284,7 +4320,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4329,7 +4365,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4374,7 +4410,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4407,7 +4443,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4440,7 +4476,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4485,7 +4521,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4506,7 +4542,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4575,7 +4611,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum ExtensionTypeEnum {
@@ -4594,7 +4630,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4784,7 +4820,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4819,7 +4855,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4854,7 +4890,7 @@ namespace SSRSMigrate.ReportServer2005 {
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ParameterFieldReference))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ParameterValue))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4863,7 +4899,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4908,7 +4944,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5042,7 +5078,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5173,7 +5209,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5206,7 +5242,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5264,7 +5300,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5297,7 +5333,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5454,7 +5490,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum SensitivityEnum {
@@ -5470,7 +5506,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5506,7 +5542,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5673,7 +5709,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum CredentialRetrievalEnum {
@@ -5695,7 +5731,7 @@ namespace SSRSMigrate.ReportServer2005 {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(DataSourceReference))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(InvalidDataSourceReference))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(DataSourceDefinition))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5704,7 +5740,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5725,7 +5761,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5734,7 +5770,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5877,7 +5913,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5940,7 +5976,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5966,7 +6002,7 @@ namespace SSRSMigrate.ReportServer2005 {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(WeeklyRecurrence))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MonthlyDOWRecurrence))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MonthlyRecurrence))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5975,7 +6011,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5996,7 +6032,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6042,7 +6078,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6135,7 +6171,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6193,7 +6229,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum WeekNumberEnum {
@@ -6215,7 +6251,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6368,7 +6404,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6404,7 +6440,7 @@ namespace SSRSMigrate.ReportServer2005 {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(NoSchedule))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ScheduleDefinition))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ScheduleReference))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6413,7 +6449,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6422,7 +6458,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6455,7 +6491,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum ScheduleStateEnum {
@@ -6477,7 +6513,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6522,7 +6558,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6567,7 +6603,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6603,7 +6639,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6732,7 +6768,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum JobActionEnum {
@@ -6751,7 +6787,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum JobTypeEnum {
@@ -6764,7 +6800,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum JobStatusEnum {
@@ -6782,7 +6818,7 @@ namespace SSRSMigrate.ReportServer2005 {
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ScheduleExpiration))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TimeExpiration))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6791,7 +6827,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6814,7 +6850,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6835,7 +6871,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7143,7 +7179,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum ParameterTypeEnum {
@@ -7165,7 +7201,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum ParameterStateEnum {
@@ -7184,7 +7220,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7229,7 +7265,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7298,7 +7334,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7540,7 +7576,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum ItemTypeEnum {
@@ -7569,7 +7605,7 @@ namespace SSRSMigrate.ReportServer2005 {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(SearchCondition))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7602,7 +7638,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7636,7 +7672,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum ConditionEnum {
@@ -7649,61 +7685,25 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices", IsNullable=false)]
-    public partial class ServerInfoHeader : System.Web.Services.Protocols.SoapHeader {
+    public partial class BatchHeader : System.Web.Services.Protocols.SoapHeader {
         
-        private string reportServerVersionNumberField;
-        
-        private string reportServerEditionField;
-        
-        private string reportServerVersionField;
-        
-        private string reportServerDateTimeField;
+        private string batchIDField;
         
         private System.Xml.XmlAttribute[] anyAttrField;
         
         /// <remarks/>
-        public string ReportServerVersionNumber {
+        public string BatchID {
             get {
-                return this.reportServerVersionNumberField;
+                return this.batchIDField;
             }
             set {
-                this.reportServerVersionNumberField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string ReportServerEdition {
-            get {
-                return this.reportServerEditionField;
-            }
-            set {
-                this.reportServerEditionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string ReportServerVersion {
-            get {
-                return this.reportServerVersionField;
-            }
-            set {
-                this.reportServerVersionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string ReportServerDateTime {
-            get {
-                return this.reportServerDateTimeField;
-            }
-            set {
-                this.reportServerDateTimeField = value;
+                this.batchIDField = value;
             }
         }
         
@@ -7720,7 +7720,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7755,7 +7755,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum ItemNamespaceEnum {
@@ -7768,7 +7768,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum ExecutionSettingEnum {
@@ -7781,7 +7781,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum BooleanOperatorEnum {
@@ -7794,7 +7794,7 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4161.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.microsoft.com/sqlserver/2005/06/30/reporting/reportingservices")]
     public enum SecurityScopeEnum {
@@ -7813,11 +7813,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListSecureMethodsCompletedEventHandler(object sender, ListSecureMethodsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListSecureMethodsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -7839,11 +7839,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void CreateBatchCompletedEventHandler(object sender, CreateBatchCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class CreateBatchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -7865,19 +7865,19 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void CancelBatchCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ExecuteBatchCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetSystemPropertiesCompletedEventHandler(object sender, GetSystemPropertiesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetSystemPropertiesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -7899,23 +7899,23 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetSystemPropertiesCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void DeleteItemCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void MoveItemCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListChildrenCompletedEventHandler(object sender, ListChildrenCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListChildrenCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -7937,11 +7937,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListDependentItemsCompletedEventHandler(object sender, ListDependentItemsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListDependentItemsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -7963,11 +7963,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetPropertiesCompletedEventHandler(object sender, GetPropertiesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetPropertiesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -7989,15 +7989,15 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetPropertiesCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetItemTypeCompletedEventHandler(object sender, GetItemTypeCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetItemTypeCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8019,15 +8019,15 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void CreateFolderCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void CreateReportCompletedEventHandler(object sender, CreateReportCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class CreateReportCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8049,11 +8049,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetReportDefinitionCompletedEventHandler(object sender, GetReportDefinitionCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetReportDefinitionCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8075,11 +8075,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetReportDefinitionCompletedEventHandler(object sender, SetReportDefinitionCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class SetReportDefinitionCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8101,19 +8101,19 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void CreateResourceCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetResourceContentsCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetResourceContentsCompletedEventHandler(object sender, GetResourceContentsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetResourceContentsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8143,11 +8143,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetReportParametersCompletedEventHandler(object sender, GetReportParametersCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetReportParametersCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8169,19 +8169,19 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetReportParametersCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void CreateLinkedReportCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetReportLinkCompletedEventHandler(object sender, GetReportLinkCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetReportLinkCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8203,15 +8203,15 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetReportLinkCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetRenderResourceCompletedEventHandler(object sender, GetRenderResourceCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetRenderResourceCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8241,15 +8241,15 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetExecutionOptionsCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetExecutionOptionsCompletedEventHandler(object sender, GetExecutionOptionsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetExecutionOptionsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8279,15 +8279,15 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetCacheOptionsCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetCacheOptionsCompletedEventHandler(object sender, GetCacheOptionsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetCacheOptionsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8317,19 +8317,19 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void UpdateReportExecutionSnapshotCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void FlushCacheCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListJobsCompletedEventHandler(object sender, ListJobsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListJobsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8351,11 +8351,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void CancelJobCompletedEventHandler(object sender, CancelJobCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class CancelJobCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8377,15 +8377,15 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void CreateDataSourceCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetDataSourceContentsCompletedEventHandler(object sender, GetDataSourceContentsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetDataSourceContentsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8407,27 +8407,27 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetDataSourceContentsCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void EnableDataSourceCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void DisableDataSourceCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetItemDataSourcesCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetItemDataSourcesCompletedEventHandler(object sender, GetItemDataSourcesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetItemDataSourcesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8449,11 +8449,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetItemDataSourcePromptsCompletedEventHandler(object sender, GetItemDataSourcePromptsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetItemDataSourcePromptsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8475,11 +8475,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void CreateReportHistorySnapshotCompletedEventHandler(object sender, CreateReportHistorySnapshotCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class CreateReportHistorySnapshotCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8509,15 +8509,15 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetReportHistoryOptionsCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetReportHistoryOptionsCompletedEventHandler(object sender, GetReportHistoryOptionsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetReportHistoryOptionsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8555,15 +8555,15 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetReportHistoryLimitCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetReportHistoryLimitCompletedEventHandler(object sender, GetReportHistoryLimitCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetReportHistoryLimitCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8601,11 +8601,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListReportHistoryCompletedEventHandler(object sender, ListReportHistoryCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListReportHistoryCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8627,15 +8627,15 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void DeleteReportHistorySnapshotCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void FindItemsCompletedEventHandler(object sender, FindItemsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class FindItemsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8657,11 +8657,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void CreateScheduleCompletedEventHandler(object sender, CreateScheduleCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class CreateScheduleCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8683,19 +8683,19 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void DeleteScheduleCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetSchedulePropertiesCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetSchedulePropertiesCompletedEventHandler(object sender, GetSchedulePropertiesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetSchedulePropertiesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8717,11 +8717,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListScheduledReportsCompletedEventHandler(object sender, ListScheduledReportsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListScheduledReportsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8743,11 +8743,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListSchedulesCompletedEventHandler(object sender, ListSchedulesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListSchedulesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8769,19 +8769,19 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void PauseScheduleCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ResumeScheduleCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void CreateSubscriptionCompletedEventHandler(object sender, CreateSubscriptionCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class CreateSubscriptionCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8803,11 +8803,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void CreateDataDrivenSubscriptionCompletedEventHandler(object sender, CreateDataDrivenSubscriptionCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class CreateDataDrivenSubscriptionCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8829,19 +8829,19 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetSubscriptionPropertiesCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetDataDrivenSubscriptionPropertiesCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetSubscriptionPropertiesCompletedEventHandler(object sender, GetSubscriptionPropertiesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetSubscriptionPropertiesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8919,11 +8919,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetDataDrivenSubscriptionPropertiesCompletedEventHandler(object sender, GetDataDrivenSubscriptionPropertiesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetDataDrivenSubscriptionPropertiesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9009,15 +9009,15 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void DeleteSubscriptionCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void PrepareQueryCompletedEventHandler(object sender, PrepareQueryCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class PrepareQueryCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9055,11 +9055,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetExtensionSettingsCompletedEventHandler(object sender, GetExtensionSettingsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetExtensionSettingsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9081,11 +9081,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ValidateExtensionSettingsCompletedEventHandler(object sender, ValidateExtensionSettingsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ValidateExtensionSettingsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9107,11 +9107,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListSubscriptionsCompletedEventHandler(object sender, ListSubscriptionsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListSubscriptionsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9133,11 +9133,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListSubscriptionsUsingDataSourceCompletedEventHandler(object sender, ListSubscriptionsUsingDataSourceCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListSubscriptionsUsingDataSourceCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9159,11 +9159,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListExtensionsCompletedEventHandler(object sender, ListExtensionsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListExtensionsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9185,11 +9185,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListEventsCompletedEventHandler(object sender, ListEventsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListEventsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9211,15 +9211,15 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void FireEventCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListTasksCompletedEventHandler(object sender, ListTasksCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListTasksCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9241,11 +9241,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListRolesCompletedEventHandler(object sender, ListRolesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListRolesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9267,19 +9267,19 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void CreateRoleCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void DeleteRoleCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetRolePropertiesCompletedEventHandler(object sender, GetRolePropertiesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetRolePropertiesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9309,15 +9309,15 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetRolePropertiesCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetSystemPoliciesCompletedEventHandler(object sender, GetSystemPoliciesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetSystemPoliciesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9339,15 +9339,15 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetSystemPoliciesCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetPoliciesCompletedEventHandler(object sender, GetPoliciesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetPoliciesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9377,19 +9377,19 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetPoliciesCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void InheritParentSecurityCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetSystemPermissionsCompletedEventHandler(object sender, GetSystemPermissionsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetSystemPermissionsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9411,11 +9411,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetPermissionsCompletedEventHandler(object sender, GetPermissionsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetPermissionsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9437,19 +9437,19 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void LogonUserCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void LogoffCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void CreateModelCompletedEventHandler(object sender, CreateModelCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class CreateModelCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9471,11 +9471,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetModelDefinitionCompletedEventHandler(object sender, GetModelDefinitionCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetModelDefinitionCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9497,11 +9497,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetModelDefinitionCompletedEventHandler(object sender, SetModelDefinitionCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class SetModelDefinitionCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9523,11 +9523,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListModelPerspectivesCompletedEventHandler(object sender, ListModelPerspectivesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListModelPerspectivesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9549,11 +9549,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetUserModelCompletedEventHandler(object sender, GetUserModelCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetUserModelCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9575,11 +9575,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListModelItemChildrenCompletedEventHandler(object sender, ListModelItemChildrenCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListModelItemChildrenCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9601,11 +9601,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetModelItemPermissionsCompletedEventHandler(object sender, GetModelItemPermissionsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetModelItemPermissionsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9627,11 +9627,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GetModelItemPoliciesCompletedEventHandler(object sender, GetModelItemPoliciesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetModelItemPoliciesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9661,27 +9661,27 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetModelItemPoliciesCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void InheritModelItemParentSecurityCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void RemoveAllModelItemPoliciesCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void SetModelDrillthroughReportsCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void ListModelDrillthroughReportsCompletedEventHandler(object sender, ListModelDrillthroughReportsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListModelDrillthroughReportsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9703,11 +9703,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void GenerateModelCompletedEventHandler(object sender, GenerateModelCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GenerateModelCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9729,11 +9729,11 @@ namespace SSRSMigrate.ReportServer2005 {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     public delegate void RegenerateModelCompletedEventHandler(object sender, RegenerateModelCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4161.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class RegenerateModelCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
