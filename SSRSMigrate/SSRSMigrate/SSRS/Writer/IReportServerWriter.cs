@@ -28,5 +28,7 @@ namespace SSRSMigrate.SSRS.Writer
         string[] WriteDataset(DatasetItem datasetItem);
 
         bool ItemExists(string itemPath, string itemType);
+
+        void UpdateItemReferences(string itemPath, string sourceRoot, string destinationRoot);
     }
 }

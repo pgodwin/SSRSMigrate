@@ -269,6 +269,11 @@ namespace SSRSMigrate.SSRS.Writer
         {
             return this.mReportRepository.ItemExists(itemPath, itemType);
         }
+
+        public void UpdateItemReferences(string itemPath, string sourceRoot, string destinationRoot)
+        {
+            this.mReportRepository.UpdateItemReferences(itemPath, sourceRoot, destinationRoot);
+        }
         #endregion
     }
 }

@@ -343,6 +343,9 @@ namespace SSRSMigrate.SSRS.Repository
             reportItem.SubReports = this.GetSubReports(SSRSUtil.ByteArrayToString(def));
             reportItem.DataSources = this.GetReportDataSources(reportPath);
 
+            // Fix up references?
+            
+
             return reportItem;
         }
 
@@ -497,8 +500,6 @@ namespace SSRSMigrate.SSRS.Repository
                 GetMigrationProperties(reportItem),
                 out warnings);
 
-
-
             if (warnings != null)
                 if (warnings.Any())
                 {
@@ -512,6 +513,8 @@ namespace SSRSMigrate.SSRS.Repository
 
                     stringWarnings.AddRange(warnings.Select(s => string.Format("{0}: {1}", s.Code, s.Message)).ToArray<string>());
                 }
+
+            
 
             SetPermissions(item.Path, reportItem);
 
@@ -1025,8 +1028,13 @@ namespace SSRSMigrate.SSRS.Repository
             if (string.IsNullOrEmpty(reportPath))
                 throw new ArgumentNullException(nameof(reportPath));
 
-            var itemsReferences = GetReportDependencies(reportPath).Where(i => i.ReferenceType == "DataSource");
-            var items = itemsReferences.Select(i => this.GetDataSource(i.Reference)).ToList();
+            var itemsReferences = GetReportDependencies(reportPath)
+                                .Where(i => i.ReferenceType == "DataSource");
+            //var itemReferences = this.mReportingService.GetItemDataSources(reportPath);
+            var items = itemsReferences
+                .Where(i=>i.Reference != null)
+                .Select(i => this.GetDataSource(i.Reference))
+                .ToList();
 
             return items;
 
@@ -1223,6 +1231,95 @@ namespace SSRSMigrate.SSRS.Repository
             this.mReportingService.SetPolicies(itemPath, policies);
         }
 
-        
+
+        /// <summary>
+        /// Updates the item reference paths
+        /// </summary>
+        /// <param name="itemPath"></param>
+        /// <param name="sourceRoot"></param>
+        /// <param name="destinationRoot"></param>
+        public void UpdateItemReferences(string itemPath, string sourceRoot, string destinationRoot)
+        {
+            var types = new string[] { "DataSet", "DataSource" }; // reports?
+            var itemReferences = new List<ItemReference>();
+            foreach (var t in types)
+            {
+                var referenceData = this.mReportingService.GetItemReferences(itemPath, t);
+                
+                foreach (var r in referenceData)
+                {
+                    var itemReference = new ItemReference { Name = r.Name };
+                    
+                    if (string.IsNullOrEmpty(r.Reference))
+                    {
+                        // Find the item from the destination root
+                        // Eg Shared Data Source References
+                        var relatedItem = this.FindItem(destinationRoot, r.Name, t);
+                        if (relatedItem != null)
+                            itemReference.Reference = relatedItem.Path;
+                    }
+                    else
+                    {
+                        itemReference.Reference = SSRSUtil.GetFullDestinationPathForItem(
+                            sourceRoot,
+                            destinationRoot,
+                            r.Reference);
+                    }
+
+                    // Only include referenced items
+                    if (!string.IsNullOrEmpty(itemReference.Reference))
+                        itemReferences.Add(itemReference);
+
+                }
+               
+            }
+
+            if (itemReferences.Count > 0)
+                mReportingService.SetItemReferences(itemPath, itemReferences.ToArray());
+
+        }
+
+        private CatalogItem FindItem(string rootPath, string itemName, string itemType)
+        {
+            if (string.IsNullOrEmpty(itemName))
+                throw new ArgumentNullException("itemName");
+
+            if (string.IsNullOrEmpty(itemType))
+                throw new ArgumentNullException("itemType");
+
+            this.mLogger.Debug("GetItem - itemName = {0}; itemType = {1}; rootPath = {2}",
+                itemName,
+                itemType,
+                rootPath);
+
+            SearchCondition nameCondition = new SearchCondition();
+            nameCondition.Condition = ConditionEnum.Equals;
+            nameCondition.ConditionSpecified = true;
+            nameCondition.Name = "Name";
+            nameCondition.Values = new string[] { itemName };
+
+            SearchCondition typeCondition = new SearchCondition();
+            typeCondition.Condition = ConditionEnum.Equals;
+            typeCondition.ConditionSpecified = true;
+            typeCondition.Name = "Type";
+            typeCondition.Values = new string[] { itemType };
+
+            SearchCondition[] conditions = new SearchCondition[2];
+            conditions[0] = nameCondition;
+            conditions[1] = typeCondition;
+
+            CatalogItem[] items = this.mReportingService.FindItems(rootPath, BooleanOperatorEnum.And, null, conditions);
+
+            if (items.Any())
+            {
+                this.mLogger.Debug("GetItem - Items found = {0}", items.Count());
+
+                return items.First();
+            }
+
+            this.mLogger.Debug("GetItem - No items found");
+
+            return null;
+        }
     }
 }

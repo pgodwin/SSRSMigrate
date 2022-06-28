@@ -841,6 +841,11 @@ namespace SSRSMigrate.SSRS.Repository
         {
             throw new NotImplementedException();
         }
+
+        public void UpdateItemReferences(string itemPath, string sourceRoot, string destinationRoot)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

@@ -200,16 +200,16 @@ namespace SSRSMigrate.Utility
         {
             // Reference: https://sqlserverbuilds.blogspot.com/
             // Example: Microsoft SQL Server Reporting Services Version 16.01.200.8
-
-            Regex oVersionRe = new Regex(@"Microsoft SQL Server Reporting Services Version (?<version>[0-9]+\.[0-9]+)\.(?<subver>[0-9]*\.*[0-9]*)");
-            Match oMatch = oVersionRe.Match(versionText);
-
+            // Microsoft Power BI Report Server Version 15.0.1105.195
+            Regex oVersionRe = new Regex(@"(?:(?:Microsoft SQL Server Reporting Services Version)|(?:Microsoft Power BI Report Server Version)) (?<version>[0-9]+\.[0-9]+)\.(?<subver>[0-9]*\.*[0-9]*)");
+            Match oVersionMatch = oVersionRe.Match(versionText);
+            
             var sqlServerInfo = new SqlServerInfo();
 
-            if (oMatch.Success)
+            if (oVersionMatch.Success)
             {
-                string sVersion = oMatch.Groups["version"].ToString();
-                string sSubVersion = oMatch.Groups["subver"].ToString();
+                string sVersion = oVersionMatch.Groups["version"].ToString();
+                string sSubVersion = oVersionMatch.Groups["subver"].ToString();
 
                 sqlServerInfo.Version = sVersion;
                 sqlServerInfo.FullVersion = versionText;

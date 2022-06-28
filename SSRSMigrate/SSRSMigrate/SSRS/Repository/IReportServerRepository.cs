@@ -137,5 +137,6 @@ namespace SSRSMigrate.SSRS.Repository
         /// <param name="folder"></param>
         /// <returns></returns>
         string CreateFolder(FolderItem folder);
+        void UpdateItemReferences(string itemPath, string sourceRoot, string destinationRoot);
     }
 }
