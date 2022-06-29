@@ -16,7 +16,9 @@ namespace SSRSMigrate.DataMapper
         ReportServer2010.Role,
         ReportServer2010.Policy,
         ReportServer2010.ScheduleDefinitionOrReference,
-        ReportServer2010.Subscription>
+        ReportServer2010.Subscription,
+        ReportServer2010.ScheduleDefinitionOrReference
+        >
     {
         public DataSourceItem GetDataSource(CatalogItem item, DataSourceDefinition definition)
         {
@@ -118,14 +120,14 @@ namespace SSRSMigrate.DataMapper
             return folder;
         }
 
-        public DatasetItem GetDataSet(CatalogItem item)
+        public DataSetItem GetDataSet(CatalogItem item)
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
 
             if (item.TypeName != "Dataset")
                 throw new ArgumentException("Item.Type is not a dataset");
-            var datasetItem = new DatasetItem();
+            var datasetItem = new DataSetItem();
             datasetItem.Name = item.Name;
             datasetItem.Path = item.Path;
             datasetItem.CreatedBy = item.CreatedBy;
@@ -251,9 +253,9 @@ namespace SSRSMigrate.DataMapper
 
         }
 
-        public ReportSubscriptionDefinition GetSubscription(Subscription item)
+        public SubscriptionDefinition GetSubscription(Subscription item)
         {
-            var subscription = new ReportSubscriptionDefinition()
+            var subscription = new SubscriptionDefinition()
             {
                 SourceObject = item
             };
@@ -261,83 +263,13 @@ namespace SSRSMigrate.DataMapper
             return subscription;
         }
 
-        public HistoryOptionsDefinition GetHistoryOptionsDefinition(ScheduleDefinitionOrReference item, bool keepSnapshots)
+        public SnapshotOptionsDefinition GetHistoryOptionsDefinition(ScheduleDefinitionOrReference item, bool keepSnapshots)
         {
-            var options = new HistoryOptionsDefinition();
+            var options = new SnapshotOptionsDefinition();
             options.SourceObject = item;
             options.KeepExecutionSnapshots = keepSnapshots;
 
-            ScheduleDefinition definition = default;
-            if (item is NoSchedule)
-            {
-                var noSchedule = item as NoSchedule;
-                options.ScheduleType = ScheduleType.NoSchedule;
-            }
-            if (item is ScheduleReference)
-            {
-                var scheduleReference = item as ScheduleReference;
-                options.ScheduleType = ScheduleType.ScheduleReference;
-                options.ScheduleReferenceId = scheduleReference.ScheduleID;
-                definition = scheduleReference.Definition;
-            }
-            if (item is ScheduleDefinition)
-            {
-                definition = (ScheduleDefinition)item;
-                options.ScheduleType = ScheduleType.ScheduleDefinition;
-            }
-            if (definition == null)
-                return options;
-
-            // At this point we have a definition defined - handle the mapping back to this item
-            options.StartDateTime = definition.StartDateTime;
-            if (definition.EndDateSpecified)
-                options.EndDateTime = definition.EndDate;
-            else
-                options.EndDateTime = null;
-
-            // Handle the patterns
-            var pattern = definition.Item;
-            //
-            if (pattern is DailyRecurrence)
-            {
-                var daily = pattern as DailyRecurrence;
-                options.PatternType = SchedulePatterns.DailyRecurrence;
-                options.DaysInterval = daily.DaysInterval;
-            }
-            if (pattern is MinuteRecurrence)
-            { 
-                var minutes = pattern as MinuteRecurrence;
-                options.PatternType = SchedulePatterns.MinuteRecurrence;
-                options.MinutesInterval = minutes.MinutesInterval;
-            }
-            if (pattern is WeeklyRecurrence)
-            {
-                var weeks = pattern as WeeklyRecurrence;
-                options.PatternType = SchedulePatterns.WeeklyRecurrence;
-                if (weeks.WeeksIntervalSpecified)
-                    options.WeeksInterval = weeks.WeeksInterval;
-
-                options.DayOfWeek = ConvertDaysOfWeek(weeks.DaysOfWeek);
-
-
-            }
-            if (pattern is MonthlyRecurrence)
-            {
-                var monthly = pattern as MonthlyRecurrence;
-                options.PatternType = SchedulePatterns.MonthlyRecurrence;
-                options.Days = monthly.Days;
-                options.Months = ConvertMonthsOfYear(monthly.MonthsOfYear);
-            }
-            if (pattern is MonthlyDOWRecurrence)
-            {
-                var dow = pattern as MonthlyDOWRecurrence;
-                options.PatternType = SchedulePatterns.MonthlyDOWRecurrence;
-                options.DayOfWeek = ConvertDaysOfWeek(dow.DaysOfWeek);
-                options.Months = ConvertMonthsOfYear(dow.MonthsOfYear);
-                if (dow.WhichWeekSpecified)
-                    options.WeekNum = (int)dow.WhichWeek;
-            }
-
+            
             return options;
 
         }
@@ -392,6 +324,83 @@ namespace SSRSMigrate.DataMapper
             return daysOfWeek.ToArray();
         }
 
+        public SSRS.Item.SSRSScheduleDefinition GetSchedule(ReportServer2010.ScheduleDefinitionOrReference item)
+        {
+            SSRSScheduleDefinition options = new SSRSScheduleDefinition();
+            ScheduleDefinition definition = default;
+            if (item is NoSchedule)
+            {
+                var noSchedule = item as NoSchedule;
+                options.ScheduleType = ScheduleType.NoSchedule;
+            }
+            if (item is ScheduleReference)
+            {
+                var scheduleReference = item as ScheduleReference;
+                options.ScheduleType = ScheduleType.ScheduleReference;
+                options.ScheduleReferenceId = scheduleReference.ScheduleID;
+                definition = scheduleReference.Definition;
+            }
+            if (item is ScheduleDefinition)
+            {
+                definition = (ScheduleDefinition)item;
+                options.ScheduleType = ScheduleType.ScheduleDefinition;
+            }
+            if (definition == null)
+                return options;
+
+            // At this point we have a definition defined - handle the mapping back to this item
+            options.StartDateTime = definition.StartDateTime;
+            if (definition.EndDateSpecified)
+                options.EndDateTime = definition.EndDate;
+            else
+                options.EndDateTime = null;
+
+            // Handle the patterns
+            var pattern = definition.Item;
+            //
+            if (pattern is DailyRecurrence)
+            {
+                var daily = pattern as DailyRecurrence;
+                options.PatternType = SchedulePatterns.DailyRecurrence;
+                options.DaysInterval = daily.DaysInterval;
+            }
+            if (pattern is MinuteRecurrence)
+            {
+                var minutes = pattern as MinuteRecurrence;
+                options.PatternType = SchedulePatterns.MinuteRecurrence;
+                options.MinutesInterval = minutes.MinutesInterval;
+            }
+            if (pattern is WeeklyRecurrence)
+            {
+                var weeks = pattern as WeeklyRecurrence;
+                options.PatternType = SchedulePatterns.WeeklyRecurrence;
+                if (weeks.WeeksIntervalSpecified)
+                    options.WeeksInterval = weeks.WeeksInterval;
+
+                options.DayOfWeek = ConvertDaysOfWeek(weeks.DaysOfWeek);
+
+
+            }
+            if (pattern is MonthlyRecurrence)
+            {
+                var monthly = pattern as MonthlyRecurrence;
+                options.PatternType = SchedulePatterns.MonthlyRecurrence;
+                options.Days = monthly.Days;
+                options.Months = ConvertMonthsOfYear(monthly.MonthsOfYear);
+            }
+            if (pattern is MonthlyDOWRecurrence)
+            {
+                var dow = pattern as MonthlyDOWRecurrence;
+                options.PatternType = SchedulePatterns.MonthlyDOWRecurrence;
+                options.DayOfWeek = ConvertDaysOfWeek(dow.DaysOfWeek);
+                options.Months = ConvertMonthsOfYear(dow.MonthsOfYear);
+                if (dow.WhichWeekSpecified)
+                    options.WeekNum = (int)dow.WhichWeek;
+            }
+
+            return options;
+
+        }
     }
 
    

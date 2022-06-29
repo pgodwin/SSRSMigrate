@@ -16,7 +16,8 @@ namespace SSRSMigrate.DataMapper
         ReportServer2005.Role,
         ReportServer2005.Policy,
         ReportServer2005.ScheduleDefinitionOrReference,
-        ReportServer2005.Subscription
+        ReportServer2005.Subscription,
+        ReportServer2005.ScheduleDefinitionOrReference
         >
     {
         public ReportingService2005DataMapper()
@@ -122,14 +123,14 @@ namespace SSRSMigrate.DataMapper
             return folder;
         }
 
-        public DatasetItem GetDataSet(CatalogItem item)
+        public DataSetItem GetDataSet(CatalogItem item)
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
 
             //if (item.Type != ItemTypeEnum.)
             //    throw new ArgumentException("Item.Type is not a dataset");
-            var datasetItem = new DatasetItem();
+            var datasetItem = new DataSetItem();
             datasetItem.Name = item.Name;
             datasetItem.Path = item.Path;
             datasetItem.CreatedBy = item.CreatedBy;
@@ -249,12 +250,17 @@ namespace SSRSMigrate.DataMapper
 
         }
 
-        public ReportSubscriptionDefinition GetSubscription(Subscription item)
+        public SubscriptionDefinition GetSubscription(Subscription item)
         {
             throw new NotImplementedException();
         }
 
-        public HistoryOptionsDefinition GetHistoryOptionsDefinition(ScheduleDefinitionOrReference item, bool keepSnapshots)
+        public SnapshotOptionsDefinition GetHistoryOptionsDefinition(ScheduleDefinitionOrReference item, bool keepSnapshots)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SSRSScheduleDefinition GetSchedule(ScheduleDefinitionOrReference schedule)
         {
             throw new NotImplementedException();
         }

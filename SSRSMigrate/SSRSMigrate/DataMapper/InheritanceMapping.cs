@@ -35,9 +35,9 @@ namespace SSRSMigrate.DataMapper
         }
 
 
-        public DatasetItem ToDataSetItem(ReportServerItem item)
+        public DataSetItem ToDataSetItem(ReportServerItem item)
         {
-            return _mapper.Map<DatasetItem>(item);
+            return _mapper.Map<DataSetItem>(item);
         }
 
         

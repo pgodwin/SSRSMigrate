@@ -9,7 +9,7 @@ namespace SSRSMigrate.Extensions
 {
     public static class ItemExtensions
     {
-        public static DatasetItem ToDatasetItem(this ReportServerItem sourceItem)
+        public static DataSetItem ToDatasetItem(this ReportServerItem sourceItem)
         {
             return DataMapper.InheritanceMapping.Instance.ToDataSetItem(sourceItem);
         }

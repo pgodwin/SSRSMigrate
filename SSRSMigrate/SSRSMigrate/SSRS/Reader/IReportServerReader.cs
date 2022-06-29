@@ -31,14 +31,14 @@ namespace SSRSMigrate.SSRS.Reader
 
         ReportServerItem GetItemFromPath(string path);
 
-        List<DatasetItem> GetReportDatasets(string reportPath);
+        List<DataSetItem> GetReportDatasets(string reportPath);
 
         List<PolicyDefinition> GetItemPolicies(string itemPath);
 
-        HistoryOptionsDefinition GetReportHistoryOptions(string itemPath);
-        List<ReportSubscriptionDefinition> GetSubscriptions(string reportPath);
+        SnapshotOptionsDefinition GetReportHistoryOptions(string itemPath);
+        List<SubscriptionDefinition> GetSubscriptions(string reportPath);
 
-        DatasetItem GetDataSet(string itemPath, string itemName);
+        DataSetItem GetDataSet(string itemPath, string itemName);
 
         string Url { get; }
     }

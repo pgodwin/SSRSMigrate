@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SSRSMigrate.SSRS.Item.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +10,10 @@ namespace SSRSMigrate.SSRS.Item
     /// Essientially a mapping of CatalogItem 
     /// </summary>
     [DebuggerDisplay("Type = {ItemType} / Name = {Name} / Path = {Path}")]
-    public class ReportServerItem : BaseSSRSItem
+    public class ReportServerItem : 
+        BaseSSRSItem, 
+        IPolicies, 
+        IProperties
     {
         /// <summary>
         /// Gets the name of an item.

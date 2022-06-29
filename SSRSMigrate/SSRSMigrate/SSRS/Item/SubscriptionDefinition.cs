@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SSRSMigrate.SSRS.Item
 {
-    public class ReportSubscriptionDefinition : BaseSSRSItem
+    public class SubscriptionDefinition : BaseSSRSItem
     {
         /// <summary>
         /// Gets the ID of the subscription.
@@ -26,7 +26,7 @@ namespace SSRSMigrate.SSRS.Item
         /// <summary>
         /// Gets the fully qualified URL of the report that is associated with the subscription.
         /// </summary>
-        public string ReportPath { get; set; }
+        public string ItemPath { get; set; }
 
         /// <summary>
         /// Gets the name of the report that is associated with the subscription.
@@ -62,6 +62,10 @@ namespace SSRSMigrate.SSRS.Item
         /// Gets a value that indicates whether the subscription is data-driven.
         /// </summary>
         public bool IsDataDriven { get; set; }
+
+        public string VirtualPath { get; set; }
+
+        public string ActiveState { get; set; }
 
 
     }

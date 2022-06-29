@@ -1,40 +1,66 @@
-﻿using System.Collections.Generic;
+﻿using SSRSMigrate.SSRS.Item.Interfaces;
+using System.Collections.Generic;
 
 namespace SSRSMigrate.SSRS.Item
 {
-    public class ReportItem : ReportServerItem
-    {
-        public virtual byte[] Definition { get; set; }
-        public List<ReportItem> SubReports { get; set; }
+    public class ReportItem : 
+        ReportServerItem,
+        // Has dependencies
+        IDependsOn, 
+        // Has Properites
+        IProperties, 
+        // Has Data Sources
+        IDataSources, 
+        // Has Cache Options
+        ICacheOptions, 
+        // Has Subscriptions
+        ISubscriptions,
+        // Has Snapshots
+        ISnapshotOptions,
+        // Has Policies
+        IPolicies,
 
-        public ReportItem()
+        IDefinition
+    {
+
+        public ReportItem() : base()
         {
             this.SubReports = new List<ReportItem>();
             this.DependsOn = new List<ItemReferenceDefinition>();
             this.Policies = new List<PolicyDefinition>();
-            this.DataSets = new List<DatasetItem>();
-            this.SnapshotOptions = new HistoryOptionsDefinition();
+            this.DataSets = new List<DataSetItem>();
+            this.SnapshotOptions = new SnapshotOptionsDefinition();
             this.DataSources = new List<DataSourceItem>();
+            this.Subscriptions = new List<SubscriptionDefinition>();
+            this.CacheOptions = new CacheDefinition();
         }
 
-
-
-        // Support for Dependent Items
-
+        /// <inheritdoc>
         public List<ItemReferenceDefinition> DependsOn { get; set; }
 
-        // Support for Datasets
-        public List<DatasetItem> DataSets { get; set; }
+        /// <inheritdoc>
+        public List<DataSetItem> DataSets { get; set; }
 
-        // Support for Subscription
-        public List<ReportSubscriptionDefinition> Subscriptions { get; set; } 
-        
-        // Support for Snapshot Configuration
-        public HistoryOptionsDefinition SnapshotOptions { get; set; }
+
+        /// <inheritdoc>
+        public virtual byte[] Definition { get; set; }
 
         /// <summary>
-        /// Are these shared?
+        /// Sub-reports related to this report
         /// </summary>
+        public List<ReportItem> SubReports { get; set; }
+
+
+        /// <inheritdoc>
+        public SnapshotOptionsDefinition SnapshotOptions { get; set; }
+
+        /// <inheritdoc>
         public List<DataSourceItem> DataSources { get; set; }
+
+        /// <inheritdoc>
+        public CacheDefinition CacheOptions { get; set; }
+
+        /// <inheritdoc>
+        public List<SubscriptionDefinition> Subscriptions { get; set; }
     }
 }

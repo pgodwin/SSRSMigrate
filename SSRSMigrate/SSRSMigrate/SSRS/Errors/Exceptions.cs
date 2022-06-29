@@ -38,6 +38,30 @@ namespace SSRSMigrate.SSRS.Errors
         }
     }
 
+    public class InvalidItemTypeException : Exception 
+    {
+        public InvalidItemTypeException() : base("InvalidItemTypeException") { }
+
+        public InvalidItemTypeException(string path, string itemType, string expectedType) : base($"The itemType does not match the expected type. Received '{itemType}', expected '{expectedType}'. Item path '{path}") 
+        {
+            this.Path = path;
+            this.ItemType = itemType;
+            this.ExpectedType = expectedType;
+        }
+
+        public InvalidItemTypeException(string path, string itemType, string expectedType, Exception inner) : base($"The itemType does not match the expected type. Received '{itemType}', expected '{expectedType}'. Item path '{path}", inner) 
+        {
+            this.Path = path;
+            this.ItemType = itemType;
+            this.ExpectedType = expectedType;
+        }
+
+        public string Path { get; }
+        public string ItemType { get; }
+        public string ExpectedType { get; }
+    }
+
+
     public class InvalidReportDefinitionException : Exception
     {
         public InvalidReportDefinitionException()

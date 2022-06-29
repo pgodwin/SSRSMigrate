@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SSRSMigrate.SSRS.Item
-{
+{ 
+
+    [DebuggerDisplay("Role Name = {Name}")]
     public class RoleDefinition : BaseSSRSItem
     {
         /// <summary>

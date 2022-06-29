@@ -25,10 +25,11 @@ namespace SSRSMigrate.SSRS.Writer
 
         // Misc
         SqlServerInfo GetSqlServerVersion();
-        string[] WriteDataset(DatasetItem datasetItem);
+        string[] WriteDataset(DataSetItem datasetItem);
 
         bool ItemExists(string itemPath, string itemType);
 
         void UpdateItemReferences(string itemPath, string sourceRoot, string destinationRoot);
+        byte[] UpdateDefinitionReferences(byte[] itemDefinition, string destinationRoot);
     }
 }

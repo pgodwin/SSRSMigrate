@@ -792,12 +792,12 @@ namespace SSRSMigrate.SSRS.Repository
             throw new NotImplementedException();
         }
 
-        public DatasetItem GetDataset(string itemPath, string itemName)
+        public DataSetItem GetDataset(string itemPath, string itemName)
         {
             throw new NotImplementedException();
         }
 
-        public List<DatasetItem> GetReportDatasets(string reportPath)
+        public List<DataSetItem> GetReportDatasets(string reportPath)
         {
             throw new NotImplementedException();
         }
@@ -807,22 +807,22 @@ namespace SSRSMigrate.SSRS.Repository
             throw new NotImplementedException();
         }
 
-        public HistoryOptionsDefinition GetReportHistoryOptions(string reportPath)
+        public SnapshotOptionsDefinition GetReportHistoryOptions(string reportPath)
         {
             throw new NotImplementedException();
         }
 
-        public ReportSubscriptionDefinition GetSubscriptions(string reportPath)
+        public SubscriptionDefinition GetSubscriptions(string reportPath)
         {
             throw new NotImplementedException();
         }
 
-        List<ReportSubscriptionDefinition> IReportServerRepository.GetSubscriptions(string reportPath)
+        List<SubscriptionDefinition> IReportServerRepository.GetSubscriptions(string reportPath)
         {
             throw new NotImplementedException();
         }
 
-        public string[] WriteDataSet(string path, DatasetItem datasetItem, bool overwrite)
+        public string[] WriteDataSet(string path, DataSetItem datasetItem, bool overwrite)
         {
             throw new NotImplementedException();
         }
@@ -843,6 +843,16 @@ namespace SSRSMigrate.SSRS.Repository
         }
 
         public void UpdateItemReferences(string itemPath, string sourceRoot, string destinationRoot)
+        {
+            throw new NotImplementedException();
+        }
+
+        public byte[] UpdateDefinitionReferences(byte[] reportDefinition, string root)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetPermissions(string targetItemPath, ReportServerItem sourceItem)
         {
             throw new NotImplementedException();
         }

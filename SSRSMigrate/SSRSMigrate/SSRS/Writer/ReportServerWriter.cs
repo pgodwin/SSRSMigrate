@@ -65,8 +65,9 @@ namespace SSRSMigrate.SSRS.Writer
                     throw new ItemAlreadyExistsException(folderItem.Path);
                 else
                 {
+                    // Don't delete items...
                     //TODO Add tests for ReportServerWriter.WriteFolder where the folder exists and overwrite is True
-                    this.mReportRepository.DeleteItem(folderItem.Path);
+                    //this.mReportRepository.DeleteItem(folderItem.Path);
                 }
 
             //return this.mReportRepository.CreateFolder(name, parentPath);
@@ -99,7 +100,8 @@ namespace SSRSMigrate.SSRS.Writer
                     else
                     {
                         //TODO Add tests for ReportServerWriter.WriteFolders where the folder exists and overwrite is True
-                        this.mReportRepository.DeleteItem(folderItems[i].Path);
+                        // PG 2022-06-29 - remove this -I don't want anything being accidently deleted!
+                        //this.mReportRepository.DeleteItem(folderItems[i].Path);
                     }
                 
 
@@ -238,7 +240,7 @@ namespace SSRSMigrate.SSRS.Writer
         #endregion
 
         #region Dataset Methods
-        public string[] WriteDataset(DatasetItem datasetItem)
+        public string[] WriteDataset(DataSetItem datasetItem)
         {
             if (datasetItem == null)
                 throw new ArgumentNullException(nameof(datasetItem));
@@ -274,6 +276,12 @@ namespace SSRSMigrate.SSRS.Writer
         {
             this.mReportRepository.UpdateItemReferences(itemPath, sourceRoot, destinationRoot);
         }
+
+        public byte[] UpdateDefinitionReferences(byte[] itemDefinition, string destinationRoot)
+        {
+            return this.mReportRepository.UpdateDefinitionReferences(itemDefinition, destinationRoot);
+        }
+
         #endregion
     }
 }

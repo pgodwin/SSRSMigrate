@@ -312,5 +312,12 @@ namespace SSRSMigrate.Utility
 
             return physicalPath;
         }
+
+        public static string CleanXml(this string sourceXml)
+        {            
+            if (sourceXml.Substring(0, 1) != "<")
+                return sourceXml.Substring(1, sourceXml.Length - 1);
+            return sourceXml;
+        }
     }
 }

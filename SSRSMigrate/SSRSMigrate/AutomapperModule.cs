@@ -31,7 +31,7 @@ namespace SSRSMigrate
             var config = new MapperConfiguration(cfg =>
             {
                 // Map the base type to the inherited types to make transformations easier
-                cfg.CreateMap(typeof(ReportServerItem), typeof(DatasetItem));
+                cfg.CreateMap(typeof(ReportServerItem), typeof(DataSetItem));
                 cfg.CreateMap(typeof(ReportServerItem), typeof(ReportItem));
                 cfg.CreateMap(typeof(ReportServerItem), typeof(FolderItem));
                 cfg.CreateMap(typeof(ReportServerItem), typeof(DataSourceItem));

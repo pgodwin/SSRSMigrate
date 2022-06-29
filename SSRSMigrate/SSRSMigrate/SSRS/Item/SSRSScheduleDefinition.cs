@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace SSRSMigrate.SSRS.Item
 {
-    public class HistoryOptionsDefinition : BaseSSRSItem
-    {
-        public string ReportPath { get; set; }
-        public bool KeepExecutionSnapshots { get; set; }
 
+    /// <summary>
+    /// Simplified representation of an SSRS Schedule, which has a complex type system. Used by Snapshots, Subscriptions, Cache Refreshes
+    /// </summary>
+    public class SSRSScheduleDefinition : BaseSSRSItem
+    {
         public ScheduleType ScheduleType { get; set; }
 
         public SchedulePatterns PatternType { get; set; }
@@ -60,11 +61,13 @@ namespace SSRSMigrate.SSRS.Item
         /// Represents the days of the week on which a scheduled report runs.
         /// </summary>
         public string[] DayOfWeek { get; set; }
+        
         public int? WeeksInterval { get; set; }
     }
 
+
     public enum ScheduleType
-    { 
+    {
         NoSchedule,
         ScheduleReference,
         ScheduleDefinition
@@ -97,8 +100,4 @@ namespace SSRSMigrate.SSRS.Item
         /// </summary>
         MonthlyDOWRecurrence
     }
-
-
-
-
 }

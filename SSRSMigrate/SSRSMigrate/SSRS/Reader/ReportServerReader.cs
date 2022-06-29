@@ -249,7 +249,7 @@ namespace SSRSMigrate.SSRS.Reader
         }
 
         /// <inheritdoc/>
-        public List<DatasetItem> GetReportDatasets(string reportPath)
+        public List<DataSetItem> GetReportDatasets(string reportPath)
         {
             return this.mReportRepository.GetReportDatasets(reportPath);
         }
@@ -261,18 +261,18 @@ namespace SSRSMigrate.SSRS.Reader
         }
 
         /// <inheritdoc/>
-        public HistoryOptionsDefinition GetReportHistoryOptions(string itemPath)
+        public SnapshotOptionsDefinition GetReportHistoryOptions(string itemPath)
         {
             return this.mReportRepository.GetReportHistoryOptions(itemPath);
         }
 
         /// <inheritdoc/>
-        public List<ReportSubscriptionDefinition> GetSubscriptions(string reportPath)
+        public List<SubscriptionDefinition> GetSubscriptions(string reportPath)
         {
             return this.mReportRepository.GetSubscriptions(reportPath); 
         }
 
-        public DatasetItem GetDataSet(string itemPath, string itemName)
+        public DataSetItem GetDataSet(string itemPath, string itemName)
         {
             return this.mReportRepository.GetDataset(itemPath, itemName);
         }

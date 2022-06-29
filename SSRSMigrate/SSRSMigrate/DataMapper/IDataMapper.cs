@@ -12,7 +12,8 @@ namespace SSRSMigrate.DataMapper
         TRole, 
         TPolicy,
         TScheduleDefinitionOrReference,
-        TSubscription>
+        TSubscription,
+        TSchedule>
         // TODO
         //Schedules?
     {
@@ -26,7 +27,7 @@ namespace SSRSMigrate.DataMapper
         ReportItem GetReport(TCatalogItem item);
         FolderItem GetFolder(TCatalogItem item);
 
-        DatasetItem GetDataSet(TDataSet item);
+        DataSetItem GetDataSet(TDataSet item);
 
         ItemReferenceDefinition GetItemReference(TItemReference item);
 
@@ -40,8 +41,10 @@ namespace SSRSMigrate.DataMapper
 
         ReportServerItem GetReportServerItem(TCatalogItem item);
 
-        ReportSubscriptionDefinition GetSubscription(TSubscription item);
+        SubscriptionDefinition GetSubscription(TSubscription item);
 
-        HistoryOptionsDefinition GetHistoryOptionsDefinition(TScheduleDefinitionOrReference item, bool keepSnapshots);
+        SnapshotOptionsDefinition GetHistoryOptionsDefinition(TScheduleDefinitionOrReference item, bool keepSnapshots);
+
+        SSRSScheduleDefinition GetSchedule(TSchedule schedule);
     }
 }

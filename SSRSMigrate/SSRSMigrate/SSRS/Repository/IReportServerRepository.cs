@@ -83,14 +83,14 @@ namespace SSRSMigrate.SSRS.Repository
         /// <param name="itemPath">Path to the item.</param>
         /// <param name="itemName">Name of the item.</param>
         /// <returns></returns>
-        DatasetItem GetDataset(string itemPath, string itemName);
+        DataSetItem GetDataset(string itemPath, string itemName);
 
         /// <summary>
         /// Returns the datasets used by a report
         /// </summary>
         /// <param name="reportPath"></param>
         /// <returns></returns>
-        List<DatasetItem> GetReportDatasets(string reportPath);
+        List<DataSetItem> GetReportDatasets(string reportPath);
 
         /// <summary>
         /// Returns the security policies for an item.
@@ -104,14 +104,14 @@ namespace SSRSMigrate.SSRS.Repository
         /// </summary>
         /// <param name="reportPath"></param>
         /// <returns></returns>
-        HistoryOptionsDefinition GetReportHistoryOptions(string reportPath);
+        SnapshotOptionsDefinition GetReportHistoryOptions(string reportPath);
 
         /// <summary>
         /// Returns the subscriptions used by a report.
         /// </summary>
         /// <param name="reportPath"></param>
         /// <returns></returns>
-        List<ReportSubscriptionDefinition> GetSubscriptions(string reportPath);
+        List<SubscriptionDefinition> GetSubscriptions(string reportPath);
 
         /// <summary>
         /// Creates/Writes a datasetItem into the specified path
@@ -120,7 +120,7 @@ namespace SSRSMigrate.SSRS.Repository
         /// <param name="datasetItem"></param>
         /// <param name="overwrite"></param>
         /// <returns></returns>
-        string[] WriteDataSet(string path, DatasetItem datasetItem, bool overwrite);
+        string[] WriteDataSet(string path, DataSetItem datasetItem, bool overwrite);
         
         /// <summary>
         /// Returns the properties for the specified item path
@@ -129,6 +129,12 @@ namespace SSRSMigrate.SSRS.Repository
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         List<ItemProperty> GetItemProperties(string itemPath);
+
+        /// <summary>
+        /// Returns the data sources for a given report.
+        /// </summary>
+        /// <param name="reportPath"></param>
+        /// <returns></returns>
         List<DataSourceItem> GetReportDataSources(string reportPath);
         
         /// <summary>
@@ -137,6 +143,27 @@ namespace SSRSMigrate.SSRS.Repository
         /// <param name="folder"></param>
         /// <returns></returns>
         string CreateFolder(FolderItem folder);
+
+        /// <summary>
+        /// Attempts to update item references where possible.
+        /// </summary>
+        /// <param name="itemPath"></param>
+        /// <param name="sourceRoot"></param>
+        /// <param name="destinationRoot"></param>
         void UpdateItemReferences(string itemPath, string sourceRoot, string destinationRoot);
+        
+        /// <summary>
+        /// Attempts to update the report definitions based on the new root path.
+        /// </summary>
+        /// <param name="reportDefinition"></param>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        byte[] UpdateDefinitionReferences(byte[] reportDefinition, string root);
+        /// <summary>
+        /// Copies the policies from the source ReportServerItem to the target item.
+        /// </summary>
+        /// <param name="targetItemPath">Target path to apply permissions to</param>
+        /// <param name="sourceItem">Source item to copy permissions from.</param>
+        void SetPermissions(string targetItemPath, ReportServerItem sourceItem);
     }
 }
