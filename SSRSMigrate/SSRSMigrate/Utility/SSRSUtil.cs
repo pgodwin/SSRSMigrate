@@ -178,6 +178,12 @@ namespace SSRSMigrate.Utility
 
             itemDestPath += name;
 
+            // Something is magling paths so they start with //folder instead of /folder
+            // Check for this and fix it
+            if (itemDestPath.StartsWith("//"))
+                itemDestPath = itemDestPath.Substring(1);
+
+
             return itemDestPath;
         }
 

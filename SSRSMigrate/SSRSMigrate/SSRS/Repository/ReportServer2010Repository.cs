@@ -987,6 +987,8 @@ namespace SSRSMigrate.SSRS.Repository
             // Get the item types from the server
             var itemTypes = this.mReportingService.ListItemTypes();
             var items = new List<ItemReferenceDefinition>();
+            if (this.mReportingService.GetItemType(reportPath) == DataSourceTypeName)
+                return items; // Data sources candon't have depdenencies
             foreach (var itemType in itemTypes)
             {
                 try
